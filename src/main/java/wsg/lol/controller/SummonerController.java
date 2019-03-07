@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import wsg.lol.dmo.summoner.SummonerDmo;
 import wsg.lol.service.intf.SummonerService;
 
 /**
@@ -20,7 +21,13 @@ public class SummonerController {
     private SummonerService summonerService;
 
     @RequestMapping("/index")
-    public String hello(Model model, String id) {
+    public String hello() {
         return "helloWorld";
+    }
+
+    @RequestMapping("/summoner/index")
+    public void getSummoner(Model model, String id) {
+        SummonerDmo summonerDmo = summonerService.getSummonerById(id);
+        model.addAttribute("account", summonerDmo.getAccountId());
     }
 }

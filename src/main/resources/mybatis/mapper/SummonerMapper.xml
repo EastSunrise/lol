@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="wsg.lol.dao.SummonerMapper">
-    <resultMap id="BaseResultMap" type="wsg.lol.dmo.Summoner">
+    <resultMap id="BaseResultMap" type="wsg.lol.dmo.summoner.SummonerDmo">
         <constructor>
             <idArg column="ID" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="ACCOUNT_ID" jdbcType="VARCHAR" javaType="java.lang.String"/>
@@ -22,110 +22,4 @@
         from s_summoner
         where ID = #{id,jdbcType=VARCHAR}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        delete
-        from s_summoner
-        where ID = #{id,jdbcType=VARCHAR}
-    </delete>
-    <insert id="insert" parameterType="wsg.lol.dmo.Summoner">
-        insert into s_summoner (ID, ACCOUNT_ID, PUUID,
-                                NAME, PROFILE_ICON_ID, REVISION_DATE,
-                                SUMMONER_LEVEL, LAST_CHECKED_TIME)
-        values (#{id,jdbcType=VARCHAR}, #{accountId,jdbcType=VARCHAR}, #{puuid,jdbcType=CHAR},
-                #{name,jdbcType=VARCHAR}, #{profileIconId,jdbcType=INTEGER}, #{revisionDate,jdbcType=TIMESTAMP},
-                #{summonerLevel,jdbcType=INTEGER}, #{lastCheckedTime,jdbcType=TIMESTAMP})
-    </insert>
-    <insert id="insertSelective" parameterType="wsg.lol.dmo.Summoner">
-        insert into s_summoner
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                ID,
-            </if>
-            <if test="accountId != null">
-                ACCOUNT_ID,
-            </if>
-            <if test="puuid != null">
-                PUUID,
-            </if>
-            <if test="name != null">
-                NAME,
-            </if>
-            <if test="profileIconId != null">
-                PROFILE_ICON_ID,
-            </if>
-            <if test="revisionDate != null">
-                REVISION_DATE,
-            </if>
-            <if test="summonerLevel != null">
-                SUMMONER_LEVEL,
-            </if>
-            <if test="lastCheckedTime != null">
-                LAST_CHECKED_TIME,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=VARCHAR},
-            </if>
-            <if test="accountId != null">
-                #{accountId,jdbcType=VARCHAR},
-            </if>
-            <if test="puuid != null">
-                #{puuid,jdbcType=CHAR},
-            </if>
-            <if test="name != null">
-                #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="profileIconId != null">
-                #{profileIconId,jdbcType=INTEGER},
-            </if>
-            <if test="revisionDate != null">
-                #{revisionDate,jdbcType=TIMESTAMP},
-            </if>
-            <if test="summonerLevel != null">
-                #{summonerLevel,jdbcType=INTEGER},
-            </if>
-            <if test="lastCheckedTime != null">
-                #{lastCheckedTime,jdbcType=TIMESTAMP},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.dmo.Summoner">
-        update s_summoner
-        <set>
-            <if test="accountId != null">
-                ACCOUNT_ID = #{accountId,jdbcType=VARCHAR},
-            </if>
-            <if test="puuid != null">
-                PUUID = #{puuid,jdbcType=CHAR},
-            </if>
-            <if test="name != null">
-                NAME = #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="profileIconId != null">
-                PROFILE_ICON_ID = #{profileIconId,jdbcType=INTEGER},
-            </if>
-            <if test="revisionDate != null">
-                REVISION_DATE = #{revisionDate,jdbcType=TIMESTAMP},
-            </if>
-            <if test="summonerLevel != null">
-                SUMMONER_LEVEL = #{summonerLevel,jdbcType=INTEGER},
-            </if>
-            <if test="lastCheckedTime != null">
-                LAST_CHECKED_TIME = #{lastCheckedTime,jdbcType=TIMESTAMP},
-            </if>
-        </set>
-        where ID = #{id,jdbcType=VARCHAR}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="wsg.lol.dmo.Summoner">
-        update s_summoner
-        set ACCOUNT_ID        = #{accountId,jdbcType=VARCHAR},
-            PUUID             = #{puuid,jdbcType=CHAR},
-            NAME              = #{name,jdbcType=VARCHAR},
-            PROFILE_ICON_ID   = #{profileIconId,jdbcType=INTEGER},
-            REVISION_DATE     = #{revisionDate,jdbcType=TIMESTAMP},
-            SUMMONER_LEVEL    = #{summonerLevel,jdbcType=INTEGER},
-            LAST_CHECKED_TIME = #{lastCheckedTime,jdbcType=TIMESTAMP}
-        where ID = #{id,jdbcType=VARCHAR}
-    </update>
 </mapper>

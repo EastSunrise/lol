@@ -16,7 +16,6 @@ public class SummonerDmo extends BaseDmo {
     private Integer summonerLevel;
     private Date lastCheckedTime;
 
-
     public String getId() {
         return id;
     }
@@ -24,7 +23,6 @@ public class SummonerDmo extends BaseDmo {
     public void setId(String id) {
         this.id = id;
     }
-
 
     public String getAccountId() {
         return accountId;
@@ -34,7 +32,6 @@ public class SummonerDmo extends BaseDmo {
         this.accountId = accountId;
     }
 
-
     public String getPuuid() {
         return puuid;
     }
@@ -42,7 +39,6 @@ public class SummonerDmo extends BaseDmo {
     public void setPuuid(String puuid) {
         this.puuid = puuid;
     }
-
 
     public String getName() {
         return name;
@@ -52,7 +48,6 @@ public class SummonerDmo extends BaseDmo {
         this.name = name;
     }
 
-
     public Integer getProfileIconId() {
         return profileIconId;
     }
@@ -60,7 +55,6 @@ public class SummonerDmo extends BaseDmo {
     public void setProfileIconId(Integer profileIconId) {
         this.profileIconId = profileIconId;
     }
-
 
     public Date getRevisionDate() {
         return revisionDate;
@@ -70,7 +64,6 @@ public class SummonerDmo extends BaseDmo {
         this.revisionDate = revisionDate;
     }
 
-
     public Integer getSummonerLevel() {
         return summonerLevel;
     }
@@ -79,7 +72,6 @@ public class SummonerDmo extends BaseDmo {
         this.summonerLevel = summonerLevel;
     }
 
-
     public Date getLastCheckedTime() {
         return lastCheckedTime;
     }
@@ -87,5 +79,4 @@ public class SummonerDmo extends BaseDmo {
     public void setLastCheckedTime(Date lastCheckedTime) {
         this.lastCheckedTime = lastCheckedTime;
     }
-
 }

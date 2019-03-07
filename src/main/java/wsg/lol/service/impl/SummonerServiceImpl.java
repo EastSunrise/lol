@@ -3,7 +3,7 @@ package wsg.lol.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wsg.lol.dao.SummonerMapper;
-import wsg.lol.dmo.Summoner;
+import wsg.lol.dmo.summoner.SummonerDmo;
 import wsg.lol.service.intf.SummonerService;
 
 /**
@@ -19,7 +19,7 @@ public class SummonerServiceImpl implements SummonerService {
     private SummonerMapper summonerMapper;
 
     @Override
-    public Summoner getSummonerById(String id) {
+    public SummonerDmo getSummonerById(String id) {
         return summonerMapper.selectByPrimaryKey(id);
     }
 }
