@@ -1,7 +1,7 @@
 package wsg.lol.dto.api.tournament;
 
 import wsg.lol.common.base.QueryDto;
-import wsg.lol.common.enums.impl.id.MapEnum;
+import wsg.lol.common.enums.impl.code.MapEnum;
 import wsg.lol.common.enums.impl.others.PickTypeEnum;
 import wsg.lol.common.enums.impl.others.SpectatorTypeEnum;
 

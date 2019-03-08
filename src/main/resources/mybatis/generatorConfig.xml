@@ -69,7 +69,13 @@
                 enableCountByExample: 是否可以通过对象查数量
                 enableUpdateByExample: 是否可以通过对象进行更新
         -->
-        <table tableName="s_summoner" domainObjectName="Summoner" enableCountByExample="false"
+        <table tableName="c_skin" domainObjectName="CCC0" enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+        <table tableName="c_spell" domainObjectName="CCC1" enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+        <table tableName="c_tip" domainObjectName="CCC2" enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
     </context>

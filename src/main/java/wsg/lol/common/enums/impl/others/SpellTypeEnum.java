@@ -1,6 +1,6 @@
 package wsg.lol.common.enums.impl.others;
 
-import wsg.lol.common.enums.intf.CodeEnum;
+import wsg.lol.common.enums.intf.BaseEnum;
 
 /**
  * wsg
@@ -8,19 +8,18 @@ import wsg.lol.common.enums.intf.CodeEnum;
  * @author wangsigen
  * @date 2019-03-05 10:23
  */
-public enum SpellTypeEnum implements CodeEnum {
-    SPELL("01"),
-    PASSIVE("02"),
-    SUMMONER("03");
+public enum SpellTypeEnum implements BaseEnum<Integer> {
+    SPELL(1),
+    PASSIVE(2),
+    SUMMONER(3);
 
-    private String code;
+    private int value;
 
-    SpellTypeEnum(String code) {
-        this.code = code;
+    SpellTypeEnum(int value) {
+        this.value = value;
     }
 
-    @Override
-    public String getCode() {
-        return code;
+    public Integer getValue() {
+        return value;
     }
 }

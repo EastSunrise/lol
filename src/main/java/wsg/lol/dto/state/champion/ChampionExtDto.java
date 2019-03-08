@@ -28,6 +28,8 @@ public class ChampionExtDto extends BaseDto implements IJSONTransfer {
 
     private List<TipDmo> tipDmoList;
 
+    private SpellDmo passive;
+
     private List<SpellDmo> spellDmoList;
 
     @Override
@@ -69,12 +71,22 @@ public class ChampionExtDto extends BaseDto implements IJSONTransfer {
             spellDmo.setSpellType(SpellTypeEnum.SPELL);
             spellDmoList.add(spellDmo);
         }
+        setSpellDmoList(spellDmoList);
+
         SpellDmo spellDmo = new SpellDmo();
         BeanUtil.parseFromJSONObject(spellDmo, champion.getJSONObject("passive"));
+        spellDmo.setId("p" + championId);
         spellDmo.setChampionId(championId);
         spellDmo.setSpellType(SpellTypeEnum.PASSIVE);
-        spellDmoList.add(spellDmo);
-        setSpellDmoList(spellDmoList);
+        setPassive(spellDmo);
+    }
+
+    public SpellDmo getPassive() {
+        return passive;
+    }
+
+    public void setPassive(SpellDmo passive) {
+        this.passive = passive;
     }
 
     public ChampionDmo getChampionDmo() {

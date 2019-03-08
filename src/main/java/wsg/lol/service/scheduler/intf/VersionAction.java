@@ -10,5 +10,5 @@ import wsg.lol.common.base.ResultDto;
  */
 public interface VersionAction {
 
-    ResultDto buildChampions();
+    ResultDto buildChampionLib();
 }

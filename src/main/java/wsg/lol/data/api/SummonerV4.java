@@ -1,5 +1,6 @@
 package wsg.lol.data.api;
 
+import wsg.lol.common.constants.annotation.AccessInterval;
 import wsg.lol.dmo.summoner.SummonerDmo;
 
 import java.util.HashMap;
@@ -14,6 +15,7 @@ public class SummonerV4 extends BaseApi {
     /**
      * Get a summoner by account ID.
      */
+    @AccessInterval
     public static SummonerDmo getSummonersByAccount(String accountId) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedAccountId", accountId);
@@ -23,6 +25,7 @@ public class SummonerV4 extends BaseApi {
     /**
      * Get a summoner by summoner name.
      */
+    @AccessInterval
     public static SummonerDmo getSummonerByName(String name) {
         Map<String, Object> params = new HashMap<>();
         params.put("summonerName", name);
@@ -32,6 +35,7 @@ public class SummonerV4 extends BaseApi {
     /**
      * Get a summoner by PUUID.
      */
+    @AccessInterval
     public static SummonerDmo getSummonersByPuuid(String puuid) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedPUUID", puuid);
@@ -44,6 +48,7 @@ public class SummonerV4 extends BaseApi {
      * ATTENTION
      * Consistently looking up summoner ids that don't exist will result in a blacklist.
      */
+    @AccessInterval
     public static SummonerDmo getSummonerById(String summonerId) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedSummonerId", summonerId);

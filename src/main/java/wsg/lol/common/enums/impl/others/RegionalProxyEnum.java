@@ -1,6 +1,6 @@
 package wsg.lol.common.enums.impl.others;
 
-import wsg.lol.common.enums.intf.CodeEnum;
+import wsg.lol.common.enums.intf.BaseEnum;
 
 /**
  * wsg
@@ -8,22 +8,22 @@ import wsg.lol.common.enums.intf.CodeEnum;
  * @author wangsigen
  * @date 2019-03-01 16:49
  */
-public enum RegionalProxyEnum implements CodeEnum {
-    Americas("01", "americas.api.riotgames.com"),
-    Europe("02", "europe.api.riotgames.com"),
-    Asia("03", "asia.api.riotgames.com");
+public enum RegionalProxyEnum implements BaseEnum<Integer> {
+    Americas(1, "americas.api.riotgames.com"),
+    Europe(2, "europe.api.riotgames.com"),
+    Asia(3, "asia.api.riotgames.com");
 
-    private String code;
+    private int value;
     private String host;
 
-    RegionalProxyEnum(String code, String host) {
-        this.code = code;
+    RegionalProxyEnum(int value, String host) {
+        this.value = value;
         this.host = host;
     }
 
     @Override
-    public String getCode() {
-        return code;
+    public Integer getValue() {
+        return value;
     }
 
     public String getHost() {

@@ -1,6 +1,6 @@
-package wsg.lol.common.enums.impl.id;
+package wsg.lol.common.enums.impl.code;
 
-import wsg.lol.common.enums.intf.IdEnum;
+import wsg.lol.common.enums.intf.BaseEnum;
 
 /**
  * wsg
@@ -8,7 +8,7 @@ import wsg.lol.common.enums.intf.IdEnum;
  * @author wangsigen
  * @date 2019-03-04 14:56
  */
-public enum MatchQueueEnum implements IdEnum {
+public enum MatchQueueEnum implements BaseEnum<Integer> {
     RANKED_SOLO_GAMES_5v5(420),
     BLIND_PICK_GAMES_5v5(430),
     RANKED_FLEX_GAMES_5v5(440),
@@ -17,14 +17,14 @@ public enum MatchQueueEnum implements IdEnum {
     RANKED_FLEX_GAMES_3v3(470),
     ;
 
-    private int id;
+    private int value;
 
-    MatchQueueEnum(int id) {
-        this.id = id;
+    MatchQueueEnum(int value) {
+        this.value = value;
     }
 
     @Override
-    public int getId() {
-        return id;
+    public Integer getValue() {
+        return value;
     }
 }

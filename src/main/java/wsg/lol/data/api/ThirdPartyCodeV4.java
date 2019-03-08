@@ -1,5 +1,7 @@
 package wsg.lol.data.api;
 
+import wsg.lol.common.constants.annotation.AccessInterval;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +16,7 @@ public class ThirdPartyCodeV4 extends BaseApi {
      * <p>
      * wsg Valid codes must be no longer than 256 characters and only use valid characters: 0-9, a-z, A-Z, and -
      */
+    @AccessInterval
     public static String getThirdPartyCodeBySummoner(String summonerId) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedSummonerId", summonerId);

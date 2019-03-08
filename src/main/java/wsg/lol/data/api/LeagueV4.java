@@ -1,5 +1,6 @@
 package wsg.lol.data.api;
 
+import wsg.lol.common.constants.annotation.AccessInterval;
 import wsg.lol.common.enums.impl.name.TierEnum;
 import wsg.lol.common.enums.impl.others.DivisionEnum;
 import wsg.lol.common.enums.impl.others.PositionEnum;
@@ -20,6 +21,7 @@ public class LeagueV4 extends BaseApi {
     /**
      * Get the apex league for given queue and tier.
      */
+    @AccessInterval
     public static LeagueExtDto getApexLeagueByQueue(RankQueueEnum queue, TierEnum tier) {
         Map<String, Object> params = new HashMap<>();
         params.put("queue", queue);
@@ -30,6 +32,7 @@ public class LeagueV4 extends BaseApi {
     /**
      * Get league with given ID, including inactive entries.
      */
+    @AccessInterval
     public static LeagueExtDto getLeagueById(String leagueId) {
         Map<String, Object> params = new HashMap<>();
         params.put("leagueId", leagueId);
@@ -39,6 +42,7 @@ public class LeagueV4 extends BaseApi {
     /**
      * Get the queues that have positional ranks enabled.
      */
+    @AccessInterval
     public static List<String> getPositionalRankQueues() {
         return getDataArray("/lol/league/v4/positional-rank-queues", String.class);
     }
@@ -46,6 +50,7 @@ public class LeagueV4 extends BaseApi {
     /**
      * Get league positions in all queues for a given summoner ID.
      */
+    @AccessInterval
     public static List<PositionDmo> getLeaguePositionsBySummonerId(String summonerId) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedSummonerId", summonerId);
@@ -59,6 +64,7 @@ public class LeagueV4 extends BaseApi {
      * @param tier     positional value
      * @param position positional value
      */
+    @AccessInterval
     public static List<PositionDmo> getAllPositionLeagues(RankQueueEnum queue, TierEnum tier, DivisionEnum division,
                                                           PositionEnum position, int page) {
         Map<String, Object> params = new HashMap<>();

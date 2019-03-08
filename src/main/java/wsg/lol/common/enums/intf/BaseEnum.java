@@ -6,7 +6,6 @@ package wsg.lol.common.enums.intf;
  * @author wangsigen
  * @date 2019-03-06 14:51
  */
-public interface IdEnum {
-
-    int getId();
+public interface BaseEnum<T> {
+    T getValue();
 }

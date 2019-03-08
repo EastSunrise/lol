@@ -58,8 +58,9 @@ public class BeanUtil {
                         field.set(target, value);
                     }
                 } else if (field.isAnnotationPresent(Label.class)) {
-                    field.set(target, StringUtil.join(jsonObject.getJSONArray("tags").toArray(),
-                            StringUtil.CELL_SEPARATOR));
+                    if (jsonObject.containsKey(field.getName()))
+                        field.set(target, StringUtil.join(jsonObject.getJSONArray(field.getName()).toArray(),
+                                StringUtil.CELL_SEPARATOR));
                 }
             }
         } catch (IllegalAccessException e) {

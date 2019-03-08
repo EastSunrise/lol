@@ -1,20 +1,20 @@
 package wsg.lol.common.enums.impl.others;
 
-import wsg.lol.common.enums.intf.CodeEnum;
+import wsg.lol.common.enums.intf.BaseEnum;
 
 /**
  * @author King
  * @date 2019/2/12
  */
-public enum RankQueueEnum implements CodeEnum {
-    RANKED_SOLO_5x5("01"),
-    RANKED_FLEX_SR("02"),
-    RANKED_FLEX_TT("03");
+public enum RankQueueEnum implements BaseEnum<Integer> {
+    RANKED_SOLO_5x5(1),
+    RANKED_FLEX_SR(2),
+    RANKED_FLEX_TT(3);
 
-    private String code;
+    private int value;
 
-    RankQueueEnum(String code) {
-        this.code = code;
+    RankQueueEnum(int value) {
+        this.value = value;
     }
 
     public static RankQueueEnum[] positionalValues() {
@@ -24,7 +24,7 @@ public enum RankQueueEnum implements CodeEnum {
     }
 
     @Override
-    public String getCode() {
-        return code;
+    public Integer getValue() {
+        return value;
     }
 }

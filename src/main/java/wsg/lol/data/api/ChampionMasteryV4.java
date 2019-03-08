@@ -1,5 +1,6 @@
 package wsg.lol.data.api;
 
+import wsg.lol.common.constants.annotation.AccessInterval;
 import wsg.lol.dmo.champion.MasteryDmo;
 
 import java.util.HashMap;
@@ -15,6 +16,7 @@ public class ChampionMasteryV4 extends BaseApi {
     /**
      * Get all champion mastery entries sorted by number of champion points descending.
      */
+    @AccessInterval
     public static List<MasteryDmo> getChampionMasteryBySummonerId(String summonerId) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedSummonerId", summonerId);
@@ -25,6 +27,7 @@ public class ChampionMasteryV4 extends BaseApi {
     /**
      * Get a champion mastery by player ID and champion ID.
      */
+    @AccessInterval
     public static MasteryDmo getChampionMasteryBySummonerAndChampion(long championId, String summonerId) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedSummonerId", summonerId);
@@ -36,6 +39,7 @@ public class ChampionMasteryV4 extends BaseApi {
     /**
      * Get a player's total champion mastery score, which is the sum of individual champion mastery levels.
      */
+    @AccessInterval
     public static int getScoreBySummonerId(String summonerId) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedSummonerId", summonerId);

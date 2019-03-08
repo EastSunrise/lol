@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import wsg.lol.dmo.summoner.SummonerDmo;
-import wsg.lol.service.intf.SummonerService;
+import wsg.lol.service.scheduler.intf.RealAction;
 
 /**
  * wsg
@@ -15,19 +14,18 @@ import wsg.lol.service.intf.SummonerService;
  */
 @Controller
 @RequestMapping("/lol")
-public class SummonerController {
+public class SummonerController extends BaseController {
 
     @Autowired
-    private SummonerService summonerService;
+    private RealAction realAction;
 
     @RequestMapping("/index")
     public String hello() {
         return "helloWorld";
     }
 
-    @RequestMapping("/summoner/index")
-    public void getSummoner(Model model, String id) {
-        SummonerDmo summonerDmo = summonerService.getSummonerById(id);
-        model.addAttribute("account", summonerDmo.getAccountId());
+    @RequestMapping("/summoner/build")
+    public String buildSummonerLib(Model model) {
+        return resultPage(model, realAction.buildApexSummonerLib());
     }
 }

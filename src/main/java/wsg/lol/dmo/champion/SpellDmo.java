@@ -3,10 +3,8 @@ package wsg.lol.dmo.champion;
 
 import wsg.lol.common.base.BaseDmo;
 import wsg.lol.common.constants.annotation.JsonKey;
-import wsg.lol.common.enums.impl.name.GameModeEnum;
+import wsg.lol.common.constants.annotation.Label;
 import wsg.lol.common.enums.impl.others.SpellTypeEnum;
-
-import java.util.List;
 
 public class SpellDmo extends BaseDmo {
 
@@ -14,6 +12,7 @@ public class SpellDmo extends BaseDmo {
     private String id;
 
     private Integer championId;
+
     private SpellTypeEnum spellType;
 
     @JsonKey
@@ -22,7 +21,9 @@ public class SpellDmo extends BaseDmo {
     /**
      * 召唤师技能
      */
-    private List<GameModeEnum> mode;
+    @Label
+    private String modes;
+
     private Integer summonerLevel;
 
     @JsonKey
@@ -41,7 +42,6 @@ public class SpellDmo extends BaseDmo {
 
     @JsonKey
     private String image_sprite;
-
 
     public String getId() {
         return id;
@@ -76,13 +76,12 @@ public class SpellDmo extends BaseDmo {
         this.name = name;
     }
 
-
-    public List<GameModeEnum> getMode() {
-        return mode;
+    public String getModes() {
+        return modes;
     }
 
-    public void setMode(List<GameModeEnum> mode) {
-        this.mode = mode;
+    public void setModes(String modes) {
+        this.modes = modes;
     }
 
     public Integer getSummonerLevel() {

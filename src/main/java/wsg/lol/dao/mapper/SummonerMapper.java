@@ -1,4 +1,4 @@
-package wsg.lol.dao;
+package wsg.lol.dao.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import wsg.lol.common.base.Page;
@@ -16,4 +16,6 @@ public interface SummonerMapper {
     List<SummonerDmo> queryLastUncheckedSummoners(Page page);
 
     int batchInsertSummonerIfNotExist(List<SummonerDmo> summonerDmoList);
+
+    List<String> checkSummonersNotExist(List<String> summonerIdList);
 }

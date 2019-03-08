@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wsg.lol.dao.mapper.ChampionMapper">
+    <sql id="Base_Column_List">
+        ID, NAME, TITLE, FULL_IMAGE, SPRITE_IMAGE, TAGS, LORE, BLURB, PARTYPE, INFO_ATTACK, INFO_DEFENSE, INFO_MAGIC,
+        INFO_DIFFICULTY, STAT_HP, STAT_HPPERLEVEL, STAT_HPREGEN, STAT_HPREGENPERLEVEL, STAT_MP, STAT_MPPERLEVEL,
+        STAT_MPREGEN, STAT_MPREGENPERLEVEL, STAT_ATTACKDAMAGE, STAT_ATTACKDAMAGEPERLEVEL, STAT_ARMOR,
+        STAT_ARMORPERLEVEL, STAT_SPELLBLOCK, STAT_SPELLBLOCKPERLEVEL, STAT_ATTACKSPEED, STAT_ATTACKSPEEDPERLEVEL,
+        STAT_ATTACKRANGE, STAT_MOVESPEED, STAT_CRIT, STAT_CRITPERLEVEL FROM c_champion
+    </sql>
+
+    <insert id="batchInsertChampions">
+        INSERT INTO c_champion
+        (ID, NAME, TITLE,
+        IMAGE_FULL, IMAGE_SPRITE, TAGS,
+        LORE, BLURB, PARTYPE,
+        INFO_ATTACK, INFO_DEFENSE, INFO_MAGIC,
+        INFO_DIFFICULTY, STATS_HP, STATS_HPPERLEVEL,
+        STATS_HPREGEN, STATS_HPREGENPERLEVEL, STATS_MP,
+        STATS_MPPERLEVEL, STATS_MPREGEN, STATS_MPREGENPERLEVEL,
+        STATS_ATTACKDAMAGE, STATS_ATTACKDAMAGEPERLEVEL,
+        STATS_ARMOR, STATS_ARMORPERLEVEL, STATS_SPELLBLOCK,
+        STATS_SPELLBLOCKPERLEVEL, STATS_ATTACKSPEED,
+        STATS_ATTACKSPEEDPERLEVEL, STATS_ATTACKRANGE,
+        STATS_MOVESPEED, STATS_CRIT, STATS_CRITPERLEVEL)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.name}, #{item.title}, #{item.image_full}, #{item.image_sprite}, #{item.tags},
+            #{item.lore}, #{item.blurb}, #{item.partype}, #{item.info_attack}, #{item.info_defense}, #{item.info_magic},
+            #{item.info_difficulty}, #{item.stats_hp}, #{item.stats_hpperlevel}, #{item.stats_hpregen},
+            #{item.stats_hpregenperlevel}, #{item.stats_mp}, #{item.stats_mpperlevel}, #{item.stats_mpregen},
+            #{item.stats_mpregenperlevel}, #{item.stats_attackdamage}, #{item.stats_attackdamageperlevel},
+            #{item.stats_armor}, #{item.stats_armorperlevel}, #{item.stats_spellblock},
+            #{item.stats_spellblockperlevel}, #{item.stats_attackspeed}, #{item.stats_attackspeedperlevel},
+            #{item.stats_attackrange}, #{item.stats_movespeed}, #{item.stats_crit}, #{item.stats_critperlevel})
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertSkins">
+        INSERT INTO c_skin
+        (ID,CHAMPION_ID, NUM, NAME, CHROMAS)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.championId}, #{item.num}, #{item.name}, #{item.chromas})
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertSpells">
+        INSERT INTO c_spell
+        (ID, CHAMPION_ID, SPELL_TYPE, NAME, MODES, SUMMONER_LEVEL, DESCRIPTION, LEVEL_TIPS, TOOLTIP, IMAGE_FULL,
+        IMAGE_SPRITE)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.championId}, #{item.spellType}, #{item.name}, #{item.modes}, #{item.summonerLevel},
+            #{item.description}, #{item.levelTips}, #{item.tooltip}, #{item.image_full}, #{item.image_sprite})
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertTips" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO c_tip
+        (CHAMPION_ID, TIP, TYPE)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.championId}, #{item.tip}, #{item.type})
+        </foreach>
+    </insert>
+</mapper>

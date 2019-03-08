@@ -27,7 +27,7 @@ public class SpellDto {
 //    private List<?> vars;
 //    private List<Integer> range;
 //
-//    public String getId() {
+//    public String getValue() {
 //        return id;
 //    }
 //

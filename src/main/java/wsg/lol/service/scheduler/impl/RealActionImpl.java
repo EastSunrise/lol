@@ -1,16 +1,20 @@
 package wsg.lol.service.scheduler.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import wsg.lol.common.base.Page;
 import wsg.lol.common.base.ResultDto;
 import wsg.lol.common.enums.impl.name.TierEnum;
+import wsg.lol.common.enums.impl.others.DivisionEnum;
+import wsg.lol.common.enums.impl.others.PositionEnum;
 import wsg.lol.common.enums.impl.others.RankQueueEnum;
-import wsg.lol.dao.MatchMapper;
-import wsg.lol.dao.SummonerMapper;
+import wsg.lol.dao.mapper.MatchMapper;
+import wsg.lol.dao.mapper.SummonerMapper;
 import wsg.lol.data.api.LeagueV4;
 import wsg.lol.data.api.MatchV4;
 import wsg.lol.data.api.SummonerV4;
 import wsg.lol.dmo.league.ItemDmo;
+import wsg.lol.dmo.league.PositionDmo;
 import wsg.lol.dmo.match.MatchDmo;
 import wsg.lol.dmo.match.ParticipantDmo;
 import wsg.lol.dmo.summoner.SummonerDmo;
@@ -31,6 +35,7 @@ import java.util.Set;
  * @author wangsigen
  * @date 2019-02-28 14:47
  */
+@Service("realAction")
 public class RealActionImpl implements RealAction {
 
     @Autowired
@@ -41,6 +46,19 @@ public class RealActionImpl implements RealAction {
 
     @Override
     public ResultDto buildBaseSummonerLibByLeague() {
+        buildApexSummonerLib();
+
+        for (TierEnum tier : TierEnum.positionalValues()) {
+            for (DivisionEnum division : DivisionEnum.values()) {
+                buildPositionalSummonerLib(tier, division);
+            }
+        }
+
+        return ResultDto.success();
+    }
+
+    @Override
+    public ResultDto buildApexSummonerLib() {
         Set<String> summonerIdSet = new HashSet<>();
 
         // get apex summoners
@@ -53,25 +71,11 @@ public class RealActionImpl implements RealAction {
             }
         }
 
-        // wsg get summoners of positional leagues
-//        for (RankQueueEnum queue : RankQueueEnum.positionalValues()) {
-//            for (TierEnum tier : TierEnum.positionalValues()) {
-//                for (DivisionEnum division : DivisionEnum.values()) {
-//                    for (PositionEnum position : PositionEnum.positionalValues()) {
-//                        for (int i = 0; ; i++) {
-//                            List<PositionDmo> positionDmoList = LeagueV4.getAllPositionLeagues(queue, tier, division,
-//                                    position, i);
-//                            if (positionDmoList == null || positionDmoList.isEmpty())
-//                                break;
-//                            for (PositionDmo positionDmo : positionDmoList) {
-//                                summonerIdList.add(positionDmo.getSummonerId());
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        return getSummoners(summonerIdSet);
+    }
 
+    private ResultDto getSummoners(Set<String> summonerIdSet) {
+        System.out.println("Query summoners: " + summonerIdSet.size());
         List<SummonerDmo> summonerDmoList = new LinkedList<>();
         for (String id : summonerIdSet) {
             summonerDmoList.add(SummonerV4.getSummonerById(id));
@@ -81,6 +85,26 @@ public class RealActionImpl implements RealAction {
         }
 
         return ResultDto.success();
+    }
+
+    @Override
+    public ResultDto buildPositionalSummonerLib(TierEnum tier, DivisionEnum division) {
+        Set<String> summonerIdSet = new HashSet<>();
+        for (RankQueueEnum queue : RankQueueEnum.positionalValues()) {
+            for (PositionEnum position : PositionEnum.positionalValues()) {
+                for (int i = 0; ; i++) {
+                    List<PositionDmo> positionDmoList = LeagueV4.getAllPositionLeagues(queue, tier, division,
+                            position, i);
+                    if (positionDmoList == null || positionDmoList.isEmpty())
+                        break;
+                    for (PositionDmo positionDmo : positionDmoList) {
+                        summonerIdSet.add(positionDmo.getSummonerId());
+                    }
+                }
+            }
+        }
+
+        return getSummoners(summonerIdSet);
     }
 
     @Override

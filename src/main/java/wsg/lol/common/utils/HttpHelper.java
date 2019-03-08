@@ -14,6 +14,8 @@ public class HttpHelper {
     public static final String HTTPS = "https://";
     private static final String USER_AGENT = "Mozilla/5.0";
 
+    private static int accessCount = 1;
+
     // wsg response code
     public static String getJSONString(String url) {
         System.out.println("Getting from " + url);
@@ -77,6 +79,11 @@ public class HttpHelper {
                 builder.append(inputLine);
             }
             in.close();
+            System.out.print(accessCount++ + "   ");
+            if (accessCount % 20 == 0)
+                Thread.sleep(1000);
+            if (accessCount % 100 == 0)
+                Thread.sleep(120000);
         } catch (Exception e) {
             e.printStackTrace();
         }

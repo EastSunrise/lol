@@ -1,5 +1,6 @@
 package wsg.lol.data.api;
 
+import wsg.lol.common.constants.annotation.AccessInterval;
 import wsg.lol.dto.api.others.ShardStatus;
 
 /**
@@ -14,6 +15,7 @@ public class LOLStatusV3 extends BaseApi {
      * <p>
      * Requests to this API are not counted against the application Rate Limits.
      */
+    @AccessInterval
     public static ShardStatus getSharedData() {
         return getDataObject("/lol/status/v3/shard-data", ShardStatus.class);
     }

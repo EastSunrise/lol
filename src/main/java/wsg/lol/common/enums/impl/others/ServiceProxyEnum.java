@@ -1,33 +1,33 @@
 package wsg.lol.common.enums.impl.others;
 
-import wsg.lol.common.enums.intf.CodeEnum;
+import wsg.lol.common.enums.intf.BaseEnum;
 
 /**
  * @author King
  * @date 2019/2/11
  */
-public enum ServiceProxyEnum implements CodeEnum {
-    BR("01", "BR1", "br1.api.riotgames.com"),
-    EUNE("02", "EUN1", "eun1.api.riotgames.com"),
-    EUW("03", "EUW1", "euw1.api.riotgames.com"),
-    JP("04", "JP1", "jp1.api.riotgames.com"),
-    KR("05", "KR", "kr.api.riotgames.com"),
-    LAN("06", "LA1", "la1.api.riotgames.com"),
-    LAS("07", "LA2", "la2.api.riotgames.com"),
-    NA("08", "NA1", "na1.api.riotgames.com"),
-    OCE("09", "OC1", "oc1.api.riotgames.com"),
-    TR("10", "TR1", "tr1.api.riotgames.com"),
-    RU("11", "RU", "ru.api.riotgames.com"),
-    PBE("12", "PBE1", "pbe1.api.riotgames.com");
+public enum ServiceProxyEnum implements BaseEnum<Integer> {
+    BR(1, "BR1", "br1.api.riotgames.com"),
+    EUNE(2, "EUN1", "eun1.api.riotgames.com"),
+    EUW(3, "EUW1", "euw1.api.riotgames.com"),
+    JP(4, "JP1", "jp1.api.riotgames.com"),
+    KR(5, "KR", "kr.api.riotgames.com"),
+    LAN(6, "LA1", "la1.api.riotgames.com"),
+    LAS(7, "LA2", "la2.api.riotgames.com"),
+    NA(8, "NA1", "na1.api.riotgames.com"),
+    OCE(9, "OC1", "oc1.api.riotgames.com"),
+    TR(10, "TR1", "tr1.api.riotgames.com"),
+    RU(11, "RU", "ru.api.riotgames.com"),
+    PBE(12, "PBE1", "pbe1.api.riotgames.com");
 
-    private String code;
+    private int value;
 
     private String platform;
 
     private String host;
 
-    ServiceProxyEnum(String code, String platform, String host) {
-        this.code = code;
+    ServiceProxyEnum(int value, String platform, String host) {
+        this.value = value;
         this.platform = platform;
         this.host = host;
     }
@@ -41,7 +41,7 @@ public enum ServiceProxyEnum implements CodeEnum {
     }
 
     @Override
-    public String getCode() {
-        return code;
+    public Integer getValue() {
+        return value;
     }
 }

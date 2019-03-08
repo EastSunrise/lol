@@ -1,5 +1,6 @@
 package wsg.lol.data.api;
 
+import wsg.lol.common.constants.annotation.AccessInterval;
 import wsg.lol.dto.api.match.MatchDto;
 import wsg.lol.dto.api.match.MatchListDto;
 import wsg.lol.dto.api.match.MatchTimelineDto;
@@ -18,6 +19,7 @@ public class MatchV4 extends BaseApi {
     /**
      * Get match by match ID.
      */
+    @AccessInterval
     public static MatchDto getMatchById(long matchId) {
         Map<String, Object> params = new HashMap<>();
         params.put("matchId", matchId);
@@ -42,6 +44,7 @@ public class MatchV4 extends BaseApi {
      * If both are specified, then endTime should be greater than beginTime. The maximum time
      * range allowed is one week, otherwise a 400 error code is returned.
      */
+    @AccessInterval
     public static MatchListDto getMatchListByAccount(String accountId, QueryMatchListDto queryMatchListDto) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedAccountId", accountId);
@@ -55,6 +58,7 @@ public class MatchV4 extends BaseApi {
      * IMPLEMENTATION NOTES
      * Not all matches have timeline data.
      */
+    @AccessInterval
     public static MatchTimelineDto getTimelineByMatchId(long matchId) {
         Map<String, Object> params = new HashMap<>();
         params.put("matchId", matchId);
@@ -66,6 +70,7 @@ public class MatchV4 extends BaseApi {
      * TODO THIS API ENDPOINT IS NOT AVAILABLE IN YOUR POLICY
      * Get match IDs by tournament code.
      */
+    @AccessInterval
     public static List<Long> getMatchesByTournamentCode(String tournamentCode) {
         Map<String, Object> params = new HashMap<>();
         params.put("tournamentCode", tournamentCode);
@@ -77,6 +82,7 @@ public class MatchV4 extends BaseApi {
      * TODO THIS API ENDPOINT IS NOT AVAILABLE IN YOUR POLICY
      * Get match by match ID and tournament code.
      */
+    @AccessInterval
     public static MatchDto getMatchesByIdAndTournamentCode(long matchId, String tournamentCode) {
         Map<String, Object> params = new HashMap<>();
         params.put("tournamentCode", tournamentCode);

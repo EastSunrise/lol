@@ -11,10 +11,13 @@ spring:
     suffix: .ftl
   datasource:
     name: mysql.na
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/lol?characterEncoding=utf-8&serverTimezone=UTC
     username: root
     password: 4787
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   type-aliases-package: wsg.lol.dmo
+  configuration:
+    map-underscore-to-camel-case: true
+  type-handlers-package: wsg.lol.dao.handler

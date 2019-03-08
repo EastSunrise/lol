@@ -2,7 +2,7 @@ package wsg.lol.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wsg.lol.dao.SummonerMapper;
+import wsg.lol.dao.mapper.SummonerMapper;
 import wsg.lol.dmo.summoner.SummonerDmo;
 import wsg.lol.service.intf.SummonerService;
 

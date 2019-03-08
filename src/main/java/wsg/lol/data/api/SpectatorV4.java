@@ -1,5 +1,6 @@
 package wsg.lol.data.api;
 
+import wsg.lol.common.constants.annotation.AccessInterval;
 import wsg.lol.dto.api.spectator.CurrentGameInfo;
 import wsg.lol.dto.api.spectator.FeaturedGames;
 
@@ -16,6 +17,7 @@ public class SpectatorV4 extends BaseApi {
      * wsg NULL
      * Get current game information for the given summoner ID.
      */
+    @AccessInterval
     public static CurrentGameInfo getActiveGamesBySummoner(String summonerId) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedSummonerId", summonerId);
@@ -26,6 +28,7 @@ public class SpectatorV4 extends BaseApi {
     /**
      * Get list of featured games. 推荐观战的一组比赛的基本数据
      */
+    @AccessInterval
     public static FeaturedGames getFeaturedGames() {
         return getDataObject("/lol/spectator/v4/featured-games", FeaturedGames.class);
     }

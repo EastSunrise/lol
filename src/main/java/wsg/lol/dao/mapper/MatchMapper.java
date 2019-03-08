@@ -1,4 +1,4 @@
-package wsg.lol.dao;
+package wsg.lol.dao.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import wsg.lol.dto.api.match.MatchDto;

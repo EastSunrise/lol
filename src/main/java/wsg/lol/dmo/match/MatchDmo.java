@@ -3,13 +3,13 @@ package wsg.lol.dmo.match;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import wsg.lol.common.base.BaseDmo;
-import wsg.lol.common.enums.impl.id.MapEnum;
-import wsg.lol.common.enums.impl.id.MatchQueueEnum;
-import wsg.lol.common.enums.impl.id.SeasonEnum;
+import wsg.lol.common.enums.impl.code.MapEnum;
+import wsg.lol.common.enums.impl.code.MatchQueueEnum;
+import wsg.lol.common.enums.impl.code.SeasonEnum;
 import wsg.lol.common.enums.impl.name.GameModeEnum;
 import wsg.lol.common.enums.impl.name.GameTypeEnum;
 import wsg.lol.common.enums.impl.name.PlatformEnum;
-import wsg.lol.common.serializer.IdSerializer;
+import wsg.lol.config.json.serializer.IntEnumSerializer;
 
 import java.util.Date;
 
@@ -22,28 +22,21 @@ public class MatchDmo extends BaseDmo {
     private GameModeEnum gameMode;
     private GameTypeEnum gameType;
 
-    @JSONField(deserializeUsing = IdSerializer.class, serializeUsing = IdSerializer.class)
+    @JSONField(deserializeUsing = IntEnumSerializer.class, serializeUsing = IntEnumSerializer.class)
     private SeasonEnum seasonId;
 
-    @JSONField(deserializeUsing = IdSerializer.class, serializeUsing = IdSerializer.class)
+    @JSONField(deserializeUsing = IntEnumSerializer.class, serializeUsing = IntEnumSerializer.class)
     private MatchQueueEnum queueId;
 
     private PlatformEnum platformId;
 
-    @JSONField(deserializeUsing = IdSerializer.class, serializeUsing = IdSerializer.class)
+    @JSONField(deserializeUsing = IntEnumSerializer.class, serializeUsing = IntEnumSerializer.class)
     private MapEnum mapId;
 
     /**
      * wsg Team
      */
     private Integer frameInterval;
-
-//    /**
-//     * deserialize mapId to mapEnum
-//     */
-//    public void setMapId(int mapId) {
-//        this.mapId = EnumUtil.parseFromField("mapId", mapId, MapEnum.class);
-//    }
 
     public Long getGameId() {
         return gameId;
@@ -52,7 +45,6 @@ public class MatchDmo extends BaseDmo {
     public void setGameId(Long gameId) {
         this.gameId = gameId;
     }
-
 
     public Date getGameCreation() {
         return gameCreation;
