@@ -19,6 +19,11 @@ public class ChampionController extends BaseController {
     @Autowired
     private VersionAction versionAction;
 
+    @RequestMapping("/index")
+    public String championList() {
+        return "champion/champions";
+    }
+
     @RequestMapping("/build")
     public String buildChampionLib(Model model) {
         return resultPage(model, versionAction.buildChampionLib());

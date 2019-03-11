@@ -13,7 +13,7 @@ import wsg.lol.service.scheduler.intf.RealAction;
  * @date 2019-03-07 15:21
  */
 @Controller
-@RequestMapping("/lol")
+@RequestMapping("/lol/summoner")
 public class SummonerController extends BaseController {
 
     @Autowired
@@ -21,10 +21,16 @@ public class SummonerController extends BaseController {
 
     @RequestMapping("/index")
     public String hello() {
-        return "helloWorld";
+        return "summoner/index";
     }
 
-    @RequestMapping("/summoner/build")
+    @RequestMapping("/search")
+    public String searchSummoner(String summonerName, Model model) {
+        model.addAttribute("name", summonerName);
+        return "summoner/individual";
+    }
+
+    @RequestMapping("/build")
     public String buildSummonerLib(Model model) {
         return resultPage(model, realAction.buildApexSummonerLib());
     }

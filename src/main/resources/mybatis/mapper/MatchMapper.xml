@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wsg.lol.dao.MatchMapper">
+    <sql id="Base_Column_List">
+        GAME_ID, GAME_CREATION, GAME_DURATION, GAME_VERSION, GAME_MODE, GAME_TYPE, SEASON_ID,
+    QUEUE_ID, PLATFORM_ID, MAP_ID, FRAME_INTERVAL
+    </sql>
+    <select id="selectByPrimaryKey" resultType="wsg.lol.dmo.match.MatchDmo" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from m_match
+        where GAME_ID = #{gameId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from m_match
+        where GAME_ID = #{gameId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="wsg.lol.dmo.match.MatchDmo">
+        insert into m_match (GAME_ID, GAME_CREATION, GAME_DURATION,
+                             GAME_VERSION, GAME_MODE, GAME_TYPE,
+                             SEASON_ID, QUEUE_ID, PLATFORM_ID,
+                             MAP_ID, FRAME_INTERVAL)
+        values (#{gameId,jdbcType=BIGINT}, #{gameCreation,jdbcType=TIMESTAMP}, #{gameDuration,jdbcType=INTEGER},
+                #{gameVersion,jdbcType=VARCHAR}, #{gameMode,jdbcType=TINYINT}, #{gameType,jdbcType=TINYINT},
+                #{seasonId,jdbcType=TINYINT}, #{queueId,jdbcType=SMALLINT}, #{platformId,jdbcType=TINYINT},
+                #{mapId,jdbcType=TINYINT}, #{frameInterval,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="wsg.lol.dmo.match.MatchDmo">
+        insert into m_match
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gameId != null">
+                GAME_ID,
+            </if>
+            <if test="gameCreation != null">
+                GAME_CREATION,
+            </if>
+            <if test="gameDuration != null">
+                GAME_DURATION,
+            </if>
+            <if test="gameVersion != null">
+                GAME_VERSION,
+            </if>
+            <if test="gameMode != null">
+                GAME_MODE,
+            </if>
+            <if test="gameType != null">
+                GAME_TYPE,
+            </if>
+            <if test="seasonId != null">
+                SEASON_ID,
+            </if>
+            <if test="queueId != null">
+                QUEUE_ID,
+            </if>
+            <if test="platformId != null">
+                PLATFORM_ID,
+            </if>
+            <if test="mapId != null">
+                MAP_ID,
+            </if>
+            <if test="frameInterval != null">
+                FRAME_INTERVAL,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="gameId != null">
+                #{gameId,jdbcType=BIGINT},
+            </if>
+            <if test="gameCreation != null">
+                #{gameCreation,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gameDuration != null">
+                #{gameDuration,jdbcType=INTEGER},
+            </if>
+            <if test="gameVersion != null">
+                #{gameVersion,jdbcType=VARCHAR},
+            </if>
+            <if test="gameMode != null">
+                #{gameMode,jdbcType=TINYINT},
+            </if>
+            <if test="gameType != null">
+                #{gameType,jdbcType=TINYINT},
+            </if>
+            <if test="seasonId != null">
+                #{seasonId,jdbcType=TINYINT},
+            </if>
+            <if test="queueId != null">
+                #{queueId,jdbcType=SMALLINT},
+            </if>
+            <if test="platformId != null">
+                #{platformId,jdbcType=TINYINT},
+            </if>
+            <if test="mapId != null">
+                #{mapId,jdbcType=TINYINT},
+            </if>
+            <if test="frameInterval != null">
+                #{frameInterval,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.dmo.match.MatchDmo">
+        update m_match
+        <set>
+            <if test="gameCreation != null">
+                GAME_CREATION = #{gameCreation,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gameDuration != null">
+                GAME_DURATION = #{gameDuration,jdbcType=INTEGER},
+            </if>
+            <if test="gameVersion != null">
+                GAME_VERSION = #{gameVersion,jdbcType=VARCHAR},
+            </if>
+            <if test="gameMode != null">
+                GAME_MODE = #{gameMode,jdbcType=TINYINT},
+            </if>
+            <if test="gameType != null">
+                GAME_TYPE = #{gameType,jdbcType=TINYINT},
+            </if>
+            <if test="seasonId != null">
+                SEASON_ID = #{seasonId,jdbcType=TINYINT},
+            </if>
+            <if test="queueId != null">
+                QUEUE_ID = #{queueId,jdbcType=SMALLINT},
+            </if>
+            <if test="platformId != null">
+                PLATFORM_ID = #{platformId,jdbcType=TINYINT},
+            </if>
+            <if test="mapId != null">
+                MAP_ID = #{mapId,jdbcType=TINYINT},
+            </if>
+            <if test="frameInterval != null">
+                FRAME_INTERVAL = #{frameInterval,jdbcType=INTEGER},
+            </if>
+        </set>
+        where GAME_ID = #{gameId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="wsg.lol.dmo.match.MatchDmo">
+        update m_match
+        set GAME_CREATION  = #{gameCreation,jdbcType=TIMESTAMP},
+            GAME_DURATION  = #{gameDuration,jdbcType=INTEGER},
+            GAME_VERSION   = #{gameVersion,jdbcType=VARCHAR},
+            GAME_MODE      = #{gameMode,jdbcType=TINYINT},
+            GAME_TYPE      = #{gameType,jdbcType=TINYINT},
+            SEASON_ID      = #{seasonId,jdbcType=TINYINT},
+            QUEUE_ID       = #{queueId,jdbcType=SMALLINT},
+            PLATFORM_ID    = #{platformId,jdbcType=TINYINT},
+            MAP_ID         = #{mapId,jdbcType=TINYINT},
+            FRAME_INTERVAL = #{frameInterval,jdbcType=INTEGER}
+        where GAME_ID = #{gameId,jdbcType=BIGINT}
+    </update>
+</mapper>

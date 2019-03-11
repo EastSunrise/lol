@@ -17,4 +17,8 @@ public class BaseController {
         model.addAttribute("result", resultDto);
         return "base/error";
     }
+
+    protected String redirect(String redirectUrl) {
+        return "redirect:" + redirectUrl;
+    }
 }

@@ -37,6 +37,11 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
 
         <!--mysql-->
         <dependency>
@@ -65,6 +70,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
             </plugin>
 
             <!--自动生成 dao 层文件插件-->
