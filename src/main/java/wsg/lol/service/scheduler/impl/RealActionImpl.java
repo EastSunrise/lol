@@ -2,12 +2,13 @@ package wsg.lol.service.scheduler.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import wsg.lol.common.base.BaseResult;
 import wsg.lol.common.base.Page;
-import wsg.lol.common.base.ResultDto;
 import wsg.lol.common.enums.impl.name.TierEnum;
 import wsg.lol.common.enums.impl.others.DivisionEnum;
 import wsg.lol.common.enums.impl.others.PositionEnum;
 import wsg.lol.common.enums.impl.others.RankQueueEnum;
+import wsg.lol.common.utils.LogUtil;
 import wsg.lol.dao.mapper.MatchMapper;
 import wsg.lol.dao.mapper.SummonerMapper;
 import wsg.lol.data.api.LeagueV4;
@@ -24,10 +25,7 @@ import wsg.lol.dto.api.match.MatchListDto;
 import wsg.lol.dto.api.match.QueryMatchListDto;
 import wsg.lol.service.scheduler.intf.RealAction;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * wsg
@@ -44,21 +42,25 @@ public class RealActionImpl implements RealAction {
     @Autowired
     private MatchMapper matchMapper;
 
+    public static final int BASE_COUNT = 20;
+
     @Override
-    public ResultDto buildBaseSummonerLibByLeague() {
+    public BaseResult buildBaseSummonerLibByLeague() {
         buildApexSummonerLib();
 
         for (TierEnum tier : TierEnum.positionalValues()) {
             for (DivisionEnum division : DivisionEnum.values()) {
-                buildPositionalSummonerLib(tier, division);
+                for (PositionEnum position : PositionEnum.positionalValues()) {
+                    buildPositionalSummonerLib(tier, division, position);
+                }
             }
         }
 
-        return ResultDto.success();
+        return BaseResult.success();
     }
 
     @Override
-    public ResultDto buildApexSummonerLib() {
+    public BaseResult buildApexSummonerLib() {
         Set<String> summonerIdSet = new HashSet<>();
 
         // get apex summoners
@@ -71,44 +73,30 @@ public class RealActionImpl implements RealAction {
             }
         }
 
-        return getSummoners(summonerIdSet);
-    }
-
-    private ResultDto getSummoners(Set<String> summonerIdSet) {
-        System.out.println("Query summoners: " + summonerIdSet.size());
-        List<SummonerDmo> summonerDmoList = new LinkedList<>();
-        for (String id : summonerIdSet) {
-            summonerDmoList.add(SummonerV4.getSummonerById(id));
-        }
-        if (summonerDmoList.size() != summonerMapper.batchInsertSummoner(summonerDmoList)) {
-            System.out.println("Fail to batch insert summoners.");
-        }
-
-        return ResultDto.success();
+        return saveSummoners(summonerIdSet);
     }
 
     @Override
-    public ResultDto buildPositionalSummonerLib(TierEnum tier, DivisionEnum division) {
+    public BaseResult buildPositionalSummonerLib(TierEnum tier, DivisionEnum division, PositionEnum position) {
         Set<String> summonerIdSet = new HashSet<>();
         for (RankQueueEnum queue : RankQueueEnum.positionalValues()) {
-            for (PositionEnum position : PositionEnum.positionalValues()) {
-                for (int i = 0; ; i++) {
-                    List<PositionDmo> positionDmoList = LeagueV4.getAllPositionLeagues(queue, tier, division,
-                            position, i);
-                    if (positionDmoList == null || positionDmoList.isEmpty())
-                        break;
-                    for (PositionDmo positionDmo : positionDmoList) {
-                        summonerIdSet.add(positionDmo.getSummonerId());
-                    }
+            for (int i = 0; ; i++) {
+                List<PositionDmo> positionDmoList = LeagueV4.getAllPositionLeagues(queue, tier, division,
+                        position, i);
+                if (positionDmoList == null || positionDmoList.isEmpty())
+                    break;
+                for (PositionDmo positionDmo : positionDmoList) {
+                    summonerIdSet.add(positionDmo.getSummonerId());
                 }
             }
         }
 
-        return getSummoners(summonerIdSet);
+        return saveSummoners(summonerIdSet);
+
     }
 
     @Override
-    public ResultDto extendSummonerLibByMatch() {
+    public BaseResult extendSummonerLibByMatch() {
         // Get last unchecked summoners.
         List<SummonerDmo> summonerBaseList = summonerMapper.queryLastUncheckedSummoners(new Page());
 
@@ -143,22 +131,40 @@ public class RealActionImpl implements RealAction {
         }
 
         // Add info of summoners if not exist.
-        List<SummonerDmo> summonerDmoList = new LinkedList<>();
-        for (String id : summonerIdSet) {
-            summonerDmoList.add(SummonerV4.getSummonerById(id));
-        }
-        if (summonerDmoList.size() != summonerMapper.batchInsertSummonerIfNotExist(summonerDmoList)) {
-            System.out.println("Fail to batch insert summoners.");
-        }
+        saveSummoners(summonerIdSet);
 
         // Add info of matches if not exist.
         matchMapper.batchInsertMatchIfNotExist(matchDtoList);
 
-        return ResultDto.success();
+        return BaseResult.success();
     }
 
     @Override
-    public ResultDto updateLeague() {
+    public BaseResult updateLeague() {
         return null;
+    }
+
+
+    private BaseResult saveSummoners(Set<String> summonerIdSet) {
+        List<String> idUncheckedList = summonerMapper.checkSummonersNotExist(new ArrayList<>(summonerIdSet));
+        LogUtil.info("Query summoners: " + idUncheckedList.size());
+        List<SummonerDmo> summonerDmoList = new LinkedList<>();
+        int count = 0;
+        for (String id : idUncheckedList) {
+            summonerDmoList.add(SummonerV4.getSummonerById(id));
+            if (++count % BASE_COUNT == 0) {
+                if (summonerDmoList.size() != summonerMapper.batchInsertSummoner(summonerDmoList)) {
+                    LogUtil.info("Fail to batch insert summoners.");
+                }
+                summonerDmoList = new LinkedList<>();
+            }
+        }
+        if (summonerDmoList.size() > 0) {
+            if (summonerDmoList.size() != summonerMapper.batchInsertSummoner(summonerDmoList)) {
+                LogUtil.info("Fail to batch insert summoners.");
+            }
+        }
+
+        return BaseResult.success();
     }
 }

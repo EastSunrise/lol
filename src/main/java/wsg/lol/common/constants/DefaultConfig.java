@@ -10,15 +10,15 @@ import wsg.lol.common.enums.impl.others.ServiceProxyEnum;
 public class DefaultConfig {
     private static ServiceProxyEnum region = ServiceProxyEnum.KR;
 
-    private static String API_KEY = "RGAPI-bc627a29-a9f1-4eb6-b5e8-08ca87476acf";
+    private static String API_KEY = "RGAPI-5945a394-b79f-4ffc-8e35-a4281e300610";
 
     private static String language = "zh_CN";
 
     private static RegionalProxyEnum globalProxy = RegionalProxyEnum.Americas;
 
-    private static String dataDir = "lol";
+    private static String dataDir = "data";
 
-    private static String latestVersion = "9.4.1";
+    private static String latestVersion = "9.5.1";
 
     public static String getDataDir() {
         return dataDir;

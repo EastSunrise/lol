@@ -2,7 +2,7 @@ package wsg.lol.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import wsg.lol.common.base.ResultDto;
+import wsg.lol.common.base.BaseResult;
 
 import java.io.*;
 
@@ -18,13 +18,13 @@ public class FileUtil {
         return StringUtil.join(args, SYSTEM_SEPARATOR);
     }
 
-    public static ResultDto writeString2File(String str, String savePath) {
-        System.out.println("Writing to: " + savePath);
+    public static BaseResult writeString2File(String str, String savePath) {
+        LogUtil.info("Writing to: " + savePath);
         File saveFile = new File(savePath);
         File dir = saveFile.getParentFile();
         if (!dir.exists()) {
             if (!dir.mkdirs()) {
-                return ResultDto.fail("Fail to create directory.");
+                return BaseResult.fail("Fail to create directory.");
             }
         }
         try {
@@ -32,13 +32,13 @@ public class FileUtil {
             fileOutputStream.write(str.getBytes());
             fileOutputStream.close();
         } catch (IOException e) {
-            return ResultDto.fail(e);
+            return BaseResult.fail(e);
         }
-        return ResultDto.success();
+        return BaseResult.success();
     }
 
     public static JSONObject readJSONObject(String filePath) {
-        System.out.println("Reading from " + filePath);
+        LogUtil.info("Reading from " + filePath);
         StringBuilder builder = new StringBuilder();
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filePath))));

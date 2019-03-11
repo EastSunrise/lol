@@ -2,7 +2,8 @@ package wsg.lol.service.scheduler.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wsg.lol.common.base.ResultDto;
+import wsg.lol.common.base.BaseResult;
+import wsg.lol.common.utils.LogUtil;
 import wsg.lol.dao.mapper.ChampionMapper;
 import wsg.lol.data.file.ChampionFile;
 import wsg.lol.dmo.champion.ChampionDmo;
@@ -28,7 +29,7 @@ public class VersionActionImpl implements VersionAction {
     private ChampionMapper championMapper;
 
     @Override
-    public ResultDto buildChampionLib() {
+    public BaseResult buildChampionLib() {
         List<ChampionExtDto> championExtDtoList = ChampionFile.getChampions();
         List<ChampionDmo> championDmoList = new LinkedList<>();
         List<SkinDmo> skinDmoList = new LinkedList<>();
@@ -43,17 +44,17 @@ public class VersionActionImpl implements VersionAction {
         }
 
         if (championDmoList.size() != championMapper.batchInsertChampions(championDmoList))
-            return ResultDto.fail("");
+            return BaseResult.fail("");
 
         if (skinDmoList.size() != championMapper.batchInsertSkins(skinDmoList))
-            System.out.println("");
+            LogUtil.info("");
 
         if (spellDmoList.size() != championMapper.batchInsertSpells(spellDmoList))
-            System.out.println("");
+            LogUtil.info("");
 
         if (tipDmoList.size() != championMapper.batchInsertTips(tipDmoList))
-            System.out.println("");
+            LogUtil.info("");
 
-        return ResultDto.success();
+        return BaseResult.success();
     }
 }

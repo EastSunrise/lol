@@ -1,7 +1,7 @@
 package wsg.lol.controller;
 
 import org.springframework.ui.Model;
-import wsg.lol.common.base.ResultDto;
+import wsg.lol.common.base.BaseResult;
 
 /**
  * wsg
@@ -9,14 +9,16 @@ import wsg.lol.common.base.ResultDto;
  * @author wangsigen
  * @date 2019-03-08 16:16
  */
-public class BaseController {
+public abstract class BaseController {
 
-    protected String resultPage(Model model, ResultDto resultDto) {
-        if (resultDto.isSuccess())
+    protected String resultPage(Model model, BaseResult baseResult) {
+        if (baseResult.isSuccess())
             return "base/success";
-        model.addAttribute("result", resultDto);
+        model.addAttribute("result", baseResult);
         return "base/error";
     }
+
+    abstract String templatePath(String fileName);
 
     protected String redirect(String redirectUrl) {
         return "redirect:" + redirectUrl;

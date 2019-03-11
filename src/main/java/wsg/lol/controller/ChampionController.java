@@ -28,4 +28,9 @@ public class ChampionController extends BaseController {
     public String buildChampionLib(Model model) {
         return resultPage(model, versionAction.buildChampionLib());
     }
+
+    @Override
+    String templatePath(String fileName) {
+        return "champion/" + fileName;
+    }
 }

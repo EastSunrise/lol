@@ -1,6 +1,6 @@
 package wsg.lol.service.scheduler.intf;
 
-import wsg.lol.common.base.ResultDto;
+import wsg.lol.common.base.BaseResult;
 
 /**
  * wsg
@@ -10,5 +10,5 @@ import wsg.lol.common.base.ResultDto;
  */
 public interface VersionAction {
 
-    ResultDto buildChampionLib();
+    BaseResult buildChampionLib();
 }

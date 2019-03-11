@@ -8,38 +8,38 @@ import java.io.IOException;
  * @author wangsigen
  * @date 2019-02-27 15:26
  */
-public class ResultDto {
+public class BaseResult {
 
     private boolean success;
 
     private String errorMsg;
 
-    public ResultDto() {
+    public BaseResult() {
         setSuccess(true);
     }
 
-    public ResultDto(boolean success) {
+    public BaseResult(boolean success) {
         this.success = success;
     }
 
-    public ResultDto(boolean success, String errorMsg) {
+    public BaseResult(boolean success, String errorMsg) {
         this.success = success;
         this.errorMsg = errorMsg;
     }
 
-    public static ResultDto fail() {
-        return new ResultDto(false);
+    public static BaseResult fail() {
+        return new BaseResult(false);
     }
 
-    public static ResultDto fail(String errorMsg) {
-        return new ResultDto(false, errorMsg);
+    public static BaseResult fail(String errorMsg) {
+        return new BaseResult(false, errorMsg);
     }
 
-    public static ResultDto success() {
-        return new ResultDto();
+    public static BaseResult success() {
+        return new BaseResult();
     }
 
-    public static ResultDto fail(IOException e) {
+    public static BaseResult fail(IOException e) {
         return fail(e.getMessage());
     }
 

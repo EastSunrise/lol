@@ -1,12 +1,12 @@
 package wsg.lol.dto.state.champion;
 
-import wsg.lol.common.base.ResultDto;
+import wsg.lol.common.base.BaseResult;
 
 /**
  * @author King
  * @date 2019/2/14
  */
-public class SkinDto extends ResultDto {
+public class SkinDto extends BaseResult {
 
     private String id;
     private String heroId;

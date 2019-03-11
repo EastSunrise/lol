@@ -17,4 +17,9 @@ public class RankingController extends BaseController {
     public String apexSummoners() {
         return "ranking/apexSummoners";
     }
+
+    @Override
+    String templatePath(String fileName) {
+        return "ranking/" + fileName;
+    }
 }

@@ -18,4 +18,8 @@ public class HomeController extends BaseController {
         return redirect("/lol/summoner/index");
     }
 
+    @Override
+    String templatePath(String fileName) {
+        return fileName;
+    }
 }

@@ -18,7 +18,7 @@ public class HttpHelper {
 
     // wsg response code
     public static String getJSONString(String url) {
-        System.out.println("Getting from " + url);
+        LogUtil.info(accessCount++ + "  " + "Getting from " + url);
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
             urlConnection.setRequestProperty("User-Agent", USER_AGENT);
@@ -30,7 +30,7 @@ public class HttpHelper {
     }
 
     public static String postJSONString(String url, Map<String, Object> params) {
-        System.out.println("Posting from " + url);
+        LogUtil.info("Posting from " + url);
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
             urlConnection.setRequestMethod("POST");
@@ -43,7 +43,7 @@ public class HttpHelper {
     }
 
     public static String putJSONString(String url, Map<String, Object> params) {
-        System.out.println("Putting from " + url);
+        LogUtil.info("Putting from " + url);
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
             urlConnection.setRequestMethod("PUT");
@@ -79,11 +79,14 @@ public class HttpHelper {
                 builder.append(inputLine);
             }
             in.close();
-            System.out.print(accessCount++ + "   ");
-            if (accessCount % 20 == 0)
+            if (accessCount % 20 == 0) {
+                LogUtil.info("Sleep 1000ms.");
                 Thread.sleep(1000);
-            if (accessCount % 100 == 0)
+            }
+            if (accessCount % 100 == 0) {
+                LogUtil.info("Sleep 120s.");
                 Thread.sleep(120000);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,8 +94,7 @@ public class HttpHelper {
     }
 
     public static void downloadData(String urlStr, String savePath) {
-        System.out.println("Downloading from: " + urlStr);
-        System.out.println("To: " + savePath);
+        LogUtil.info("Downloading from: " + urlStr + "  to: " + savePath);
         File saveFile = new File(savePath);
         File dir = saveFile.getParentFile();
         if (!dir.exists()) {

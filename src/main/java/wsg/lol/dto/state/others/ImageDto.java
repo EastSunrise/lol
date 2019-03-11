@@ -1,12 +1,12 @@
 package wsg.lol.dto.state.others;
 
-import wsg.lol.common.base.ResultDto;
+import wsg.lol.common.base.BaseResult;
 
 /**
  * @author King
  * @date 2019/2/14
  */
-public class ImageDto extends ResultDto {
+public class ImageDto extends BaseResult {
 
     private String full;
     private String sprite;
