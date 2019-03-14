@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wsg.lol.dao.mapper.PositionMapper">
+    <sql id="Base_Column_List">
+        ID, SUMMONER_ID, QUEUE, POSITION, SUMMONER_NAME, LEAGUE_ID, LEAGUE_NAME, TIER, 'RANK', LEAGUE_POINTS, WINS,
+        LOSSES,
+        VETERAN, INACTIVE, FRESH_BLOOD, HOT_STREAK, SERIES_TARGET, SERIES_WINS, SERIES_LOSSES
+    </sql>
+    <select id="selectByPrimaryKey" resultType="wsg.lol.dmo.league.PositionDmo" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from l_position
+        where ID = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectBySummonerId" resultType="wsg.lol.dmo.league.PositionDmo" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM l_position T
+        WHERE T.SUMMONER_ID = #{summonerId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from l_position
+        where ID = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="wsg.lol.dmo.Position">
+        insert into l_position
+        (ID, SUMMONER_ID, QUEUE, POSITION, SUMMONER_NAME, LEAGUE_ID, LEAGUE_NAME, TIER, RANK, LEAGUE_POINTS, WINS,
+         LOSSES, VETERAN, INACTIVE, FRESH_BLOOD, HOT_STREAK, SERIES_TARGET, SERIES_WINS, SERIES_LOSSES)
+        values (#{id,jdbcType=INTEGER}, #{summonerId,jdbcType=VARCHAR}, #{queue,jdbcType=TINYINT},
+                #{position,jdbcType=TINYINT}, #{summonerName,jdbcType=VARCHAR}, #{leagueId,jdbcType=VARCHAR},
+                #{leagueName,jdbcType=VARCHAR}, #{tier,jdbcType=TINYINT}, #{rank,jdbcType=TINYINT},
+                #{leaguePoints,jdbcType=INTEGER}, #{wins,jdbcType=INTEGER}, #{losses,jdbcType=INTEGER},
+                #{veteran,jdbcType=BIT}, #{inactive,jdbcType=BIT}, #{freshBlood,jdbcType=BIT},
+                #{hotStreak,jdbcType=BIT}, #{seriesTarget,jdbcType=INTEGER}, #{seriesWins,jdbcType=INTEGER},
+                #{seriesLosses,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="wsg.lol.dmo.Position">
+        insert into l_position
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="summonerId != null">
+                SUMMONER_ID,
+            </if>
+            <if test="queue != null">
+                QUEUE,
+            </if>
+            <if test="position != null">
+                POSITION,
+            </if>
+            <if test="summonerName != null">
+                SUMMONER_NAME,
+            </if>
+            <if test="leagueId != null">
+                LEAGUE_ID,
+            </if>
+            <if test="leagueName != null">
+                LEAGUE_NAME,
+            </if>
+            <if test="tier != null">
+                TIER,
+            </if>
+            <if test="rank != null">
+                RANK,
+            </if>
+            <if test="leaguePoints != null">
+                LEAGUE_POINTS,
+            </if>
+            <if test="wins != null">
+                WINS,
+            </if>
+            <if test="losses != null">
+                LOSSES,
+            </if>
+            <if test="veteran != null">
+                VETERAN,
+            </if>
+            <if test="inactive != null">
+                INACTIVE,
+            </if>
+            <if test="freshBlood != null">
+                FRESH_BLOOD,
+            </if>
+            <if test="hotStreak != null">
+                HOT_STREAK,
+            </if>
+            <if test="seriesTarget != null">
+                SERIES_TARGET,
+            </if>
+            <if test="seriesWins != null">
+                SERIES_WINS,
+            </if>
+            <if test="seriesLosses != null">
+                SERIES_LOSSES,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="summonerId != null">
+                #{summonerId,jdbcType=VARCHAR},
+            </if>
+            <if test="queue != null">
+                #{queue,jdbcType=TINYINT},
+            </if>
+            <if test="position != null">
+                #{position,jdbcType=TINYINT},
+            </if>
+            <if test="summonerName != null">
+                #{summonerName,jdbcType=VARCHAR},
+            </if>
+            <if test="leagueId != null">
+                #{leagueId,jdbcType=VARCHAR},
+            </if>
+            <if test="leagueName != null">
+                #{leagueName,jdbcType=VARCHAR},
+            </if>
+            <if test="tier != null">
+                #{tier,jdbcType=TINYINT},
+            </if>
+            <if test="rank != null">
+                #{rank,jdbcType=TINYINT},
+            </if>
+            <if test="leaguePoints != null">
+                #{leaguePoints,jdbcType=INTEGER},
+            </if>
+            <if test="wins != null">
+                #{wins,jdbcType=INTEGER},
+            </if>
+            <if test="losses != null">
+                #{losses,jdbcType=INTEGER},
+            </if>
+            <if test="veteran != null">
+                #{veteran,jdbcType=BIT},
+            </if>
+            <if test="inactive != null">
+                #{inactive,jdbcType=BIT},
+            </if>
+            <if test="freshBlood != null">
+                #{freshBlood,jdbcType=BIT},
+            </if>
+            <if test="hotStreak != null">
+                #{hotStreak,jdbcType=BIT},
+            </if>
+            <if test="seriesTarget != null">
+                #{seriesTarget,jdbcType=INTEGER},
+            </if>
+            <if test="seriesWins != null">
+                #{seriesWins,jdbcType=INTEGER},
+            </if>
+            <if test="seriesLosses != null">
+                #{seriesLosses,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <insert id="batchInsertPosition">
+        INSERT INTO l_position
+        (SUMMONER_ID, QUEUE, POSITION, SUMMONER_NAME, LEAGUE_ID, LEAGUE_NAME, TIER, RANK, LEAGUE_POINTS, WINS, LOSSES,
+        VETERAN, INACTIVE, FRESH_BLOOD, HOT_STREAK, SERIES_TARGET, SERIES_WINS, SERIES_LOSSES)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.summonerId}, #{item.queue}, #{item.position}, #{item.summonerName}, #{item.leagueId},
+            #{item.leagueName}, #{item.tier}, #{item.rank}, #{item.leaguePoints}, #{item.wins}, #{item.losses},
+            #{item.veteran}, #{item.inactive}, #{item.freshBlood}, #{item.hotStreak}, #{item.seriesTarget},
+            #{item.seriesWins}, #{item.seriesLosses})
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.dmo.Position">
+        update l_position
+        <set>
+            <if test="summonerId != null">
+                SUMMONER_ID = #{summonerId,jdbcType=VARCHAR},
+            </if>
+            <if test="queue != null">
+                QUEUE = #{queue},
+            </if>
+            <if test="position != null">
+                POSITION = #{position},
+            </if>
+            <if test="summonerName != null">
+                SUMMONER_NAME = #{summonerName,jdbcType=VARCHAR},
+            </if>
+            <if test="leagueId != null">
+                LEAGUE_ID = #{leagueId,jdbcType=VARCHAR},
+            </if>
+            <if test="leagueName != null">
+                LEAGUE_NAME = #{leagueName,jdbcType=VARCHAR},
+            </if>
+            <if test="tier != null">
+                TIER = #{tier},
+            </if>
+            <if test="rank != null">
+                RANK = #{rank},
+            </if>
+            <if test="leaguePoints != null">
+                LEAGUE_POINTS = #{leaguePoints},
+            </if>
+            <if test="wins != null">
+                WINS = #{wins},
+            </if>
+            <if test="losses != null">
+                LOSSES = #{losses},
+            </if>
+            <if test="veteran != null">
+                VETERAN = #{veteran},
+            </if>
+            <if test="inactive != null">
+                INACTIVE = #{inactive},
+            </if>
+            <if test="freshBlood != null">
+                FRESH_BLOOD = #{freshBlood},
+            </if>
+            <if test="hotStreak != null">
+                HOT_STREAK = #{hotStreak},
+            </if>
+            <if test="seriesTarget != null">
+                SERIES_TARGET = #{seriesTarget},
+            </if>
+            <if test="seriesWins != null">
+                SERIES_WINS = #{seriesWins},
+            </if>
+            <if test="seriesLosses != null">
+                SERIES_LOSSES = #{seriesLosses},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="wsg.lol.dmo.Position">
+        update l_position
+        set SUMMONER_ID   = #{summonerId,jdbcType=VARCHAR},
+            QUEUE         = #{queue},
+            POSITION      = #{position},
+            SUMMONER_NAME = #{summonerName,jdbcType=VARCHAR},
+            LEAGUE_ID     = #{leagueId,jdbcType=VARCHAR},
+            LEAGUE_NAME   = #{leagueName,jdbcType=VARCHAR},
+            TIER          = #{tier},
+            RANK          = #{rank},
+            LEAGUE_POINTS = #{leaguePoints},
+            WINS          = #{wins},
+            LOSSES        = #{losses},
+            VETERAN       = #{veteran},
+            INACTIVE      = #{inactive},
+            FRESH_BLOOD   = #{freshBlood},
+            HOT_STREAK    = #{hotStreak},
+            SERIES_TARGET = #{seriesTarget},
+            SERIES_WINS   = #{seriesWins},
+            SERIES_LOSSES = #{seriesLosses}
+        where ID = #{id}
+    </update>
+</mapper>

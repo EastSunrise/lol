@@ -10,6 +10,12 @@
         from l_league
         where LEAGUE_ID = #{leagueId,jdbcType=VARCHAR}
     </select>
+    <select id="selectBySummonerId" resultType="wsg.lol.dmo.league.PositionDmo" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM l_position T
+        WHERE T.SUMMONER_ID = #{summonerId}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete
         from l_league

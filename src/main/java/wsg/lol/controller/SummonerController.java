@@ -3,6 +3,7 @@ package wsg.lol.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import wsg.lol.dto.query.GetSummonerDto;
 import wsg.lol.dto.result.SummonerResult;
@@ -41,11 +42,15 @@ public class SummonerController extends BaseController {
     }
 
     @RequestMapping("/search")
-    public String searchSummoner(String summonerName) {
+    public String searchSummoner(String name, Model model) {
+        if (StringUtils.isEmpty(name))
+            return templatePath("index");
         GetSummonerDto getSummonerDto = new GetSummonerDto();
-        getSummonerDto.setSummonerName(summonerName);
+        getSummonerDto.setName(name);
         SummonerResult summonerResult = summonerService.querySummonerOverview(getSummonerDto);
-        return templatePath("summoner");
+        model.addAttribute("summoner", summonerResult.getSummonerDmo());
+        model.addAttribute("position", summonerResult.getPositionDmo());
+        return templatePath("individual");
     }
 
     @Override

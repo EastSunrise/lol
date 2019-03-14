@@ -38,7 +38,6 @@ public class PositionDmo extends BaseDmo {
         this.id = id;
     }
 
-
     public String getSummonerId() {
         return summonerId;
     }
@@ -55,7 +54,6 @@ public class PositionDmo extends BaseDmo {
         this.summonerName = summonerName;
     }
 
-
     public String getLeagueId() {
         return leagueId;
     }
@@ -63,7 +61,6 @@ public class PositionDmo extends BaseDmo {
     public void setLeagueId(String leagueId) {
         this.leagueId = leagueId;
     }
-
 
     public String getLeagueName() {
         return leagueName;
@@ -81,7 +78,6 @@ public class PositionDmo extends BaseDmo {
         this.leaguePoints = leaguePoints;
     }
 
-
     public Integer getWins() {
         return wins;
     }
@@ -89,7 +85,6 @@ public class PositionDmo extends BaseDmo {
     public void setWins(Integer wins) {
         this.wins = wins;
     }
-
 
     public Integer getLosses() {
         return losses;

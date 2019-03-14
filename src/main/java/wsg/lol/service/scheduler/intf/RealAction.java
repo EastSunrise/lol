@@ -34,9 +34,4 @@ public interface RealAction {
      * their matches. Scheduler.
      */
     BaseResult extendSummonerLibByMatch();
-
-    /**
-     * Update the league of each summoner. Scheduler.
-     */
-    BaseResult updateLeague();
 }

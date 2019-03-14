@@ -3,6 +3,7 @@ package wsg.lol.dao.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import wsg.lol.common.base.Page;
 import wsg.lol.dmo.summoner.SummonerDmo;
+import wsg.lol.dto.query.GetSummonerDto;
 
 import java.util.List;
 
@@ -15,7 +16,9 @@ public interface SummonerMapper {
 
     List<SummonerDmo> queryLastUncheckedSummoners(Page page);
 
-    int batchInsertSummonerIfNotExist(List<SummonerDmo> summonerDmoList);
-
     List<String> checkSummonersNotExist(List<String> summonerIdList);
+
+    SummonerDmo selectByCond(GetSummonerDto getSummonerDto);
+
+    int insertSummoner(SummonerDmo summonerDmo);
 }

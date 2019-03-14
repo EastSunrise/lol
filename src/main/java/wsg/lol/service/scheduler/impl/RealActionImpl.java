@@ -23,6 +23,7 @@ import wsg.lol.dto.api.league.LeagueExtDto;
 import wsg.lol.dto.api.match.MatchDto;
 import wsg.lol.dto.api.match.MatchListDto;
 import wsg.lol.dto.api.match.QueryMatchListDto;
+import wsg.lol.dto.query.GetSummonerDto;
 import wsg.lol.service.scheduler.intf.RealAction;
 
 import java.util.*;
@@ -92,7 +93,6 @@ public class RealActionImpl implements RealAction {
         }
 
         return saveSummoners(summonerIdSet);
-
     }
 
     @Override
@@ -139,19 +139,16 @@ public class RealActionImpl implements RealAction {
         return BaseResult.success();
     }
 
-    @Override
-    public BaseResult updateLeague() {
-        return null;
-    }
-
 
     private BaseResult saveSummoners(Set<String> summonerIdSet) {
         List<String> idUncheckedList = summonerMapper.checkSummonersNotExist(new ArrayList<>(summonerIdSet));
         LogUtil.info("Query summoners: " + idUncheckedList.size());
         List<SummonerDmo> summonerDmoList = new LinkedList<>();
         int count = 0;
+        GetSummonerDto getSummonerDto = new GetSummonerDto();
         for (String id : idUncheckedList) {
-            summonerDmoList.add(SummonerV4.getSummonerById(id));
+            getSummonerDto.setId(id);
+            summonerDmoList.add(SummonerV4.getSummoner(getSummonerDto));
             if (++count % BASE_COUNT == 0) {
                 if (summonerDmoList.size() != summonerMapper.batchInsertSummoner(summonerDmoList)) {
                     LogUtil.info("Fail to batch insert summoners.");

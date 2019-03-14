@@ -12,13 +12,15 @@
     </select>
 
     <select id="checkSummonersNotExist" resultType="java.lang.String">
-        SELECT TEMP.ID1 FROM
-        <foreach collection="list" item="item" separator="union" open="(" close=")">
-            SELECT #{item} AS ID1
-        </foreach>
-        TEMP
-        LEFT JOIN (SELECT ID AS ID0 FROM s_summoner) T ON TEMP.ID1 = T.ID0
-        WHERE T.ID0 IS NULL
+        <if test="list.size() > 0">
+            SELECT TEMP.ID1 FROM
+            <foreach collection="list" item="item" separator="union" open="(" close=")">
+                SELECT #{item} AS ID1
+            </foreach>
+            TEMP
+            LEFT JOIN (SELECT ID AS ID0 FROM s_summoner) T ON TEMP.ID1 = T.ID0
+            WHERE T.ID0 IS NULL
+        </if>
     </select>
 
     <insert id="batchInsertSummoner">
@@ -31,6 +33,12 @@
         </foreach>
     </insert>
 
+    <insert id="insertSummoner">
+        INSERT INTO s_summoner
+        (ID, ACCOUNT_ID, PUUID, NAME, PROFILE_ICON_ID, REVISION_DATE, SUMMONER_LEVEL)
+        VALUES (#{id}, #{accountId}, #{puuid}, #{name}, #{profileIconId}, #{revisionDate}, #{summonerLevel})
+    </insert>
+
     <select id="queryLastUncheckedSummoners" parameterType="wsg.lol.common.base.Page"
             resultType="wsg.lol.dmo.summoner.SummonerDmo">
         select
@@ -38,5 +46,16 @@
         from s_summoner
         WHERE LAST_CHECKED_TIME >= (SELECT LAST_CHECKED_TIME FROM
         s_summoner ORDER BY LAST_CHECKED_TIME LIMIT #{pageSize}*#{pageIndex} , 1) LIMIT #{pageSize}
+    </select>
+    <select id="selectByCond" resultType="wsg.lol.dmo.summoner.SummonerDmo"
+            parameterType="wsg.lol.dto.query.GetSummonerDto">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM s_summoner T
+        <where>
+            <if test="name != null and name != ''">
+                AND T.NAME = #{name}
+            </if>
+        </where>
     </select>
 </mapper>

@@ -7,20 +7,36 @@
         <title>
             ${title}
         </title>
-        <link rel="stylesheet" href="/static/css/bootstrap/4.1.0/bootstrap.min.css"/>
         <script src="/static/js/jquery/3.2.1/jquery.min.js"></script>
         <script src="/static/js/popper/1.12.5/popper.min.js"></script>
+        <script src="/static/js/bootstrap/4.1.0/bootstrap.bundle.min.js"></script>
         <script src="/static/js/bootstrap/4.1.0/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/static/css/bootstrap/4.1.0/bootstrap.min.css"/>
+        <link rel="stylesheet" href="/static/css/bootstrap/4.1.0/bootstrap-grid.min.css">
     </head>
     <body>
-    <ul class="nav nav-tabs">
-        <#list tabs?keys as tabTitle>
-            <li <#if tabTitle_index==tab_index>class="active"</#if>>
-                <a href="${tabs[tabTitle]}">${tabTitle}</a>
+    <div class="container-fluid">
+        <ul class="nav nav-tabs">
+            <#list tabs?keys as tabTitle>
+                <li <#if tabTitle_index==tab_index>class="active"</#if>>
+                    <a href="${tabs[tabTitle]}">${tabTitle}</a>
+                </li>
+            </#list>
+            <li>
+                <div class="dropdown">
+                    <a class="btn dropdown-toggle" href="#" id="settings" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">Setting</a>
+                    <div class="dropdown-menu" aria-labelledby="settings">
+                        <a class="dropdown-item" href="/lol/summoner/build">Build</a>
+                        <a class="dropdown-item" href="/lol/summoner/extend">Extend</a>
+                    </div>
+                </div>
             </li>
-        </#list>
-    </ul>
-    <#nested/>
+        </ul>
+    </div>
+    <div class="container">
+        <#nested/>
+    </div>
     </body>
     </html>
 </#macro>

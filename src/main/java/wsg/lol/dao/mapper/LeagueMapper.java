@@ -1,7 +1,10 @@
 package wsg.lol.dao.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
 import wsg.lol.dmo.league.LeagueDmo;
+import wsg.lol.dmo.league.PositionDmo;
 
+@Mapper
 public interface LeagueMapper {
     int deleteByPrimaryKey(String leagueId);
 
@@ -14,4 +17,6 @@ public interface LeagueMapper {
     int updateByPrimaryKeySelective(LeagueDmo record);
 
     int updateByPrimaryKey(LeagueDmo record);
+
+    PositionDmo selectBySummonerId(String summonerId);
 }

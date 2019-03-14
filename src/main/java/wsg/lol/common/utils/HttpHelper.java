@@ -17,7 +17,7 @@ public class HttpHelper {
     private static int accessCount = 1;
 
     // wsg response code
-    public static String getJSONString(String url) {
+    public static synchronized String getJSONString(String url) {
         LogUtil.info(accessCount++ + "  " + "Getting from " + url);
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
@@ -29,7 +29,7 @@ public class HttpHelper {
         return "";
     }
 
-    public static String postJSONString(String url, Map<String, Object> params) {
+    public static synchronized String postJSONString(String url, Map<String, Object> params) {
         LogUtil.info("Posting from " + url);
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
@@ -42,7 +42,7 @@ public class HttpHelper {
         return "";
     }
 
-    public static String putJSONString(String url, Map<String, Object> params) {
+    public static synchronized String putJSONString(String url, Map<String, Object> params) {
         LogUtil.info("Putting from " + url);
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
@@ -79,13 +79,13 @@ public class HttpHelper {
                 builder.append(inputLine);
             }
             in.close();
-            if (accessCount % 20 == 0) {
-                LogUtil.info("Sleep 1000ms.");
-                Thread.sleep(1000);
-            }
             if (accessCount % 100 == 0) {
                 LogUtil.info("Sleep 120s.");
                 Thread.sleep(120000);
+            }
+            if (accessCount % 20 == 0) {
+                LogUtil.info("Sleep 1000ms.");
+                Thread.sleep(1000);
             }
         } catch (Exception e) {
             e.printStackTrace();

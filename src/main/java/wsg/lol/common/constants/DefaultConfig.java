@@ -10,7 +10,7 @@ import wsg.lol.common.enums.impl.others.ServiceProxyEnum;
 public class DefaultConfig {
     private static ServiceProxyEnum region = ServiceProxyEnum.KR;
 
-    private static String API_KEY = "RGAPI-5945a394-b79f-4ffc-8e35-a4281e300610";
+    private static String API_KEY = "RGAPI-f12f77e7-9254-4ae6-a914-7f5948c4db44";
 
     private static String language = "zh_CN";
 
