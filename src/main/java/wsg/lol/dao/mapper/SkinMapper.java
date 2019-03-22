@@ -1,7 +1,11 @@
 package wsg.lol.dao.mapper;
 
-import wsg.lol.dmo.champion.SkinDmo;
+import org.apache.ibatis.annotations.Mapper;
+import wsg.lol.pojo.dmo.champion.SkinDmo;
 
+import java.util.List;
+
+@Mapper
 public interface SkinMapper {
     int deleteByPrimaryKey(String id);
 
@@ -14,4 +18,6 @@ public interface SkinMapper {
     int updateByPrimaryKeySelective(SkinDmo record);
 
     int updateByPrimaryKey(SkinDmo record);
+
+    List<SkinDmo> selectSkinsByChampion(Integer championId);
 }

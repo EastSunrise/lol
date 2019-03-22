@@ -11,4 +11,8 @@ public class LogUtil {
     public static void info(String message) {
         System.out.println(new Date() + "  " + message);
     }
+
+    public static void addEvent(String message) {
+        System.out.println(message);
+    }
 }

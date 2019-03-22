@@ -5,7 +5,7 @@
         ID, SUMMONER_ID, CHAMPION_ID, CHEST_GRANTED, CHAMPION_LEVEL, CHAMPION_POINTS, CHAMPION_POINTS_UNTIL_NEXT_LEVEL,
     CHAMPION_POINTS_SINCE_LAST_LEVEL, TOKENS_EARNED, LAST_PLAY_TIME
     </sql>
-    <select id="selectByPrimaryKey" resultType="wsg.lol.dmo.champion.MasteryDmo" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dmo.champion.MasteryDmo" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from c_mastery
@@ -16,7 +16,7 @@
         from c_mastery
         where ID = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="wsg.lol.dmo.champion.MasteryDmo">
+    <insert id="insert" parameterType="wsg.lol.pojo.dmo.champion.MasteryDmo">
         insert into c_mastery (ID, SUMMONER_ID, CHAMPION_ID,
                                CHEST_GRANTED, CHAMPION_LEVEL, CHAMPION_POINTS,
                                CHAMPION_POINTS_UNTIL_NEXT_LEVEL, CHAMPION_POINTS_SINCE_LAST_LEVEL,
@@ -26,7 +26,7 @@
                 #{championPointsUntilNextLevel,jdbcType=INTEGER}, #{championPointsSinceLastLevel,jdbcType=INTEGER},
                 #{tokensEarned,jdbcType=INTEGER}, #{lastPlayTime,jdbcType=TIMESTAMP})
     </insert>
-    <insert id="insertSelective" parameterType="wsg.lol.dmo.champion.MasteryDmo">
+    <insert id="insertSelective" parameterType="wsg.lol.pojo.dmo.champion.MasteryDmo">
         insert into c_mastery
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -93,7 +93,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.dmo.champion.MasteryDmo">
+    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.pojo.dmo.champion.MasteryDmo">
         update c_mastery
         <set>
             <if test="summonerId != null">
@@ -126,7 +126,7 @@
         </set>
         where ID = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="wsg.lol.dmo.champion.MasteryDmo">
+    <update id="updateByPrimaryKey" parameterType="wsg.lol.pojo.dmo.champion.MasteryDmo">
         update c_mastery
         set SUMMONER_ID                      = #{summonerId,jdbcType=VARCHAR},
             CHAMPION_ID                      = #{championId,jdbcType=INTEGER},

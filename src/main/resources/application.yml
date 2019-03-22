@@ -16,10 +16,15 @@ spring:
     username: root
     password: 4787
   resources:
-    static-locations: classpath:templates/static, classpath:/
+    static-locations: classpath:/static/, classpath:/
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
-  type-aliases-package: wsg.lol.dmo
+  type-aliases-package: wsg.lol.pojo.dmo
   configuration:
     map-underscore-to-camel-case: true
   type-handlers-package: wsg.lol.dao.handler
+server:
+  port: 8090
+logging:
+  level:
+    wsg.lol: debug

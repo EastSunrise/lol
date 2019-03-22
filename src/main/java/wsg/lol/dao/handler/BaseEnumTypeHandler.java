@@ -3,9 +3,9 @@ package wsg.lol.dao.handler;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
-import wsg.lol.common.enums.impl.others.SpellTypeEnum;
-import wsg.lol.common.enums.intf.BaseEnum;
 import wsg.lol.common.utils.EnumUtil;
+import wsg.lol.pojo.enums.impl.others.SpellTypeEnum;
+import wsg.lol.pojo.enums.intf.BaseEnum;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;

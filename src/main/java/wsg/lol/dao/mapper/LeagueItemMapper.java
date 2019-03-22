@@ -1,7 +1,9 @@
 package wsg.lol.dao.mapper;
 
-import wsg.lol.dmo.league.ItemDmo;
+import org.apache.ibatis.annotations.Mapper;
+import wsg.lol.pojo.dmo.league.ItemDmo;
 
+@Mapper
 public interface LeagueItemMapper {
     int deleteByPrimaryKey(Integer id);
 

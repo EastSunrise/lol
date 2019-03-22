@@ -1,7 +1,7 @@
 package wsg.lol.data.api;
 
-import wsg.lol.common.constants.annotation.AccessInterval;
-import wsg.lol.dto.state.champion.ChampionRotationDto;
+import wsg.lol.common.annotation.AccessInterval;
+import wsg.lol.pojo.dto.state.champion.ChampionRotationDto;
 
 /**
  * @author King
@@ -14,7 +14,7 @@ public class ChampionV3 extends BaseApi {
      * Returns champion rotations, including free-to-play and low-level free-to-play rotations (REST)
      */
     @AccessInterval
-    public static ChampionRotationDto getChampionRotation() {
+    public ChampionRotationDto getChampionRotation() {
         return getDataObject("/lol/platform/v3/champion-rotations", ChampionRotationDto.class);
     }
 }

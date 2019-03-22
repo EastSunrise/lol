@@ -1,10 +1,10 @@
 package wsg.lol.data.api;
 
-import wsg.lol.common.constants.annotation.AccessInterval;
-import wsg.lol.dto.api.match.MatchDto;
-import wsg.lol.dto.api.match.MatchListDto;
-import wsg.lol.dto.api.match.MatchTimelineDto;
-import wsg.lol.dto.api.match.QueryMatchListDto;
+import wsg.lol.common.annotation.AccessInterval;
+import wsg.lol.pojo.dto.api.match.MatchDto;
+import wsg.lol.pojo.dto.api.match.MatchListDto;
+import wsg.lol.pojo.dto.api.match.MatchTimelineDto;
+import wsg.lol.pojo.dto.api.match.QueryMatchListDto;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +20,7 @@ public class MatchV4 extends BaseApi {
      * Get match by match ID.
      */
     @AccessInterval
-    public static MatchDto getMatchById(long matchId) {
+    public MatchDto getMatchById(long matchId) {
         Map<String, Object> params = new HashMap<>();
         params.put("matchId", matchId);
         return getDataExtObject("/lol/match/v4/matches/{matchId}", params, MatchDto.class);
@@ -45,7 +45,7 @@ public class MatchV4 extends BaseApi {
      * range allowed is one week, otherwise a 400 error code is returned.
      */
     @AccessInterval
-    public static MatchListDto getMatchListByAccount(String accountId, QueryMatchListDto queryMatchListDto) {
+    public MatchListDto getMatchListByAccount(String accountId, QueryMatchListDto queryMatchListDto) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedAccountId", accountId);
         return getDataObject("/lol/match/v4/matchlists/by-account/{encryptedAccountId}", params,
@@ -59,7 +59,7 @@ public class MatchV4 extends BaseApi {
      * Not all matches have timeline data.
      */
     @AccessInterval
-    public static MatchTimelineDto getTimelineByMatchId(long matchId) {
+    public MatchTimelineDto getTimelineByMatchId(long matchId) {
         Map<String, Object> params = new HashMap<>();
         params.put("matchId", matchId);
         return getDataObject("/lol/match/v4/timelines/by-match/{matchId}", params, MatchTimelineDto.class);
@@ -71,7 +71,7 @@ public class MatchV4 extends BaseApi {
      * Get match IDs by tournament code.
      */
     @AccessInterval
-    public static List<Long> getMatchesByTournamentCode(String tournamentCode) {
+    public List<Long> getMatchesByTournamentCode(String tournamentCode) {
         Map<String, Object> params = new HashMap<>();
         params.put("tournamentCode", tournamentCode);
         return getDataArray("/lol/match/v4/match/by-tournament-code/{tournamentCode}/ids", params, Long.class);
@@ -83,7 +83,7 @@ public class MatchV4 extends BaseApi {
      * Get match by match ID and tournament code.
      */
     @AccessInterval
-    public static MatchDto getMatchesByIdAndTournamentCode(long matchId, String tournamentCode) {
+    public MatchDto getMatchesByIdAndTournamentCode(long matchId, String tournamentCode) {
         Map<String, Object> params = new HashMap<>();
         params.put("tournamentCode", tournamentCode);
         params.put("matchId", matchId);

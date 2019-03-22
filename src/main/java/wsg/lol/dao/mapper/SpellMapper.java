@@ -1,7 +1,11 @@
 package wsg.lol.dao.mapper;
 
-import wsg.lol.dmo.champion.SpellDmo;
+import org.apache.ibatis.annotations.Mapper;
+import wsg.lol.pojo.dmo.champion.SpellDmo;
 
+import java.util.List;
+
+@Mapper
 public interface SpellMapper {
     int deleteByPrimaryKey(String id);
 
@@ -14,4 +18,6 @@ public interface SpellMapper {
     int updateByPrimaryKeySelective(SpellDmo record);
 
     int updateByPrimaryKey(SpellDmo record);
+
+    List<SpellDmo> selectSpellsByChampion(Integer championId);
 }

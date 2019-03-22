@@ -1,8 +1,7 @@
 package wsg.lol.dao.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import wsg.lol.dmo.Position;
-import wsg.lol.dmo.league.PositionDmo;
+import wsg.lol.pojo.dmo.league.PositionDmo;
 
 import java.util.List;
 
@@ -10,15 +9,15 @@ import java.util.List;
 public interface PositionMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Position record);
+    int insert(PositionDmo record);
 
-    int insertSelective(Position record);
+    int insertSelective(PositionDmo record);
 
     PositionDmo selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Position record);
+    int updateByPrimaryKeySelective(PositionDmo record);
 
-    int updateByPrimaryKey(Position record);
+    int updateByPrimaryKey(PositionDmo record);
 
     PositionDmo selectBySummonerId(String summonerId);
 

@@ -5,7 +5,7 @@
         GAME_ID, GAME_CREATION, GAME_DURATION, GAME_VERSION, GAME_MODE, GAME_TYPE, SEASON_ID,
     QUEUE_ID, PLATFORM_ID, MAP_ID, FRAME_INTERVAL
     </sql>
-    <select id="selectByPrimaryKey" resultType="wsg.lol.dmo.match.MatchDmo" parameterType="java.lang.Long">
+    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dmo.match.MatchDmo" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
         from m_match
@@ -16,7 +16,7 @@
         from m_match
         where GAME_ID = #{gameId,jdbcType=BIGINT}
     </delete>
-    <insert id="insert" parameterType="wsg.lol.dmo.match.MatchDmo">
+    <insert id="insert" parameterType="wsg.lol.pojo.dmo.match.MatchDmo">
         insert into m_match (GAME_ID, GAME_CREATION, GAME_DURATION,
                              GAME_VERSION, GAME_MODE, GAME_TYPE,
                              SEASON_ID, QUEUE_ID, PLATFORM_ID,
@@ -26,7 +26,7 @@
                 #{seasonId,jdbcType=TINYINT}, #{queueId,jdbcType=SMALLINT}, #{platformId,jdbcType=TINYINT},
                 #{mapId,jdbcType=TINYINT}, #{frameInterval,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="wsg.lol.dmo.match.MatchDmo">
+    <insert id="insertSelective" parameterType="wsg.lol.pojo.dmo.match.MatchDmo">
         insert into m_match
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="gameId != null">
@@ -99,7 +99,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.dmo.match.MatchDmo">
+    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.pojo.dmo.match.MatchDmo">
         update m_match
         <set>
             <if test="gameCreation != null">
@@ -135,7 +135,7 @@
         </set>
         where GAME_ID = #{gameId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="wsg.lol.dmo.match.MatchDmo">
+    <update id="updateByPrimaryKey" parameterType="wsg.lol.pojo.dmo.match.MatchDmo">
         update m_match
         set GAME_CREATION  = #{gameCreation,jdbcType=TIMESTAMP},
             GAME_DURATION  = #{gameDuration,jdbcType=INTEGER},

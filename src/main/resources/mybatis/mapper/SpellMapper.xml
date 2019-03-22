@@ -5,18 +5,34 @@
         ID, CHAMPION_ID, SPELL_TYPE, NAME, MODES, SUMMONER_LEVEL, DESCRIPTION, LEVEL_TIPS,
     TOOLTIP, IMAGE_FULL, IMAGE_SPRITE
     </sql>
-    <select id="selectByPrimaryKey" resultType="wsg.lol.dmo.champion.SpellDmo" parameterType="java.lang.String">
+    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dmo.champion.SpellDmo" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"/>
         from c_spell
         where ID = #{id,jdbcType=VARCHAR}
+    </select>
+    <select id="selectSpellsByChampion" resultType="wsg.lol.pojo.dmo.champion.SpellDmo"
+            parameterType="java.lang.Integer">
+        SELECT ID,
+               CHAMPION_ID,
+               SPELL_TYPE,
+               NAME,
+               MODES,
+               SUMMONER_LEVEL,
+               DESCRIPTION,
+               LEVEL_TIPS,
+               TOOLTIP,
+               IMAGE_FULL,
+               IMAGE_SPRITE
+        FROM c_spell
+        WHERE CHAMPION_ID = #{championId}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete
         from c_spell
         where ID = #{id,jdbcType=VARCHAR}
     </delete>
-    <insert id="insert" parameterType="wsg.lol.dmo.champion.SpellDmo">
+    <insert id="insert" parameterType="wsg.lol.pojo.dmo.champion.SpellDmo">
         insert into c_spell (ID, CHAMPION_ID, SPELL_TYPE,
                              NAME, MODES, SUMMONER_LEVEL,
                              DESCRIPTION, LEVEL_TIPS, TOOLTIP,
@@ -26,7 +42,7 @@
                 #{description,jdbcType=VARCHAR}, #{levelTips,jdbcType=VARCHAR}, #{tooltip,jdbcType=VARCHAR},
                 #{imageFull,jdbcType=VARCHAR}, #{imageSprite,jdbcType=VARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="wsg.lol.dmo.champion.SpellDmo">
+    <insert id="insertSelective" parameterType="wsg.lol.pojo.dmo.champion.SpellDmo">
         insert into c_spell
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -99,7 +115,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.dmo.champion.SpellDmo">
+    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.pojo.dmo.champion.SpellDmo">
         update c_spell
         <set>
             <if test="championId != null">
@@ -135,7 +151,7 @@
         </set>
         where ID = #{id,jdbcType=VARCHAR}
     </update>
-    <update id="updateByPrimaryKey" parameterType="wsg.lol.dmo.champion.SpellDmo">
+    <update id="updateByPrimaryKey" parameterType="wsg.lol.pojo.dmo.champion.SpellDmo">
         update c_spell
         set CHAMPION_ID    = #{championId,jdbcType=INTEGER},
             SPELL_TYPE     = #{spellType,jdbcType=TINYINT},

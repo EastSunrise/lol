@@ -1,9 +1,8 @@
 package wsg.lol.data.file;
 
 import com.alibaba.fastjson.JSONObject;
-import wsg.lol.common.constants.DefaultConfig;
 import wsg.lol.common.utils.FileUtil;
-import wsg.lol.dto.state.champion.ChampionExtDto;
+import wsg.lol.pojo.dto.state.champion.ChampionExtDto;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,8 +15,7 @@ import java.util.List;
  */
 public class ChampionFile extends BaseFile {
 
-    private static final String DIR = FileUtil.concat2Path(CDN_LOCAL, LATEST_VERSION, "data",
-            DefaultConfig.getLanguage());
+    private static final String DIR = FileUtil.concat2Path(CDN_LOCAL, LATEST_VERSION, "data", "zh_CN");
 
     public static List<ChampionExtDto> getChampions() {
         JSONObject data = getDataByKey(KeyEnum.championFull).getJSONObject("data");

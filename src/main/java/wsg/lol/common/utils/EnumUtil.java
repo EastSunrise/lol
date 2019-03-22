@@ -1,6 +1,6 @@
 package wsg.lol.common.utils;
 
-import wsg.lol.common.enums.intf.BaseEnum;
+import wsg.lol.pojo.enums.intf.BaseEnum;
 
 /**
  * wsg

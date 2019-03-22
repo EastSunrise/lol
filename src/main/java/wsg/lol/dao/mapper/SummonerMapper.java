@@ -1,9 +1,9 @@
 package wsg.lol.dao.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import wsg.lol.common.base.Page;
-import wsg.lol.dmo.summoner.SummonerDmo;
-import wsg.lol.dto.query.GetSummonerDto;
+import wsg.lol.pojo.base.Page;
+import wsg.lol.pojo.dmo.summoner.SummonerDmo;
+import wsg.lol.pojo.dto.query.GetSummonerDto;
 
 import java.util.List;
 

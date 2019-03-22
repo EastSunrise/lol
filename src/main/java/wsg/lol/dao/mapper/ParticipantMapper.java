@@ -1,7 +1,9 @@
 package wsg.lol.dao.mapper;
 
-import wsg.lol.dmo.match.ParticipantDmo;
+import org.apache.ibatis.annotations.Mapper;
+import wsg.lol.pojo.dmo.match.ParticipantDmo;
 
+@Mapper
 public interface ParticipantMapper {
     int deleteByPrimaryKey(Long id);
 

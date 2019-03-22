@@ -12,62 +12,40 @@ import java.util.Map;
 public class HttpHelper {
 
     public static final String HTTPS = "https://";
-    private static final String USER_AGENT = "Mozilla/5.0";
 
-    private static int accessCount = 1;
-
-    // wsg response code
-    public static synchronized String getJSONString(String url) {
-        LogUtil.info(accessCount++ + "  " + "Getting from " + url);
+    public static String getJSONString(String url, Map<String, String> requestHeaders) {
+        LogUtil.info("Getting from " + url);
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
-            urlConnection.setRequestProperty("User-Agent", USER_AGENT);
-            return getDataFromConnection(urlConnection);
+            return getDataFromConnection(urlConnection, requestHeaders);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return "";
     }
 
-    public static synchronized String postJSONString(String url, Map<String, Object> params) {
+    public static String postJSONString(String url, Map<String, Object> bodyParams,
+                                        Map<String, String> requestHeaders) {
         LogUtil.info("Posting from " + url);
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
             urlConnection.setRequestMethod("POST");
-            setPostOrPutHeader(params, urlConnection);
-            return getDataFromConnection(urlConnection);
+            urlConnection.setDoOutput(true);
+            DataOutputStream outputStream = new DataOutputStream(urlConnection.getOutputStream());
+            outputStream.writeBytes(CodeUtil.encodeMap2UrlParams(bodyParams));
+            outputStream.flush();
+            outputStream.close();
+            return getDataFromConnection(urlConnection, requestHeaders);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "";
     }
 
-    public static synchronized String putJSONString(String url, Map<String, Object> params) {
-        LogUtil.info("Putting from " + url);
-        try {
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
-            urlConnection.setRequestMethod("PUT");
-            setPostOrPutHeader(params, urlConnection);
-            return getDataFromConnection(urlConnection);
-        } catch (Exception e) {
-            e.printStackTrace();
+    private static String getDataFromConnection(HttpURLConnection urlConnection, Map<String, String> requestHeaders) {
+        for (Map.Entry<String, String> entry : requestHeaders.entrySet()) {
+            urlConnection.setRequestProperty(entry.getKey(), entry.getValue());
         }
-        return "";
-    }
-
-    private static void setPostOrPutHeader(Map<String, Object> params, HttpURLConnection urlConnection) throws IOException {
-        urlConnection.setRequestProperty("User-Agent", USER_AGENT);
-        urlConnection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-        urlConnection.setDoOutput(true);
-        DataOutputStream outputStream = new DataOutputStream(urlConnection.getOutputStream());
-        outputStream.writeBytes(CodeUtil.encodeMap2UrlParams(params));
-        outputStream.flush();
-        outputStream.close();
-    }
-
-    // wsg rate limit
-    // wsg 连接超时
-    private static String getDataFromConnection(HttpURLConnection urlConnection) {
         StringBuilder builder = new StringBuilder();
         try {
             if (urlConnection.getResponseCode() != 200) {
@@ -79,14 +57,6 @@ public class HttpHelper {
                 builder.append(inputLine);
             }
             in.close();
-            if (accessCount % 100 == 0) {
-                LogUtil.info("Sleep 120s.");
-                Thread.sleep(120000);
-            }
-            if (accessCount % 20 == 0) {
-                LogUtil.info("Sleep 1000ms.");
-                Thread.sleep(1000);
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,4 +1,5 @@
 <#assign tabs={"Home":"/lol/index","Champions":"/lol/champion/index","Ranking":"/lol/ranking/index"}/>
+<#global ctx="${request.contextPath}">
 <#macro m_html title="League of Legends" tab_index=0>
     <!DOCTYPE html>
     <html lang="en">
@@ -27,8 +28,6 @@
                     <a class="btn dropdown-toggle" href="#" id="settings" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">Setting</a>
                     <div class="dropdown-menu" aria-labelledby="settings">
-                        <a class="dropdown-item" href="/lol/summoner/build">Build</a>
-                        <a class="dropdown-item" href="/lol/summoner/extend">Extend</a>
                     </div>
                 </div>
             </li>

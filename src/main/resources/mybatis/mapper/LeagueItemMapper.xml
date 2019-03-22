@@ -5,7 +5,7 @@
         ID, SUMMONER_ID, LEAGUE_ID, SUMMONER_NAME, RANK, LEAGUE_POINTS, WINS, LOSSES, VETERAN,
     INACTIVE, FRESH_BLOOD, HOT_STREAK, SERIES_TARGET, SERIES_WINS, SERIES_LOSSES
     </sql>
-    <select id="selectByPrimaryKey" resultType="wsg.lol.dmo.league.ItemDmo" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dmo.league.ItemDmo" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from l_item
@@ -16,7 +16,7 @@
         from l_item
         where ID = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="wsg.lol.dmo.league.ItemDmo">
+    <insert id="insert" parameterType="wsg.lol.pojo.dmo.league.ItemDmo">
         insert into l_item (ID, SUMMONER_ID, LEAGUE_ID,
                             SUMMONER_NAME, RANK, LEAGUE_POINTS,
                             WINS, LOSSES, VETERAN,
@@ -28,7 +28,7 @@
                 #{inactive,jdbcType=BIT}, #{freshBlood,jdbcType=BIT}, #{hotStreak,jdbcType=BIT},
                 #{seriesTarget,jdbcType=INTEGER}, #{seriesWins,jdbcType=INTEGER}, #{seriesLosses,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="wsg.lol.dmo.league.ItemDmo">
+    <insert id="insertSelective" parameterType="wsg.lol.pojo.dmo.league.ItemDmo">
         insert into l_item
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -125,7 +125,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.dmo.league.ItemDmo">
+    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.pojo.dmo.league.ItemDmo">
         update l_item
         <set>
             <if test="summonerId != null">
@@ -173,7 +173,7 @@
         </set>
         where ID = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="wsg.lol.dmo.league.ItemDmo">
+    <update id="updateByPrimaryKey" parameterType="wsg.lol.pojo.dmo.league.ItemDmo">
         update l_item
         set SUMMONER_ID   = #{summonerId,jdbcType=VARCHAR},
             LEAGUE_ID     = #{leagueId,jdbcType=VARCHAR},

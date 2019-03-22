@@ -1,10 +1,10 @@
 package wsg.lol.common.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import wsg.lol.common.base.BaseDmo;
-import wsg.lol.common.constants.annotation.JsonKey;
-import wsg.lol.common.constants.annotation.Label;
-import wsg.lol.common.constants.annotation.Optional;
+import wsg.lol.common.annotation.JsonKey;
+import wsg.lol.common.annotation.Label;
+import wsg.lol.common.annotation.Optional;
+import wsg.lol.pojo.base.BaseDmo;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

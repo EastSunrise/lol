@@ -1,8 +1,8 @@
 package wsg.lol.dao.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import wsg.lol.dmo.league.LeagueDmo;
-import wsg.lol.dmo.league.PositionDmo;
+import wsg.lol.pojo.dmo.league.LeagueDmo;
+import wsg.lol.pojo.dmo.league.PositionDmo;
 
 @Mapper
 public interface LeagueMapper {

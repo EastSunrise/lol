@@ -1,7 +1,7 @@
 package wsg.lol.controller;
 
 import org.springframework.ui.Model;
-import wsg.lol.common.base.BaseResult;
+import wsg.lol.pojo.base.BaseResult;
 
 /**
  * wsg
@@ -11,7 +11,7 @@ import wsg.lol.common.base.BaseResult;
  */
 public abstract class BaseController {
 
-    protected String resultPage(Model model, BaseResult baseResult) {
+    String resultPage(Model model, BaseResult baseResult) {
         if (baseResult.isSuccess())
             return "base/success";
         model.addAttribute("result", baseResult);

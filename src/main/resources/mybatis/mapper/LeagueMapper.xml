@@ -4,13 +4,13 @@
     <sql id="Base_Column_List">
         LEAGUE_ID, NAME, TIER, QUEUE
     </sql>
-    <select id="selectByPrimaryKey" resultType="wsg.lol.dmo.league.LeagueDmo" parameterType="java.lang.String">
+    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dmo.league.LeagueDmo" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"/>
         from l_league
         where LEAGUE_ID = #{leagueId,jdbcType=VARCHAR}
     </select>
-    <select id="selectBySummonerId" resultType="wsg.lol.dmo.league.PositionDmo" parameterType="java.lang.String">
+    <select id="selectBySummonerId" resultType="wsg.lol.pojo.dmo.league.PositionDmo" parameterType="java.lang.String">
         SELECT
         <include refid="Base_Column_List"/>
         FROM l_position T
@@ -21,13 +21,13 @@
         from l_league
         where LEAGUE_ID = #{leagueId,jdbcType=VARCHAR}
     </delete>
-    <insert id="insert" parameterType="wsg.lol.dmo.league.LeagueDmo">
+    <insert id="insert" parameterType="wsg.lol.pojo.dmo.league.LeagueDmo">
         insert into l_league (LEAGUE_ID, NAME, TIER,
                               QUEUE)
         values (#{leagueId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{tier,jdbcType=TINYINT},
                 #{queue,jdbcType=TINYINT})
     </insert>
-    <insert id="insertSelective" parameterType="wsg.lol.dmo.league.LeagueDmo">
+    <insert id="insertSelective" parameterType="wsg.lol.pojo.dmo.league.LeagueDmo">
         insert into l_league
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="leagueId != null">
@@ -58,7 +58,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.dmo.league.LeagueDmo">
+    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.pojo.dmo.league.LeagueDmo">
         update l_league
         <set>
             <if test="name != null">
@@ -73,7 +73,7 @@
         </set>
         where LEAGUE_ID = #{leagueId,jdbcType=VARCHAR}
     </update>
-    <update id="updateByPrimaryKey" parameterType="wsg.lol.dmo.league.LeagueDmo">
+    <update id="updateByPrimaryKey" parameterType="wsg.lol.pojo.dmo.league.LeagueDmo">
         update l_league
         set NAME  = #{name,jdbcType=VARCHAR},
             TIER  = #{tier,jdbcType=TINYINT},

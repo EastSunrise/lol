@@ -1,14 +1,15 @@
 package wsg.lol.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import wsg.lol.dto.query.GetSummonerDto;
-import wsg.lol.dto.result.SummonerResult;
-import wsg.lol.service.intf.SummonerService;
-import wsg.lol.service.scheduler.intf.RealAction;
+import wsg.lol.pojo.base.BaseResult;
+import wsg.lol.pojo.dto.query.GetSummonerDto;
+import wsg.lol.pojo.dto.result.SummonerResult;
+import wsg.lol.service.service.intf.SummonerService;
 
 /**
  * wsg
@@ -21,7 +22,7 @@ import wsg.lol.service.scheduler.intf.RealAction;
 public class SummonerController extends BaseController {
 
     @Autowired
-    private RealAction realAction;
+    private ApplicationEventPublisher eventPublisher;
 
     @Autowired
     private SummonerService summonerService;
@@ -31,23 +32,18 @@ public class SummonerController extends BaseController {
         return templatePath("index");
     }
 
-    @RequestMapping("/build")
-    public String buildSummonerLib(Model model) {
-        return resultPage(model, realAction.buildBaseSummonerLibByLeague());
-    }
-
-    @RequestMapping("extend")
-    public String extendSummonerLib(Model model) {
-        return resultPage(model, realAction.extendSummonerLibByMatch());
-    }
-
     @RequestMapping("/search")
     public String searchSummoner(String name, Model model) {
-        if (StringUtils.isEmpty(name))
+        if (StringUtils.isEmpty(name)) {
             return templatePath("index");
+        }
         GetSummonerDto getSummonerDto = new GetSummonerDto();
         getSummonerDto.setName(name);
-        SummonerResult summonerResult = summonerService.querySummonerOverview(getSummonerDto);
+        BaseResult baseResult = summonerService.querySummonerOverview(getSummonerDto);
+        if (!baseResult.isSuccess()) {
+            return resultPage(model, baseResult);
+        }
+        SummonerResult summonerResult = (SummonerResult) baseResult;
         model.addAttribute("summoner", summonerResult.getSummonerDmo());
         model.addAttribute("position", summonerResult.getPositionDmo());
         return templatePath("individual");

@@ -1,7 +1,7 @@
 package wsg.lol.dao.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import wsg.lol.dto.api.match.MatchDto;
+import wsg.lol.pojo.dto.api.match.MatchDto;
 
 import java.util.List;
 

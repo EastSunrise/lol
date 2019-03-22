@@ -2,7 +2,7 @@ package wsg.lol.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import wsg.lol.common.base.BaseResult;
+import wsg.lol.pojo.base.BaseResult;
 
 import java.io.*;
 
@@ -12,7 +12,7 @@ import java.io.*;
  */
 public class FileUtil {
 
-    public static final String SYSTEM_SEPARATOR = "/";
+    private static final String SYSTEM_SEPARATOR = "/";
 
     public static String concat2Path(String... args) {
         return StringUtil.join(args, SYSTEM_SEPARATOR);

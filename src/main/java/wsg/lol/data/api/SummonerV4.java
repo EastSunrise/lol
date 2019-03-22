@@ -1,7 +1,7 @@
 package wsg.lol.data.api;
 
-import wsg.lol.dmo.summoner.SummonerDmo;
-import wsg.lol.dto.query.GetSummonerDto;
+import wsg.lol.pojo.dmo.summoner.SummonerDmo;
+import wsg.lol.pojo.dto.query.GetSummonerDto;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ public class SummonerV4 extends BaseApi {
      * <p>
      * ATTENTION Consistently looking up summoner ids that don't exist will result in a blacklist.
      */
-    public static SummonerDmo getSummoner(GetSummonerDto getSummonerDto) {
+    public SummonerDmo getSummoner(GetSummonerDto getSummonerDto) {
         Class clazz = getSummonerDto.getClass();
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {

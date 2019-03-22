@@ -1,6 +1,6 @@
 package wsg.lol.dao;
 
-import wsg.lol.dmo.match.MatchDmo;
+import wsg.lol.pojo.dmo.match.MatchDmo;
 
 public interface MatchMapper {
     int deleteByPrimaryKey(Long gameId);

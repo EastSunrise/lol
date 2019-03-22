@@ -6,13 +6,13 @@
         LOSSES,
         VETERAN, INACTIVE, FRESH_BLOOD, HOT_STREAK, SERIES_TARGET, SERIES_WINS, SERIES_LOSSES
     </sql>
-    <select id="selectByPrimaryKey" resultType="wsg.lol.dmo.league.PositionDmo" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dmo.league.PositionDmo" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from l_position
         where ID = #{id,jdbcType=INTEGER}
     </select>
-    <select id="selectBySummonerId" resultType="wsg.lol.dmo.league.PositionDmo" parameterType="java.lang.String">
+    <select id="selectBySummonerId" resultType="wsg.lol.pojo.dmo.league.PositionDmo" parameterType="java.lang.String">
         SELECT
         <include refid="Base_Column_List"/>
         FROM l_position T
@@ -23,9 +23,9 @@
         from l_position
         where ID = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="wsg.lol.dmo.Position">
+    <insert id="insert" parameterType="wsg.lol.pojo.dmo.league.PositionDmo">
         insert into l_position
-        (ID, SUMMONER_ID, QUEUE, POSITION, SUMMONER_NAME, LEAGUE_ID, LEAGUE_NAME, TIER, RANK, LEAGUE_POINTS, WINS,
+        (ID, SUMMONER_ID, QUEUE, POSITION, SUMMONER_NAME, LEAGUE_ID, LEAGUE_NAME, TIER, DIVISION, LEAGUE_POINTS, WINS,
          LOSSES, VETERAN, INACTIVE, FRESH_BLOOD, HOT_STREAK, SERIES_TARGET, SERIES_WINS, SERIES_LOSSES)
         values (#{id,jdbcType=INTEGER}, #{summonerId,jdbcType=VARCHAR}, #{queue,jdbcType=TINYINT},
                 #{position,jdbcType=TINYINT}, #{summonerName,jdbcType=VARCHAR}, #{leagueId,jdbcType=VARCHAR},
@@ -35,7 +35,7 @@
                 #{hotStreak,jdbcType=BIT}, #{seriesTarget,jdbcType=INTEGER}, #{seriesWins,jdbcType=INTEGER},
                 #{seriesLosses,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="wsg.lol.dmo.Position">
+    <insert id="insertSelective" parameterType="wsg.lol.pojo.dmo.league.PositionDmo">
         insert into l_position
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -158,7 +158,8 @@
     </insert>
     <insert id="batchInsertPosition">
         INSERT INTO l_position
-        (SUMMONER_ID, QUEUE, POSITION, SUMMONER_NAME, LEAGUE_ID, LEAGUE_NAME, TIER, RANK, LEAGUE_POINTS, WINS, LOSSES,
+        (SUMMONER_ID, QUEUE, POSITION, SUMMONER_NAME, LEAGUE_ID, LEAGUE_NAME, TIER, DIVISION, LEAGUE_POINTS, WINS,
+        LOSSES,
         VETERAN, INACTIVE, FRESH_BLOOD, HOT_STREAK, SERIES_TARGET, SERIES_WINS, SERIES_LOSSES)
         VALUES
         <foreach collection="list" item="item" separator=",">
@@ -168,7 +169,7 @@
             #{item.seriesWins}, #{item.seriesLosses})
         </foreach>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.dmo.Position">
+    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.pojo.dmo.league.PositionDmo">
         update l_position
         <set>
             <if test="summonerId != null">
@@ -228,7 +229,7 @@
         </set>
         where ID = #{id}
     </update>
-    <update id="updateByPrimaryKey" parameterType="wsg.lol.dmo.Position">
+    <update id="updateByPrimaryKey" parameterType="wsg.lol.pojo.dmo.league.PositionDmo">
         update l_position
         set SUMMONER_ID   = #{summonerId,jdbcType=VARCHAR},
             QUEUE         = #{queue},
@@ -237,7 +238,7 @@
             LEAGUE_ID     = #{leagueId,jdbcType=VARCHAR},
             LEAGUE_NAME   = #{leagueName,jdbcType=VARCHAR},
             TIER          = #{tier},
-            RANK          = #{rank},
+            DIVISION      = #{rank},
             LEAGUE_POINTS = #{leaguePoints},
             WINS          = #{wins},
             LOSSES        = #{losses},
