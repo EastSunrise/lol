@@ -15,7 +15,6 @@ import java.util.Locale;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-21 14:14
  */
 @Component
 public class Scheduler {
@@ -27,8 +26,9 @@ public class Scheduler {
     public void readApiKey() {
         JSONObject apiObject = FileUtil.readJSONObject(config.getApiKeyPath());
         ApiKey.setApiKey(apiObject.getString("apiKey"));
-        ApiKey.setExpiredTime(DateUtil.getDate(apiObject.getString("expiredTime"), "EEE, MMM d, yyyy @ h:mma",
-                "America/New_York", Locale.ENGLISH));
+        // Pacific Time Zone to local time.
+        ApiKey.setExpiredTime(DateUtil.getDate(apiObject.getString("expiredTime"), DateUtil.API_EXPIRED_FORMAT, "PST",
+                Locale.ENGLISH));
     }
 
     @Scheduled(fixedRate = DateUtil.ONE_MINUTE * 3)

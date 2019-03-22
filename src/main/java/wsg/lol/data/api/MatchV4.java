@@ -1,6 +1,7 @@
 package wsg.lol.data.api;
 
-import wsg.lol.common.annotation.AccessInterval;
+import org.springframework.stereotype.Component;
+import wsg.lol.common.annotation.AccessApi;
 import wsg.lol.pojo.dto.api.match.MatchDto;
 import wsg.lol.pojo.dto.api.match.MatchListDto;
 import wsg.lol.pojo.dto.api.match.MatchTimelineDto;
@@ -14,12 +15,13 @@ import java.util.Map;
  * @author King
  * @date 2019/2/12
  */
+@Component
 public class MatchV4 extends BaseApi {
 
     /**
      * Get match by match ID.
      */
-    @AccessInterval
+    @AccessApi
     public MatchDto getMatchById(long matchId) {
         Map<String, Object> params = new HashMap<>();
         params.put("matchId", matchId);
@@ -44,7 +46,7 @@ public class MatchV4 extends BaseApi {
      * If both are specified, then endTime should be greater than beginTime. The maximum time
      * range allowed is one week, otherwise a 400 error code is returned.
      */
-    @AccessInterval
+    @AccessApi
     public MatchListDto getMatchListByAccount(String accountId, QueryMatchListDto queryMatchListDto) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedAccountId", accountId);
@@ -58,7 +60,7 @@ public class MatchV4 extends BaseApi {
      * IMPLEMENTATION NOTES
      * Not all matches have timeline data.
      */
-    @AccessInterval
+    @AccessApi
     public MatchTimelineDto getTimelineByMatchId(long matchId) {
         Map<String, Object> params = new HashMap<>();
         params.put("matchId", matchId);
@@ -70,7 +72,7 @@ public class MatchV4 extends BaseApi {
      * TODO THIS API ENDPOINT IS NOT AVAILABLE IN YOUR POLICY
      * Get match IDs by tournament code.
      */
-    @AccessInterval
+    @AccessApi
     public List<Long> getMatchesByTournamentCode(String tournamentCode) {
         Map<String, Object> params = new HashMap<>();
         params.put("tournamentCode", tournamentCode);
@@ -82,7 +84,7 @@ public class MatchV4 extends BaseApi {
      * TODO THIS API ENDPOINT IS NOT AVAILABLE IN YOUR POLICY
      * Get match by match ID and tournament code.
      */
-    @AccessInterval
+    @AccessApi
     public MatchDto getMatchesByIdAndTournamentCode(long matchId, String tournamentCode) {
         Map<String, Object> params = new HashMap<>();
         params.put("tournamentCode", tournamentCode);

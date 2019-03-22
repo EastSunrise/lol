@@ -1,5 +1,7 @@
 package wsg.lol.data.config;
 
+import wsg.lol.common.utils.LogUtil;
+
 import java.util.Date;
 
 /**
@@ -15,7 +17,14 @@ public class ApiKey {
     private static Date expiredTime;
 
     public static boolean hasValidKey() {
-        return apiKey != null && expiredTime.after(new Date());
+        if (apiKey == null) {
+            LogUtil.info("There isn't api key.");
+            return false;
+        } else if (expiredTime.before(new Date())) {
+            LogUtil.info("The api key has expired when it was " + expiredTime);
+            return false;
+        }
+        return true;
     }
 
     public static String getApiKey() {

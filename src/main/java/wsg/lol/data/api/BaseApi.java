@@ -2,6 +2,7 @@ package wsg.lol.data.api;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wsg.lol.common.utils.*;
 import wsg.lol.data.config.ApiKey;
 import wsg.lol.data.config.Config;
@@ -16,15 +17,12 @@ import java.util.Map;
  * wsg
  *
  * @author wangsigen
- * @date 2019-02-27 16:33
  */
+@Component
 public class BaseApi {
 
-    private static int apiCount = 0;
     @Autowired
     private Config config;
-    private final String CURRENT_HOST = config.getRegion().getHost();
-    private final String GLOBAL_HOST = config.getGlobalProxy().getHost();
 
     // get valid api key
     // limit the rate of querying.
@@ -34,24 +32,8 @@ public class BaseApi {
         headers.put("Origin", "https://developer.riotgames.com");
         headers.put("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
         while (!ApiKey.hasValidKey()) {
-            try {
-                LogUtil.info("There isn't valid key. Wait fot an hour.");
-                Thread.sleep(DateUtil.ONE_HOUR);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        LogUtil.info("Get api key " + ++apiCount + " times.");
-        try {
-            if (apiCount % 100 == 0) {
-                LogUtil.info("Sleep 120s.");
-                Thread.sleep(120000);
-            } else if (apiCount % 20 == 0) {
-                LogUtil.info("Sleep 1000ms.");
-                Thread.sleep(1000);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            LogUtil.info("There isn't valid key.");
+            DateUtil.threadSleep(DateUtil.ONE_MINUTE);
         }
         headers.put("X-Riot-Token", ApiKey.getApiKey());
         headers.put("Accept-Language", "zh-CN,zh;q=0.9,zh-TW;q=0.8");
@@ -62,7 +44,7 @@ public class BaseApi {
 
     private String getJSONString(String apiRef, Map<String, Object> pathParams,
                                  Map<String, Object> queryParams) {
-        return getJSONString(CURRENT_HOST, apiRef, pathParams, queryParams);
+        return getJSONString(config.getRegion().getHost(), apiRef, pathParams, queryParams);
     }
 
     private String getJSONString(String host, String apiRef, Map<String, Object> pathParams, Map<String,
@@ -91,7 +73,7 @@ public class BaseApi {
     }
 
     <T> T getCommonDataObject(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
-        String jsonStr = getJSONString(GLOBAL_HOST, apiRef, pathParams, new HashMap<>());
+        String jsonStr = getJSONString(config.getGlobalProxy().getHost(), apiRef, pathParams, new HashMap<>());
         return JSON.parseObject(jsonStr, clazz);
     }
 
@@ -122,7 +104,7 @@ public class BaseApi {
 
     <T extends QueryDto, V extends QueryDto> String postJSONString(String apiRef, T queryDto,
                                                                    V postDto) {
-        String urlStr = (GLOBAL_HOST + apiRef + "?" + (queryDto != null ?
+        String urlStr = (config.getGlobalProxy().getHost() + apiRef + "?" + (queryDto != null ?
                 CodeUtil.encodeMap2UrlParams(BeanUtil.getQueryParams(queryDto)) : "")).replace("+", "%20");
         return HttpHelper.postJSONString(urlStr, BeanUtil.getQueryParams(postDto), getRequestHeaders());
     }

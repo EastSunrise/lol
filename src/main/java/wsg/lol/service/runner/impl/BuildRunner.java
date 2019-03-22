@@ -24,7 +24,7 @@ public class BuildRunner implements ApplicationRunner {
     private RealAction realAction;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         BaseResult result;
         do {
             result = build();

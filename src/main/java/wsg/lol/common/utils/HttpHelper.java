@@ -1,13 +1,16 @@
 package wsg.lol.common.utils;
 
+import wsg.lol.pojo.exception.MyHTTPException;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 /**
  * @author King
- * @date 2019/2/13
  */
 public class HttpHelper {
 
@@ -15,41 +18,61 @@ public class HttpHelper {
 
     public static String getJSONString(String url, Map<String, String> requestHeaders) {
         LogUtil.info("Getting from " + url);
+        HttpURLConnection urlConnection = null;
         try {
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
-            return getDataFromConnection(urlConnection, requestHeaders);
+            urlConnection = (HttpURLConnection) new URL(url).openConnection();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "";
+        return getDataFromConnection(urlConnection, requestHeaders);
     }
 
     public static String postJSONString(String url, Map<String, Object> bodyParams,
                                         Map<String, String> requestHeaders) {
         LogUtil.info("Posting from " + url);
+        HttpURLConnection urlConnection = null;
         try {
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
+            urlConnection = (HttpURLConnection) new URL(url).openConnection();
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             DataOutputStream outputStream = new DataOutputStream(urlConnection.getOutputStream());
             outputStream.writeBytes(CodeUtil.encodeMap2UrlParams(bodyParams));
             outputStream.flush();
             outputStream.close();
-            return getDataFromConnection(urlConnection, requestHeaders);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return "";
+        return getDataFromConnection(urlConnection, requestHeaders);
     }
 
-    private static String getDataFromConnection(HttpURLConnection urlConnection, Map<String, String> requestHeaders) {
+    private static String getDataFromConnection(HttpURLConnection urlConnection, Map<String, String> requestHeaders) throws MyHTTPException {
         for (Map.Entry<String, String> entry : requestHeaders.entrySet()) {
             urlConnection.setRequestProperty(entry.getKey(), entry.getValue());
         }
         StringBuilder builder = new StringBuilder();
         try {
-            if (urlConnection.getResponseCode() != 200) {
-                throw new Exception(urlConnection.getResponseMessage());
+            int responseCode = urlConnection.getResponseCode();
+            if (responseCode != 200) {
+                if (400 == responseCode) {
+                    LogUtil.info("Bad Request.");
+                } else if (401 == responseCode) {
+                    LogUtil.info("Unauthoritzed.");
+                } else if (403 == responseCode) {
+                    LogUtil.info("Forbidden");
+                } else if (404 == responseCode) {
+                    LogUtil.info("Not Found");
+                } else if (415 == responseCode) {
+                    LogUtil.info("Unsupported Media Type");
+                } else if (429 == responseCode) {
+                    LogUtil.info("Rate Limit Exceeded");
+                    Date retry = DateUtil.getDate(urlConnection.getHeaderField("Retry-After"),
+                            DateUtil.RETRY_FORMAT, "GMT", Locale.ENGLISH);
+                    urlConnection.disconnect();
+                    DateUtil.threadSleep(retry.getTime() - System.currentTimeMillis());
+                    urlConnection.connect();
+                    // wsg
+                }
+                return "";
             }
             BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
             String inputLine;
@@ -57,9 +80,10 @@ public class HttpHelper {
                 builder.append(inputLine);
             }
             in.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
         return builder.toString();
     }
 

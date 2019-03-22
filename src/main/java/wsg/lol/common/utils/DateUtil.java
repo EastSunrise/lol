@@ -10,13 +10,15 @@ import java.util.TimeZone;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-21 11:37
  */
 public class DateUtil {
 
-    public static final int ONE_MINUTE = 60 * 1000;
+    public static final int ONE_SECOND = 1000;
+    public static final int ONE_MINUTE = 60 * ONE_SECOND;
     public static final int ONE_HOUR = 60 * ONE_MINUTE;
     public static final int ONE_DAY = 24 * ONE_HOUR;
+    public static final String RETRY_FORMAT = "EEE, dd MMM yyyy HH:mm:ss zzz";
+    public static final String API_EXPIRED_FORMAT = "EEE, MMM d, yyyy @ h:mma";
 
     public static Date getDate(String str, String format, String timeZone, Locale locale) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, locale);
@@ -27,5 +29,14 @@ public class DateUtil {
             e.printStackTrace();
         }
         return new Date();
+    }
+
+    public static void threadSleep(long millis) {
+        try {
+            LogUtil.info("Thread sleep for " + millis / 1000 + "s");
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

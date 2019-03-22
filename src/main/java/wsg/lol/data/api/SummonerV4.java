@@ -1,5 +1,6 @@
 package wsg.lol.data.api;
 
+import org.springframework.stereotype.Component;
 import wsg.lol.pojo.dmo.summoner.SummonerDmo;
 import wsg.lol.pojo.dto.query.GetSummonerDto;
 
@@ -11,6 +12,7 @@ import java.util.Map;
  * @author King
  * @date 2019/2/11
  */
+@Component
 public class SummonerV4 extends BaseApi {
 
     /**
