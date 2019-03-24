@@ -1,6 +1,5 @@
 package wsg.lol.data.api;
 
-import org.springframework.stereotype.Component;
 import wsg.lol.common.annotation.AccessApi;
 
 import java.util.HashMap;
@@ -10,7 +9,6 @@ import java.util.Map;
  * @author King
  * @date 2019/2/11
  */
-@Component
 public class ThirdPartyCodeV4 extends BaseApi {
 
     /**

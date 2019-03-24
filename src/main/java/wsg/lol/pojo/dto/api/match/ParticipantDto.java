@@ -1,6 +1,6 @@
 package wsg.lol.pojo.dto.api.match;
 
-import wsg.lol.pojo.enums.impl.name.TierEnum;
+import wsg.lol.pojo.enums.impl.code.TierEnum;
 
 import java.util.List;
 

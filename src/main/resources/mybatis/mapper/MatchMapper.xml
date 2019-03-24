@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="wsg.lol.dao.MatchMapper">
+<mapper namespace="wsg.lol.dao.mapper.MatchMapper">
     <sql id="Base_Column_List">
         GAME_ID, GAME_CREATION, GAME_DURATION, GAME_VERSION, GAME_MODE, GAME_TYPE, SEASON_ID,
     QUEUE_ID, PLATFORM_ID, MAP_ID, FRAME_INTERVAL
@@ -11,13 +11,22 @@
         from m_match
         where GAME_ID = #{gameId,jdbcType=BIGINT}
     </select>
+    <select id="checkMatchesNotExist" resultType="java.lang.Long">
+        SELECT TEMP.ID1 FROM
+        <foreach collection="list" item="item" separator="union" open="(" close=")">
+            SELECT #{item} AS ID1
+        </foreach>
+        TEMP
+        LEFT JOIN (SELECT GAME_ID AS ID0 FROM m_match) T ON TEMP.ID1 = T.ID0
+        WHERE T.ID0 IS NULL
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete
         from m_match
         where GAME_ID = #{gameId,jdbcType=BIGINT}
     </delete>
-    <insert id="insert" parameterType="wsg.lol.pojo.dmo.match.MatchDmo">
-        insert into m_match (GAME_ID, GAME_CREATION, GAME_DURATION,
+    <insert id="insertIgnore" parameterType="wsg.lol.pojo.dmo.match.MatchDmo">
+        insert IGNORE into m_match (GAME_ID, GAME_CREATION, GAME_DURATION,
                              GAME_VERSION, GAME_MODE, GAME_TYPE,
                              SEASON_ID, QUEUE_ID, PLATFORM_ID,
                              MAP_ID, FRAME_INTERVAL)

@@ -3,6 +3,8 @@ package wsg.lol.dao.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import wsg.lol.pojo.dmo.match.ParticipantDmo;
 
+import java.util.List;
+
 @Mapper
 public interface ParticipantMapper {
     int deleteByPrimaryKey(Long id);
@@ -16,4 +18,6 @@ public interface ParticipantMapper {
     int updateByPrimaryKeySelective(ParticipantDmo record);
 
     int updateByPrimaryKey(ParticipantDmo record);
+
+    int batchInsertParticipants(List<ParticipantDmo> participantDmoList);
 }

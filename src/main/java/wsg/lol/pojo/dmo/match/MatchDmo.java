@@ -4,12 +4,7 @@ package wsg.lol.pojo.dmo.match;
 import com.alibaba.fastjson.annotation.JSONField;
 import wsg.lol.common.serializer.IntEnumSerializer;
 import wsg.lol.pojo.base.BaseDmo;
-import wsg.lol.pojo.enums.impl.code.MapEnum;
-import wsg.lol.pojo.enums.impl.code.MatchQueueEnum;
-import wsg.lol.pojo.enums.impl.code.SeasonEnum;
-import wsg.lol.pojo.enums.impl.name.GameModeEnum;
-import wsg.lol.pojo.enums.impl.name.GameTypeEnum;
-import wsg.lol.pojo.enums.impl.name.PlatformEnum;
+import wsg.lol.pojo.enums.impl.code.*;
 
 import java.util.Date;
 

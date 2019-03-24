@@ -21,4 +21,6 @@ public interface SummonerMapper {
     SummonerDmo selectByCond(GetSummonerDto getSummonerDto);
 
     int insertSummoner(SummonerDmo summonerDmo);
+
+    int updateLastCheckedTime(SummonerDmo summonerDmo);
 }

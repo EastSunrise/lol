@@ -26,8 +26,8 @@ public class EventServiceImpl implements EventService {
     @Override
     public BaseResult saveSummonerEvent(SummonerEvent summonerEvent) {
         if (1 != eventMapper.insertSummonerEvent(summonerEvent)) {
-            logger.error("Fail to insert summoner event.");
-            return BaseResult.fail("Fail to insert summoner event.");
+            logger.error("Fail to insertIgnore summoner event.");
+            return BaseResult.fail("Fail to insertIgnore summoner event.");
         }
         return BaseResult.success();
     }

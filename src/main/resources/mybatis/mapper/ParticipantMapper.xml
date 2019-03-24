@@ -100,6 +100,17 @@
             </if>
         </trim>
     </insert>
+    <insert id="batchInsertParticipants">
+        INSERT INTO m_participant
+        (GAME_ID, PARTICIPANT_ID, SUMMONER_ID, CHAMPION_ID, TEAM_ID, LANE, ROLE, SPELL1_ID, SPELL2_ID,
+        HIGHEST_ACHIEVED_SEASON_TIER)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.gameId}, #{item.participantId}, #{item.summonerId}, #{item.championId}, #{item.teamId},
+            #{item.timeline_lane}, #{item.timeline_role}, #{item.spell1Id}, #{item.spell2Id},
+            #{item.highestAchievedSeasonTier})
+        </foreach>
+    </insert>
     <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.pojo.dmo.match.ParticipantDmo">
         update m_participant
         <set>

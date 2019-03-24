@@ -3,12 +3,21 @@ package wsg.lol.data.api;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import wsg.lol.common.utils.*;
+import wsg.lol.common.utils.BeanUtil;
+import wsg.lol.common.utils.CodeUtil;
+import wsg.lol.common.utils.DateUtil;
+import wsg.lol.common.utils.LogUtil;
 import wsg.lol.data.config.ApiKey;
 import wsg.lol.data.config.Config;
 import wsg.lol.pojo.base.IJSONTransfer;
 import wsg.lol.pojo.base.QueryDto;
 
+import javax.xml.ws.http.HTTPException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +29,8 @@ import java.util.Map;
  */
 @Component
 public class BaseApi {
+
+    private static final String HTTPS = "https://";
 
     @Autowired
     private Config config;
@@ -33,7 +44,7 @@ public class BaseApi {
         headers.put("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
         while (!ApiKey.hasValidKey()) {
             LogUtil.info("There isn't valid key.");
-            DateUtil.threadSleep(DateUtil.ONE_MINUTE);
+            DateUtil.threadSleep(DateUtil.ONE_SECOND);
         }
         headers.put("X-Riot-Token", ApiKey.getApiKey());
         headers.put("Accept-Language", "zh-CN,zh;q=0.9,zh-TW;q=0.8");
@@ -47,14 +58,43 @@ public class BaseApi {
         return getJSONString(config.getRegion().getHost(), apiRef, pathParams, queryParams);
     }
 
-    private String getJSONString(String host, String apiRef, Map<String, Object> pathParams, Map<String,
-            Object> queryParams) {
-        for (Map.Entry<String, Object> entry : pathParams.entrySet()) {
-            apiRef = apiRef.replace("{" + entry.getKey() + "}", CodeUtil.encode(entry.getValue()));
+    private static String doHttpGet(String urlStr, Map<String, String> requestHeaders) {
+        LogUtil.info("Getting from " + urlStr);
+        while (true) {
+            try {
+                URL url = new URL(urlStr);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setConnectTimeout(DateUtil.ONE_SECOND * 5);
+                urlConnection.setReadTimeout(DateUtil.ONE_SECOND * 5);
+                for (Map.Entry<String, String> entry : requestHeaders.entrySet()) {
+                    urlConnection.setRequestProperty(entry.getKey(), entry.getValue());
+                }
+
+                int responseCode = urlConnection.getResponseCode();
+                if (responseCode == 200) {
+                    StringBuilder builder = new StringBuilder();
+                    BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    String inputLine;
+                    while ((inputLine = in.readLine()) != null) {
+                        builder.append(inputLine);
+                    }
+                    in.close();
+                    return builder.toString();
+                } else if (429 == responseCode) {
+                    LogUtil.info(urlConnection.getResponseMessage());
+                    DateUtil.threadSleep(Integer.valueOf(urlConnection.getHeaderField("Retry-After")) * DateUtil.ONE_SECOND);
+                } else if (500 == responseCode || 503 == responseCode) {
+                    LogUtil.info(urlConnection.getResponseMessage());
+                    DateUtil.threadSleep(DateUtil.ONE_MINUTE);
+                } else {
+                    LogUtil.info(urlConnection.getResponseMessage());
+                    throw new HTTPException(responseCode);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                DateUtil.threadSleep(DateUtil.ONE_SECOND * 5);
+            }
         }
-        String urlStr = HttpHelper.HTTPS + (host + apiRef + "?" + CodeUtil.encodeMap2UrlParams(queryParams)).replace(
-                "+", "%20");
-        return HttpHelper.getJSONString(urlStr, getRequestHeaders());
     }
 
     <Q extends QueryDto, T> T getDataObject(String apiRef, Map<String, Object> pathParams, Q queryDto,
@@ -68,29 +108,22 @@ public class BaseApi {
         return JSON.parseObject(jsonStr, clazz);
     }
 
-    <T> T getDataObject(String apiRef, Class<T> clazz) {
-        return getDataObject(apiRef, new HashMap<String, Object>(), clazz);
+    private String getJSONString(String host, String apiRef, Map<String, Object> pathParams, Map<String,
+            Object> queryParams) {
+        for (Map.Entry<String, Object> entry : pathParams.entrySet()) {
+            apiRef = apiRef.replace("{" + entry.getKey() + "}", CodeUtil.encode(entry.getValue()));
+        }
+        String urlStr = HTTPS + (host + apiRef + "?" + CodeUtil.encodeMap2UrlParams(queryParams)).replace(
+                "+", "%20");
+        return doHttpGet(urlStr, getRequestHeaders());
     }
 
-    <T> T getCommonDataObject(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
-        String jsonStr = getJSONString(config.getGlobalProxy().getHost(), apiRef, pathParams, new HashMap<>());
-        return JSON.parseObject(jsonStr, clazz);
+    <T> T getDataObject(String apiRef, Class<T> clazz) {
+        return getDataObject(apiRef, new HashMap<>(), clazz);
     }
 
     <T> List<T> getDataArray(String apiRef, Class<T> clazz) {
-        return getDataArray(apiRef, new HashMap<String, Object>(), clazz);
-    }
-
-    <T extends IJSONTransfer> T getDataExtObject(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
-        String jsonStr = getJSONString(apiRef, pathParams, new HashMap<String, Object>());
-        T object = null;
-        try {
-            object = clazz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        object.parseFromJSONObject(JSON.parseObject(jsonStr));
-        return object;
+        return getDataArray(apiRef, new HashMap<>(), clazz);
     }
 
     <T> List<T> getDataArray(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
@@ -98,14 +131,17 @@ public class BaseApi {
         return JSON.parseArray(jsonStr, clazz);
     }
 
-    <T extends QueryDto> String postJSONString(String apiRef, T postDto) {
-        return postJSONString(apiRef, null, postDto);
-    }
-
-    <T extends QueryDto, V extends QueryDto> String postJSONString(String apiRef, T queryDto,
-                                                                   V postDto) {
-        String urlStr = (config.getGlobalProxy().getHost() + apiRef + "?" + (queryDto != null ?
-                CodeUtil.encodeMap2UrlParams(BeanUtil.getQueryParams(queryDto)) : "")).replace("+", "%20");
-        return HttpHelper.postJSONString(urlStr, BeanUtil.getQueryParams(postDto), getRequestHeaders());
+    <T extends IJSONTransfer> T getDataExtObject(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
+        String jsonStr = getJSONString(apiRef, pathParams, new HashMap<>());
+        T object = null;
+        try {
+            object = clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        if (object != null) {
+            object.parseFromJSONObject(JSON.parseObject(jsonStr));
+        }
+        return object;
     }
 }

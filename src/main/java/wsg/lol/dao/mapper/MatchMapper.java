@@ -1,18 +1,23 @@
 package wsg.lol.dao.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import wsg.lol.pojo.dto.api.match.MatchDto;
+import wsg.lol.pojo.dmo.match.MatchDmo;
 
 import java.util.List;
 
-/**
- * wsg
- *
- * @author wangsigen
- * @date 2019-03-07 17:22
- */
 @Mapper
 public interface MatchMapper {
+    int deleteByPrimaryKey(Long gameId);
 
-    int batchInsertMatchIfNotExist(List<MatchDto> matchDtoList);
+    int insertIgnore(MatchDmo record);
+
+    int insertSelective(MatchDmo record);
+
+    MatchDmo selectByPrimaryKey(Long gameId);
+
+    int updateByPrimaryKeySelective(MatchDmo record);
+
+    int updateByPrimaryKey(MatchDmo record);
+
+    List<Long> checkMatchesNotExist(List<Long> idList);
 }

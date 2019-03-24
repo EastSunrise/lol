@@ -1,7 +1,5 @@
 package wsg.lol.pojo.base;
 
-import java.io.IOException;
-
 /**
  * wsg
  *
@@ -39,7 +37,7 @@ public class BaseResult {
         return new BaseResult();
     }
 
-    public static BaseResult fail(IOException e) {
+    public static BaseResult fail(Exception e) {
         return fail(e.getMessage());
     }
 

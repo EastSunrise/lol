@@ -2,7 +2,7 @@ package wsg.lol.service.action.intf;
 
 import wsg.lol.pojo.base.BaseResult;
 import wsg.lol.pojo.dmo.summoner.SummonerDmo;
-import wsg.lol.pojo.enums.impl.name.TierEnum;
+import wsg.lol.pojo.enums.impl.code.TierEnum;
 import wsg.lol.pojo.enums.impl.others.DivisionEnum;
 import wsg.lol.pojo.enums.impl.others.PositionEnum;
 

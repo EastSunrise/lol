@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import wsg.lol.common.annotation.AccessApi;
 import wsg.lol.pojo.dmo.league.PositionDmo;
 import wsg.lol.pojo.dto.api.league.LeagueExtDto;
-import wsg.lol.pojo.enums.impl.name.TierEnum;
+import wsg.lol.pojo.enums.impl.code.TierEnum;
 import wsg.lol.pojo.enums.impl.others.DivisionEnum;
 import wsg.lol.pojo.enums.impl.others.PositionEnum;
 import wsg.lol.pojo.enums.impl.others.RankQueueEnum;

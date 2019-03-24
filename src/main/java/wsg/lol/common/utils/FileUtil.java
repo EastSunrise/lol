@@ -5,10 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import wsg.lol.pojo.base.BaseResult;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author King
- * @date 2019/2/13
  */
 public class FileUtil {
 
@@ -37,7 +38,22 @@ public class FileUtil {
         return BaseResult.success();
     }
 
-    public static JSONObject readJSONObject(String filePath) {
+    public static List<String[]> readCSV(String filePath, String commaDelimiter) {
+        List<String[]> records = new ArrayList<>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(filePath));
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(commaDelimiter);
+                records.add(values);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return records;
+    }
+
+    public static String readString(String filePath) {
         LogUtil.info("Reading from " + filePath);
         StringBuilder builder = new StringBuilder();
         try {
@@ -54,6 +70,10 @@ public class FileUtil {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return JSON.parseObject(builder.toString());
+        return builder.toString();
+    }
+
+    public static JSONObject readJSONObject(String filePath) {
+        return JSON.parseObject(readString(filePath));
     }
 }

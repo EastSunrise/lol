@@ -1,4 +1,4 @@
-package wsg.lol.service.context.handler;
+package wsg.lol.service.event.handler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;

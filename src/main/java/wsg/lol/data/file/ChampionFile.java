@@ -1,7 +1,10 @@
 package wsg.lol.data.file;
 
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import wsg.lol.common.utils.FileUtil;
+import wsg.lol.data.config.Config;
 import wsg.lol.pojo.dto.state.champion.ChampionExtDto;
 
 import java.util.LinkedList;
@@ -11,13 +14,14 @@ import java.util.List;
  * wsg
  *
  * @author wangsigen
- * @date 2019-02-28 11:44
  */
-public class ChampionFile extends BaseFile {
+@Component
+public class ChampionFile {
 
-    private static final String DIR = FileUtil.concat2Path(CDN_LOCAL, LATEST_VERSION, "data", "zh_CN");
+    @Autowired
+    private Config config;
 
-    public static List<ChampionExtDto> getChampions() {
+    public List<ChampionExtDto> getChampions() {
         JSONObject data = getDataByKey(KeyEnum.championFull).getJSONObject("data");
         List<ChampionExtDto> championExtDtoList = new LinkedList<>();
         for (Object value : data.values()) {
@@ -28,11 +32,15 @@ public class ChampionFile extends BaseFile {
         return championExtDtoList;
     }
 
-    private static JSONObject getDataByKey(KeyEnum key) {
-        return FileUtil.readJSONObject(FileUtil.concat2Path(DIR, key + ".json"));
+    private JSONObject getDataByKey(KeyEnum key) {
+        return FileUtil.readJSONObject(FileUtil.concat2Path(getDir(), key + ".json"));
     }
 
     private enum KeyEnum {
         championFull;
+    }
+
+    private String getDir() {
+        return FileUtil.concat2Path(config.getDataDir(), config.getLatestVersion(), "data", config.getLanguage());
     }
 }

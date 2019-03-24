@@ -2,7 +2,7 @@ package wsg.lol.pojo.dmo.league;
 
 
 import wsg.lol.pojo.base.BaseDmo;
-import wsg.lol.pojo.enums.impl.name.TierEnum;
+import wsg.lol.pojo.enums.impl.code.TierEnum;
 import wsg.lol.pojo.enums.impl.others.RankQueueEnum;
 
 public class LeagueDmo extends BaseDmo {

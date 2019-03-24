@@ -1,6 +1,6 @@
 package wsg.lol.pojo.dto.api.match;
 
-import wsg.lol.pojo.enums.impl.name.MatchLaneEnum;
+import wsg.lol.pojo.enums.impl.code.MatchLaneEnum;
 
 /**
  * @author King

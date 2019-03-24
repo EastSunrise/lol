@@ -27,10 +27,13 @@ public class VersionActionImpl implements VersionAction {
     @Autowired
     private ChampionMapper championMapper;
 
+    @Autowired
+    private ChampionFile championFile;
+
     @Override
     public BaseResult updateChampionLib() {
         LogUtil.info("Start to update the data of champions.");
-        List<ChampionExtDto> championExtDtoList = ChampionFile.getChampions();
+        List<ChampionExtDto> championExtDtoList = championFile.getChampions();
         List<ChampionDmo> championDmoList = new LinkedList<>();
         List<SkinDmo> skinDmoList = new LinkedList<>();
         List<SpellDmo> spellDmoList = new LinkedList<>();

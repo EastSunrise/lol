@@ -6,12 +6,23 @@ import wsg.lol.pojo.enums.intf.BaseEnum;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-04 15:00
  */
 public enum MapEnum implements BaseEnum<Integer> {
+    OriginalSummerSummonersRift(1),
+    OriginalAutumnSummonersRift(2),
+    TheProvingGrounds(3),
+    OriginalTwistedTreeline(4),
+    TheCrystalScar(8),
     TwistedTreeline(10),
     SummonersRift(11),
-    HowlingAbyss(12);
+    HowlingAbyss(12),
+    ButchersBridge(14),
+    CosmicRuins(16),
+    ValoranCityPark(18),
+    Substructure43(19),
+    CrashSite(20),
+    NexusBlitz(21),
+    ;
 
     private int value;
 

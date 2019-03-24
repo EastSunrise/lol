@@ -1,10 +1,12 @@
 package wsg.lol.data.file;
 
+import org.springframework.stereotype.Component;
+
 /**
  * wsg
  *
  * @author wangsigen
- * @date 2019-02-28 14:09
  */
-public class ItemFile extends BaseFile {
+@Component
+public class ItemFile {
 }

@@ -4,6 +4,11 @@
     <sql id="Base_Column_List">
         ID, ACCOUNT_ID, PUUID, NAME, PROFILE_ICON_ID, REVISION_DATE, SUMMONER_LEVEL, LAST_CHECKED_TIME
     </sql>
+    <update id="updateLastCheckedTime">
+        UPDATE s_summoner
+        SET LAST_CHECKED_TIME = #{lastCheckedTime}
+        WHERE ID = #{id}
+    </update>
     <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dmo.summoner.SummonerDmo" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"/>
@@ -42,8 +47,7 @@
         select
         <include refid="Base_Column_List"/>
         from s_summoner
-        WHERE LAST_CHECKED_TIME >= (SELECT LAST_CHECKED_TIME FROM
-        s_summoner ORDER BY LAST_CHECKED_TIME LIMIT #{startIndex} , 1) LIMIT #{pageSize}
+        ORDER BY LAST_CHECKED_TIME LIMIT #{startIndex}, #{pageSize}
     </select>
     <select id="selectByCond" resultType="wsg.lol.pojo.dmo.summoner.SummonerDmo"
             parameterType="wsg.lol.pojo.dto.query.GetSummonerDto">
