@@ -51,7 +51,6 @@ public class SpellDmo extends BaseDmo {
         this.id = id;
     }
 
-
     public Integer getChampionId() {
         return championId;
     }

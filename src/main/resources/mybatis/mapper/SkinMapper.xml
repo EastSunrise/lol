@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="wsg.lol.dao.mapper.SkinMapper">
+<mapper namespace="wsg.lol.dao.mybatis.mapper.SkinMapper">
     <sql id="Base_Column_List">
         ID, CHAMPION_ID, NUM, NAME, CHROMAS
     </sql>

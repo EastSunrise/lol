@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import wsg.lol.pojo.base.BaseResult;
 import wsg.lol.pojo.dto.query.GetSummonerDto;
 import wsg.lol.pojo.dto.result.SummonerResult;
-import wsg.lol.service.service.intf.SummonerService;
+import wsg.lol.service.user.intf.SummonerService;
 
 /**
  * wsg

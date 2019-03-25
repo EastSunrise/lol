@@ -3,8 +3,10 @@ package wsg.lol.service.action.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wsg.lol.common.utils.LogUtil;
-import wsg.lol.dao.mapper.ChampionMapper;
-import wsg.lol.data.file.ChampionFile;
+import wsg.lol.dao.mongo.intf.ChampionDao;
+import wsg.lol.dao.mybatis.mapper.ChampionMapper;
+import wsg.lol.dao.redis.intf.RedisStringDao;
+import wsg.lol.dao.state.ChampionFile;
 import wsg.lol.pojo.base.BaseResult;
 import wsg.lol.pojo.dmo.champion.ChampionDmo;
 import wsg.lol.pojo.dmo.champion.SkinDmo;
@@ -19,7 +21,6 @@ import java.util.List;
  * wsg
  *
  * @author wangsigen
- * @date 2019-02-26 16:16
  */
 @Service("versionAction")
 public class VersionActionImpl implements VersionAction {
@@ -29,6 +30,12 @@ public class VersionActionImpl implements VersionAction {
 
     @Autowired
     private ChampionFile championFile;
+
+    @Autowired
+    private RedisStringDao redisStringDao;
+
+    @Autowired
+    private ChampionDao championDao;
 
     @Override
     public BaseResult updateChampionLib() {
@@ -58,7 +65,7 @@ public class VersionActionImpl implements VersionAction {
 
     @Override
     public BaseResult updateItemLib() {
-        // TODO
-        return null;
+        LogUtil.info(championDao.getUser("wsg").getAddress().getFull());
+        return BaseResult.success();
     }
 }

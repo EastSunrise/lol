@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="wsg.lol.dao.mapper.PositionMapper">
+<mapper namespace="wsg.lol.dao.mybatis.mapper.PositionMapper">
     <sql id="Base_Column_List">
         ID, SUMMONER_ID, QUEUE, POSITION, SUMMONER_NAME, LEAGUE_ID, LEAGUE_NAME, TIER, 'RANK', LEAGUE_POINTS, WINS,
         LOSSES,

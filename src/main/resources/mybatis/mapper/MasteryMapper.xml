@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="wsg.lol.dao.mapper.MasteryMapper">
+<mapper namespace="wsg.lol.dao.mybatis.mapper.MasteryMapper">
     <sql id="Base_Column_List">
         ID, SUMMONER_ID, CHAMPION_ID, CHEST_GRANTED, CHAMPION_LEVEL, CHAMPION_POINTS, CHAMPION_POINTS_UNTIL_NEXT_LEVEL,
     CHAMPION_POINTS_SINCE_LAST_LEVEL, TOKENS_EARNED, LAST_PLAY_TIME

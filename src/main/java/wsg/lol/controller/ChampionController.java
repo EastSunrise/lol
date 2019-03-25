@@ -8,7 +8,7 @@ import wsg.lol.pojo.dto.query.GetChampionDto;
 import wsg.lol.pojo.dto.query.GetChampionListDto;
 import wsg.lol.pojo.dto.state.champion.ChampionExtDto;
 import wsg.lol.service.action.intf.VersionAction;
-import wsg.lol.service.service.intf.ChampionService;
+import wsg.lol.service.user.intf.ChampionService;
 
 /**
  * wsg

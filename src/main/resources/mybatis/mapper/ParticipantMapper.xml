@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="wsg.lol.dao.mapper.ParticipantMapper">
+<mapper namespace="wsg.lol.dao.mybatis.mapper.ParticipantMapper">
     <sql id="Base_Column_List">
         ID, GAME_ID, PARTICIPANT_ID, SUMMONER_ID, CHAMPION_ID, TEAM_ID, LANE, ROLE, SPELL1_ID,
     SPELL2_ID, HIGHEST_ACHIEVED_SEASON_TIER
