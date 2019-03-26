@@ -9,7 +9,6 @@ import wsg.lol.dao.api.impl.MatchV4;
 import wsg.lol.dao.api.impl.SummonerV4;
 import wsg.lol.dao.mybatis.mapper.MatchMapper;
 import wsg.lol.dao.mybatis.mapper.ParticipantMapper;
-import wsg.lol.dao.mybatis.mapper.PositionMapper;
 import wsg.lol.dao.mybatis.mapper.SummonerMapper;
 import wsg.lol.pojo.base.BaseResult;
 import wsg.lol.pojo.base.Page;
@@ -44,8 +43,6 @@ public class RealServiceImpl implements RealService {
 
     private MatchMapper matchMapper;
 
-    private PositionMapper positionMapper;
-
     private MatchV4 matchV4;
 
     private LeagueV4 leagueV4;
@@ -55,6 +52,58 @@ public class RealServiceImpl implements RealService {
     private ParticipantMapper participantMapper;
 
     private TransactionTemplate transactionTemplate;
+
+    @Override
+    public BaseResult buildBaseSummonerLib() {
+        return buildApexSummonerLib();
+    }
+
+    @Override
+    public BaseResult buildApexSummonerLib() {
+        Set<String> summonerIdSet = new HashSet<>();
+
+        // get apex summoners
+        for (TierEnum tier : TierEnum.apexValues()) {
+            for (RankQueueEnum queue : RankQueueEnum.values()) {
+                LeagueExtDto leagueExtDto = leagueV4.getApexLeagueByQueue(queue, tier);
+                for (ItemDmo itemDmo : leagueExtDto.getItemDmoList()) {
+                    summonerIdSet.add(itemDmo.getSummonerId());
+                }
+            }
+        }
+
+        return saveSummoners(summonerIdSet);
+    }
+
+    @Override
+    public BaseResult buildPositionalSummonerLib(TierEnum tier, DivisionEnum division, PositionEnum position) {
+        Set<String> summonerIdSet = new HashSet<>();
+        for (RankQueueEnum queue : RankQueueEnum.positionalValues()) {
+            for (int i = 0; ; i++) {
+                List<PositionDmo> positionDmoList = leagueV4.getAllPositionLeagues(queue, tier, division,
+                        position, i);
+                if (positionDmoList == null || positionDmoList.isEmpty())
+                    break;
+                for (PositionDmo positionDmo : positionDmoList) {
+                    summonerIdSet.add(positionDmo.getSummonerId());
+                }
+            }
+        }
+
+        return saveSummoners(summonerIdSet);
+    }
+
+    @Override
+    public BaseResult updateLeagues() {
+        // TODO
+        return null;
+    }
+
+    @Override
+    public BaseResult updateMastery() {
+        // TODO
+        return null;
+    }
 
     @Override
     public BaseResult extendSummonerLibByMatch() {
@@ -94,59 +143,9 @@ public class RealServiceImpl implements RealService {
     }
 
     @Override
-    public BaseResult updateLeagues() {
-        return BaseResult.success();
-    }
-
-    @Override
-    public BaseResult buildBaseSummonerLib() {
-        return buildApexSummonerLib();
-    }
-
-    @Override
-    public BaseResult buildApexSummonerLib() {
-        Set<String> summonerIdSet = new HashSet<>();
-
-        // get apex summoners
-        for (TierEnum tier : TierEnum.apexValues()) {
-            for (RankQueueEnum queue : RankQueueEnum.values()) {
-                LeagueExtDto leagueExtDto = leagueV4.getApexLeagueByQueue(queue, tier);
-                for (ItemDmo itemDmo : leagueExtDto.getItemDmoList()) {
-                    summonerIdSet.add(itemDmo.getSummonerId());
-                }
-            }
-        }
-
-        return saveSummoners(summonerIdSet);
-    }
-
-    @Override
     public BaseResult updateSummonerData(SummonerDmo summonerDmo) {
-        List<PositionDmo> positionDmoList = leagueV4.getLeaguePositionsBySummonerId(summonerDmo.getId());
-        positionMapper.batchInsertPosition(positionDmoList);
-        for (PositionDmo positionDmo : positionDmoList) {
-            // wsg
-        }
-
-        return BaseResult.success();
-    }
-
-    @Override
-    public BaseResult buildPositionalSummonerLib(TierEnum tier, DivisionEnum division, PositionEnum position) {
-        Set<String> summonerIdSet = new HashSet<>();
-        for (RankQueueEnum queue : RankQueueEnum.positionalValues()) {
-            for (int i = 0; ; i++) {
-                List<PositionDmo> positionDmoList = leagueV4.getAllPositionLeagues(queue, tier, division,
-                        position, i);
-                if (positionDmoList == null || positionDmoList.isEmpty())
-                    break;
-                for (PositionDmo positionDmo : positionDmoList) {
-                    summonerIdSet.add(positionDmo.getSummonerId());
-                }
-            }
-        }
-
-        return saveSummoners(summonerIdSet);
+        // TODO
+        return null;
     }
 
     private BaseResult saveSummoners(Set<String> summonerIdSet) {
@@ -209,11 +208,6 @@ public class RealServiceImpl implements RealService {
     @Autowired
     public void setMatchMapper(MatchMapper matchMapper) {
         this.matchMapper = matchMapper;
-    }
-
-    @Autowired
-    public void setPositionMapper(PositionMapper positionMapper) {
-        this.positionMapper = positionMapper;
     }
 
     @Autowired

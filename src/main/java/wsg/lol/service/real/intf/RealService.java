@@ -29,20 +29,25 @@ public interface RealService {
     /**
      * Build the lib of positional summoners with specified tier.
      */
+    @Deprecated
     BaseResult buildPositionalSummonerLib(TierEnum tier, DivisionEnum division, PositionEnum position);
 
     /**
-     * Update the information of leagues of all the summoners
-     * <p>
-     * Scheduler
+     * Update summoners' leagues.
+     * Base count each time.
      */
     BaseResult updateLeagues();
 
     /**
+     * Update summoners' mastery.
+     * Base count each time.
+     */
+    BaseResult updateMastery();
+
+    /**
      * Extend the lib of summoners by querying the summoners in one's matches recursively. Add data of summoners and
      * their matches.
-     * <p>
-     * Scheduler.
+     * Base count each time.
      */
     BaseResult extendSummonerLibByMatch();
 
