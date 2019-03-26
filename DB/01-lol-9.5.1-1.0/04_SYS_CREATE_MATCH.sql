@@ -23,7 +23,7 @@ CREATE TABLE m_participant
   PARTICIPANT_ID               INT COMMENT '参与者ID',
   SUMMONER_ID                  VARCHAR(63) COMMENT '召唤师ID',
   CHAMPION_ID                  INT COMMENT '使用的英雄ID',
-  TEAM_ID                      TINYINT COMMENT '100 for blue side. 200 for red side.',
+  TEAM_ID                      SMALLINT COMMENT '100 for blue side. 200 for red side.',
   LANE                         TINYINT COMMENT '分路',
   ROLE                         TINYINT COMMENT '角色',
   SPELL1_ID                    VARCHAR(32) COMMENT '召唤师技能ID',

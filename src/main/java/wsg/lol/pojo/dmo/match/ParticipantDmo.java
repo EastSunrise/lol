@@ -14,7 +14,7 @@ public class ParticipantDmo extends ApiBean {
     private Integer participantId;
     private String summonerId;
     private Integer championId;
-    private String teamId;
+    private Integer teamId;
 
     @JsonKey
     private MatchLaneEnum timeline_lane;
@@ -70,12 +70,11 @@ public class ParticipantDmo extends ApiBean {
         this.championId = championId;
     }
 
-
-    public String getTeamId() {
+    public Integer getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(String teamId) {
+    public void setTeamId(Integer teamId) {
         this.teamId = teamId;
     }
 
