@@ -4,50 +4,57 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import wsg.lol.pojo.dto.query.GetChampionDto;
-import wsg.lol.pojo.dto.query.GetChampionListDto;
-import wsg.lol.pojo.dto.state.champion.ChampionExtDto;
-import wsg.lol.service.action.intf.VersionAction;
+import wsg.lol.pojo.dto.query.state.GetChampionDto;
+import wsg.lol.pojo.dto.query.state.GetChampionListDto;
+import wsg.lol.pojo.dto.state.champion.ChampionDto;
 import wsg.lol.service.user.intf.ChampionService;
+import wsg.lol.service.version.intf.VersionService;
 
 /**
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-08 10:33
  */
 @Controller
 @RequestMapping("/lol/champion")
 public class ChampionController extends BaseController {
 
-    @Autowired
-    private VersionAction versionAction;
+    private VersionService versionService;
 
-    @Autowired
     private ChampionService championService;
 
     @RequestMapping("/index")
     public String championList(GetChampionListDto getChampionListDto, Model model) {
-        model.addAttribute("championList", championService.getChampionList(getChampionListDto).getChampionDmoList());
+        model.addAttribute("championList", championService.getChampionList(getChampionListDto));
         return templatePath("champions");
     }
 
     @RequestMapping("/build")
     public String buildChampionLib(Model model) {
-        return resultPage(model, versionAction.updateChampionLib());
+        return resultPage(model, versionService.updateChampionLib());
     }
 
     @RequestMapping("/individual")
     public String getChampionInfo(String name, Model model) {
         GetChampionDto getChampionDto = new GetChampionDto();
         getChampionDto.setName(name);
-        ChampionExtDto championExtDto = championService.getChampionInfo(getChampionDto);
-        model.addAttribute("championInfo", championExtDto);
+        ChampionDto championDto = championService.getChampionInfo(getChampionDto);
+        model.addAttribute("championInfo", championDto);
         return templatePath("individual");
     }
 
     @Override
     String templatePath(String fileName) {
         return "champion/" + fileName;
+    }
+
+    @Autowired
+    public void setVersionService(VersionService versionService) {
+        this.versionService = versionService;
+    }
+
+    @Autowired
+    public void setChampionService(ChampionService championService) {
+        this.championService = championService;
     }
 }

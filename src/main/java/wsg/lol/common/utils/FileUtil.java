@@ -1,6 +1,7 @@
 package wsg.lol.common.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import wsg.lol.pojo.base.BaseResult;
 
@@ -75,5 +76,9 @@ public class FileUtil {
 
     public static JSONObject readJSONObject(String filePath) {
         return JSON.parseObject(readString(filePath));
+    }
+
+    public static JSONArray readJSONArray(String filePath) {
+        return JSON.parseArray(readString(filePath));
     }
 }

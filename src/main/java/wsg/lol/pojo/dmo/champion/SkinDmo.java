@@ -1,9 +1,9 @@
 package wsg.lol.pojo.dmo.champion;
 
 
-import wsg.lol.pojo.base.BaseDmo;
+import wsg.lol.pojo.base.ApiBean;
 
-public class SkinDmo extends BaseDmo {
+public class SkinDmo extends ApiBean {
 
     private String id;
     private Integer championId;

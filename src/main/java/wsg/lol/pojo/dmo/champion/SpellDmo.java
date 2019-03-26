@@ -3,10 +3,10 @@ package wsg.lol.pojo.dmo.champion;
 
 import wsg.lol.common.annotation.JsonKey;
 import wsg.lol.common.annotation.Label;
-import wsg.lol.pojo.base.BaseDmo;
+import wsg.lol.pojo.base.ApiBean;
 import wsg.lol.pojo.enums.impl.others.SpellTypeEnum;
 
-public class SpellDmo extends BaseDmo {
+public class SpellDmo extends ApiBean {
 
     @JsonKey
     private String id;

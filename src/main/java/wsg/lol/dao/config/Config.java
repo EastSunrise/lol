@@ -16,23 +16,14 @@ import wsg.lol.pojo.enums.impl.others.ServiceProxyEnum;
 @PropertySource(value = {"classpath:config/data-config.properties"})
 public class Config {
 
-    @Value("${data.region}")
+    @Value("${api.region}")
     private ServiceProxyEnum region;
 
-    @Value("${data.apiKey.path}")
+    @Value("${api.apiKey.path}")
     private String apiKeyPath;
 
-    @Value("${data.language}")
-    private String language;
-
-    @Value("${data.globalProxy}")
+    @Value("${api.globalProxy}")
     private RegionalProxyEnum globalProxy;
-
-    @Value("${data.dataDir}")
-    private String dataDir;
-
-    @Value("${data.version}")
-    private String latestVersion;
 
     public ServiceProxyEnum getRegion() {
         return region;
@@ -42,19 +33,7 @@ public class Config {
         return apiKeyPath;
     }
 
-    public String getLanguage() {
-        return language;
-    }
-
     public RegionalProxyEnum getGlobalProxy() {
         return globalProxy;
-    }
-
-    public String getDataDir() {
-        return dataDir;
-    }
-
-    public String getLatestVersion() {
-        return latestVersion;
     }
 }

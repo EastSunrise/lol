@@ -1,12 +1,13 @@
 package wsg.lol.pojo.dto.state.others;
 
-import wsg.lol.pojo.base.BaseResult;
+import wsg.lol.pojo.base.StateBean;
 
 /**
- * @author King
- * @date 2019/2/14
+ * wsg
+ *
+ * @author wangsigen
  */
-public class ImageDto extends BaseResult {
+public class ImageDto extends StateBean {
 
     private String full;
     private String sprite;

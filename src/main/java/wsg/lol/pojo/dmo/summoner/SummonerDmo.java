@@ -1,11 +1,11 @@
 package wsg.lol.pojo.dmo.summoner;
 
 
-import wsg.lol.pojo.base.BaseDmo;
+import wsg.lol.pojo.base.ApiBean;
 
 import java.util.Date;
 
-public class SummonerDmo extends BaseDmo {
+public class SummonerDmo extends ApiBean {
 
     private String id;
     private String accountId;

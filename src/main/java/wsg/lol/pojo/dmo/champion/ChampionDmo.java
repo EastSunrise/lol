@@ -3,9 +3,9 @@ package wsg.lol.pojo.dmo.champion;
 
 import wsg.lol.common.annotation.JsonKey;
 import wsg.lol.common.annotation.Label;
-import wsg.lol.pojo.base.BaseDmo;
+import wsg.lol.pojo.base.ApiBean;
 
-public class ChampionDmo extends BaseDmo {
+public class ChampionDmo extends ApiBean {
 
     private Integer id;
 

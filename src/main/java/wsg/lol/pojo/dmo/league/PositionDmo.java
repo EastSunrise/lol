@@ -1,13 +1,13 @@
 package wsg.lol.pojo.dmo.league;
 
 
-import wsg.lol.pojo.base.BaseDmo;
+import wsg.lol.pojo.base.ApiBean;
 import wsg.lol.pojo.enums.impl.code.TierEnum;
 import wsg.lol.pojo.enums.impl.others.DivisionEnum;
 import wsg.lol.pojo.enums.impl.others.PositionEnum;
 import wsg.lol.pojo.enums.impl.others.RankQueueEnum;
 
-public class PositionDmo extends BaseDmo {
+public class PositionDmo extends ApiBean {
 
     private Integer id;
     private String summonerId;

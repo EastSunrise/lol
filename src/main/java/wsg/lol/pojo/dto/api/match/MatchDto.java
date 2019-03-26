@@ -3,8 +3,8 @@ package wsg.lol.pojo.dto.api.match;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import wsg.lol.common.utils.BeanUtil;
-import wsg.lol.pojo.base.BaseDto;
 import wsg.lol.pojo.base.IJSONTransfer;
+import wsg.lol.pojo.base.StateBean;
 import wsg.lol.pojo.dmo.match.MatchDmo;
 import wsg.lol.pojo.dmo.match.ParticipantDmo;
 
@@ -17,7 +17,7 @@ import java.util.Map;
  * @author King
  * @date 2019/2/12
  */
-public class MatchDto extends BaseDto implements IJSONTransfer {
+public class MatchDto extends StateBean implements IJSONTransfer {
 
     private MatchDmo matchDmo;
 

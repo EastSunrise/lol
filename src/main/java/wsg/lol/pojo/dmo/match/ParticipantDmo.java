@@ -2,12 +2,12 @@ package wsg.lol.pojo.dmo.match;
 
 
 import wsg.lol.common.annotation.JsonKey;
-import wsg.lol.pojo.base.BaseDmo;
+import wsg.lol.pojo.base.ApiBean;
 import wsg.lol.pojo.enums.impl.code.MatchLaneEnum;
 import wsg.lol.pojo.enums.impl.code.MatchRoleEnum;
 import wsg.lol.pojo.enums.impl.code.TierEnum;
 
-public class ParticipantDmo extends BaseDmo {
+public class ParticipantDmo extends ApiBean {
 
     private Long id;
     private Long gameId;

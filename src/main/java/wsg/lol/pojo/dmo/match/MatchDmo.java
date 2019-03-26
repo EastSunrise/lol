@@ -3,12 +3,12 @@ package wsg.lol.pojo.dmo.match;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import wsg.lol.common.serializer.IntEnumSerializer;
-import wsg.lol.pojo.base.BaseDmo;
+import wsg.lol.pojo.base.ApiBean;
 import wsg.lol.pojo.enums.impl.code.*;
 
 import java.util.Date;
 
-public class MatchDmo extends BaseDmo {
+public class MatchDmo extends ApiBean {
 
     private Long gameId;
     private Date gameCreation;

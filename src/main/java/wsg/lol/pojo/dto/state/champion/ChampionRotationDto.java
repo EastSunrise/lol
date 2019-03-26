@@ -1,6 +1,6 @@
 package wsg.lol.pojo.dto.state.champion;
 
-import wsg.lol.pojo.base.BaseDto;
+import wsg.lol.pojo.base.StateBean;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * @author King
  * @date 2019/2/11
  */
-public class ChampionRotationDto extends BaseDto {
+public class ChampionRotationDto extends StateBean {
 
     private List<Integer> freeChampionIdsForNewPlayers;
     private List<Integer> freeChampionIds;

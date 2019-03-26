@@ -31,13 +31,13 @@ spring:
     static-locations: classpath:/static/, classpath:/
   data:
     mongodb:
-      uri: mongodb://localhost/campaign
+      uri: mongodb://localhost/lol
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   type-aliases-package: wsg.lol.pojo.dmo
   configuration:
     map-underscore-to-camel-case: true
-  type-handlers-package: wsg.lol.dao.handler
+  type-handlers-package: wsg.lol.dao.mybatis.typeHandler
 server:
   port: 8090
 logging:

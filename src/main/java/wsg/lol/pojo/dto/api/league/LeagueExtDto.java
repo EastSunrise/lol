@@ -3,8 +3,8 @@ package wsg.lol.pojo.dto.api.league;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import wsg.lol.common.utils.BeanUtil;
-import wsg.lol.pojo.base.BaseDto;
 import wsg.lol.pojo.base.IJSONTransfer;
+import wsg.lol.pojo.base.StateBean;
 import wsg.lol.pojo.dmo.league.ItemDmo;
 import wsg.lol.pojo.dmo.league.LeagueDmo;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @author King
  * @date 2019/2/12
  */
-public class LeagueExtDto extends BaseDto implements IJSONTransfer {
+public class LeagueExtDto extends StateBean implements IJSONTransfer {
 
     private LeagueDmo leagueDmo;
 

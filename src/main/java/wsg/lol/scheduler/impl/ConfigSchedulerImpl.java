@@ -20,7 +20,6 @@ import java.util.Locale;
 @Component
 public class ConfigSchedulerImpl implements ConfigScheduler {
 
-    @Autowired
     private Config config;
 
     @Scheduled(fixedRate = DateUtil.ONE_MINUTE)
@@ -30,9 +29,15 @@ public class ConfigSchedulerImpl implements ConfigScheduler {
         // Pacific Time Zone to local time.
         ApiKey.setExpiredTime(DateUtil.getDate(apiObject.getString("expiredTime"), DateUtil.API_EXPIRED_FORMAT, "PST",
                 Locale.ENGLISH));
+        ApiKey.setCurrentVersion(apiObject.getString("currentVersion"));
     }
 
     @Scheduled(fixedRate = DateUtil.ONE_MINUTE * 3)
     public void supplySummoners() {
+    }
+
+    @Autowired
+    public void setConfig(Config config) {
+        this.config = config;
     }
 }

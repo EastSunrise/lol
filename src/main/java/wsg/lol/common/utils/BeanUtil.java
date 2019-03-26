@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import wsg.lol.common.annotation.JsonKey;
 import wsg.lol.common.annotation.Label;
 import wsg.lol.common.annotation.Optional;
-import wsg.lol.pojo.base.BaseDmo;
+import wsg.lol.pojo.base.ApiBean;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ public class BeanUtil {
         return params;
     }
 
-    public static <T extends BaseDmo> void parseFromJSONObject(T target, JSONObject jsonObject) {
+    public static <T extends ApiBean> void parseFromJSONObject(T target, JSONObject jsonObject) {
         Class clazz = target.getClass();
         try {
             Field[] fields = clazz.getDeclaredFields();

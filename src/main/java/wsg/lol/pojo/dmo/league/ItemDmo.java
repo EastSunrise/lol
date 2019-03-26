@@ -2,10 +2,10 @@ package wsg.lol.pojo.dmo.league;
 
 
 import wsg.lol.common.annotation.JsonKey;
-import wsg.lol.pojo.base.BaseDmo;
+import wsg.lol.pojo.base.ApiBean;
 import wsg.lol.pojo.enums.impl.others.DivisionEnum;
 
-public class ItemDmo extends BaseDmo {
+public class ItemDmo extends ApiBean {
 
     private Integer id;
     private String summonerId;

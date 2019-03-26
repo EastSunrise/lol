@@ -1,10 +1,10 @@
 package wsg.lol.pojo.dmo.champion;
 
-import wsg.lol.pojo.base.BaseDmo;
+import wsg.lol.pojo.base.ApiBean;
 
 import java.util.Date;
 
-public class MasteryDmo extends BaseDmo {
+public class MasteryDmo extends ApiBean {
 
     private Integer id;
     private String summonerId;

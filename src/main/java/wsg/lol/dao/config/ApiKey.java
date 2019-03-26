@@ -16,6 +16,8 @@ public class ApiKey {
 
     private static Date expiredTime;
 
+    private static String currentVersion;
+
     public static boolean hasValidKey() {
         if (apiKey == null) {
             LogUtil.info("There isn't api key.");
@@ -41,5 +43,13 @@ public class ApiKey {
 
     public static void setExpiredTime(Date expiredTime) {
         ApiKey.expiredTime = expiredTime;
+    }
+
+    public static String getCurrentVersion() {
+        return currentVersion;
+    }
+
+    public static void setCurrentVersion(String currentVersion) {
+        ApiKey.currentVersion = currentVersion;
     }
 }
