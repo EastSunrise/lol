@@ -41,7 +41,6 @@ public class SchedulerImpl implements Scheduler {
         }
     }
 
-
     private boolean hasDataDragon(String latestVersion) {
         boolean ret = new File(FileUtil.concat2Path(stateConfig.getDataDir(), latestVersion)).exists();
         if (!ret) {
@@ -50,7 +49,6 @@ public class SchedulerImpl implements Scheduler {
         }
         return ret;
     }
-
 
     @Autowired
     public void setVersionService(VersionService versionService) {
