@@ -10,8 +10,8 @@ import wsg.lol.pojo.base.BaseResult;
 import wsg.lol.pojo.dmo.league.PositionDmo;
 import wsg.lol.pojo.dmo.summoner.SummonerDmo;
 import wsg.lol.pojo.dto.query.GetSummonerDto;
-import wsg.lol.pojo.dto.result.SummonerResult;
 import wsg.lol.pojo.event.SummonerEvent;
+import wsg.lol.pojo.result.SummonerResult;
 import wsg.lol.service.user.intf.SummonerService;
 
 /**
@@ -23,13 +23,10 @@ import wsg.lol.service.user.intf.SummonerService;
 @Service("summonerService")
 public class SummonerServiceImpl implements SummonerService {
 
-    @Autowired
     private ApplicationEventPublisher eventPublisher;
 
-    @Autowired
     private SummonerMapper summonerMapper;
 
-    @Autowired
     private PositionMapper positionMapper;
 
     @Override
@@ -55,4 +52,18 @@ public class SummonerServiceImpl implements SummonerService {
         return summonerResult;
     }
 
+    @Autowired
+    public void setEventPublisher(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
+    }
+
+    @Autowired
+    public void setSummonerMapper(SummonerMapper summonerMapper) {
+        this.summonerMapper = summonerMapper;
+    }
+
+    @Autowired
+    public void setPositionMapper(PositionMapper positionMapper) {
+        this.positionMapper = positionMapper;
+    }
 }

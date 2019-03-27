@@ -8,6 +8,26 @@ import java.net.URL;
  */
 public class HttpHelper {
 
+    public static String getString(String urlStr) {
+        StringBuilder builder = new StringBuilder();
+        try {
+            URL url = new URL(urlStr);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            String inputLine;
+            try {
+                while ((inputLine = reader.readLine()) != null) {
+                    builder.append(inputLine);
+                }
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return builder.toString();
+    }
+
     public static void downloadData(String urlStr, String savePath) {
         LogUtil.info("Downloading from: " + urlStr + "  to: " + savePath);
         File saveFile = new File(savePath);

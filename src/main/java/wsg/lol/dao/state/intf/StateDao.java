@@ -15,13 +15,15 @@ import java.util.List;
  */
 public interface StateDao {
 
-    List<ChampionDto> readChampions();
+    String readLatestVersion();
 
-    ItemExtDto readItems();
+    List<ChampionDto> readChampions(String version);
 
-    List<MapDto> readMaps();
+    ItemExtDto readItems(String version);
 
-    List<RuneTreeDto> readRunes();
+    List<MapDto> readMaps(String version);
 
-    List<SummonerSpellDto> readSummonerSpells();
+    List<RuneTreeDto> readRunes(String version);
+
+    List<SummonerSpellDto> readSummonerSpells(String version);
 }

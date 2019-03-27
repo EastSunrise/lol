@@ -64,7 +64,7 @@ public abstract class AbstractAspect {
      * Whether and when the target method will be called.
      * Replace the arguments of the method when called or the return value after being called if necessary.
      * <p>
-     * The first argument of the method must be org.aspectj.lang .ProceedingJoinPoint.
+     * The first argument of the method must be org.aspectj.lang.ProceedingJoinPoint.
      * <p>
      * annotation @Around(value = "")
      */

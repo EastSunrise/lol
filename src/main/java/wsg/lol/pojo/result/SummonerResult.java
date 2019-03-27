@@ -1,4 +1,4 @@
-package wsg.lol.pojo.dto.result;
+package wsg.lol.pojo.result;
 
 import wsg.lol.pojo.base.BaseResult;
 import wsg.lol.pojo.dmo.league.PositionDmo;

@@ -29,6 +29,11 @@ public class MongoDaoImpl implements MongoDao {
     }
 
     @Override
+    public <T extends StateBean> T insertDocument(T t) {
+        return mongoTemplate.insert(t);
+    }
+
+    @Override
     public <T extends StateBean> Collection<T> insertDocuments(List<T> beanList) {
         return mongoTemplate.insertAll(beanList);
     }
@@ -46,6 +51,11 @@ public class MongoDaoImpl implements MongoDao {
     @Override
     public <T extends StateBean, V extends QueryStateDto> List<T> getCollectionsByCond(V cond, Class<T> clazz) {
         return mongoTemplate.find(getQueryByCond(cond), clazz);
+    }
+
+    @Override
+    public <T extends StateBean, V extends QueryStateDto> List<T> getCollections(Class<T> clazz) {
+        return mongoTemplate.findAll(clazz);
     }
 
     /**

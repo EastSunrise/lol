@@ -6,18 +6,18 @@ import wsg.lol.common.utils.LogUtil;
 import wsg.lol.dao.mongo.intf.MongoDao;
 import wsg.lol.dao.state.intf.StateDao;
 import wsg.lol.pojo.base.BaseResult;
-import wsg.lol.pojo.base.StateBean;
 import wsg.lol.pojo.dto.state.champion.ChampionDto;
 import wsg.lol.pojo.dto.state.item.GroupDto;
 import wsg.lol.pojo.dto.state.item.ItemDto;
 import wsg.lol.pojo.dto.state.item.ItemExtDto;
 import wsg.lol.pojo.dto.state.item.TreeDto;
 import wsg.lol.pojo.dto.state.others.MapDto;
+import wsg.lol.pojo.dto.state.others.VersionDto;
 import wsg.lol.pojo.dto.state.rune.RuneTreeDto;
 import wsg.lol.pojo.dto.state.spell.SummonerSpellDto;
+import wsg.lol.pojo.result.VersionResult;
 import wsg.lol.service.version.intf.VersionService;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -33,45 +33,60 @@ public class VersionServiceImpl implements VersionService {
     private MongoDao mongoDao;
 
     @Override
-    public BaseResult initLib() {
-        LogUtil.info("Start to init the lib.");
-        List<Class<? extends StateBean>> classes = new LinkedList<>();
-        classes.add(ChampionDto.class);
-        classes.add(ItemDto.class);
-        classes.add(GroupDto.class);
-        classes.add(TreeDto.class);
-        classes.add(RuneTreeDto.class);
-        classes.add(MapDto.class);
-        classes.add(SummonerSpellDto.class);
-
-        for (Class<? extends StateBean> clazz : classes) {
-            mongoDao.dropCollection(clazz);
+    public VersionResult getVersion() {
+        VersionResult versionResult = new VersionResult();
+        List<VersionDto> versionDtoList = mongoDao.getCollections(VersionDto.class);
+        if (!versionDtoList.isEmpty()) {
+            versionResult.setCurrentVersion(versionDtoList.get(0).getVersion());
         }
+        versionResult.setLatestVersion(stateDao.readLatestVersion());
+        return versionResult;
+    }
 
+    @Override
+    public BaseResult updateVersion(String version) {
+        BaseResult baseResult = updateChampionLib(version);
+        if (!baseResult.isSuccess()) {
+            return baseResult;
+        }
+        baseResult = updateItemLib(version);
+        if (!baseResult.isSuccess()) {
+            return baseResult;
+        }
+        baseResult = updateMapLib(version);
+        if (!baseResult.isSuccess()) {
+            return baseResult;
+        }
+        baseResult = updateRuneLib(version);
+        if (!baseResult.isSuccess()) {
+            return baseResult;
+        }
+        baseResult = updateSummonerSpellLib(version);
+        if (!baseResult.isSuccess()) {
+            return baseResult;
+        }
+        mongoDao.dropCollection(VersionDto.class);
+        VersionDto versionDto = new VersionDto();
+        versionDto.setVersion(version);
+        mongoDao.insertDocument(versionDto);
         return BaseResult.success();
     }
 
     @Override
-    public BaseResult updateLib() {
-        updateChampionLib();
-        updateItemLib();
-        updateMapLib();
-        updateRuneLib();
-        updateSummonerSpellLib();
-        return BaseResult.success();
-    }
-
-    @Override
-    public BaseResult updateChampionLib() {
+    public BaseResult updateChampionLib(String version) {
         LogUtil.info("Start to update the data of champions.");
-        mongoDao.insertDocuments(stateDao.readChampions());
+        mongoDao.dropCollection(ChampionDto.class);
+        mongoDao.insertDocuments(stateDao.readChampions(version));
         return BaseResult.success();
     }
 
     @Override
-    public BaseResult updateItemLib() {
+    public BaseResult updateItemLib(String version) {
         LogUtil.info("Start to update the data of items.");
-        ItemExtDto itemExtDto = stateDao.readItems();
+        mongoDao.dropCollection(ItemDto.class);
+        mongoDao.dropCollection(GroupDto.class);
+        mongoDao.dropCollection(TreeDto.class);
+        ItemExtDto itemExtDto = stateDao.readItems(version);
         mongoDao.insertDocuments(itemExtDto.getItemDtoList());
         mongoDao.insertDocuments(itemExtDto.getGroupDtoList());
         mongoDao.insertDocuments(itemExtDto.getTreeDtoList());
@@ -79,23 +94,26 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public BaseResult updateRuneLib() {
+    public BaseResult updateRuneLib(String version) {
         LogUtil.info("Start to update the data of runes.");
-        mongoDao.insertDocuments(stateDao.readRunes());
+        mongoDao.dropCollection(RuneTreeDto.class);
+        mongoDao.insertDocuments(stateDao.readRunes(version));
         return BaseResult.success();
     }
 
     @Override
-    public BaseResult updateSummonerSpellLib() {
+    public BaseResult updateSummonerSpellLib(String version) {
         LogUtil.info("Start to update the data of summoner spells.");
-        mongoDao.insertDocuments(stateDao.readSummonerSpells());
+        mongoDao.dropCollection(SummonerSpellDto.class);
+        mongoDao.insertDocuments(stateDao.readSummonerSpells(version));
         return BaseResult.success();
     }
 
     @Override
-    public BaseResult updateMapLib() {
+    public BaseResult updateMapLib(String version) {
         LogUtil.info("Start to update the data of maps.");
-        mongoDao.insertDocuments(stateDao.readMaps());
+        mongoDao.dropCollection(MapDto.class);
+        mongoDao.insertDocuments(stateDao.readMaps(version));
         return BaseResult.success();
     }
 

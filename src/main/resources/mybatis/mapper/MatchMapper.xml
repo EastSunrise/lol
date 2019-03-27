@@ -26,14 +26,20 @@
         where GAME_ID = #{gameId,jdbcType=BIGINT}
     </delete>
     <insert id="insertIgnore" parameterType="wsg.lol.pojo.dmo.match.MatchDmo">
-        insert IGNORE into m_match (GAME_ID, GAME_CREATION, GAME_DURATION,
-                             GAME_VERSION, GAME_MODE, GAME_TYPE,
-                             SEASON_ID, QUEUE_ID, PLATFORM_ID,
-                             MAP_ID, FRAME_INTERVAL)
-        values (#{gameId,jdbcType=BIGINT}, #{gameCreation,jdbcType=TIMESTAMP}, #{gameDuration,jdbcType=INTEGER},
-                #{gameVersion,jdbcType=VARCHAR}, #{gameMode,jdbcType=TINYINT}, #{gameType,jdbcType=TINYINT},
-                #{seasonId,jdbcType=TINYINT}, #{queueId,jdbcType=SMALLINT}, #{platformId,jdbcType=TINYINT},
-                #{mapId,jdbcType=TINYINT}, #{frameInterval,jdbcType=INTEGER})
+        insert IGNORE into m_match
+        (GAME_ID, GAME_CREATION, GAME_DURATION, GAME_VERSION, GAME_MODE, GAME_TYPE, SEASON_ID, QUEUE_ID, PLATFORM_ID,
+         MAP_ID, FRAME_INTERVAL)
+        values (#{gameId},
+                #{gameCreation},
+                #{gameDuration},
+                #{gameVersion},
+                #{gameMode},
+                #{gameType},
+                #{seasonId},
+                #{queueId},
+                #{platformId},
+                #{mapId},
+                #{frameInterval})
     </insert>
     <insert id="insertSelective" parameterType="wsg.lol.pojo.dmo.match.MatchDmo">
         insert into m_match

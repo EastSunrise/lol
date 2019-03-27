@@ -8,7 +8,6 @@ import wsg.lol.pojo.dto.query.state.GetChampionDto;
 import wsg.lol.pojo.dto.query.state.GetChampionListDto;
 import wsg.lol.pojo.dto.state.champion.ChampionDto;
 import wsg.lol.service.user.intf.ChampionService;
-import wsg.lol.service.version.intf.VersionService;
 
 /**
  * wsg
@@ -19,19 +18,12 @@ import wsg.lol.service.version.intf.VersionService;
 @RequestMapping("/lol/champion")
 public class ChampionController extends BaseController {
 
-    private VersionService versionService;
-
     private ChampionService championService;
 
     @RequestMapping("/index")
     public String championList(GetChampionListDto getChampionListDto, Model model) {
         model.addAttribute("championList", championService.getChampionList(getChampionListDto));
         return templatePath("champions");
-    }
-
-    @RequestMapping("/build")
-    public String buildChampionLib(Model model) {
-        return resultPage(model, versionService.updateChampionLib());
     }
 
     @RequestMapping("/individual")
@@ -46,11 +38,6 @@ public class ChampionController extends BaseController {
     @Override
     String templatePath(String fileName) {
         return "champion/" + fileName;
-    }
-
-    @Autowired
-    public void setVersionService(VersionService versionService) {
-        this.versionService = versionService;
     }
 
     @Autowired

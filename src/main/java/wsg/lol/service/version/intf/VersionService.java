@@ -1,6 +1,7 @@
 package wsg.lol.service.version.intf;
 
 import wsg.lol.pojo.base.BaseResult;
+import wsg.lol.pojo.result.VersionResult;
 
 /**
  * wsg
@@ -10,37 +11,37 @@ import wsg.lol.pojo.base.BaseResult;
 public interface VersionService {
 
     /**
-     * clear all old data.
+     * Check if the latest version.
      */
-    BaseResult initLib();
+    VersionResult getVersion();
 
     /**
-     * Update the data once the version changes.
+     * Update the static data ot the certain version.
      */
-    BaseResult updateLib();
+    BaseResult updateVersion(String version);
 
     /**
      * Update the data of champions once the version changes.
      */
-    BaseResult updateChampionLib();
+    BaseResult updateChampionLib(String version);
 
     /**
      * Update the data of items once the version changes.
      */
-    BaseResult updateItemLib();
+    BaseResult updateItemLib(String version);
 
     /**
      * Update the data of reforged runes once the version changes.
      */
-    BaseResult updateRuneLib();
+    BaseResult updateRuneLib(String version);
 
     /**
      * Update the data of summoner spells once the version changes.
      */
-    BaseResult updateSummonerSpellLib();
+    BaseResult updateSummonerSpellLib(String version);
 
     /**
      * Update the data of maps once the version changes.
      */
-    BaseResult updateMapLib();
+    BaseResult updateMapLib(String version);
 }

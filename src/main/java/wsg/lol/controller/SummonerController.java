@@ -1,14 +1,13 @@
 package wsg.lol.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import wsg.lol.pojo.base.BaseResult;
 import wsg.lol.pojo.dto.query.GetSummonerDto;
-import wsg.lol.pojo.dto.result.SummonerResult;
+import wsg.lol.pojo.result.SummonerResult;
 import wsg.lol.service.user.intf.SummonerService;
 
 /**
@@ -21,10 +20,6 @@ import wsg.lol.service.user.intf.SummonerService;
 @RequestMapping("/lol/summoner")
 public class SummonerController extends BaseController {
 
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
-
-    @Autowired
     private SummonerService summonerService;
 
     @RequestMapping("/index")
@@ -52,5 +47,10 @@ public class SummonerController extends BaseController {
     @Override
     String templatePath(String fileName) {
         return "summoner/" + fileName;
+    }
+
+    @Autowired
+    public void setSummonerService(SummonerService summonerService) {
+        this.summonerService = summonerService;
     }
 }

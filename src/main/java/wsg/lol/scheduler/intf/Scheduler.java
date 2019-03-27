@@ -5,5 +5,5 @@ package wsg.lol.scheduler.intf;
  *
  * @author wangsigen
  */
-public interface ConfigScheduler {
+public interface Scheduler {
 }

@@ -11,26 +11,26 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @PropertySource(value = {"classpath:config/data-config.properties"})
-public class FileConfig {
+public class StateConfig {
 
-    @Value("${file.dataDir}")
+    @Value("${state.dataDir}")
     private String dataDir;
 
-    @Value("${file.version}")
-    private String latestVersion;
-
-    @Value("${file.language}")
+    @Value("${state.language}")
     private String language;
+
+    @Value("${state.versionPath}")
+    private String versionPath;
 
     public String getDataDir() {
         return dataDir;
     }
 
-    public String getLatestVersion() {
-        return latestVersion;
-    }
-
     public String getLanguage() {
         return language;
+    }
+
+    public String getVersionPath() {
+        return versionPath;
     }
 }

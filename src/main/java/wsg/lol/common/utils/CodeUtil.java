@@ -7,7 +7,6 @@ import java.util.Map;
 
 /**
  * @author King
- * @date 2019/2/11
  */
 public class CodeUtil {
 
@@ -20,6 +19,9 @@ public class CodeUtil {
     }
 
     public static String encodeMap2UrlParams(Map<String, Object> params) {
+        if (params == null) {
+            return "";
+        }
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             Object value = entry.getValue();

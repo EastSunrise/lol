@@ -185,7 +185,7 @@ public class RealServiceImpl implements RealService {
 
             // save matches.
             transactionTemplate.execute(transactionStatus -> {
-                if (1 != matchMapper.insertSelective(matchDto.getMatchDmo())) {
+                if (1 != matchMapper.insertIgnore(matchDto.getMatchDmo())) {
                     LogUtil.info("Fail to insert matchDmo");
                     return BaseResult.fail();
                 }

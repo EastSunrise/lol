@@ -5,8 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.utils.FileUtil;
+import wsg.lol.common.utils.HttpHelper;
 import wsg.lol.common.utils.LogUtil;
-import wsg.lol.dao.config.FileConfig;
+import wsg.lol.dao.config.StateConfig;
 import wsg.lol.dao.state.intf.StateDao;
 import wsg.lol.pojo.base.StateBean;
 import wsg.lol.pojo.dto.state.champion.ChampionDto;
@@ -30,17 +31,23 @@ import java.util.Map;
 @Component
 public class StateDaoImpl implements StateDao {
 
-    private FileConfig config;
+    private StateConfig config;
 
     @Override
-    public List<ChampionDto> readChampions() {
-        return getDataList(KeyEnum.championFull, ChampionDto.class);
+    public String readLatestVersion() {
+        List<String> versions = JSON.parseArray(HttpHelper.getString(config.getVersionPath()), String.class);
+        return versions.get(0);
     }
 
     @Override
-    public ItemExtDto readItems() {
+    public List<ChampionDto> readChampions(String version) {
+        return getDataList(KeyEnum.championFull, ChampionDto.class, version);
+    }
+
+    @Override
+    public ItemExtDto readItems(String version) {
         ItemExtDto itemExtDto = new ItemExtDto();
-        JSONObject data = getDataByKey(KeyEnum.item);
+        JSONObject data = getDataByKey(KeyEnum.item, version);
 
         JSONObject item = data.getJSONObject("data");
         List<ItemDto> itemDtoList = new LinkedList<>();
@@ -61,23 +68,23 @@ public class StateDaoImpl implements StateDao {
     }
 
     @Override
-    public List<MapDto> readMaps() {
-        return getDataList(KeyEnum.map, MapDto.class);
+    public List<MapDto> readMaps(String version) {
+        return getDataList(KeyEnum.map, MapDto.class, version);
     }
 
     @Override
-    public List<RuneTreeDto> readRunes() {
-        String str = FileUtil.readString(FileUtil.concat2Path(getDir(), KeyEnum.runesReforged + ".json"));
+    public List<RuneTreeDto> readRunes(String version) {
+        String str = FileUtil.readString(FileUtil.concat2Path(getDir(version), KeyEnum.runesReforged + ".json"));
         return JSON.parseArray(str, RuneTreeDto.class);
     }
 
     @Override
-    public List<SummonerSpellDto> readSummonerSpells() {
-        return getDataList(KeyEnum.summoner, SummonerSpellDto.class);
+    public List<SummonerSpellDto> readSummonerSpells(String version) {
+        return getDataList(KeyEnum.summoner, SummonerSpellDto.class, version);
     }
 
-    private <T extends StateBean> List<T> getDataList(KeyEnum keyEnum, Class<T> clazz) {
-        JSONObject data = getDataByKey(keyEnum).getJSONObject("data");
+    private <T extends StateBean> List<T> getDataList(KeyEnum keyEnum, Class<T> clazz, String version) {
+        JSONObject data = getDataByKey(keyEnum, version).getJSONObject("data");
         List<T> dataList = new LinkedList<>();
         for (Map.Entry<String, Object> entry : data.entrySet()) {
             LogUtil.info("Parsing json to java: " + keyEnum + ", " + entry.getKey());
@@ -86,16 +93,16 @@ public class StateDaoImpl implements StateDao {
         return dataList;
     }
 
-    private JSONObject getDataByKey(KeyEnum key) {
-        return FileUtil.readJSONObject(FileUtil.concat2Path(getDir(), key + ".json"));
+    private JSONObject getDataByKey(KeyEnum key, String version) {
+        return FileUtil.readJSONObject(FileUtil.concat2Path(getDir(version), key + ".json"));
     }
 
-    private String getDir() {
-        return FileUtil.concat2Path(config.getDataDir(), config.getLatestVersion(), "data", config.getLanguage());
+    private String getDir(String version) {
+        return FileUtil.concat2Path(config.getDataDir(), version, "data", config.getLanguage());
     }
 
     @Autowired
-    public void setConfig(FileConfig config) {
+    public void setConfig(StateConfig config) {
         this.config = config;
     }
 

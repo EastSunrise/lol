@@ -43,3 +43,5 @@ server:
 logging:
   level:
     wsg.lol: debug
+  path: /logs/
+  file: lol.log

@@ -7,8 +7,7 @@ import wsg.lol.common.utils.BeanUtil;
 import wsg.lol.common.utils.CodeUtil;
 import wsg.lol.common.utils.DateUtil;
 import wsg.lol.common.utils.LogUtil;
-import wsg.lol.dao.config.ApiKey;
-import wsg.lol.dao.config.Config;
+import wsg.lol.dao.config.ApiConfig;
 import wsg.lol.pojo.base.IJSONTransfer;
 import wsg.lol.pojo.base.QueryDto;
 
@@ -32,21 +31,20 @@ public class BaseApi {
 
     private static final String HTTPS = "https://";
 
-    @Autowired
-    private Config config;
+    private ApiConfig apiConfig;
 
     // get valid api key
     // limit the rate of querying.
     // exclusive access
-    private static synchronized Map<String, String> getRequestHeaders() {
+    private synchronized Map<String, String> getRequestHeaders() {
         Map<String, String> headers = new HashMap<>();
         headers.put("Origin", "https://developer.riotgames.com");
         headers.put("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
-        while (!ApiKey.hasValidKey()) {
+        while (!apiConfig.hasValidKey()) {
             LogUtil.info("There isn't valid key.");
             DateUtil.threadSleep(DateUtil.ONE_SECOND);
         }
-        headers.put("X-Riot-Token", ApiKey.getApiKey());
+        headers.put("X-Riot-Token", apiConfig.getApiKey());
         headers.put("Accept-Language", "zh-CN,zh;q=0.9,zh-TW;q=0.8");
         headers.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
                 "Chrome/72.0.3626.121 Safari/537.36");
@@ -55,10 +53,10 @@ public class BaseApi {
 
     private String getJSONString(String apiRef, Map<String, Object> pathParams,
                                  Map<String, Object> queryParams) {
-        return getJSONString(config.getRegion().getHost(), apiRef, pathParams, queryParams);
+        return getJSONString(apiConfig.getRegion().getHost(), apiRef, pathParams, queryParams);
     }
 
-    private static String doHttpGet(String urlStr, Map<String, String> requestHeaders) {
+    private String doHttpGet(String urlStr, Map<String, String> requestHeaders) {
         LogUtil.info("Getting from " + urlStr);
         while (true) {
             try {
@@ -104,7 +102,7 @@ public class BaseApi {
     }
 
     protected <T> T getDataObject(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
-        String jsonStr = getJSONString(apiRef, pathParams, new HashMap<String, Object>());
+        String jsonStr = getJSONString(apiRef, pathParams, new HashMap<>());
         return JSON.parseObject(jsonStr, clazz);
     }
 
@@ -144,5 +142,10 @@ public class BaseApi {
             object.parseFromJSONObject(JSON.parseObject(jsonStr));
         }
         return object;
+    }
+
+    @Autowired
+    public void setApiConfig(ApiConfig apiConfig) {
+        this.apiConfig = apiConfig;
     }
 }

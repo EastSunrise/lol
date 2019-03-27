@@ -19,6 +19,11 @@ public interface MongoDao {
     <T extends StateBean> void dropCollection(Class<T> clazz);
 
     /**
+     * Insert a document.
+     */
+    <T extends StateBean> T insertDocument(T t);
+
+    /**
      * Batch insert list of documents.
      */
     <T extends StateBean> Collection<T> insertDocuments(List<T> beanList);
@@ -37,4 +42,9 @@ public interface MongoDao {
      * Get the beans specified by condition.
      */
     <T extends StateBean, V extends QueryStateDto> List<T> getCollectionsByCond(V cond, Class<T> clazz);
+
+    /**
+     * Get all the beans.
+     */
+    <T extends StateBean, V extends QueryStateDto> List<T> getCollections(Class<T> clazz);
 }
