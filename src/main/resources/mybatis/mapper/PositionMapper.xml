@@ -59,7 +59,7 @@
                LEAGUE_ID,
                LEAGUE_NAME,
                TIER,
-               'RANK',
+               DIVISION AS "rank",
                LEAGUE_POINTS,
                WINS,
                LOSSES,

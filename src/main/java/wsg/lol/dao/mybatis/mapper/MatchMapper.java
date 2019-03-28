@@ -18,8 +18,6 @@ public interface MatchMapper {
 
     int insertSelective(MatchDmo record);
 
-    MatchDmo selectByPrimaryKey(Long gameId);
-
     int updateByPrimaryKeySelective(MatchDmo record);
 
     int updateByPrimaryKey(MatchDmo record);

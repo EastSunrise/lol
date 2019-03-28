@@ -52,7 +52,7 @@ public class BaseApi {
         headers.put("Origin", "https://developer.riotgames.com");
         headers.put("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
         while (!apiConfig.hasValidKey()) {
-            threadSleep(DateUtil.ONE_SECOND);
+            threadSleep(DateUtil.ONE_HOUR);
         }
         headers.put("X-Riot-Token", apiConfig.getApiKey());
         headers.put("Accept-Language", "zh-CN,zh;q=0.9,zh-TW;q=0.8");

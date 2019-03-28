@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="wsg.lol.dao.mybatis.mapper.MatchMapper">
-    <sql id="Base_Column_List">
-        GAME_ID, GAME_CREATION, GAME_DURATION, GAME_VERSION, GAME_MODE, GAME_TYPE, SEASON_ID,
-    QUEUE_ID, PLATFORM_ID, MAP_ID, FRAME_INTERVAL
-    </sql>
-    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dmo.match.MatchDmo" parameterType="java.lang.Long">
-        select
-        <include refid="Base_Column_List"/>
-        from m_match
-        where GAME_ID = #{gameId,jdbcType=BIGINT}
-    </select>
     <select id="checkMatchesNotExist" resultType="java.lang.Long">
         SELECT TEMP.ID1 FROM
         <foreach collection="list" item="item" separator="union" open="(" close=")">
@@ -34,7 +24,7 @@
                CHECKED
         FROM m_reference
         ORDER BY CHECKED
-            LIMIT #{startIndex}, #{pageSize}
+        LIMIT #{startIndex}, #{pageSize}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete
@@ -136,7 +126,7 @@
         values (#{gameId},
                 #{summonerId},
                 #{lane},
-                #{campionId},
+                #{championId},
                 #{platformId},
                 #{seasonId},
                 #{queue},
