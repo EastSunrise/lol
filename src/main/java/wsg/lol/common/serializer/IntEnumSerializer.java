@@ -10,7 +10,6 @@ import java.lang.reflect.Type;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-08 14:54
  */
 public class IntEnumSerializer extends EnumSerializer {
 

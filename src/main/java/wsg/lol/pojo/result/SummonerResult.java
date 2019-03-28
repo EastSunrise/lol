@@ -6,7 +6,6 @@ import wsg.lol.pojo.dmo.summoner.SummonerDmo;
 
 /**
  * @author King
- * @date 2019/3/9
  */
 public class SummonerResult extends BaseResult {
 

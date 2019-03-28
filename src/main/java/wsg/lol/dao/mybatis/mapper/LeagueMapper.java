@@ -1,22 +1,24 @@
 package wsg.lol.dao.mybatis.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import wsg.lol.pojo.dmo.league.LeagueDmo;
+import org.springframework.stereotype.Repository;
 import wsg.lol.pojo.dmo.league.PositionDmo;
+import wsg.lol.pojo.dto.api.league.LeagueListDto;
 
+@Repository
 @Mapper
 public interface LeagueMapper {
     int deleteByPrimaryKey(String leagueId);
 
-    int insert(LeagueDmo record);
+    int insert(LeagueListDto record);
 
-    int insertSelective(LeagueDmo record);
+    int insertSelective(LeagueListDto record);
 
-    LeagueDmo selectByPrimaryKey(String leagueId);
+    LeagueListDto selectByPrimaryKey(String leagueId);
 
-    int updateByPrimaryKeySelective(LeagueDmo record);
+    int updateByPrimaryKeySelective(LeagueListDto record);
 
-    int updateByPrimaryKey(LeagueDmo record);
+    int updateByPrimaryKey(LeagueListDto record);
 
     PositionDmo selectBySummonerId(String summonerId);
 }

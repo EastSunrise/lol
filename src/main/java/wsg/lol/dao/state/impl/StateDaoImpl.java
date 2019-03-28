@@ -2,11 +2,12 @@ package wsg.lol.dao.state.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.utils.FileUtil;
 import wsg.lol.common.utils.HttpHelper;
-import wsg.lol.common.utils.LogUtil;
 import wsg.lol.dao.config.StateConfig;
 import wsg.lol.dao.state.intf.StateDao;
 import wsg.lol.pojo.base.StateBean;
@@ -30,6 +31,8 @@ import java.util.Map;
  */
 @Component
 public class StateDaoImpl implements StateDao {
+
+    private static Logger logger = LoggerFactory.getLogger(StateDao.class);
 
     private StateConfig config;
 
@@ -87,7 +90,7 @@ public class StateDaoImpl implements StateDao {
         JSONObject data = getDataByKey(keyEnum, version).getJSONObject("data");
         List<T> dataList = new LinkedList<>();
         for (Map.Entry<String, Object> entry : data.entrySet()) {
-            LogUtil.info("Parsing json to java: " + keyEnum + ", " + entry.getKey());
+            logger.info("Parsing json to java: " + keyEnum + ", " + entry.getKey());
             dataList.add(JSON.toJavaObject((JSON) entry.getValue(), clazz));
         }
         return dataList;

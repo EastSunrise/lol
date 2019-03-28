@@ -1,12 +1,13 @@
 package wsg.lol.pojo.dto.api.match;
 
+import wsg.lol.pojo.base.ApiBean;
+
 import java.util.Map;
 
 /**
  * @author King
- * @date 2019/2/12
  */
-public class ParticipantTimelineDto {
+public class ParticipantTimelineDto extends ApiBean {
 
     /**
      * Participant's calculated lane. MID and BOT are legacy values. (Legal values: MID, MIDDLE, TOP, JUNGLE, BOT,

@@ -1,10 +1,11 @@
 package wsg.lol.dao.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.utils.DateUtil;
-import wsg.lol.common.utils.LogUtil;
 import wsg.lol.pojo.enums.impl.others.RegionalProxyEnum;
 import wsg.lol.pojo.enums.impl.others.ServiceProxyEnum;
 
@@ -20,6 +21,8 @@ import java.util.Locale;
 @PropertySource(value = {"classpath:config/data-config.properties"})
 public class ApiConfig {
 
+    private static Logger logger = LoggerFactory.getLogger(ApiConfig.class);
+
     @Value("${api.region}")
     private ServiceProxyEnum region;
 
@@ -34,10 +37,10 @@ public class ApiConfig {
 
     public boolean hasValidKey() {
         if (apiKey == null) {
-            LogUtil.info("There isn't api key.");
+            logger.info("There isn't an api key.");
             return false;
         } else if (getExpiredTime().before(new Date())) {
-            LogUtil.info("The api key has expired when it was " + expiredTime);
+            logger.info("The api key has expired when it was " + expiredTime);
             return false;
         }
         return true;

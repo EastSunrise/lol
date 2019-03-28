@@ -1,10 +1,11 @@
 package wsg.lol.pojo.dto.api.match;
 
+import wsg.lol.pojo.base.ApiBean;
+
 /**
  * @author King
- * @date 2019/2/12
  */
-public class RuneDto {
+public class RuneDto extends ApiBean {
 
     private int runeId;
     private int rank;

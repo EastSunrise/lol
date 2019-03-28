@@ -23,7 +23,7 @@ public interface RedisMapDao {
     /**
      * 获取hashKey对应的所有键值
      */
-    public Map<Object, Object> getHashMap(String key);
+    Map<Object, Object> getHashMap(String key);
 
     /**
      * HashSet

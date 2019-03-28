@@ -3,6 +3,8 @@ package wsg.lol.common.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wsg.lol.pojo.base.BaseResult;
 
 import java.io.*;
@@ -16,12 +18,14 @@ public class FileUtil {
 
     private static final String SYSTEM_SEPARATOR = "/";
 
+    private static Logger logger = LoggerFactory.getLogger(FileUtil.class);
+
     public static String concat2Path(String... args) {
         return StringUtil.join(args, SYSTEM_SEPARATOR);
     }
 
     public static BaseResult writeString2File(String str, String savePath) {
-        LogUtil.info("Writing to: " + savePath);
+        logger.info("Writing to: " + savePath);
         File saveFile = new File(savePath);
         File dir = saveFile.getParentFile();
         if (!dir.exists()) {
@@ -55,7 +59,7 @@ public class FileUtil {
     }
 
     public static String readString(String filePath) {
-        LogUtil.info("Reading from " + filePath);
+        logger.info("Reading from " + filePath);
         StringBuilder builder = new StringBuilder();
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filePath))));

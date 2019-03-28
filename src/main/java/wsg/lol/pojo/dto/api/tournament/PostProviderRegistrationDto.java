@@ -7,7 +7,6 @@ import wsg.lol.pojo.enums.impl.others.ServiceProxyEnum;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-01 13:56
  */
 public class PostProviderRegistrationDto extends QueryDto {
 

@@ -2,10 +2,10 @@ package wsg.lol.pojo.dmo.league;
 
 
 import wsg.lol.pojo.base.ApiBean;
+import wsg.lol.pojo.enums.impl.code.DivisionEnum;
+import wsg.lol.pojo.enums.impl.code.PositionEnum;
+import wsg.lol.pojo.enums.impl.code.RankQueueEnum;
 import wsg.lol.pojo.enums.impl.code.TierEnum;
-import wsg.lol.pojo.enums.impl.others.DivisionEnum;
-import wsg.lol.pojo.enums.impl.others.PositionEnum;
-import wsg.lol.pojo.enums.impl.others.RankQueueEnum;
 
 public class PositionDmo extends ApiBean {
 

@@ -7,7 +7,6 @@ import wsg.lol.pojo.base.BaseResult;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-08 16:16
  */
 public abstract class BaseController {
 

@@ -1,10 +1,9 @@
-package wsg.lol.pojo.enums.impl.others;
+package wsg.lol.pojo.enums.impl.code;
 
 import wsg.lol.pojo.enums.intf.BaseEnum;
 
 /**
  * @author King
- * @date 2019/2/12
  */
 public enum RankQueueEnum implements BaseEnum<Integer> {
     RANKED_SOLO_5x5(1),

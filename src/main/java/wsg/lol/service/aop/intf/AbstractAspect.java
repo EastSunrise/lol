@@ -2,7 +2,8 @@ package wsg.lol.service.aop.intf;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import wsg.lol.common.utils.LogUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * wsg
@@ -10,6 +11,8 @@ import wsg.lol.common.utils.LogUtil;
  * @author wangsigen
  */
 public abstract class AbstractAspect {
+
+    private static Logger logger = LoggerFactory.getLogger(AbstractAspect.class);
 
     /**
      * 前置通知
@@ -19,7 +22,7 @@ public abstract class AbstractAspect {
      * annotation @Before(value = "")
      */
     void doBefore(JoinPoint joinPoint) {
-        LogUtil.info("Do before calling " + joinPoint.getSignature().getName());
+        logger.info("Do before calling " + joinPoint.getSignature().getName());
     }
 
     /**
@@ -31,7 +34,7 @@ public abstract class AbstractAspect {
      * annotation @AfterReturning(value = "", returning = "returnValue")
      */
     void doAfterReturningAdvice(JoinPoint joinPoint, Object returnValue) {
-        LogUtil.info("Do after " + joinPoint.getSignature().getName() + " return " + returnValue);
+        logger.info("Do after " + joinPoint.getSignature().getName() + " return " + returnValue);
     }
 
     /**
@@ -43,7 +46,7 @@ public abstract class AbstractAspect {
      * annotation @AfterThrowing(value = "", throwing = "throwable")
      */
     void doAfterThrowingAdvice(JoinPoint joinPoint, Throwable throwable) {
-        LogUtil.info("Do after " + joinPoint.getSignature().getName() + " throw " + throwable);
+        logger.info("Do after " + joinPoint.getSignature().getName() + " throw " + throwable);
     }
 
     /**
@@ -54,7 +57,7 @@ public abstract class AbstractAspect {
      * annotation @After(value = "")
      */
     void doAfterAdvice(JoinPoint joinPoint) {
-        LogUtil.info("Do after calling " + joinPoint.getSignature().getName());
+        logger.info("Do after calling " + joinPoint.getSignature().getName());
     }
 
     /**
@@ -69,7 +72,12 @@ public abstract class AbstractAspect {
      * annotation @Around(value = "")
      */
     Object doAroundAdvice(ProceedingJoinPoint proceedingJoinPoint) {
-        LogUtil.info("Do when calling " + proceedingJoinPoint.getSignature().getName());
+        logger.info("Do when calling " + proceedingJoinPoint.getSignature().getName());
+        try {
+            return proceedingJoinPoint.proceed();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
         return null;
     }
 }

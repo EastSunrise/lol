@@ -8,7 +8,6 @@ import java.util.Map;
 
 /**
  * @author King
- * @date 2019/2/11
  */
 public class ThirdPartyCodeV4 extends BaseApi {
 
@@ -21,7 +20,7 @@ public class ThirdPartyCodeV4 extends BaseApi {
     public String getThirdPartyCodeBySummoner(String summonerId) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedSummonerId", summonerId);
-        return getDataObject("/lol/platform/v4/third-party-code/by-summoner/{encryptedSummonerId}", params,
+        return getObject("/lol/platform/v4/third-party-code/by-summoner/{encryptedSummonerId}", params,
                 String.class);
     }
 }

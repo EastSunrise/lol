@@ -2,7 +2,7 @@ package wsg.lol.dao.api.impl;
 
 import org.springframework.stereotype.Component;
 import wsg.lol.dao.api.base.BaseApi;
-import wsg.lol.pojo.dmo.summoner.SummonerDmo;
+import wsg.lol.pojo.dto.api.summoner.SummonerDto;
 import wsg.lol.pojo.dto.query.GetSummonerDto;
 
 import java.lang.reflect.Field;
@@ -11,7 +11,6 @@ import java.util.Map;
 
 /**
  * @author King
- * @date 2019/2/11
  */
 @Component
 public class SummonerV4 extends BaseApi {
@@ -21,7 +20,7 @@ public class SummonerV4 extends BaseApi {
      * <p>
      * ATTENTION Consistently looking up summoner ids that don't exist will result in a blacklist.
      */
-    public SummonerDmo getSummoner(GetSummonerDto getSummonerDto) {
+    public SummonerDto getSummoner(GetSummonerDto getSummonerDto) {
         Class clazz = getSummonerDto.getClass();
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
@@ -36,7 +35,7 @@ public class SummonerV4 extends BaseApi {
                 KeyEnum keyEnum = Enum.valueOf(KeyEnum.class, field.getName().toUpperCase());
                 Map<String, Object> params = new HashMap<>();
                 params.put(keyEnum.key, value);
-                return getDataObject("/lol/summoner/v4/summoners/" + keyEnum.url, params, SummonerDmo.class);
+                return getObject("/lol/summoner/v4/summoners/" + keyEnum.url, params, SummonerDto.class);
             }
         }
         return null;

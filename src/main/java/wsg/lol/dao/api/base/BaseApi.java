@@ -1,14 +1,14 @@
 package wsg.lol.dao.api.base;
 
 import com.alibaba.fastjson.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.utils.BeanUtil;
 import wsg.lol.common.utils.CodeUtil;
 import wsg.lol.common.utils.DateUtil;
-import wsg.lol.common.utils.LogUtil;
 import wsg.lol.dao.config.ApiConfig;
-import wsg.lol.pojo.base.IJSONTransfer;
 import wsg.lol.pojo.base.QueryDto;
 
 import javax.xml.ws.http.HTTPException;
@@ -31,7 +31,18 @@ public class BaseApi {
 
     private static final String HTTPS = "https://";
 
+    private static Logger logger = LoggerFactory.getLogger(BaseApi.class);
+
     private ApiConfig apiConfig;
+
+    private static void threadSleep(long millis) {
+        try {
+            logger.info("Thread (" + Thread.currentThread().getName() + ") sleeps for " + millis / 1000 + "s");
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     // get valid api key
     // limit the rate of querying.
@@ -41,8 +52,7 @@ public class BaseApi {
         headers.put("Origin", "https://developer.riotgames.com");
         headers.put("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
         while (!apiConfig.hasValidKey()) {
-            LogUtil.info("There isn't valid key.");
-            DateUtil.threadSleep(DateUtil.ONE_SECOND);
+            threadSleep(DateUtil.ONE_SECOND);
         }
         headers.put("X-Riot-Token", apiConfig.getApiKey());
         headers.put("Accept-Language", "zh-CN,zh;q=0.9,zh-TW;q=0.8");
@@ -57,7 +67,7 @@ public class BaseApi {
     }
 
     private String doHttpGet(String urlStr, Map<String, String> requestHeaders) {
-        LogUtil.info("Getting from " + urlStr);
+        logger.info("Getting from " + urlStr);
         while (true) {
             try {
                 URL url = new URL(urlStr);
@@ -78,30 +88,30 @@ public class BaseApi {
                     }
                     in.close();
                     return builder.toString();
-                } else if (429 == responseCode) {
-                    LogUtil.info(urlConnection.getResponseMessage());
-                    DateUtil.threadSleep(Integer.valueOf(urlConnection.getHeaderField("Retry-After")) * DateUtil.ONE_SECOND);
-                } else if (500 == responseCode || 503 == responseCode) {
-                    LogUtil.info(urlConnection.getResponseMessage());
-                    DateUtil.threadSleep(DateUtil.ONE_MINUTE);
                 } else {
-                    LogUtil.info(urlConnection.getResponseMessage());
-                    throw new HTTPException(responseCode);
+                    logger.info(urlConnection.getResponseMessage());
+                    if (429 == responseCode) {
+                        threadSleep(Integer.valueOf(urlConnection.getHeaderField("Retry-After")) * DateUtil.ONE_SECOND);
+                    } else if (500 == responseCode || 503 == responseCode) {
+                        threadSleep(DateUtil.ONE_MINUTE);
+                    } else {
+                        throw new HTTPException(responseCode);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                DateUtil.threadSleep(DateUtil.ONE_SECOND * 5);
+                threadSleep(DateUtil.ONE_SECOND * 5);
             }
         }
     }
 
-    protected <Q extends QueryDto, T> T getDataObject(String apiRef, Map<String, Object> pathParams, Q queryDto,
-                                                      Class<T> clazz) {
+    protected <Q extends QueryDto, T> T getObject(String apiRef, Map<String, Object> pathParams, Q queryDto,
+                                                  Class<T> clazz) {
         String jsonStr = getJSONString(apiRef, pathParams, BeanUtil.getQueryParams(queryDto));
         return JSON.parseObject(jsonStr, clazz);
     }
 
-    protected <T> T getDataObject(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
+    protected <T> T getObject(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
         String jsonStr = getJSONString(apiRef, pathParams, new HashMap<>());
         return JSON.parseObject(jsonStr, clazz);
     }
@@ -116,33 +126,19 @@ public class BaseApi {
         return doHttpGet(urlStr, getRequestHeaders());
     }
 
-    protected <T> T getDataObject(String apiRef, Class<T> clazz) {
-        return getDataObject(apiRef, new HashMap<>(), clazz);
+    protected <T> T getObject(String apiRef, Class<T> clazz) {
+        return getObject(apiRef, new HashMap<>(), clazz);
     }
 
-    protected <T> List<T> getDataArray(String apiRef, Class<T> clazz) {
-        return getDataArray(apiRef, new HashMap<>(), clazz);
+    protected <T> List<T> getArray(String apiRef, Class<T> clazz) {
+        return getArray(apiRef, new HashMap<>(), clazz);
     }
 
-    protected <T> List<T> getDataArray(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
+    protected <T> List<T> getArray(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
         String jsonStr = getJSONString(apiRef, pathParams, new HashMap<>());
         return JSON.parseArray(jsonStr, clazz);
     }
 
-    protected <T extends IJSONTransfer> T getDataExtObject(String apiRef, Map<String, Object> pathParams,
-                                                           Class<T> clazz) {
-        String jsonStr = getJSONString(apiRef, pathParams, new HashMap<>());
-        T object = null;
-        try {
-            object = clazz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        if (object != null) {
-            object.parseFromJSONObject(JSON.parseObject(jsonStr));
-        }
-        return object;
-    }
 
     @Autowired
     public void setApiConfig(ApiConfig apiConfig) {

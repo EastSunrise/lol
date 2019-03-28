@@ -10,7 +10,6 @@ import java.util.List;
  * wsg
  *
  * @author wangsigen
- * @date 2019-02-26 17:16
  */
 public interface ChampionService {
 

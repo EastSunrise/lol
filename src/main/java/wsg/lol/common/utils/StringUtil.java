@@ -4,7 +4,6 @@ package wsg.lol.common.utils;
  * wsg
  *
  * @author wangsigen
- * @date 2019-02-28 11:52
  */
 public class StringUtil {
 

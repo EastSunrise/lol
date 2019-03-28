@@ -30,13 +30,4 @@ public class DateUtil {
         }
         return new Date();
     }
-
-    public static void threadSleep(long millis) {
-        try {
-            LogUtil.info("Thread sleep for " + millis / 1000 + "s");
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 }

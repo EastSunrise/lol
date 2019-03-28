@@ -11,7 +11,6 @@ import java.util.Map;
 
 /**
  * @author King
- * @date 2019/2/12
  */
 @Component
 public class SpectatorV4 extends BaseApi {
@@ -24,7 +23,7 @@ public class SpectatorV4 extends BaseApi {
     public CurrentGameInfo getActiveGamesBySummoner(String summonerId) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedSummonerId", summonerId);
-        return getDataObject("/lol/spectator/v4/active-games/by-summoner/{encryptedSummonerId}", params,
+        return getObject("/lol/spectator/v4/active-games/by-summoner/{encryptedSummonerId}", params,
                 CurrentGameInfo.class);
     }
 
@@ -33,6 +32,6 @@ public class SpectatorV4 extends BaseApi {
      */
     @AccessApi
     public FeaturedGames getFeaturedGames() {
-        return getDataObject("/lol/spectator/v4/featured-games", FeaturedGames.class);
+        return getObject("/lol/spectator/v4/featured-games", FeaturedGames.class);
     }
 }

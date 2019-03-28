@@ -4,7 +4,6 @@ import java.util.Date;
 
 /**
  * @author King
- * @date 2019/3/9
  */
 public class LogUtil {
 

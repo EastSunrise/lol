@@ -20,6 +20,22 @@
         LEFT JOIN (SELECT GAME_ID AS ID0 FROM m_match) T ON TEMP.ID1 = T.ID0
         WHERE T.ID0 IS NULL
     </select>
+    <select id="queryLastUncheckedMatches" resultType="wsg.lol.pojo.dmo.match.MatchReferenceDmo">
+        SELECT ID,
+               GAME_ID,
+               SUMMONER_ID,
+               LANE,
+               CHAMPION_ID,
+               PLATFORM_ID,
+               SEASON_ID,
+               QUEUE,
+               ROLE,
+               GAME_CREATION,
+               CHECKED
+        FROM m_reference
+        ORDER BY CHECKED
+            LIMIT #{startIndex}, #{pageSize}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete
         from m_match
@@ -113,6 +129,19 @@
                 #{frameInterval,jdbcType=INTEGER},
             </if>
         </trim>
+    </insert>
+    <insert id="insert" parameterType="wsg.lol.pojo.dto.api.match.MatchReferenceDto" useGeneratedKeys="true">
+        insert into m_reference
+        (GAME_ID, SUMMONER_ID, LANE, CHAMPION_ID, PLATFORM_ID, SEASON_ID, QUEUE, ROLE, GAME_CREATION)
+        values (#{gameId},
+                #{summonerId},
+                #{lane},
+                #{campionId},
+                #{platformId},
+                #{seasonId},
+                #{queue},
+                #{role},
+                #{gameCreation})
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.pojo.dmo.match.MatchDmo">
         update m_match

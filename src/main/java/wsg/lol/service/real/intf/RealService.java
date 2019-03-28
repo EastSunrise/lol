@@ -1,10 +1,9 @@
 package wsg.lol.service.real.intf;
 
 import wsg.lol.pojo.base.BaseResult;
-import wsg.lol.pojo.dmo.summoner.SummonerDmo;
+import wsg.lol.pojo.enums.impl.code.DivisionEnum;
+import wsg.lol.pojo.enums.impl.code.PositionEnum;
 import wsg.lol.pojo.enums.impl.code.TierEnum;
-import wsg.lol.pojo.enums.impl.others.DivisionEnum;
-import wsg.lol.pojo.enums.impl.others.PositionEnum;
 
 /**
  * wsg
@@ -19,7 +18,7 @@ public interface RealService {
      * <p>
      * Once.
      */
-    BaseResult buildBaseSummonerLib();
+    BaseResult buildBaseLib();
 
     /**
      * Build the basic lib of apex summoners.
@@ -33,26 +32,19 @@ public interface RealService {
     BaseResult buildPositionalSummonerLib(TierEnum tier, DivisionEnum division, PositionEnum position);
 
     /**
-     * Update summoners' leagues.
-     * Base count each time.
+     * Update the data of summoners on the real time.
      */
-    BaseResult updateLeagues();
+    BaseResult updateSummoners();
 
     /**
-     * Update summoners' mastery.
-     * Base count each time.
+     * Update the data of a certain summoner.
      */
-    BaseResult updateMastery();
+    BaseResult updateSummonerById(String summonerId);
 
     /**
      * Extend the lib of summoners by querying the summoners in one's matches recursively. Add data of summoners and
      * their matches.
      * Base count each time.
      */
-    BaseResult extendSummonerLibByMatch();
-
-    /**
-     * Update the data of a certain summoner.
-     */
-    BaseResult updateSummonerData(SummonerDmo summonerDmo);
+    BaseResult extendLib();
 }

@@ -1,11 +1,12 @@
 package wsg.lol.scheduler.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.utils.DateUtil;
 import wsg.lol.common.utils.FileUtil;
-import wsg.lol.common.utils.LogUtil;
 import wsg.lol.dao.config.StateConfig;
 import wsg.lol.pojo.base.BaseResult;
 import wsg.lol.pojo.result.VersionResult;
@@ -22,6 +23,8 @@ import java.io.File;
 @Component
 public class SchedulerImpl implements Scheduler {
 
+    private static Logger logger = LoggerFactory.getLogger(Scheduler.class);
+
     private StateConfig stateConfig;
 
     private VersionService versionService;
@@ -32,7 +35,7 @@ public class SchedulerImpl implements Scheduler {
         if (!versionResult.isLatestVersion()) {
             String latestVersion = versionResult.getLatestVersion();
             if (hasDataDragon(latestVersion)) {
-                LogUtil.info("Update the version from " + versionResult.getCurrentVersion() + " to " + latestVersion);
+                logger.info("Update the version from " + versionResult.getCurrentVersion() + " to " + latestVersion);
                 BaseResult result;
                 do {
                     result = versionService.updateVersion(latestVersion);
@@ -44,7 +47,7 @@ public class SchedulerImpl implements Scheduler {
     private boolean hasDataDragon(String latestVersion) {
         boolean ret = new File(FileUtil.concat2Path(stateConfig.getDataDir(), latestVersion)).exists();
         if (!ret) {
-            LogUtil.info("The data of the latest version " + latestVersion + " don't exist. Please update the data " +
+            logger.info("The data of the latest version " + latestVersion + " don't exist. Please update the data " +
                     "dragon manually.");
         }
         return ret;

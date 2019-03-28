@@ -6,7 +6,6 @@ import org.springframework.context.ApplicationEvent;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-21 14:48
  */
 public class SummonerEvent extends ApplicationEvent {
 

@@ -1,19 +1,24 @@
 package wsg.lol.dao.mybatis.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import wsg.lol.pojo.dmo.champion.MasteryDmo;
+import org.springframework.stereotype.Repository;
+import wsg.lol.pojo.dmo.champion.ChampionMasteryDmo;
+import wsg.lol.pojo.dto.api.champion.ChampionMasteryDto;
 
+@Repository
 @Mapper
 public interface MasteryMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(MasteryDmo record);
+    int insert(ChampionMasteryDto record);
 
-    int insertSelective(MasteryDmo record);
+    int insertSelective(ChampionMasteryDto record);
 
-    MasteryDmo selectByPrimaryKey(Integer id);
+    ChampionMasteryDto selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(MasteryDmo record);
+    int updateByPrimaryKeySelective(ChampionMasteryDto record);
 
-    int updateByPrimaryKey(MasteryDmo record);
+    int updateByUnionKey(ChampionMasteryDto record);
+
+    ChampionMasteryDmo selectByUnionKey(String summonerId, Integer championId);
 }

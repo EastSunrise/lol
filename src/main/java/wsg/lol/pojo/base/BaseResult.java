@@ -4,7 +4,6 @@ package wsg.lol.pojo.base;
  * wsg
  *
  * @author wangsigen
- * @date 2019-02-27 15:26
  */
 public class BaseResult {
 

@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author King
- * @date 2019/3/9
  */
 @Controller
 @RequestMapping("/lol/setting")

@@ -3,11 +3,10 @@ package wsg.lol.dao.api.impl;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.annotation.AccessApi;
 import wsg.lol.dao.api.base.BaseApi;
-import wsg.lol.pojo.dto.state.champion.ChampionRotationDto;
+import wsg.lol.pojo.dto.api.champion.ChampionRotationDto;
 
 /**
  * @author King
- * @date 2019/2/11
  */
 @Component
 public class ChampionV3 extends BaseApi {
@@ -18,6 +17,6 @@ public class ChampionV3 extends BaseApi {
      */
     @AccessApi
     public ChampionRotationDto getChampionRotation() {
-        return getDataObject("/lol/platform/v3/champion-rotations", ChampionRotationDto.class);
+        return getObject("/lol/platform/v3/champion-rotations", ChampionRotationDto.class);
     }
 }

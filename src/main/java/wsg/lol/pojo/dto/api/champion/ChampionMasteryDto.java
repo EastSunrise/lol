@@ -1,12 +1,11 @@
-package wsg.lol.pojo.dmo.champion;
+package wsg.lol.pojo.dto.api.champion;
 
 import wsg.lol.pojo.base.ApiBean;
 
 import java.util.Date;
 
-public class MasteryDmo extends ApiBean {
+public class ChampionMasteryDto extends ApiBean {
 
-    private Integer id;
     private String summonerId;
     private Integer championId;
     private Boolean chestGranted;
@@ -16,14 +15,6 @@ public class MasteryDmo extends ApiBean {
     private Integer championPointsSinceLastLevel;
     private Integer tokensEarned;
     private Date lastPlayTime;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getSummonerId() {
         return summonerId;

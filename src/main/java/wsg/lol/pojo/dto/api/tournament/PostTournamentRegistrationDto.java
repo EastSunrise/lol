@@ -6,7 +6,6 @@ import wsg.lol.pojo.base.QueryDto;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-01 13:59
  */
 public class PostTournamentRegistrationDto extends QueryDto {
 

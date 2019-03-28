@@ -11,12 +11,12 @@ import java.lang.reflect.Type;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-06 14:13
  */
 public abstract class EnumSerializer implements ObjectDeserializer, ObjectSerializer {
 
     /**
-     * @param object fieldName
+     * @param object
+     *         fieldName
      */
     @Override
     @SuppressWarnings("unchecked")

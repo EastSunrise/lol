@@ -4,7 +4,6 @@ import wsg.lol.pojo.enums.intf.BaseEnum;
 
 /**
  * @author King
- * @date 2019/2/11
  */
 public enum ServiceProxyEnum implements BaseEnum<Integer> {
     BR(1, "BR1", "br1.api.riotgames.com"),

@@ -2,7 +2,6 @@ package wsg.lol.pojo.dto.api.match;
 
 /**
  * @author King
- * @date 2019/2/12
  */
 public class MatchPositionDto {
 

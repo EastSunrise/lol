@@ -14,7 +14,6 @@ import wsg.lol.service.user.intf.SummonerService;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-07 15:21
  */
 @Controller
 @RequestMapping("/lol/summoner")

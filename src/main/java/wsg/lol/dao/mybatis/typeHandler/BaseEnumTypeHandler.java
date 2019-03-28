@@ -5,7 +5,6 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
 import wsg.lol.common.utils.EnumUtil;
 import wsg.lol.pojo.enums.impl.code.*;
-import wsg.lol.pojo.enums.impl.others.SpellTypeEnum;
 import wsg.lol.pojo.enums.intf.BaseEnum;
 
 import java.sql.CallableStatement;
@@ -18,8 +17,11 @@ import java.sql.SQLException;
  *
  * @author wangsigen
  */
-@MappedTypes({SpellTypeEnum.class, GameTypeEnum.class, SeasonEnum.class, MatchQueueEnum.class, PlatformEnum.class,
-        MapEnum.class, MatchLaneEnum.class, MatchRoleEnum.class, TierEnum.class})
+@MappedTypes({
+        DivisionEnum.class, GameModeEnum.class, GameTypeEnum.class, MapEnum.class, MatchLaneEnum.class,
+        MatchQueueEnum.class, MatchRoleEnum.class, PlatformEnum.class, PositionEnum.class, RankQueueEnum.class,
+        SeasonEnum.class, TierEnum.class
+})
 public class BaseEnumTypeHandler<V, E extends Enum & BaseEnum<V>> extends BaseTypeHandler<E> {
 
     private Class<E> clazz;

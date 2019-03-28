@@ -6,7 +6,6 @@ import wsg.lol.pojo.enums.intf.BaseEnum;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-05 10:40
  */
 public class EnumUtil {
 

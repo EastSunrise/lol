@@ -4,7 +4,6 @@ package wsg.lol.pojo.base;
  * wsg
  *
  * @author wangsigen
- * @date 2019-02-22 16:23
  */
 public class BaseException extends RuntimeException {
     private String[] args;

@@ -2,38 +2,91 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="wsg.lol.dao.mybatis.mapper.PositionMapper">
     <sql id="Base_Column_List">
-        ID, SUMMONER_ID, QUEUE, POSITION, SUMMONER_NAME, LEAGUE_ID, LEAGUE_NAME, TIER, 'RANK', LEAGUE_POINTS, WINS,
-        LOSSES,
-        VETERAN, INACTIVE, FRESH_BLOOD, HOT_STREAK, SERIES_TARGET, SERIES_WINS, SERIES_LOSSES
+
     </sql>
-    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dmo.league.PositionDmo" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List"/>
+    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dmo.league.PositionDmo">
+        select ID,
+               SUMMONER_ID,
+               QUEUE_TYPE,
+               POSITION,
+               SUMMONER_NAME,
+               LEAGUE_ID,
+               LEAGUE_NAME,
+               TIER,
+               'RANK',
+               LEAGUE_POINTS,
+               WINS,
+               LOSSES,
+               VETERAN,
+               INACTIVE,
+               FRESH_BLOOD,
+               HOT_STREAK,
+               SERIES_TARGET,
+               SERIES_WINS,
+               SERIES_LOSSES
         from l_position
         where ID = #{id,jdbcType=INTEGER}
     </select>
     <select id="selectBySummonerId" resultType="wsg.lol.pojo.dmo.league.PositionDmo" parameterType="java.lang.String">
-        SELECT
-        <include refid="Base_Column_List"/>
+        SELECT ID,
+               SUMMONER_ID,
+               QUEUE_TYPE,
+               POSITION,
+               SUMMONER_NAME,
+               LEAGUE_ID,
+               LEAGUE_NAME,
+               TIER,
+               'RANK',
+               LEAGUE_POINTS,
+               WINS,
+               LOSSES,
+               VETERAN,
+               INACTIVE,
+               FRESH_BLOOD,
+               HOT_STREAK,
+               SERIES_TARGET,
+               SERIES_WINS,
+               SERIES_LOSSES
         FROM l_position T
         WHERE T.SUMMONER_ID = #{summonerId}
+    </select>
+    <select id="selectByUnionKey" resultType="wsg.lol.pojo.dmo.league.PositionDmo">
+        SELECT ID,
+               SUMMONER_ID,
+               QUEUE_TYPE,
+               POSITION,
+               SUMMONER_NAME,
+               LEAGUE_ID,
+               LEAGUE_NAME,
+               TIER,
+               'RANK',
+               LEAGUE_POINTS,
+               WINS,
+               LOSSES,
+               VETERAN,
+               INACTIVE,
+               FRESH_BLOOD,
+               HOT_STREAK,
+               SERIES_TARGET,
+               SERIES_WINS,
+               SERIES_LOSSES
+        FROM l_position T
+        WHERE T.SUMMONER_ID = #{param1}
+          AND T.QUEUE_TYPE = #{param2}
+          AND T.POSITION = #{param3}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from l_position
         where ID = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="wsg.lol.pojo.dmo.league.PositionDmo">
+    <insert id="insert" parameterType="wsg.lol.pojo.dto.api.league.LeaguePositionDto" useGeneratedKeys="true">
         insert into l_position
-        (ID, SUMMONER_ID, QUEUE, POSITION, SUMMONER_NAME, LEAGUE_ID, LEAGUE_NAME, TIER, DIVISION, LEAGUE_POINTS, WINS,
-         LOSSES, VETERAN, INACTIVE, FRESH_BLOOD, HOT_STREAK, SERIES_TARGET, SERIES_WINS, SERIES_LOSSES)
-        values (#{id,jdbcType=INTEGER}, #{summonerId,jdbcType=VARCHAR}, #{queue,jdbcType=TINYINT},
-                #{position,jdbcType=TINYINT}, #{summonerName,jdbcType=VARCHAR}, #{leagueId,jdbcType=VARCHAR},
-                #{leagueName,jdbcType=VARCHAR}, #{tier,jdbcType=TINYINT}, #{rank,jdbcType=TINYINT},
-                #{leaguePoints,jdbcType=INTEGER}, #{wins,jdbcType=INTEGER}, #{losses,jdbcType=INTEGER},
-                #{veteran,jdbcType=BIT}, #{inactive,jdbcType=BIT}, #{freshBlood,jdbcType=BIT},
-                #{hotStreak,jdbcType=BIT}, #{seriesTarget,jdbcType=INTEGER}, #{seriesWins,jdbcType=INTEGER},
-                #{seriesLosses,jdbcType=INTEGER})
+        (SUMMONER_ID, QUEUE_TYPE, POSITION, SUMMONER_NAME, LEAGUE_ID, LEAGUE_NAME, TIER, DIVISION, LEAGUE_POINTS,
+         WINS, LOSSES, VETERAN, INACTIVE, FRESH_BLOOD, HOT_STREAK, SERIES_TARGET, SERIES_WINS, SERIES_LOSSES)
+        values (#{summonerId}, #{queueType}, #{position}, #{summonerName}, #{leagueId}, #{leagueName}, #{tier},
+                #{rank}, #{leaguePoints}, #{wins}, #{losses}, #{veteran}, #{inactive}, #{freshBlood}, #{hotStreak},
+                #{miniSeries.target}, #{miniSeries.wins}, #{miniSeries.losses})
     </insert>
     <insert id="insertSelective" parameterType="wsg.lol.pojo.dmo.league.PositionDmo">
         insert into l_position
@@ -156,19 +209,6 @@
             </if>
         </trim>
     </insert>
-    <insert id="batchInsertPosition">
-        INSERT INTO l_position
-        (SUMMONER_ID, QUEUE, POSITION, SUMMONER_NAME, LEAGUE_ID, LEAGUE_NAME, TIER, DIVISION, LEAGUE_POINTS, WINS,
-        LOSSES,
-        VETERAN, INACTIVE, FRESH_BLOOD, HOT_STREAK, SERIES_TARGET, SERIES_WINS, SERIES_LOSSES)
-        VALUES
-        <foreach collection="list" item="item" separator=",">
-            (#{item.summonerId}, #{item.queue}, #{item.position}, #{item.summonerName}, #{item.leagueId},
-            #{item.leagueName}, #{item.tier}, #{item.rank}, #{item.leaguePoints}, #{item.wins}, #{item.losses},
-            #{item.veteran}, #{item.inactive}, #{item.freshBlood}, #{item.hotStreak}, #{item.seriesTarget},
-            #{item.seriesWins}, #{item.seriesLosses})
-        </foreach>
-    </insert>
     <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.pojo.dmo.league.PositionDmo">
         update l_position
         <set>
@@ -229,14 +269,11 @@
         </set>
         where ID = #{id}
     </update>
-    <update id="updateByPrimaryKey" parameterType="wsg.lol.pojo.dmo.league.PositionDmo">
+    <update id="updateByUnionKey" parameterType="wsg.lol.pojo.dto.api.league.LeaguePositionDto">
         update l_position
-        set SUMMONER_ID   = #{summonerId,jdbcType=VARCHAR},
-            QUEUE         = #{queue},
-            POSITION      = #{position},
-            SUMMONER_NAME = #{summonerName,jdbcType=VARCHAR},
-            LEAGUE_ID     = #{leagueId,jdbcType=VARCHAR},
-            LEAGUE_NAME   = #{leagueName,jdbcType=VARCHAR},
+        set SUMMONER_NAME = #{summonerName},
+            LEAGUE_ID     = #{leagueId},
+            LEAGUE_NAME   = #{leagueName},
             TIER          = #{tier},
             DIVISION      = #{rank},
             LEAGUE_POINTS = #{leaguePoints},
@@ -249,6 +286,8 @@
             SERIES_TARGET = #{seriesTarget},
             SERIES_WINS   = #{seriesWins},
             SERIES_LOSSES = #{seriesLosses}
-        where ID = #{id}
+        WHERE SUMMONER_ID = #{summonerId}
+          AND QUEUE_TYPE = #{queueType}
+          AND POSITION = #{position}
     </update>
 </mapper>

@@ -14,7 +14,6 @@ import java.util.Map;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-01 13:52
  */
 public class BeanUtil {
 

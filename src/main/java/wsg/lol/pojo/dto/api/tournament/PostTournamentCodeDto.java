@@ -11,7 +11,6 @@ import java.util.Set;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-01 13:37
  */
 public class PostTournamentCodeDto extends QueryDto {
 

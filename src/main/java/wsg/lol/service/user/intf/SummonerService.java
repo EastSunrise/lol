@@ -8,7 +8,6 @@ import wsg.lol.pojo.dto.query.GetSummonerDto;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-07 15:35
  */
 public interface SummonerService {
 

@@ -5,28 +5,34 @@
         ID, SUMMONER_ID, CHAMPION_ID, CHEST_GRANTED, CHAMPION_LEVEL, CHAMPION_POINTS, CHAMPION_POINTS_UNTIL_NEXT_LEVEL,
     CHAMPION_POINTS_SINCE_LAST_LEVEL, TOKENS_EARNED, LAST_PLAY_TIME
     </sql>
-    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dmo.champion.MasteryDmo" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dto.api.champion.ChampionMasteryDto"
+            parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from c_mastery
         where ID = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByUnionKey" resultType="wsg.lol.pojo.dmo.champion.ChampionMasteryDmo">
+        select
+        <include refid="Base_Column_List"/>
+        from c_mastery
+        where SUMMONER_ID = #{param1} AND CHAMPION_ID = #{param2}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from c_mastery
         where ID = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="wsg.lol.pojo.dmo.champion.MasteryDmo">
-        insert into c_mastery (ID, SUMMONER_ID, CHAMPION_ID,
+    <insert id="insert" parameterType="wsg.lol.pojo.dto.api.champion.ChampionMasteryDto" useGeneratedKeys="true">
+        insert into c_mastery (SUMMONER_ID, CHAMPION_ID,
                                CHEST_GRANTED, CHAMPION_LEVEL, CHAMPION_POINTS,
                                CHAMPION_POINTS_UNTIL_NEXT_LEVEL, CHAMPION_POINTS_SINCE_LAST_LEVEL,
                                TOKENS_EARNED, LAST_PLAY_TIME)
-        values (#{id,jdbcType=INTEGER}, #{summonerId,jdbcType=VARCHAR}, #{championId,jdbcType=INTEGER},
-                #{chestGranted,jdbcType=BIT}, #{championLevel,jdbcType=INTEGER}, #{championPoints,jdbcType=INTEGER},
-                #{championPointsUntilNextLevel,jdbcType=INTEGER}, #{championPointsSinceLastLevel,jdbcType=INTEGER},
-                #{tokensEarned,jdbcType=INTEGER}, #{lastPlayTime,jdbcType=TIMESTAMP})
+        values (#{summonerId}, #{championId}, #{chestGranted}, #{championLevel,jdbcType=INTEGER},
+                #{championPoints}, #{championPointsUntilNextLevel}, #{championPointsSinceLastLevel}, #{tokensEarned},
+                #{lastPlayTime})
     </insert>
-    <insert id="insertSelective" parameterType="wsg.lol.pojo.dmo.champion.MasteryDmo">
+    <insert id="insertSelective" parameterType="wsg.lol.pojo.dto.api.champion.ChampionMasteryDto">
         insert into c_mastery
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -93,7 +99,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.pojo.dmo.champion.MasteryDmo">
+    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.pojo.dto.api.champion.ChampionMasteryDto">
         update c_mastery
         <set>
             <if test="summonerId != null">
@@ -126,17 +132,16 @@
         </set>
         where ID = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="wsg.lol.pojo.dmo.champion.MasteryDmo">
+    <update id="updateByUnionKey" parameterType="wsg.lol.pojo.dto.api.champion.ChampionMasteryDto">
         update c_mastery
-        set SUMMONER_ID                      = #{summonerId,jdbcType=VARCHAR},
-            CHAMPION_ID                      = #{championId,jdbcType=INTEGER},
-            CHEST_GRANTED                    = #{chestGranted,jdbcType=BIT},
-            CHAMPION_LEVEL                   = #{championLevel,jdbcType=INTEGER},
-            CHAMPION_POINTS                  = #{championPoints,jdbcType=INTEGER},
-            CHAMPION_POINTS_UNTIL_NEXT_LEVEL = #{championPointsUntilNextLevel,jdbcType=INTEGER},
-            CHAMPION_POINTS_SINCE_LAST_LEVEL = #{championPointsSinceLastLevel,jdbcType=INTEGER},
-            TOKENS_EARNED                    = #{tokensEarned,jdbcType=INTEGER},
-            LAST_PLAY_TIME                   = #{lastPlayTime,jdbcType=TIMESTAMP}
-        where ID = #{id,jdbcType=INTEGER}
+        set CHEST_GRANTED                    = #{chestGranted},
+            CHAMPION_LEVEL                   = #{championLevel},
+            CHAMPION_POINTS                  = #{championPoints},
+            CHAMPION_POINTS_UNTIL_NEXT_LEVEL = #{championPointsUntilNextLevel},
+            CHAMPION_POINTS_SINCE_LAST_LEVEL = #{championPointsSinceLastLevel},
+            TOKENS_EARNED                    = #{tokensEarned},
+            LAST_PLAY_TIME                   = #{lastPlayTime}
+        where SUMMONER_ID = #{summonerId}
+          AND CHAMPION_ID = #{championId}
     </update>
 </mapper>

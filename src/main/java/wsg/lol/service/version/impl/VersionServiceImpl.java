@@ -1,8 +1,9 @@
 package wsg.lol.service.version.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wsg.lol.common.utils.LogUtil;
 import wsg.lol.dao.mongo.intf.MongoDao;
 import wsg.lol.dao.state.intf.StateDao;
 import wsg.lol.pojo.base.BaseResult;
@@ -27,6 +28,8 @@ import java.util.List;
  */
 @Service("versionAction")
 public class VersionServiceImpl implements VersionService {
+
+    private static Logger logger = LoggerFactory.getLogger(VersionService.class);
 
     private StateDao stateDao;
 
@@ -74,7 +77,7 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     public BaseResult updateChampionLib(String version) {
-        LogUtil.info("Start to update the data of champions.");
+        logger.info("Start to update the data of champions.");
         mongoDao.dropCollection(ChampionDto.class);
         mongoDao.insertDocuments(stateDao.readChampions(version));
         return BaseResult.success();
@@ -82,7 +85,7 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     public BaseResult updateItemLib(String version) {
-        LogUtil.info("Start to update the data of items.");
+        logger.info("Start to update the data of items.");
         mongoDao.dropCollection(ItemDto.class);
         mongoDao.dropCollection(GroupDto.class);
         mongoDao.dropCollection(TreeDto.class);
@@ -95,7 +98,7 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     public BaseResult updateRuneLib(String version) {
-        LogUtil.info("Start to update the data of runes.");
+        logger.info("Start to update the data of runes.");
         mongoDao.dropCollection(RuneTreeDto.class);
         mongoDao.insertDocuments(stateDao.readRunes(version));
         return BaseResult.success();
@@ -103,7 +106,7 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     public BaseResult updateSummonerSpellLib(String version) {
-        LogUtil.info("Start to update the data of summoner spells.");
+        logger.info("Start to update the data of summoner spells.");
         mongoDao.dropCollection(SummonerSpellDto.class);
         mongoDao.insertDocuments(stateDao.readSummonerSpells(version));
         return BaseResult.success();
@@ -111,7 +114,7 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     public BaseResult updateMapLib(String version) {
-        LogUtil.info("Start to update the data of maps.");
+        logger.info("Start to update the data of maps.");
         mongoDao.dropCollection(MapDto.class);
         mongoDao.insertDocuments(stateDao.readMaps(version));
         return BaseResult.success();

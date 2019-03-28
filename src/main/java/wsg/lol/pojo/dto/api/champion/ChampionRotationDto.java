@@ -1,14 +1,13 @@
-package wsg.lol.pojo.dto.state.champion;
+package wsg.lol.pojo.dto.api.champion;
 
-import wsg.lol.pojo.base.StateBean;
+import wsg.lol.pojo.base.ApiBean;
 
 import java.util.List;
 
 /**
  * @author King
- * @date 2019/2/11
  */
-public class ChampionRotationDto extends StateBean {
+public class ChampionRotationDto extends ApiBean {
 
     private List<Integer> freeChampionIdsForNewPlayers;
     private List<Integer> freeChampionIds;

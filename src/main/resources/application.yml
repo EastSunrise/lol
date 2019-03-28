@@ -45,3 +45,5 @@ logging:
     wsg.lol: debug
   path: /logs/
   file: lol.log
+  pattern:
+    file: /logs/%d{yyyy-MM-dd}.log

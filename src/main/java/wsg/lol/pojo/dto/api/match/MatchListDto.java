@@ -1,25 +1,24 @@
 package wsg.lol.pojo.dto.api.match;
 
-import wsg.lol.pojo.dmo.match.MatchDmo;
+import wsg.lol.pojo.base.ApiBean;
 
 import java.util.List;
 
 /**
  * @author King
- * @date 2019/2/12
  */
-public class MatchListDto {
+public class MatchListDto extends ApiBean {
 
-    private List<MatchDmo> matches;
+    private List<MatchReferenceDto> matches;
     private int totalGames;
     private int startIndex;
     private int endIndex;
 
-    public List<MatchDmo> getMatches() {
+    public List<MatchReferenceDto> getMatches() {
         return matches;
     }
 
-    public void setMatches(List<MatchDmo> matches) {
+    public void setMatches(List<MatchReferenceDto> matches) {
         this.matches = matches;
     }
 

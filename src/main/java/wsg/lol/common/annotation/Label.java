@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-05 15:04
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

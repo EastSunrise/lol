@@ -6,7 +6,6 @@ import wsg.lol.pojo.enums.intf.BaseEnum;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-01 16:49
  */
 public enum RegionalProxyEnum implements BaseEnum<Integer> {
     Americas(1, "americas.api.riotgames.com"),

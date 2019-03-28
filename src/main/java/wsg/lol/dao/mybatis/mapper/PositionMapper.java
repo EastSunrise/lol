@@ -1,15 +1,18 @@
 package wsg.lol.dao.mybatis.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 import wsg.lol.pojo.dmo.league.PositionDmo;
+import wsg.lol.pojo.dto.api.league.LeaguePositionDto;
+import wsg.lol.pojo.enums.impl.code.PositionEnum;
+import wsg.lol.pojo.enums.impl.code.RankQueueEnum;
 
-import java.util.List;
-
+@Repository
 @Mapper
 public interface PositionMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(PositionDmo record);
+    int insert(LeaguePositionDto record);
 
     int insertSelective(PositionDmo record);
 
@@ -17,9 +20,9 @@ public interface PositionMapper {
 
     int updateByPrimaryKeySelective(PositionDmo record);
 
-    int updateByPrimaryKey(PositionDmo record);
+    int updateByUnionKey(LeaguePositionDto record);
 
     PositionDmo selectBySummonerId(String summonerId);
 
-    int batchInsertPosition(List<PositionDmo> positionDmoList);
+    PositionDmo selectByUnionKey(String summonerId, RankQueueEnum queueType, PositionEnum position);
 }

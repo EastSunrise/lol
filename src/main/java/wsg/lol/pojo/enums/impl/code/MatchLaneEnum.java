@@ -12,7 +12,7 @@ public enum MatchLaneEnum implements BaseEnum<Integer> {
     TOP(1),
     JUNGLE(2),
     MID(3),
-    BOTTOM(4);;
+    BOTTOM(4);
 
     private int value;
 

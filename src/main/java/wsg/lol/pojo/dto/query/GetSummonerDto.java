@@ -4,7 +4,6 @@ import wsg.lol.pojo.base.QueryDto;
 
 /**
  * @author King
- * @date 2019/3/9
  */
 public class GetSummonerDto extends QueryDto {
 

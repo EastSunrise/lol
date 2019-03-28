@@ -1,11 +1,10 @@
-package wsg.lol.pojo.dmo.league;
+package wsg.lol.pojo.dto.api.league;
 
 
-import wsg.lol.common.annotation.JsonKey;
 import wsg.lol.pojo.base.ApiBean;
-import wsg.lol.pojo.enums.impl.others.DivisionEnum;
+import wsg.lol.pojo.enums.impl.code.DivisionEnum;
 
-public class ItemDmo extends ApiBean {
+public class LeagueItemDto extends ApiBean {
 
     private Integer id;
     private String summonerId;
@@ -20,15 +19,7 @@ public class ItemDmo extends ApiBean {
     private Boolean freshBlood;
     private Boolean hotStreak;
 
-    @JsonKey
-    private Integer miniSeries_target;
-
-    @JsonKey
-    private Integer miniSeries_wins;
-
-    @JsonKey
-    private Integer miniSeries_losses;
-
+    private MiniSeriesDto miniSeries;
 
     public Integer getId() {
         return id;
@@ -38,7 +29,6 @@ public class ItemDmo extends ApiBean {
         this.id = id;
     }
 
-
     public String getSummonerId() {
         return summonerId;
     }
@@ -47,7 +37,6 @@ public class ItemDmo extends ApiBean {
         this.summonerId = summonerId;
     }
 
-
     public String getLeagueId() {
         return leagueId;
     }
@@ -55,7 +44,6 @@ public class ItemDmo extends ApiBean {
     public void setLeagueId(String leagueId) {
         this.leagueId = leagueId;
     }
-
 
     public String getSummonerName() {
         return summonerName;
@@ -73,7 +61,6 @@ public class ItemDmo extends ApiBean {
         this.leaguePoints = leaguePoints;
     }
 
-
     public Integer getWins() {
         return wins;
     }
@@ -81,7 +68,6 @@ public class ItemDmo extends ApiBean {
     public void setWins(Integer wins) {
         this.wins = wins;
     }
-
 
     public Integer getLosses() {
         return losses;
@@ -131,27 +117,12 @@ public class ItemDmo extends ApiBean {
         this.hotStreak = hotStreak;
     }
 
-    public Integer getMiniSeries_target() {
-        return miniSeries_target;
+    public MiniSeriesDto getMiniSeries() {
+        return miniSeries;
     }
 
-    public void setMiniSeries_target(Integer miniSeries_target) {
-        this.miniSeries_target = miniSeries_target;
+    public void setMiniSeries(MiniSeriesDto miniSeries) {
+        this.miniSeries = miniSeries;
     }
 
-    public Integer getMiniSeries_wins() {
-        return miniSeries_wins;
-    }
-
-    public void setMiniSeries_wins(Integer miniSeries_wins) {
-        this.miniSeries_wins = miniSeries_wins;
-    }
-
-    public Integer getMiniSeries_losses() {
-        return miniSeries_losses;
-    }
-
-    public void setMiniSeries_losses(Integer miniSeries_losses) {
-        this.miniSeries_losses = miniSeries_losses;
-    }
 }

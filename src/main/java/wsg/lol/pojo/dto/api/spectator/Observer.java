@@ -2,7 +2,6 @@ package wsg.lol.pojo.dto.api.spectator;
 
 /**
  * @author King
- * @date 2019/2/12
  */
 public class Observer {
 

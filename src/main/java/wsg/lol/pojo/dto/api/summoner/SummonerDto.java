@@ -1,12 +1,13 @@
 package wsg.lol.pojo.dto.api.summoner;
 
+import wsg.lol.pojo.base.ApiBean;
+
 import java.util.Date;
 
 /**
  * @author King
- * @date 2019/2/11
  */
-public class SummonerDto {
+public class SummonerDto extends ApiBean {
 
     /**
      * Encrypted summoner ID. Max length 63 characters.
@@ -91,7 +92,8 @@ public class SummonerDto {
     }
 
     /**
-     * @param revisionDate 时间戳
+     * @param revisionDate
+     *         时间戳
      */
     public void setRevisionDate(long revisionDate) {
         this.revisionDate = new Date(revisionDate);

@@ -21,11 +21,9 @@ public class RealTask implements InitializingBean {
     public void afterPropertiesSet() {
         new Thread(() -> {
             while (true) {
-                realService.extendSummonerLibByMatch();
-                realService.updateLeagues();
-                realService.updateMastery();
+                realService.updateSummoners();
             }
-        }).start();
+        }, "Real Task").start();
     }
 
     @Autowired

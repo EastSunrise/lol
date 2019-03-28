@@ -1,12 +1,12 @@
 package wsg.lol.pojo.dto.api.match;
 
+import wsg.lol.pojo.base.ApiBean;
 import wsg.lol.pojo.enums.impl.code.MatchLaneEnum;
 
 /**
  * @author King
- * @date 2019/2/12
  */
-public class MatchReferenceDto {
+public class MatchReferenceDto extends ApiBean {
 
     private MatchLaneEnum lane;
     private long gameId;
@@ -16,6 +16,16 @@ public class MatchReferenceDto {
     private int queue;
     private String role;
     private long timestamp;
+
+    private String summonerId;
+
+    public String getSummonerId() {
+        return summonerId;
+    }
+
+    public void setSummonerId(String summonerId) {
+        this.summonerId = summonerId;
+    }
 
     public MatchLaneEnum getLane() {
         return lane;

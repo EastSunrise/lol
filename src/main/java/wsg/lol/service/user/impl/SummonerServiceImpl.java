@@ -18,7 +18,6 @@ import wsg.lol.service.user.intf.SummonerService;
  * wsg
  *
  * @author wangsigen
- * @date 2019-03-07 15:36
  */
 @Service("summonerService")
 public class SummonerServiceImpl implements SummonerService {

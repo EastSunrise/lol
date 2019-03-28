@@ -3,11 +3,10 @@ package wsg.lol.dao.api.impl;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.annotation.AccessApi;
 import wsg.lol.dao.api.base.BaseApi;
-import wsg.lol.pojo.dto.api.others.ShardStatus;
+import wsg.lol.pojo.dto.api.share.ShardStatus;
 
 /**
  * @author King
- * @date 2019/2/11
  */
 @Component
 public class LOLStatusV3 extends BaseApi {
@@ -20,6 +19,6 @@ public class LOLStatusV3 extends BaseApi {
      */
     @AccessApi
     public ShardStatus getSharedData() {
-        return getDataObject("/lol/status/v3/shard-data", ShardStatus.class);
+        return getObject("/lol/status/v3/shard-data", ShardStatus.class);
     }
 }

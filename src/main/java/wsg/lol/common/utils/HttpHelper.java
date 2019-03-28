@@ -1,5 +1,8 @@
 package wsg.lol.common.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.net.URL;
 
@@ -7,6 +10,8 @@ import java.net.URL;
  * @author King
  */
 public class HttpHelper {
+
+    private static Logger logger = LoggerFactory.getLogger(HttpHelper.class);
 
     public static String getString(String urlStr) {
         StringBuilder builder = new StringBuilder();
@@ -29,7 +34,7 @@ public class HttpHelper {
     }
 
     public static void downloadData(String urlStr, String savePath) {
-        LogUtil.info("Downloading from: " + urlStr + "  to: " + savePath);
+        logger.info("Downloading from: " + urlStr + "  to: " + savePath);
         File saveFile = new File(savePath);
         File dir = saveFile.getParentFile();
         if (!dir.exists()) {
