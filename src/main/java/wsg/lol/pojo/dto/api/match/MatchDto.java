@@ -1,5 +1,6 @@
 package wsg.lol.pojo.dto.api.match;
 
+import org.springframework.data.annotation.Id;
 import wsg.lol.pojo.base.ApiBean;
 import wsg.lol.pojo.base.StateBean;
 import wsg.lol.pojo.enums.impl.code.TierEnum;
@@ -15,6 +16,8 @@ public class MatchDto extends StateBean {
 
     private int seasonId;
     private int queueId;
+
+    @Id
     private long gameId;
     private String gameVersion;
     private String platformId;

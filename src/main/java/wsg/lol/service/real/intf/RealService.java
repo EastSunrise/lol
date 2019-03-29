@@ -47,4 +47,9 @@ public interface RealService {
      * Base count each time.
      */
     BaseResult extendLib();
+
+    /**
+     * Extend the data of a certain match reference.
+     */
+    BaseResult updateMatchReference(Integer id);
 }

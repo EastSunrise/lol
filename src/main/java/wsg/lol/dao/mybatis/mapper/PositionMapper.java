@@ -7,22 +7,17 @@ import wsg.lol.pojo.dto.api.league.LeaguePositionDto;
 import wsg.lol.pojo.enums.impl.code.PositionEnum;
 import wsg.lol.pojo.enums.impl.code.RankQueueEnum;
 
+import java.util.List;
+
 @Repository
 @Mapper
 public interface PositionMapper {
-    int deleteByPrimaryKey(Integer id);
 
     int insert(LeaguePositionDto record);
 
-    int insertSelective(PositionDmo record);
-
-    PositionDmo selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(PositionDmo record);
-
     int updateByUnionKey(LeaguePositionDto record);
 
-    PositionDmo selectBySummonerId(String summonerId);
+    List<PositionDmo> selectListBySummonerId(String summonerId);
 
     PositionDmo selectByUnionKey(String summonerId, RankQueueEnum queueType, PositionEnum position);
 }

@@ -14,15 +14,15 @@ import java.util.List;
 @Repository
 public interface SummonerMapper {
 
-    SummonerDmo selectByPrimaryKey(String id);
-
-    List<SummonerDmo> queryLastUncheckedSummoners(Page page);
-
-    List<String> checkSummonersNotExist(List<String> summonerIdList);
-
-    SummonerDmo selectByCond(GetSummonerDto getSummonerDto);
-
     int insertSummoner(SummonerDto summonerDto);
 
     int updateLastCheckedTimeById(String summonerId, Date now);
+
+    SummonerDmo selectByPrimaryKey(String id);
+
+    List<SummonerDmo> selectLastUncheckedSummoners(Page page);
+
+    List<String> selectSummonersNotExist(List<String> summonerIdList);
+
+    SummonerDmo selectByCond(GetSummonerDto getSummonerDto);
 }

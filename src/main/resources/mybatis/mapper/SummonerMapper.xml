@@ -18,7 +18,7 @@
         from s_summoner
         where ID = #{id}
     </select>
-    <select id="checkSummonersNotExist" resultType="java.lang.String">
+    <select id="selectSummonersNotExist" resultType="java.lang.String">
         SELECT TEMP.ID1 FROM
         <foreach collection="list" item="item" separator="union" open="(" close=")">
             SELECT #{item} AS ID1
@@ -34,7 +34,7 @@
         VALUES (#{id}, #{accountId}, #{puuid}, #{name}, #{profileIconId}, #{revisionDate}, #{summonerLevel})
     </insert>
 
-    <select id="queryLastUncheckedSummoners" parameterType="wsg.lol.pojo.base.Page"
+    <select id="selectLastUncheckedSummoners" parameterType="wsg.lol.pojo.base.Page"
             resultType="wsg.lol.pojo.dmo.summoner.SummonerDmo">
         SELECT ID,
                ACCOUNT_ID,
@@ -45,10 +45,9 @@
                SUMMONER_LEVEL,
                LAST_CHECKED_TIME
         FROM s_summoner
-        ORDER BY LAST_CHECKED_TIME
+        ORDER BY LAST_CHECKED_TIME ASC
             LIMIT #{startIndex}, #{pageSize}
     </select>
-
     <select id="selectByCond" resultType="wsg.lol.pojo.dmo.summoner.SummonerDmo"
             parameterType="wsg.lol.pojo.dto.query.GetSummonerDto">
         SELECT

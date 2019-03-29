@@ -5,7 +5,7 @@ CREATE TABLE m_reference
   GAME_ID           BIGINT COMMENT '比赛ID',
   SUMMONER_ID       VARCHAR(32) COMMENT '召唤师ID',
   LANE              TINYINT COMMENT '分路',
-  CHAMPION_ID       INT COMMENT '使用的英雄ID',
+  CHAMPION          INT COMMENT '使用的英雄ID',
   PLATFORM_ID       TINYINT COMMENT '平台',
   SEASON_ID         TINYINT COMMENT '赛季',
   QUEUE             SMALLINT COMMENT '游戏队列',

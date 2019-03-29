@@ -1,7 +1,11 @@
 package wsg.lol.pojo.dto.api.match;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import wsg.lol.common.serializer.IntEnumSerializer;
 import wsg.lol.pojo.base.ApiBean;
-import wsg.lol.pojo.enums.impl.code.MatchLaneEnum;
+import wsg.lol.pojo.enums.impl.code.*;
+
+import java.util.Date;
 
 /**
  * @author King
@@ -11,11 +15,15 @@ public class MatchReferenceDto extends ApiBean {
     private MatchLaneEnum lane;
     private long gameId;
     private int champion;
-    private String platformId;
-    private int season;
-    private int queue;
-    private String role;
-    private long timestamp;
+    private PlatformEnum platformId;
+    private SeasonEnum season;
+
+    @JSONField(serializeUsing = IntEnumSerializer.class, deserializeUsing = IntEnumSerializer.class)
+    private MatchQueueEnum queue;
+    private MatchRoleEnum role;
+
+
+    private Date timestamp;
 
     private String summonerId;
 
@@ -51,43 +59,43 @@ public class MatchReferenceDto extends ApiBean {
         this.champion = champion;
     }
 
-    public String getPlatformId() {
+    public PlatformEnum getPlatformId() {
         return platformId;
     }
 
-    public void setPlatformId(String platformId) {
+    public void setPlatformId(PlatformEnum platformId) {
         this.platformId = platformId;
     }
 
-    public int getSeason() {
+    public SeasonEnum getSeason() {
         return season;
     }
 
-    public void setSeason(int season) {
+    public void setSeason(SeasonEnum season) {
         this.season = season;
     }
 
-    public int getQueue() {
+    public MatchQueueEnum getQueue() {
         return queue;
     }
 
-    public void setQueue(int queue) {
+    public void setQueue(MatchQueueEnum queue) {
         this.queue = queue;
     }
 
-    public String getRole() {
+    public MatchRoleEnum getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(MatchRoleEnum role) {
         this.role = role;
     }
 
-    public long getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 }

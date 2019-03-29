@@ -6,13 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
 import wsg.lol.dao.api.impl.MatchV4;
 import wsg.lol.dao.api.impl.SummonerV4;
 import wsg.lol.dao.mongo.intf.MongoDao;
-import wsg.lol.dao.mybatis.mapper.*;
+import wsg.lol.dao.mybatis.mapper.MasteryMapper;
+import wsg.lol.dao.mybatis.mapper.MatchMapper;
+import wsg.lol.dao.mybatis.mapper.PositionMapper;
+import wsg.lol.dao.mybatis.mapper.SummonerMapper;
 import wsg.lol.pojo.base.BaseResult;
 import wsg.lol.pojo.base.Page;
 import wsg.lol.pojo.dmo.champion.ChampionMasteryDmo;
@@ -66,10 +68,6 @@ public class RealServiceImpl implements RealService {
 
     private MongoDao mongoDao;
 
-    private ParticipantMapper participantMapper;
-
-    private TransactionTemplate transactionTemplate;
-
     @Override
     public BaseResult buildBaseLib() {
         return buildApexSummonerLib();
@@ -114,7 +112,7 @@ public class RealServiceImpl implements RealService {
     public BaseResult updateSummoners() {
         // Get last unchecked summoners.
         logger.info("Get last unchecked summoners");
-        List<SummonerDmo> summonerBaseList = summonerMapper.queryLastUncheckedSummoners(new Page());
+        List<SummonerDmo> summonerBaseList = summonerMapper.selectLastUncheckedSummoners(new Page());
         for (SummonerDmo summonerDmo : summonerBaseList) {
             updateSummonerById(summonerDmo.getId());
         }
@@ -208,14 +206,38 @@ public class RealServiceImpl implements RealService {
     @Override
     public BaseResult extendLib() {
         logger.info("Get last unchecked matches.");
-        List<MatchReferenceDmo> referenceDmoList = matchMapper.queryLastUncheckedMatches(new Page());
+        List<MatchReferenceDmo> referenceDmoList = matchMapper.selectLastUncheckedMatches(new Page());
 
         for (MatchReferenceDmo referenceDmo : referenceDmoList) {
-            MatchDto matchDto = mongoDao.getCollectionById(referenceDmo.getGameId(), MatchDto.class);
-            if (matchDto == null) {
-                matchDto = matchV4.getMatchById(referenceDmo.getGameId());
-                // wsg
+            updateMatchReference(referenceDmo.getId());
+        }
+        return BaseResult.success();
+    }
+
+    @Override
+    @Transactional
+    public BaseResult updateMatchReference(Integer id) {
+        MatchReferenceDmo referenceDmo = matchMapper.selectByPrimaryKey(id);
+        if (referenceDmo == null || referenceDmo.getChecked()) {
+            return BaseResult.success();
+        }
+
+        MatchDto matchDto = mongoDao.getCollectionById(referenceDmo.getGameId(), MatchDto.class);
+        if (matchDto == null) {
+            matchDto = matchV4.getMatchById(referenceDmo.getGameId());
+            List<MatchDto.ParticipantIdentityDto> identityDtoList = matchDto.getParticipantIdentities();
+            Set<String> idSet = new HashSet<>();
+            for (MatchDto.ParticipantIdentityDto identityDto : identityDtoList) {
+                idSet.add(identityDto.getPlayer().getSummonerId());
             }
+            BaseResult baseResult = saveSummoners(idSet);
+            if (baseResult.isSuccess()) {
+                mongoDao.insertDocument(matchDto);
+            }
+        }
+
+        if (1 != matchMapper.updateCheckedByKey(id, true)) {
+            throw new AppException("Fail to update the checked status of the match reference.");
         }
         return BaseResult.success();
     }
@@ -224,16 +246,22 @@ public class RealServiceImpl implements RealService {
         if (summonerIdSet.isEmpty()) {
             return BaseResult.success();
         }
-        List<String> idUncheckedList = summonerMapper.checkSummonersNotExist(new ArrayList<>(summonerIdSet));
+        List<String> idUncheckedList = summonerMapper.selectSummonersNotExist(new ArrayList<>(summonerIdSet));
 
         logger.info("Save summoners: " + idUncheckedList.size());
         GetSummonerDto getSummonerDto = new GetSummonerDto();
+        Set<String> errorSet = new HashSet<>();
         for (String id : idUncheckedList) {
             getSummonerDto.setId(id);
             SummonerDto summonerDto = summonerV4.getSummoner(getSummonerDto);
             if (1 != summonerMapper.insertSummoner(summonerDto)) {
                 logger.error("Fail to insert summoner.");
+                errorSet.add(id);
             }
+        }
+
+        if (!errorSet.isEmpty()) {
+            return BaseResult.fail("The summoners weren't all inserted successfully.");
         }
         return BaseResult.success();
     }
@@ -269,11 +297,6 @@ public class RealServiceImpl implements RealService {
     }
 
     @Autowired
-    public void setParticipantMapper(ParticipantMapper participantMapper) {
-        this.participantMapper = participantMapper;
-    }
-
-    @Autowired
     public void setChampionMasteryV4(ChampionMasteryV4 championMasteryV4) {
         this.championMasteryV4 = championMasteryV4;
     }
@@ -281,11 +304,6 @@ public class RealServiceImpl implements RealService {
     @Autowired
     public void setMasteryMapper(MasteryMapper masteryMapper) {
         this.masteryMapper = masteryMapper;
-    }
-
-    @Autowired
-    public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
-        this.transactionTemplate = transactionTemplate;
     }
 
     @Autowired

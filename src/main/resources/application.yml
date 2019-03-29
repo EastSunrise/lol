@@ -41,9 +41,4 @@ mybatis:
 server:
   port: 8090
 logging:
-  level:
-    wsg.lol: debug
-  path: /logs/
-  file: lol.log
-  pattern:
-    file: /logs/%d{yyyy-MM-dd}.log
+  config: classpath:config/logback.xml

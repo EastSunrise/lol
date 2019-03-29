@@ -1,137 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="wsg.lol.dao.mybatis.mapper.MasteryMapper">
-    <sql id="Base_Column_List">
-        ID, SUMMONER_ID, CHAMPION_ID, CHEST_GRANTED, CHAMPION_LEVEL, CHAMPION_POINTS, CHAMPION_POINTS_UNTIL_NEXT_LEVEL,
-    CHAMPION_POINTS_SINCE_LAST_LEVEL, TOKENS_EARNED, LAST_PLAY_TIME
-    </sql>
-    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dto.api.champion.ChampionMasteryDto"
+    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dmo.champion.ChampionMasteryDmo"
             parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List"/>
+        select ID,
+               SUMMONER_ID,
+               CHAMPION_ID,
+               CHEST_GRANTED,
+               CHAMPION_LEVEL,
+               CHAMPION_POINTS,
+               CHAMPION_POINTS_UNTIL_NEXT_LEVEL,
+               CHAMPION_POINTS_SINCE_LAST_LEVEL,
+               TOKENS_EARNED,
+               LAST_PLAY_TIME
         from c_mastery
-        where ID = #{id,jdbcType=INTEGER}
+        where ID = #{id}
     </select>
     <select id="selectByUnionKey" resultType="wsg.lol.pojo.dmo.champion.ChampionMasteryDmo">
-        select
-        <include refid="Base_Column_List"/>
+        select ID,
+               SUMMONER_ID,
+               CHAMPION_ID,
+               CHEST_GRANTED,
+               CHAMPION_LEVEL,
+               CHAMPION_POINTS,
+               CHAMPION_POINTS_UNTIL_NEXT_LEVEL,
+               CHAMPION_POINTS_SINCE_LAST_LEVEL,
+               TOKENS_EARNED,
+               LAST_PLAY_TIME
         from c_mastery
-        where SUMMONER_ID = #{param1} AND CHAMPION_ID = #{param2}
+        where SUMMONER_ID = #{param1}
+          AND CHAMPION_ID = #{param2}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete
-        from c_mastery
-        where ID = #{id,jdbcType=INTEGER}
-    </delete>
     <insert id="insert" parameterType="wsg.lol.pojo.dto.api.champion.ChampionMasteryDto" useGeneratedKeys="true">
-        insert into c_mastery (SUMMONER_ID, CHAMPION_ID,
-                               CHEST_GRANTED, CHAMPION_LEVEL, CHAMPION_POINTS,
-                               CHAMPION_POINTS_UNTIL_NEXT_LEVEL, CHAMPION_POINTS_SINCE_LAST_LEVEL,
-                               TOKENS_EARNED, LAST_PLAY_TIME)
-        values (#{summonerId}, #{championId}, #{chestGranted}, #{championLevel,jdbcType=INTEGER},
-                #{championPoints}, #{championPointsUntilNextLevel}, #{championPointsSinceLastLevel}, #{tokensEarned},
-                #{lastPlayTime})
+        INSERT INTO c_mastery
+        (SUMMONER_ID, CHAMPION_ID, CHEST_GRANTED, CHAMPION_LEVEL, CHAMPION_POINTS, CHAMPION_POINTS_UNTIL_NEXT_LEVEL,
+         CHAMPION_POINTS_SINCE_LAST_LEVEL, TOKENS_EARNED, LAST_PLAY_TIME)
+        VALUES (#{summonerId}, #{championId}, #{chestGranted}, #{championLevel}, #{championPoints},
+                #{championPointsUntilNextLevel}, #{championPointsSinceLastLevel}, #{tokensEarned}, #{lastPlayTime})
     </insert>
-    <insert id="insertSelective" parameterType="wsg.lol.pojo.dto.api.champion.ChampionMasteryDto">
-        insert into c_mastery
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                ID,
-            </if>
-            <if test="summonerId != null">
-                SUMMONER_ID,
-            </if>
-            <if test="championId != null">
-                CHAMPION_ID,
-            </if>
-            <if test="chestGranted != null">
-                CHEST_GRANTED,
-            </if>
-            <if test="championLevel != null">
-                CHAMPION_LEVEL,
-            </if>
-            <if test="championPoints != null">
-                CHAMPION_POINTS,
-            </if>
-            <if test="championPointsUntilNextLevel != null">
-                CHAMPION_POINTS_UNTIL_NEXT_LEVEL,
-            </if>
-            <if test="championPointsSinceLastLevel != null">
-                CHAMPION_POINTS_SINCE_LAST_LEVEL,
-            </if>
-            <if test="tokensEarned != null">
-                TOKENS_EARNED,
-            </if>
-            <if test="lastPlayTime != null">
-                LAST_PLAY_TIME,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
-            <if test="summonerId != null">
-                #{summonerId,jdbcType=VARCHAR},
-            </if>
-            <if test="championId != null">
-                #{championId,jdbcType=INTEGER},
-            </if>
-            <if test="chestGranted != null">
-                #{chestGranted,jdbcType=BIT},
-            </if>
-            <if test="championLevel != null">
-                #{championLevel,jdbcType=INTEGER},
-            </if>
-            <if test="championPoints != null">
-                #{championPoints,jdbcType=INTEGER},
-            </if>
-            <if test="championPointsUntilNextLevel != null">
-                #{championPointsUntilNextLevel,jdbcType=INTEGER},
-            </if>
-            <if test="championPointsSinceLastLevel != null">
-                #{championPointsSinceLastLevel,jdbcType=INTEGER},
-            </if>
-            <if test="tokensEarned != null">
-                #{tokensEarned,jdbcType=INTEGER},
-            </if>
-            <if test="lastPlayTime != null">
-                #{lastPlayTime,jdbcType=TIMESTAMP},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.pojo.dto.api.champion.ChampionMasteryDto">
-        update c_mastery
-        <set>
-            <if test="summonerId != null">
-                SUMMONER_ID = #{summonerId,jdbcType=VARCHAR},
-            </if>
-            <if test="championId != null">
-                CHAMPION_ID = #{championId,jdbcType=INTEGER},
-            </if>
-            <if test="chestGranted != null">
-                CHEST_GRANTED = #{chestGranted,jdbcType=BIT},
-            </if>
-            <if test="championLevel != null">
-                CHAMPION_LEVEL = #{championLevel,jdbcType=INTEGER},
-            </if>
-            <if test="championPoints != null">
-                CHAMPION_POINTS = #{championPoints,jdbcType=INTEGER},
-            </if>
-            <if test="championPointsUntilNextLevel != null">
-                CHAMPION_POINTS_UNTIL_NEXT_LEVEL = #{championPointsUntilNextLevel,jdbcType=INTEGER},
-            </if>
-            <if test="championPointsSinceLastLevel != null">
-                CHAMPION_POINTS_SINCE_LAST_LEVEL = #{championPointsSinceLastLevel,jdbcType=INTEGER},
-            </if>
-            <if test="tokensEarned != null">
-                TOKENS_EARNED = #{tokensEarned,jdbcType=INTEGER},
-            </if>
-            <if test="lastPlayTime != null">
-                LAST_PLAY_TIME = #{lastPlayTime,jdbcType=TIMESTAMP},
-            </if>
-        </set>
-        where ID = #{id,jdbcType=INTEGER}
-    </update>
     <update id="updateByUnionKey" parameterType="wsg.lol.pojo.dto.api.champion.ChampionMasteryDto">
         update c_mastery
         set CHEST_GRANTED                    = #{chestGranted},

@@ -23,7 +23,12 @@ public class RealTask implements InitializingBean {
             while (true) {
                 realService.updateSummoners();
             }
-        }, "Real Task").start();
+        }, "Update summoner").start();
+        new Thread(() -> {
+            while (true) {
+                realService.extendLib();
+            }
+        }, "Extend lib").start();
     }
 
     @Autowired

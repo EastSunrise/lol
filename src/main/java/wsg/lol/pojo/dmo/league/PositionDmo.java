@@ -29,7 +29,6 @@ public class PositionDmo extends ApiBean {
     private Integer seriesWins;
     private Integer seriesLosses;
 
-
     public Integer getId() {
         return id;
     }

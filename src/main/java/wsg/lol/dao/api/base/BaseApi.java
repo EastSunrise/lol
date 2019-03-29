@@ -44,29 +44,12 @@ public class BaseApi {
         }
     }
 
-    // get valid api key
-    // limit the rate of querying.
-    // exclusive access
-    private synchronized Map<String, String> getRequestHeaders() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Origin", "https://developer.riotgames.com");
-        headers.put("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
-        while (!apiConfig.hasValidKey()) {
-            threadSleep(DateUtil.ONE_HOUR);
-        }
-        headers.put("X-Riot-Token", apiConfig.getApiKey());
-        headers.put("Accept-Language", "zh-CN,zh;q=0.9,zh-TW;q=0.8");
-        headers.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
-                "Chrome/72.0.3626.121 Safari/537.36");
-        return headers;
-    }
-
     private String getJSONString(String apiRef, Map<String, Object> pathParams,
                                  Map<String, Object> queryParams) {
         return getJSONString(apiConfig.getRegion().getHost(), apiRef, pathParams, queryParams);
     }
 
-    private String doHttpGet(String urlStr, Map<String, String> requestHeaders) {
+    private synchronized String doHttpGet(String urlStr) {
         logger.info("Getting from " + urlStr);
         while (true) {
             try {
@@ -74,9 +57,17 @@ public class BaseApi {
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setConnectTimeout(DateUtil.ONE_SECOND * 5);
                 urlConnection.setReadTimeout(DateUtil.ONE_SECOND * 5);
-                for (Map.Entry<String, String> entry : requestHeaders.entrySet()) {
-                    urlConnection.setRequestProperty(entry.getKey(), entry.getValue());
+                Map<String, String> headers = new HashMap<>();
+                while (!apiConfig.hasValidKey()) {
+                    threadSleep(DateUtil.ONE_HOUR);
                 }
+                urlConnection.setRequestProperty("X-Riot-Token", apiConfig.getApiKey());
+                urlConnection.setRequestProperty("Origin", "https://developer.riotgames.com");
+                urlConnection.setRequestProperty("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
+                urlConnection.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,zh-TW;q=0.8");
+                urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) " +
+                        "AppleWebKit/537.36 (KHTML, like Gecko) " +
+                        "Chrome/72.0.3626.121 Safari/537.36");
 
                 int responseCode = urlConnection.getResponseCode();
                 if (responseCode == 200) {
@@ -123,7 +114,7 @@ public class BaseApi {
         }
         String urlStr = HTTPS + (host + apiRef + "?" + CodeUtil.encodeMap2UrlParams(queryParams)).replace(
                 "+", "%20");
-        return doHttpGet(urlStr, getRequestHeaders());
+        return doHttpGet(urlStr);
     }
 
     protected <T> T getObject(String apiRef, Class<T> clazz) {

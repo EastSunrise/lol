@@ -1,84 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="wsg.lol.dao.mybatis.mapper.LeagueMapper">
-    <sql id="Base_Column_List">
-        LEAGUE_ID, NAME, TIER, QUEUE
-    </sql>
-    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dto.api.league.LeagueListDto"
+    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dmo.league.LeagueDmo"
             parameterType="java.lang.String">
-        select
-        <include refid="Base_Column_List"/>
+        select LEAGUE_ID, NAME, TIER, QUEUE
         from l_league
-        where LEAGUE_ID = #{leagueId,jdbcType=VARCHAR}
+        where LEAGUE_ID = #{leagueId}
     </select>
-    <select id="selectBySummonerId" resultType="wsg.lol.pojo.dmo.league.PositionDmo" parameterType="java.lang.String">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM l_position T
-        WHERE T.SUMMONER_ID = #{summonerId}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        delete
-        from l_league
-        where LEAGUE_ID = #{leagueId,jdbcType=VARCHAR}
-    </delete>
     <insert id="insert" parameterType="wsg.lol.pojo.dto.api.league.LeagueListDto">
         insert into l_league (LEAGUE_ID, NAME, TIER,
                               QUEUE)
-        values (#{leagueId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{tier,jdbcType=TINYINT},
-                #{queue,jdbcType=TINYINT})
+        values (#{leagueId}, #{name}, #{tier},
+                #{queue})
     </insert>
-    <insert id="insertSelective" parameterType="wsg.lol.pojo.dto.api.league.LeagueListDto">
-        insert into l_league
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="leagueId != null">
-                LEAGUE_ID,
-            </if>
-            <if test="name != null">
-                NAME,
-            </if>
-            <if test="tier != null">
-                TIER,
-            </if>
-            <if test="queue != null">
-                QUEUE,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="leagueId != null">
-                #{leagueId,jdbcType=VARCHAR},
-            </if>
-            <if test="name != null">
-                #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="tier != null">
-                #{tier,jdbcType=TINYINT},
-            </if>
-            <if test="queue != null">
-                #{queue,jdbcType=TINYINT},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="wsg.lol.pojo.dto.api.league.LeagueListDto">
-        update l_league
-        <set>
-            <if test="name != null">
-                NAME = #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="tier != null">
-                TIER = #{tier,jdbcType=TINYINT},
-            </if>
-            <if test="queue != null">
-                QUEUE = #{queue,jdbcType=TINYINT},
-            </if>
-        </set>
-        where LEAGUE_ID = #{leagueId,jdbcType=VARCHAR}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="wsg.lol.pojo.dto.api.league.LeagueListDto">
-        update l_league
-        set NAME  = #{name,jdbcType=VARCHAR},
-            TIER  = #{tier,jdbcType=TINYINT},
-            QUEUE = #{queue,jdbcType=TINYINT}
-        where LEAGUE_ID = #{leagueId,jdbcType=VARCHAR}
-    </update>
 </mapper>

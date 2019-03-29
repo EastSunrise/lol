@@ -8,7 +8,9 @@ import wsg.lol.pojo.enums.intf.BaseEnum;
  * @author wangsigen
  */
 public enum PlatformEnum implements BaseEnum<Integer> {
-    NA1(1);
+    NA1(1),
+    KR(2),
+    ;
 
     private Integer value;
 
