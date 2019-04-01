@@ -22,11 +22,11 @@ import java.sql.SQLException;
         MatchQueueEnum.class, MatchRoleEnum.class, PlatformEnum.class, PositionEnum.class, RankQueueEnum.class,
         SeasonEnum.class, TierEnum.class
 })
-public class BaseEnumTypeHandler<V, E extends Enum & BaseEnum<V>> extends BaseTypeHandler<E> {
+public class CodeEnumTypeHandler<E extends Enum & BaseEnum<Integer>> extends BaseTypeHandler<E> {
 
     private Class<E> clazz;
 
-    public BaseEnumTypeHandler(Class<E> clazz) {
+    public CodeEnumTypeHandler(Class<E> clazz) {
         if (clazz == null) {
             throw new IllegalArgumentException("Type argument cannot be null");
         } else {
@@ -44,23 +44,20 @@ public class BaseEnumTypeHandler<V, E extends Enum & BaseEnum<V>> extends BaseTy
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public E getNullableResult(ResultSet resultSet, String columnName) throws SQLException {
-        V value = (V) resultSet.getObject(columnName);
+        Integer value = resultSet.getInt(columnName);
         return resultSet.wasNull() ? null : EnumUtil.parseFromValue(value, this.clazz);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public E getNullableResult(ResultSet resultSet, int columnIndex) throws SQLException {
-        V value = (V) resultSet.getObject(columnIndex);
+        Integer value = resultSet.getInt(columnIndex);
         return resultSet.wasNull() ? null : EnumUtil.parseFromValue(value, this.clazz);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public E getNullableResult(CallableStatement callableStatement, int columnIndex) throws SQLException {
-        V value = (V) callableStatement.getObject(columnIndex);
+        Integer value = callableStatement.getInt(columnIndex);
         return callableStatement.wasNull() ? null : EnumUtil.parseFromValue(value, this.clazz);
     }
 }
