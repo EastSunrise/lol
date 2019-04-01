@@ -1,8 +1,8 @@
 package wsg.lol.pojo.dto.api.match;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import wsg.lol.common.serializer.IntEnumSerializer;
-import wsg.lol.pojo.base.ApiBean;
+import wsg.lol.dao.data.serializer.IntEnumSerializer;
+import wsg.lol.pojo.base.BaseDto;
 import wsg.lol.pojo.enums.impl.code.*;
 
 import java.util.Date;
@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * @author King
  */
-public class MatchReferenceDto extends ApiBean {
+public class MatchReferenceDto extends BaseDto {
 
     private MatchLaneEnum lane;
     private long gameId;

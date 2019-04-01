@@ -1,14 +1,15 @@
 package wsg.lol.pojo.dto.state.others;
 
 import org.springframework.data.annotation.Id;
-import wsg.lol.pojo.base.StateBean;
+import wsg.lol.pojo.base.BaseDto;
+import wsg.lol.pojo.base.IJson;
 
 /**
  * wsg
  *
  * @author wangsigen
  */
-public class MapDto extends StateBean {
+public class MapDto extends BaseDto implements IJson {
 
     @Id
     private String MapId;

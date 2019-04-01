@@ -1,6 +1,8 @@
 package wsg.lol.pojo.dmo.match;
 
+import org.springframework.data.annotation.Id;
 import wsg.lol.pojo.base.BaseDmo;
+import wsg.lol.pojo.base.Persistable;
 import wsg.lol.pojo.enums.impl.code.MatchLaneEnum;
 
 /**
@@ -8,8 +10,9 @@ import wsg.lol.pojo.enums.impl.code.MatchLaneEnum;
  *
  * @author wangsigen
  */
-public class MatchReferenceDmo extends BaseDmo {
+public class MatchReferenceDmo extends BaseDmo implements Persistable {
 
+    @Id
     private Integer id;
     private MatchLaneEnum lane;
     private long gameId;

@@ -1,11 +1,14 @@
 package wsg.lol.pojo.dto.api.spectator;
 
+import wsg.lol.pojo.base.BaseDto;
+import wsg.lol.pojo.base.IJson;
+
 import java.util.List;
 
 /**
  * @author King
  */
-public class CurrentGameInfo {
+public class CurrentGameInfo extends BaseDto implements IJson {
 
     /**
      * The ID of the game

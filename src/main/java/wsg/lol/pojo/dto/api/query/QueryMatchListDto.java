@@ -1,6 +1,6 @@
 package wsg.lol.pojo.dto.api.query;
 
-import wsg.lol.common.annotation.Optional;
+import wsg.lol.pojo.annotation.Optional;
 import wsg.lol.pojo.base.QueryDto;
 
 import java.util.List;

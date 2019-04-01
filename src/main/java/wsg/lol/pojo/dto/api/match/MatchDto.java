@@ -1,8 +1,8 @@
 package wsg.lol.pojo.dto.api.match;
 
 import org.springframework.data.annotation.Id;
-import wsg.lol.pojo.base.ApiBean;
-import wsg.lol.pojo.base.StateBean;
+import wsg.lol.pojo.base.BaseDto;
+import wsg.lol.pojo.base.IJson;
 import wsg.lol.pojo.enums.impl.code.TierEnum;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author wangsigen
  */
-public class MatchDto extends StateBean {
+public class MatchDto extends BaseDto implements IJson {
 
     private int seasonId;
     private int queueId;
@@ -137,7 +137,7 @@ public class MatchDto extends StateBean {
     /**
      * @author King
      */
-    public static class ParticipantDto extends ApiBean {
+    public static class ParticipantDto extends BaseDto {
 
         /**
          * Participant statistics.
@@ -268,7 +268,7 @@ public class MatchDto extends StateBean {
         /**
          * @author King
          */
-        public static class MasteryDto extends ApiBean {
+        public static class MasteryDto extends BaseDto {
 
             private int masteryId;
             private int rank;
@@ -294,7 +294,7 @@ public class MatchDto extends StateBean {
     /**
      * @author King
      */
-    public static class TeamStatsDto extends ApiBean {
+    public static class TeamStatsDto extends BaseDto {
 
         /**
          * Flag indicating whether or not the team scored the first Dragon kill.
@@ -510,7 +510,7 @@ public class MatchDto extends StateBean {
     /**
      * @author King
      */
-    public static class ParticipantIdentityDto extends ApiBean {
+    public static class ParticipantIdentityDto extends BaseDto {
 
         /**
          * Player information.

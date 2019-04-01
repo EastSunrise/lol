@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.utils.DateUtil;
 import wsg.lol.common.utils.FileUtil;
-import wsg.lol.dao.config.StateConfig;
+import wsg.lol.dao.data.config.StateConfig;
 import wsg.lol.pojo.base.BaseResult;
 import wsg.lol.pojo.result.VersionResult;
 import wsg.lol.scheduler.intf.Scheduler;

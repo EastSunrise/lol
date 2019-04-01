@@ -1,6 +1,7 @@
 package wsg.lol.pojo.dto.api.league;
 
-import wsg.lol.pojo.base.ApiBean;
+import wsg.lol.pojo.base.BaseDto;
+import wsg.lol.pojo.base.IJson;
 import wsg.lol.pojo.enums.impl.code.DivisionEnum;
 import wsg.lol.pojo.enums.impl.code.PositionEnum;
 import wsg.lol.pojo.enums.impl.code.RankQueueEnum;
@@ -11,7 +12,7 @@ import wsg.lol.pojo.enums.impl.code.TierEnum;
  *
  * @author wangsigen
  */
-public class LeaguePositionDto extends ApiBean {
+public class LeaguePositionDto extends BaseDto implements IJson {
 
     private RankQueueEnum queueType;
     private String summonerName;

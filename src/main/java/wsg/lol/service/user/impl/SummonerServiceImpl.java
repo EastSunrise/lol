@@ -3,7 +3,7 @@ package wsg.lol.service.user.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import wsg.lol.dao.mybatis.mapper.PositionMapper;
+import wsg.lol.dao.mybatis.mapper.LeaguePositionMapper;
 import wsg.lol.dao.mybatis.mapper.SummonerMapper;
 import wsg.lol.pojo.base.BaseResult;
 import wsg.lol.pojo.dmo.summoner.SummonerDmo;
@@ -22,7 +22,7 @@ public class SummonerServiceImpl implements SummonerService {
 
     private SummonerMapper summonerMapper;
 
-    private PositionMapper positionMapper;
+    private LeaguePositionMapper leaguePositionMapper;
 
     @Override
     public SummonerDmo getSummonerById(String id) {
@@ -45,7 +45,7 @@ public class SummonerServiceImpl implements SummonerService {
     }
 
     @Autowired
-    public void setPositionMapper(PositionMapper positionMapper) {
-        this.positionMapper = positionMapper;
+    public void setLeaguePositionMapper(LeaguePositionMapper leaguePositionMapper) {
+        this.leaguePositionMapper = leaguePositionMapper;
     }
 }

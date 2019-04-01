@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import wsg.lol.pojo.dto.query.state.GetChampionDto;
 import wsg.lol.pojo.dto.query.state.GetChampionListDto;
-import wsg.lol.pojo.dto.state.champion.ChampionDto;
+import wsg.lol.pojo.dto.state.ChampionDto;
 import wsg.lol.service.user.intf.ChampionService;
 
 /**

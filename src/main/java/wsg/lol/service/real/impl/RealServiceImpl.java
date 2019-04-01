@@ -6,19 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wsg.lol.dao.api.impl.ChampionMasteryV4;
-import wsg.lol.dao.api.impl.LeagueV4;
-import wsg.lol.dao.api.impl.MatchV4;
-import wsg.lol.dao.api.impl.SummonerV4;
+import wsg.lol.dao.data.api.impl.ChampionMasteryV4;
+import wsg.lol.dao.data.api.impl.LeagueV4;
+import wsg.lol.dao.data.api.impl.MatchV4;
+import wsg.lol.dao.data.api.impl.SummonerV4;
 import wsg.lol.dao.mongo.intf.MongoDao;
+import wsg.lol.dao.mybatis.mapper.LeaguePositionMapper;
 import wsg.lol.dao.mybatis.mapper.MasteryMapper;
 import wsg.lol.dao.mybatis.mapper.MatchMapper;
-import wsg.lol.dao.mybatis.mapper.PositionMapper;
 import wsg.lol.dao.mybatis.mapper.SummonerMapper;
+import wsg.lol.pojo.base.AppException;
 import wsg.lol.pojo.base.BaseResult;
 import wsg.lol.pojo.base.Page;
 import wsg.lol.pojo.dmo.champion.ChampionMasteryDmo;
-import wsg.lol.pojo.dmo.league.PositionDmo;
+import wsg.lol.pojo.dmo.league.LeaguePositionDmo;
 import wsg.lol.pojo.dmo.match.MatchReferenceDmo;
 import wsg.lol.pojo.dmo.summoner.SummonerDmo;
 import wsg.lol.pojo.dto.api.champion.ChampionMasteryDto;
@@ -35,7 +36,6 @@ import wsg.lol.pojo.enums.impl.code.DivisionEnum;
 import wsg.lol.pojo.enums.impl.code.PositionEnum;
 import wsg.lol.pojo.enums.impl.code.RankQueueEnum;
 import wsg.lol.pojo.enums.impl.code.TierEnum;
-import wsg.lol.pojo.exception.AppException;
 import wsg.lol.service.real.intf.RealService;
 
 import java.util.*;
@@ -52,7 +52,7 @@ public class RealServiceImpl implements RealService {
 
     private SummonerMapper summonerMapper;
 
-    private PositionMapper positionMapper;
+    private LeaguePositionMapper leaguePositionMapper;
 
     private MatchMapper matchMapper;
 
@@ -95,12 +95,12 @@ public class RealServiceImpl implements RealService {
         Set<String> summonerIdSet = new HashSet<>();
         for (RankQueueEnum queue : RankQueueEnum.positionalValues()) {
             for (int i = 0; ; i++) {
-                List<PositionDmo> positionDmoList = leagueV4.getAllPositionLeagues(queue, tier, division,
+                List<LeaguePositionDto> leaguePositionDtoList = leagueV4.getAllPositionLeagues(queue, tier, division,
                         position, i);
-                if (positionDmoList == null || positionDmoList.isEmpty())
+                if (leaguePositionDtoList == null || leaguePositionDtoList.isEmpty())
                     break;
-                for (PositionDmo positionDmo : positionDmoList) {
-                    summonerIdSet.add(positionDmo.getSummonerId());
+                for (LeaguePositionDto leaguePositionDto : leaguePositionDtoList) {
+                    summonerIdSet.add(leaguePositionDto.getSummonerId());
                 }
             }
         }
@@ -139,15 +139,15 @@ public class RealServiceImpl implements RealService {
         // update the league.
         List<LeaguePositionDto> positionDtoList = leagueV4.getLeaguePositionsBySummonerId(summonerId);
         for (LeaguePositionDto positionDto : positionDtoList) {
-            PositionDmo positionDmo = positionMapper.selectByUnionKey(positionDto.getSummonerId(),
+            LeaguePositionDmo leaguePositionDmo = leaguePositionMapper.selectByUnionKey(positionDto.getSummonerId(),
                     positionDto.getQueueType(),
                     positionDto.getPosition());
-            if (positionDmo == null) {
-                if (1 != positionMapper.insert(positionDto)) {
+            if (leaguePositionDmo == null) {
+                if (1 != leaguePositionMapper.insert(positionDto)) {
                     throw new AppException("Fail to insert position.");
                 }
             } else {
-                if (1 != positionMapper.updateByUnionKey(positionDto)) {
+                if (1 != leaguePositionMapper.updateByUnionKey(positionDto)) {
                     throw new AppException("Fail to update position.");
                 }
             }
@@ -267,8 +267,8 @@ public class RealServiceImpl implements RealService {
     }
 
     @Autowired
-    public void setPositionMapper(PositionMapper positionMapper) {
-        this.positionMapper = positionMapper;
+    public void setLeaguePositionMapper(LeaguePositionMapper leaguePositionMapper) {
+        this.leaguePositionMapper = leaguePositionMapper;
     }
 
     @Autowired

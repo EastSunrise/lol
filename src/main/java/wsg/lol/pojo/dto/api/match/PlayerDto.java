@@ -1,11 +1,11 @@
 package wsg.lol.pojo.dto.api.match;
 
-import wsg.lol.pojo.base.ApiBean;
+import wsg.lol.pojo.base.BaseDto;
 
 /**
  * @author King
  */
-public class PlayerDto extends ApiBean {
+public class PlayerDto extends BaseDto {
 
     private String currentPlatformId;
     private String summonerName;

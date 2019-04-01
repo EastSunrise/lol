@@ -1,11 +1,11 @@
 package wsg.lol.pojo.dto.api.match;
 
-import wsg.lol.pojo.base.ApiBean;
+import wsg.lol.pojo.base.BaseDto;
 
 /**
  * @author King
  */
-public class ParticipantStatsDto extends ApiBean {
+public class ParticipantStatsDto extends BaseDto {
 
     private boolean firstBloodAssist;
     private long visionScore;

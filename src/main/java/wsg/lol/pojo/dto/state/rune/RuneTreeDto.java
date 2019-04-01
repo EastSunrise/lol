@@ -1,7 +1,8 @@
 package wsg.lol.pojo.dto.state.rune;
 
 import org.springframework.data.annotation.Id;
-import wsg.lol.pojo.base.StateBean;
+import wsg.lol.pojo.base.BaseDto;
+import wsg.lol.pojo.base.IJson;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author wangsigen
  */
-public class RuneTreeDto extends StateBean {
+public class RuneTreeDto extends BaseDto implements IJson {
 
     @Id
     private int id;

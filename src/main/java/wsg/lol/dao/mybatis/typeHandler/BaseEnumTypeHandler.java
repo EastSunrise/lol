@@ -4,8 +4,8 @@ import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
 import wsg.lol.common.utils.EnumUtil;
+import wsg.lol.pojo.base.BaseEnum;
 import wsg.lol.pojo.enums.impl.code.*;
-import wsg.lol.pojo.enums.intf.BaseEnum;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -44,18 +44,21 @@ public class BaseEnumTypeHandler<V, E extends Enum & BaseEnum<V>> extends BaseTy
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public E getNullableResult(ResultSet resultSet, String columnName) throws SQLException {
         V value = (V) resultSet.getObject(columnName);
         return resultSet.wasNull() ? null : EnumUtil.parseFromValue(value, this.clazz);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public E getNullableResult(ResultSet resultSet, int columnIndex) throws SQLException {
         V value = (V) resultSet.getObject(columnIndex);
         return resultSet.wasNull() ? null : EnumUtil.parseFromValue(value, this.clazz);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public E getNullableResult(CallableStatement callableStatement, int columnIndex) throws SQLException {
         V value = (V) callableStatement.getObject(columnIndex);
         return callableStatement.wasNull() ? null : EnumUtil.parseFromValue(value, this.clazz);

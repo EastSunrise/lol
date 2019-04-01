@@ -1,13 +1,14 @@
 package wsg.lol.pojo.dto.api.match;
 
-import wsg.lol.pojo.base.ApiBean;
+import wsg.lol.pojo.base.BaseDto;
+import wsg.lol.pojo.base.IJson;
 
 import java.util.List;
 
 /**
  * @author King
  */
-public class MatchListDto extends ApiBean {
+public class MatchListDto extends BaseDto implements IJson {
 
     private List<MatchReferenceDto> matches;
     private int totalGames;

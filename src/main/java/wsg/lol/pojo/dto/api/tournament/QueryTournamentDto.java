@@ -1,7 +1,7 @@
 package wsg.lol.pojo.dto.api.tournament;
 
-import wsg.lol.common.annotation.Optional;
-import wsg.lol.common.annotation.Required;
+import wsg.lol.pojo.annotation.Optional;
+import wsg.lol.pojo.annotation.Required;
 import wsg.lol.pojo.base.QueryDto;
 
 /**

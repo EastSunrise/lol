@@ -1,13 +1,14 @@
 package wsg.lol.pojo.dto.api.share;
 
-import wsg.lol.pojo.base.ApiBean;
+import wsg.lol.pojo.base.BaseDto;
+import wsg.lol.pojo.base.IJson;
 
 import java.util.List;
 
 /**
  * @author King
  */
-public class ShardStatus extends ApiBean {
+public class ShardStatus extends BaseDto implements IJson {
 
     private String name;
     private String regionTag;
@@ -67,7 +68,7 @@ public class ShardStatus extends ApiBean {
     /**
      * @author King
      */
-    public static class Service extends ApiBean {
+    public static class Service extends BaseDto {
 
         private String status;
         private List<Incident> incidents;
@@ -109,7 +110,7 @@ public class ShardStatus extends ApiBean {
         /**
          * @author King
          */
-        public static class Incident extends ApiBean {
+        public static class Incident extends BaseDto {
 
             private boolean active;
             private String createdAt;
@@ -151,7 +152,7 @@ public class ShardStatus extends ApiBean {
             /**
              * @author King
              */
-            public static class Message extends ApiBean {
+            public static class Message extends BaseDto {
 
                 private String severity;
                 private String author;
@@ -220,7 +221,7 @@ public class ShardStatus extends ApiBean {
                 /**
                  * @author King
                  */
-                public static class Translation extends ApiBean {
+                public static class Translation extends BaseDto {
 
                     private String locale;
                     private String content;

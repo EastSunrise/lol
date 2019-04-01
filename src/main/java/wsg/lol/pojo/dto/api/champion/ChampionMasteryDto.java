@@ -1,10 +1,11 @@
 package wsg.lol.pojo.dto.api.champion;
 
-import wsg.lol.pojo.base.ApiBean;
+import wsg.lol.pojo.base.BaseDto;
+import wsg.lol.pojo.base.IJson;
 
 import java.util.Date;
 
-public class ChampionMasteryDto extends ApiBean {
+public class ChampionMasteryDto extends BaseDto implements IJson {
 
     private String summonerId;
     private Integer championId;

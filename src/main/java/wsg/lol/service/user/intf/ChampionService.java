@@ -2,7 +2,7 @@ package wsg.lol.service.user.intf;
 
 import wsg.lol.pojo.dto.query.state.GetChampionDto;
 import wsg.lol.pojo.dto.query.state.GetChampionListDto;
-import wsg.lol.pojo.dto.state.champion.ChampionDto;
+import wsg.lol.pojo.dto.state.ChampionDto;
 
 import java.util.List;
 

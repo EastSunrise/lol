@@ -1,13 +1,14 @@
 package wsg.lol.pojo.dto.state.others;
 
-import wsg.lol.pojo.base.StateBean;
+import wsg.lol.pojo.base.BaseDto;
+import wsg.lol.pojo.base.IJson;
 
 /**
  * wsg
  *
  * @author wangsigen
  */
-public class VersionDto extends StateBean {
+public class VersionDto extends BaseDto implements IJson {
 
     private String version;
 

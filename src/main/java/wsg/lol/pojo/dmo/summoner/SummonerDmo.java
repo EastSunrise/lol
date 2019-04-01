@@ -1,12 +1,15 @@
 package wsg.lol.pojo.dmo.summoner;
 
 
-import wsg.lol.pojo.base.ApiBean;
+import org.springframework.data.annotation.Id;
+import wsg.lol.pojo.base.BaseDmo;
+import wsg.lol.pojo.base.Persistable;
 
 import java.util.Date;
 
-public class SummonerDmo extends ApiBean {
+public class SummonerDmo extends BaseDmo implements Persistable {
 
+    @Id
     private String id;
     private String accountId;
     private String puuid;

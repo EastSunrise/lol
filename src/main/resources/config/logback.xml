@@ -114,7 +114,7 @@
     <logger name="wsg.lol.service" level="debug" additivity="false">
         <appender-ref ref="service"/>
     </logger>
-    <logger name="wsg.lol.dao.api" level="debug" additivity="false">
+    <logger name="wsg.lol.dao.data.api" level="debug" additivity="false">
         <appender-ref ref="api"/>
     </logger>
     <logger name="wsg.lol.dao.mybatis" level="debug" additivity="false">

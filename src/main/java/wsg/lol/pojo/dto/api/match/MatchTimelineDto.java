@@ -1,12 +1,15 @@
 package wsg.lol.pojo.dto.api.match;
 
+import wsg.lol.pojo.base.BaseDto;
+import wsg.lol.pojo.base.IJson;
+
 import java.util.List;
 import java.util.Map;
 
 /**
  * @author King
  */
-public class MatchTimelineDto {
+public class MatchTimelineDto extends BaseDto implements IJson {
 
     private List<MatchFrameDto> frames;
     private long frameInterval;

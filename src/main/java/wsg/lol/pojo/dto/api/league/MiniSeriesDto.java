@@ -1,13 +1,13 @@
 package wsg.lol.pojo.dto.api.league;
 
-import wsg.lol.pojo.base.ApiBean;
+import wsg.lol.pojo.base.BaseDto;
 
 /**
  * wsg
  *
  * @author wangsigen
  */
-public class MiniSeriesDto extends ApiBean {
+public class MiniSeriesDto extends BaseDto {
 
     private Integer target;
     private Integer wins;

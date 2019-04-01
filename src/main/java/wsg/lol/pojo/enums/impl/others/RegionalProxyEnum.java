@@ -1,6 +1,6 @@
 package wsg.lol.pojo.enums.impl.others;
 
-import wsg.lol.pojo.enums.intf.BaseEnum;
+import wsg.lol.pojo.base.BaseEnum;
 
 /**
  * wsg

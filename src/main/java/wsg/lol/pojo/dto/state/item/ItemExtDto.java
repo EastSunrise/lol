@@ -1,6 +1,7 @@
 package wsg.lol.pojo.dto.state.item;
 
-import wsg.lol.pojo.base.StateBean;
+import wsg.lol.pojo.base.BaseDto;
+import wsg.lol.pojo.dto.state.ItemDto;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @author wangsigen
  */
-public class ItemExtDto extends StateBean {
+public class ItemExtDto extends BaseDto {
 
     private List<ItemDto> itemDtoList;
     private List<GroupDto> groupDtoList;

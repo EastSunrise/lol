@@ -1,6 +1,6 @@
 package wsg.lol.pojo.dto.state.spell;
 
-import wsg.lol.pojo.base.StateBean;
+import wsg.lol.pojo.base.BaseDto;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class ChampionSpellDto extends BaseSpellDto {
      *
      * @author wangsigen
      */
-    public static class LevelTipDto extends StateBean {
+    public static class LevelTipDto extends BaseDto {
 
         private List<String> label;
         private List<String> effect;

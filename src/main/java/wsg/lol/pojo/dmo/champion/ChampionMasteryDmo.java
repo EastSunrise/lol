@@ -1,6 +1,8 @@
 package wsg.lol.pojo.dmo.champion;
 
+import org.springframework.data.annotation.Id;
 import wsg.lol.pojo.base.BaseDmo;
+import wsg.lol.pojo.base.Persistable;
 
 import java.util.Date;
 
@@ -9,9 +11,11 @@ import java.util.Date;
  *
  * @author wangsigen
  */
-public class ChampionMasteryDmo extends BaseDmo {
+public class ChampionMasteryDmo extends BaseDmo implements Persistable {
 
+    @Id
     private Integer id;
+
     private String summonerId;
     private Integer championId;
     private Boolean chestGranted;

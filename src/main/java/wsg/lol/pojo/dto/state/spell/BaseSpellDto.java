@@ -1,7 +1,8 @@
 package wsg.lol.pojo.dto.state.spell;
 
 import org.springframework.data.annotation.Id;
-import wsg.lol.pojo.base.StateBean;
+import wsg.lol.pojo.base.BaseDto;
+import wsg.lol.pojo.base.IJson;
 import wsg.lol.pojo.dto.state.others.ImageDto;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
  *
  * @author wangsigen
  */
-public class BaseSpellDto extends StateBean {
+public class BaseSpellDto extends BaseDto implements IJson {
 
     @Id
     private String id;
@@ -192,7 +193,7 @@ public class BaseSpellDto extends StateBean {
      *
      * @author wangsigen
      */
-    public static class DataValueDto extends StateBean {
+    public static class DataValueDto extends BaseDto {
     }
 
     /**
@@ -200,7 +201,7 @@ public class BaseSpellDto extends StateBean {
      *
      * @author wangsigen
      */
-    public static class VarDto extends StateBean {
+    public static class VarDto extends BaseDto {
 
         private String link;
         // wsg       private List<Double> coeff;

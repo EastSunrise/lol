@@ -42,3 +42,5 @@ server:
   port: 8090
 logging:
   config: classpath:config/logback.xml
+mapper:
+  mappers: wsg.lol.dao.mybatis.common.MyMapper

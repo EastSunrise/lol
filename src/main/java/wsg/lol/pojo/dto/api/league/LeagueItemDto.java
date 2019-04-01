@@ -1,10 +1,11 @@
 package wsg.lol.pojo.dto.api.league;
 
 
-import wsg.lol.pojo.base.ApiBean;
+import wsg.lol.pojo.base.BaseDto;
+import wsg.lol.pojo.base.IJson;
 import wsg.lol.pojo.enums.impl.code.DivisionEnum;
 
-public class LeagueItemDto extends ApiBean {
+public class LeagueItemDto extends BaseDto implements IJson {
 
     private Integer id;
     private String summonerId;

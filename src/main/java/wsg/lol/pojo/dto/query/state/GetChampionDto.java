@@ -1,13 +1,13 @@
 package wsg.lol.pojo.dto.query.state;
 
-import wsg.lol.pojo.base.QueryStateDto;
+import wsg.lol.pojo.base.QueryDto;
 
 /**
  * wsg
  *
  * @author wangsigen
  */
-public class GetChampionDto extends QueryStateDto {
+public class GetChampionDto extends QueryDto {
 
     private Integer championId;
 

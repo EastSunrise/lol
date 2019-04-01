@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApiAspect {
 
-    @Pointcut(value = "@annotation(wsg.lol.common.annotation.AccessApi)")
+    @Pointcut(value = "@annotation(wsg.lol.pojo.annotation.AccessApi)")
     public void api() {
     }
 
