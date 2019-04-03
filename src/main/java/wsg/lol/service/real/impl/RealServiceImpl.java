@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 import wsg.lol.dao.data.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.data.api.impl.LeagueV4;
 import wsg.lol.dao.data.api.impl.MatchV4;
@@ -13,7 +14,7 @@ import wsg.lol.dao.data.api.impl.SummonerV4;
 import wsg.lol.dao.mongo.intf.MongoDao;
 import wsg.lol.dao.mybatis.mapper.LeaguePositionMapper;
 import wsg.lol.dao.mybatis.mapper.MasteryMapper;
-import wsg.lol.dao.mybatis.mapper.MatchMapper;
+import wsg.lol.dao.mybatis.mapper.MatchReferenceMapper;
 import wsg.lol.dao.mybatis.mapper.SummonerMapper;
 import wsg.lol.pojo.base.AppException;
 import wsg.lol.pojo.base.BaseResult;
@@ -54,7 +55,7 @@ public class RealServiceImpl implements RealService {
 
     private LeaguePositionMapper leaguePositionMapper;
 
-    private MatchMapper matchMapper;
+    private MatchReferenceMapper referenceMapper;
 
     private MasteryMapper masteryMapper;
 
@@ -112,7 +113,10 @@ public class RealServiceImpl implements RealService {
     public BaseResult updateSummoners() {
         // Get last unchecked summoners.
         logger.info("Get last unchecked summoners");
-        List<SummonerDmo> summonerBaseList = summonerMapper.selectLastUncheckedSummoners(new Page());
+        Example example = new Example(SummonerDmo.class);
+        example.setOrderByClause("LAST_CHECKED_TIME ASC");
+        List<SummonerDmo> summonerBaseList = summonerMapper.selectByExampleAndRowBounds(example,
+                new Page().getRowBounds());
         for (SummonerDmo summonerDmo : summonerBaseList) {
             updateSummonerById(summonerDmo.getId());
         }
@@ -140,10 +144,9 @@ public class RealServiceImpl implements RealService {
         List<LeaguePositionDto> positionDtoList = leagueV4.getLeaguePositionsBySummonerId(summonerId);
         for (LeaguePositionDto positionDto : positionDtoList) {
             LeaguePositionDmo leaguePositionDmo = leaguePositionMapper.selectByUnionKey(positionDto.getSummonerId(),
-                    positionDto.getQueueType(),
-                    positionDto.getPosition());
+                    positionDto.getQueueType(), positionDto.getPosition());
             if (leaguePositionDmo == null) {
-                if (1 != leaguePositionMapper.insert(positionDto)) {
+                if (1 != leaguePositionMapper.insertPosition(positionDto)) {
                     throw new AppException("Fail to insert position.");
                 }
             } else {
@@ -159,7 +162,7 @@ public class RealServiceImpl implements RealService {
             ChampionMasteryDmo masteryDmo = masteryMapper.selectByUnionKey(masteryDto.getSummonerId(),
                     masteryDto.getChampionId());
             if (masteryDmo == null) {
-                if (1 != masteryMapper.insert(masteryDto)) {
+                if (1 != masteryMapper.insertMastery(masteryDto)) {
                     throw new AppException("Fail to insert champion mastery.");
                 }
             } else {
@@ -186,7 +189,7 @@ public class RealServiceImpl implements RealService {
             for (MatchReferenceDto referenceDto : referenceDtoList) {
                 referenceDto.setSummonerId(summonerId);
                 try {
-                    if (1 != matchMapper.insert(referenceDto)) {
+                    if (1 != referenceMapper.insertReference(referenceDto)) {
                         throw new AppException("Fail to insert match reference.");
                     }
                 } catch (DuplicateKeyException e) {
@@ -196,7 +199,10 @@ public class RealServiceImpl implements RealService {
         }
 
         // update the last check time.
-        if (1 != summonerMapper.updateLastCheckedTimeById(summonerId, lastCheckedTime)) {
+        SummonerDmo updateDmo = new SummonerDmo();
+        updateDmo.setId(summonerDmo.getId());
+        updateDmo.setLastCheckedTime(lastCheckedTime);
+        if (1 != summonerMapper.updateByPrimaryKeySelective(updateDmo)) {
             throw new AppException("Fail to update the last check time of the summoner.");
         }
 
@@ -206,7 +212,10 @@ public class RealServiceImpl implements RealService {
     @Override
     public BaseResult extendLib() {
         logger.info("Get last unchecked matches.");
-        List<MatchReferenceDmo> referenceDmoList = matchMapper.selectLastUncheckedMatches(new Page());
+        Example example = new Example(MatchReferenceDmo.class);
+        example.setOrderByClause("CHECKED ASC");
+        List<MatchReferenceDmo> referenceDmoList = referenceMapper.selectByExampleAndRowBounds(example,
+                new Page().getRowBounds());
 
         for (MatchReferenceDmo referenceDmo : referenceDmoList) {
             updateMatchReference(referenceDmo.getId());
@@ -217,7 +226,7 @@ public class RealServiceImpl implements RealService {
     @Override
     @Transactional
     public BaseResult updateMatchReference(Integer id) {
-        MatchReferenceDmo referenceDmo = matchMapper.selectByPrimaryKey(id);
+        MatchReferenceDmo referenceDmo = referenceMapper.selectByPrimaryKey(id);
         if (referenceDmo == null || referenceDmo.getChecked()) {
             return BaseResult.success();
         }
@@ -236,7 +245,10 @@ public class RealServiceImpl implements RealService {
             }
         }
 
-        if (1 != matchMapper.updateCheckedByKey(id, true)) {
+        MatchReferenceDmo updateDmo = new MatchReferenceDmo();
+        updateDmo.setId(referenceDmo.getId());
+        updateDmo.setChecked(false);
+        if (1 != referenceMapper.updateByPrimaryKeySelective(updateDmo)) {
             throw new AppException("Fail to update the checked status of the match reference.");
         }
         return BaseResult.success();
@@ -246,7 +258,7 @@ public class RealServiceImpl implements RealService {
         if (summonerIdSet.isEmpty()) {
             return BaseResult.success();
         }
-        List<String> idUncheckedList = summonerMapper.selectSummonersNotExist(new ArrayList<>(summonerIdSet));
+        List<String> idUncheckedList = summonerMapper.removeSummonersExist(new ArrayList<>(summonerIdSet));
 
         logger.info("Save summoners: " + idUncheckedList.size());
         GetSummonerDto getSummonerDto = new GetSummonerDto();
@@ -277,8 +289,8 @@ public class RealServiceImpl implements RealService {
     }
 
     @Autowired
-    public void setMatchMapper(MatchMapper matchMapper) {
-        this.matchMapper = matchMapper;
+    public void setReferenceMapper(MatchReferenceMapper referenceMapper) {
+        this.referenceMapper = referenceMapper;
     }
 
     @Autowired

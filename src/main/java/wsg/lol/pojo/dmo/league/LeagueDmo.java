@@ -6,11 +6,14 @@ import wsg.lol.pojo.base.Persistable;
 import wsg.lol.pojo.enums.impl.code.RankQueueEnum;
 import wsg.lol.pojo.enums.impl.code.TierEnum;
 
+import javax.persistence.Table;
+
 /**
  * wsg
  *
  * @author wangsigen
  */
+@Table(name = "l_league")
 public class LeagueDmo extends BaseDmo implements Persistable {
 
     @Id

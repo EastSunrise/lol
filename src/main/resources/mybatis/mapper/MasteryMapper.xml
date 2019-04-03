@@ -1,53 +1,40 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wsg.lol.dao.mybatis.mapper.MasteryMapper">
-    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dmo.champion.ChampionMasteryDmo"
-            parameterType="java.lang.Integer">
-        select ID,
-               SUMMONER_ID,
-               CHAMPION_ID,
-               CHEST_GRANTED,
-               CHAMPION_LEVEL,
-               CHAMPION_POINTS,
-               CHAMPION_POINTS_UNTIL_NEXT_LEVEL,
-               CHAMPION_POINTS_SINCE_LAST_LEVEL,
-               TOKENS_EARNED,
-               LAST_PLAY_TIME
-        from c_mastery
-        where ID = #{id}
-    </select>
-    <select id="selectByUnionKey" resultType="wsg.lol.pojo.dmo.champion.ChampionMasteryDmo">
-        select ID,
-               SUMMONER_ID,
-               CHAMPION_ID,
-               CHEST_GRANTED,
-               CHAMPION_LEVEL,
-               CHAMPION_POINTS,
-               CHAMPION_POINTS_UNTIL_NEXT_LEVEL,
-               CHAMPION_POINTS_SINCE_LAST_LEVEL,
-               TOKENS_EARNED,
-               LAST_PLAY_TIME
-        from c_mastery
-        where SUMMONER_ID = #{param1}
-          AND CHAMPION_ID = #{param2}
-    </select>
-    <insert id="insert" parameterType="wsg.lol.pojo.dto.api.champion.ChampionMasteryDto" useGeneratedKeys="true">
+    <insert id="insertMastery" parameterType="wsg.lol.pojo.dto.api.champion.ChampionMasteryDto" useGeneratedKeys="true">
         INSERT INTO c_mastery
         (SUMMONER_ID, CHAMPION_ID, CHEST_GRANTED, CHAMPION_LEVEL, CHAMPION_POINTS, CHAMPION_POINTS_UNTIL_NEXT_LEVEL,
          CHAMPION_POINTS_SINCE_LAST_LEVEL, TOKENS_EARNED, LAST_PLAY_TIME)
         VALUES (#{summonerId}, #{championId}, #{chestGranted}, #{championLevel}, #{championPoints},
                 #{championPointsUntilNextLevel}, #{championPointsSinceLastLevel}, #{tokensEarned}, #{lastPlayTime})
     </insert>
-    <update id="updateByUnionKey" parameterType="wsg.lol.pojo.dto.api.champion.ChampionMasteryDto">
-        update c_mastery
-        set CHEST_GRANTED                    = #{chestGranted},
-            CHAMPION_LEVEL                   = #{championLevel},
-            CHAMPION_POINTS                  = #{championPoints},
-            CHAMPION_POINTS_UNTIL_NEXT_LEVEL = #{championPointsUntilNextLevel},
-            CHAMPION_POINTS_SINCE_LAST_LEVEL = #{championPointsSinceLastLevel},
-            TOKENS_EARNED                    = #{tokensEarned},
-            LAST_PLAY_TIME                   = #{lastPlayTime}
-        where SUMMONER_ID = #{summonerId}
+
+    <update id="updateByUnionKey">
+        UPDATE c_mastery
+        SET CHEST_GRANTED=#{chestGranted},
+            CHAMPION_LEVEL=#{championLevel},
+            CHAMPION_POINTS=#{championPoints},
+            CHAMPION_POINTS_UNTIL_NEXT_LEVEL=#{championPointsUntilNextLevel},
+            CHAMPION_POINTS_SINCE_LAST_LEVEL=#{championPointsSinceLastLevel},
+            TOKENS_EARNED=#{tokensEarned},
+            LAST_PLAY_TIME=#{lastPlayTime}
+        WHERE SUMMONER_ID = #{summonerId}
           AND CHAMPION_ID = #{championId}
     </update>
+
+    <select id="selectByUnionKey" resultType="wsg.lol.pojo.dmo.champion.ChampionMasteryDmo">
+        SELECT ID,
+               SUMMONER_ID,
+               CHAMPION_ID,
+               CHEST_GRANTED,
+               CHAMPION_LEVEL,
+               CHAMPION_POINTS,
+               CHAMPION_POINTS_UNTIL_NEXT_LEVEL,
+               CHAMPION_POINTS_SINCE_LAST_LEVEL,
+               TOKENS_EARNED,
+               LAST_PLAY_TIME
+        FROM c_mastery
+        WHERE SUMMONER_ID = #{param1}
+          AND CHAMPION_ID = #{param2}
+    </select>
 </mapper>

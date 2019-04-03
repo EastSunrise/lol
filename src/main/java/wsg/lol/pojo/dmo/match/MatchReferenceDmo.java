@@ -1,18 +1,23 @@
 package wsg.lol.pojo.dmo.match;
 
 import org.springframework.data.annotation.Id;
+import tk.mybatis.mapper.annotation.KeySql;
 import wsg.lol.pojo.base.BaseDmo;
 import wsg.lol.pojo.base.Persistable;
 import wsg.lol.pojo.enums.impl.code.MatchLaneEnum;
+
+import javax.persistence.Table;
 
 /**
  * wsg
  *
  * @author wangsigen
  */
+@Table(name = "m_reference")
 public class MatchReferenceDmo extends BaseDmo implements Persistable {
 
     @Id
+    @KeySql(useGeneratedKeys = true)
     private Integer id;
     private MatchLaneEnum lane;
     private long gameId;

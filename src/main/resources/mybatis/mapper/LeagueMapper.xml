@@ -1,16 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wsg.lol.dao.mybatis.mapper.LeagueMapper">
-    <select id="selectByPrimaryKey" resultType="wsg.lol.pojo.dmo.league.LeagueDmo"
-            parameterType="java.lang.String">
-        select LEAGUE_ID, NAME, TIER, QUEUE
-        from l_league
-        where LEAGUE_ID = #{leagueId}
-    </select>
-    <insert id="insert" parameterType="wsg.lol.pojo.dto.api.league.LeagueListDto">
-        insert into l_league (LEAGUE_ID, NAME, TIER,
-                              QUEUE)
-        values (#{leagueId}, #{name}, #{tier},
-                #{queue})
-    </insert>
+
 </mapper>

@@ -1,5 +1,7 @@
 package wsg.lol.pojo.base;
 
+import org.apache.ibatis.session.RowBounds;
+
 /**
  * wsg
  *
@@ -36,5 +38,9 @@ public class Page {
 
     public int getStartIndex() {
         return pageIndex * pageSize;
+    }
+
+    public RowBounds getRowBounds() {
+        return new RowBounds(startIndex, pageSize);
     }
 }

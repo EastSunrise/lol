@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import wsg.lol.pojo.base.BaseDmo;
 import wsg.lol.pojo.base.Persistable;
 
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -11,6 +12,7 @@ import java.util.Date;
  *
  * @author wangsigen
  */
+@Table(name = "c_mastery")
 public class ChampionMasteryDmo extends BaseDmo implements Persistable {
 
     @Id

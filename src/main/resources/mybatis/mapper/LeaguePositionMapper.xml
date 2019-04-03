@@ -1,30 +1,36 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wsg.lol.dao.mybatis.mapper.LeaguePositionMapper">
-    <select id="selectListBySummonerId" resultType="wsg.lol.pojo.dmo.league.LeaguePositionDmo"
-            parameterType="java.lang.String">
-        SELECT ID,
-               SUMMONER_ID,
-               QUEUE_TYPE,
-               POSITION,
-               SUMMONER_NAME,
-               LEAGUE_ID,
-               LEAGUE_NAME,
-               TIER,
-               'RANK',
-               LEAGUE_POINTS,
-               WINS,
-               LOSSES,
-               VETERAN,
-               INACTIVE,
-               FRESH_BLOOD,
-               HOT_STREAK,
-               MINI_SERIES_TARGET,
-               MINI_SERIES_WINS,
-               MINI_SERIES_LOSSES
-        FROM l_position T
-        WHERE T.SUMMONER_ID = #{summonerId}
-    </select>
+    <insert id="insertPosition" parameterType="wsg.lol.pojo.dto.api.league.LeaguePositionDto" useGeneratedKeys="true">
+        INSERT INTO l_position
+        (SUMMONER_ID, QUEUE_TYPE, POSITION, SUMMONER_NAME, LEAGUE_ID, LEAGUE_NAME, TIER, DIVISION, LEAGUE_POINTS, WINS,
+         LOSSES, VETERAN, INACTIVE, FRESH_BLOOD, HOT_STREAK, MINI_SERIES_TARGET, MINI_SERIES_WINS, MINI_SERIES_LOSSES)
+        VALUES (#{summonerId}, #{queueType}, #{position}, #{summonerName}, #{leagueId}, #{leagueName}, #{tier}, #{rank},
+                #{leaguePoints}, #{wins}, #{losses}, #{veteran}, #{invactive}, #{freshBlood}, #{hotStreak},
+                #{miniSeries.target}, #{miniSeries.wins}, #{miniSeries.losses})
+    </insert>
+
+    <update id="updateByUnionKey">
+        UPDATE l_position
+        SET LEAGUE_ID=#{leagueId},
+            LEAGUE_NAME=#{leagueName},
+            TIER=#{tier},
+            DIVISION=#{rank},
+            LEAGUE_POINTS=#{leaguePoints},
+            WINS=#{wins},
+            LOSSES=#{losses},
+            VETERAN=#{veteran},
+            INACTIVE=#{invactive},
+            FRESH_BLOOD=#{freshBlood},
+            HOT_STREAK=#{hotStreak},
+            MINI_SERIES_TARGET=#{miniSeries.target},
+            MINI_SERIES_WINS=#{miniSeries.wins},
+            MINI_SERIES_LOSSES= #{miniSeries.losses}
+        WHERE SUMMONER_ID = #{summonerId}
+          AND QUEUE_TYPE = #{queueType}
+          AND POSITION = #{position}
+    </update>
+
     <select id="selectByUnionKey" resultType="wsg.lol.pojo.dmo.league.LeaguePositionDmo">
         SELECT ID,
                SUMMONER_ID,
@@ -34,7 +40,7 @@
                LEAGUE_ID,
                LEAGUE_NAME,
                TIER,
-               DIVISION AS "rank",
+               DIVISION,
                LEAGUE_POINTS,
                WINS,
                LOSSES,
@@ -45,39 +51,9 @@
                MINI_SERIES_TARGET,
                MINI_SERIES_WINS,
                MINI_SERIES_LOSSES
-        FROM l_position T
-        WHERE T.SUMMONER_ID = #{param1}
-          AND T.QUEUE_TYPE = #{param2}
-          AND T.POSITION = #{param3}
+        FROM l_position
+        WHERE SUMMONER_ID = #{param1}
+          AND QUEUE_TYPE = #{param2}
+          AND POSITION = #{param3}
     </select>
-    <insert id="insert" parameterType="wsg.lol.pojo.dto.api.league.LeaguePositionDto" useGeneratedKeys="true">
-        insert into l_position
-        (SUMMONER_ID, QUEUE_TYPE, POSITION, SUMMONER_NAME, LEAGUE_ID, LEAGUE_NAME, TIER, DIVISION, LEAGUE_POINTS,
-         WINS, LOSSES, VETERAN, INACTIVE, FRESH_BLOOD, HOT_STREAK, MINI_SERIES_TARGET, MINI_SERIES_WINS,
-         MINI_SERIES_LOSSES)
-        values (#{summonerId}, #{queueType}, #{position}, #{summonerName}, #{leagueId}, #{leagueName}, #{tier},
-                #{rank}, #{leaguePoints}, #{wins}, #{losses}, #{veteran}, #{inactive}, #{freshBlood}, #{hotStreak},
-                #{miniSeries.target}, #{miniSeries.wins}, #{miniSeries.losses})
-    </insert>
-    <update id="updateByUnionKey" parameterType="wsg.lol.pojo.dto.api.league.LeaguePositionDto">
-        update l_position
-        set SUMMONER_NAME      = #{summonerName},
-            LEAGUE_ID          = #{leagueId},
-            LEAGUE_NAME        = #{leagueName},
-            TIER               = #{tier},
-            DIVISION           = #{rank},
-            LEAGUE_POINTS      = #{leaguePoints},
-            WINS               = #{wins},
-            LOSSES             = #{losses},
-            VETERAN            = #{veteran},
-            INACTIVE           = #{inactive},
-            FRESH_BLOOD        = #{freshBlood},
-            HOT_STREAK         = #{hotStreak},
-            MINI_SERIES_TARGET = #{miniSeries.target},
-            MINI_SERIES_WINS   = #{miniSeries.wins},
-            MINI_SERIES_LOSSES = #{miniSeries.losses}
-        WHERE SUMMONER_ID = #{summonerId}
-          AND QUEUE_TYPE = #{queueType}
-          AND POSITION = #{position}
-    </update>
 </mapper>

@@ -44,6 +44,11 @@ public class SummonerV4 {
         return null;
     }
 
+    @Autowired
+    public void setBaseApi(BaseApi baseApi) {
+        this.baseApi = baseApi;
+    }
+
     private enum KeyEnum {
         ID("encryptedSummonerId", "{encryptedSummonerId}"),
         ACCOUNTID("encryptedAccountId", "by-account/{encryptedAccountId}"),
@@ -56,10 +61,5 @@ public class SummonerV4 {
             this.key = key;
             this.url = url;
         }
-    }
-
-    @Autowired
-    public void setBaseApi(BaseApi baseApi) {
-        this.baseApi = baseApi;
     }
 }

@@ -10,11 +10,9 @@ import wsg.lol.pojo.dto.api.champion.ChampionMasteryDto;
 @Mapper
 public interface MasteryMapper extends MyMapper<ChampionMasteryDmo> {
 
-    int insert(ChampionMasteryDto record);
-
-    int updateByUnionKey(ChampionMasteryDto record);
-
-    ChampionMasteryDmo selectByPrimaryKey(Integer id);
-
     ChampionMasteryDmo selectByUnionKey(String summonerId, Integer championId);
+
+    int insertMastery(ChampionMasteryDto masteryDto);
+
+    int updateByUnionKey(ChampionMasteryDto masteryDto);
 }

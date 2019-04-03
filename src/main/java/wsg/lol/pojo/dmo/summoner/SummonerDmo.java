@@ -5,8 +5,10 @@ import org.springframework.data.annotation.Id;
 import wsg.lol.pojo.base.BaseDmo;
 import wsg.lol.pojo.base.Persistable;
 
+import javax.persistence.Table;
 import java.util.Date;
 
+@Table(name = "s_summoner")
 public class SummonerDmo extends BaseDmo implements Persistable {
 
     @Id

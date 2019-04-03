@@ -5,11 +5,14 @@ import wsg.lol.pojo.base.BaseDmo;
 import wsg.lol.pojo.base.Persistable;
 import wsg.lol.pojo.enums.impl.code.DivisionEnum;
 
+import javax.persistence.Table;
+
 /**
  * wsg
  *
  * @author wangsigen
  */
+@Table(name = "l_item")
 public class LeagueItemDmo extends BaseDmo implements Persistable {
 
     @Id
