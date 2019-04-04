@@ -12,7 +12,7 @@ import wsg.lol.service.real.intf.RealService;
  * @author wangsigen
  */
 @Component
-@Lazy(false)
+@Lazy()
 public class RealTask implements InitializingBean {
 
     private RealService realService;

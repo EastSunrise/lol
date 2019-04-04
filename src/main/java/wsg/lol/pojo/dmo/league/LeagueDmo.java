@@ -1,11 +1,11 @@
 package wsg.lol.pojo.dmo.league;
 
-import org.springframework.data.annotation.Id;
 import wsg.lol.pojo.base.BaseDmo;
 import wsg.lol.pojo.base.Persistable;
 import wsg.lol.pojo.enums.impl.code.RankQueueEnum;
 import wsg.lol.pojo.enums.impl.code.TierEnum;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**

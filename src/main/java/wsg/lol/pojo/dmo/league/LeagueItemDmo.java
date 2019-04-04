@@ -1,10 +1,11 @@
 package wsg.lol.pojo.dmo.league;
 
-import org.springframework.data.annotation.Id;
+import tk.mybatis.mapper.annotation.KeySql;
 import wsg.lol.pojo.base.BaseDmo;
 import wsg.lol.pojo.base.Persistable;
 import wsg.lol.pojo.enums.impl.code.DivisionEnum;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -16,6 +17,7 @@ import javax.persistence.Table;
 public class LeagueItemDmo extends BaseDmo implements Persistable {
 
     @Id
+    @KeySql(useGeneratedKeys = true)
     private Integer id;
 
     private String summonerId;

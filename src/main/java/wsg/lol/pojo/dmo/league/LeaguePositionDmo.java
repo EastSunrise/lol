@@ -1,6 +1,6 @@
 package wsg.lol.pojo.dmo.league;
 
-import org.springframework.data.annotation.Id;
+import tk.mybatis.mapper.annotation.KeySql;
 import wsg.lol.pojo.base.BaseDmo;
 import wsg.lol.pojo.base.Persistable;
 import wsg.lol.pojo.enums.impl.code.DivisionEnum;
@@ -8,12 +8,14 @@ import wsg.lol.pojo.enums.impl.code.PositionEnum;
 import wsg.lol.pojo.enums.impl.code.RankQueueEnum;
 import wsg.lol.pojo.enums.impl.code.TierEnum;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Table(name = "l_position")
 public class LeaguePositionDmo extends BaseDmo implements Persistable {
 
     @Id
+    @KeySql(useGeneratedKeys = true)
     private Integer id;
     private String summonerId;
     private RankQueueEnum queue;

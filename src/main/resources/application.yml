@@ -43,7 +43,8 @@ server:
 logging:
   pattern:
     level: DEBUG
+#    config: classpath:config/logback.xml
 mapper:
-  mappers: wsg.lol.dao.mybatis.common.MyMapper
+  mappers: wsg.lol.dao.mybatis.common.BaseMapper
   identity: MYSQL
-  #  config: classpath:config/logback.xml
+

@@ -3,9 +3,7 @@ package wsg.lol.scheduler.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import wsg.lol.common.utils.DateUtil;
 import wsg.lol.common.utils.FileUtil;
 import wsg.lol.dao.data.config.StateConfig;
 import wsg.lol.pojo.base.BaseResult;
@@ -29,7 +27,7 @@ public class SchedulerImpl implements Scheduler {
 
     private VersionService versionService;
 
-    @Scheduled(fixedRate = DateUtil.ONE_MINUTE)
+    //    @Scheduled(fixedRate = DateUtil.ONE_MINUTE)
     public void checkVersion() {
         VersionResult versionResult = versionService.getVersion();
         if (!versionResult.isLatestVersion()) {

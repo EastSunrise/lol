@@ -1,12 +1,13 @@
 package wsg.lol.pojo.dmo.match;
 
-import org.springframework.data.annotation.Id;
 import tk.mybatis.mapper.annotation.KeySql;
 import wsg.lol.pojo.base.BaseDmo;
 import wsg.lol.pojo.base.Persistable;
-import wsg.lol.pojo.enums.impl.code.MatchLaneEnum;
+import wsg.lol.pojo.enums.impl.code.*;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * wsg
@@ -19,14 +20,15 @@ public class MatchReferenceDmo extends BaseDmo implements Persistable {
     @Id
     @KeySql(useGeneratedKeys = true)
     private Integer id;
+
     private MatchLaneEnum lane;
-    private long gameId;
-    private int champion;
-    private String platformId;
-    private int season;
-    private int queue;
-    private String role;
-    private long timestamp;
+    private Long gameId;
+    private Integer champion;
+    private PlatformEnum platformId;
+    private SeasonEnum season;
+    private MatchQueueEnum queue;
+    private MatchRoleEnum role;
+    private Date gameCreation;
     private String summonerId;
     private Boolean checked;
 
@@ -46,60 +48,60 @@ public class MatchReferenceDmo extends BaseDmo implements Persistable {
         this.lane = lane;
     }
 
-    public long getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(long gameId) {
-        this.gameId = gameId;
-    }
-
-    public int getChampion() {
-        return champion;
-    }
-
-    public void setChampion(int champion) {
-        this.champion = champion;
-    }
-
-    public String getPlatformId() {
+    public PlatformEnum getPlatformId() {
         return platformId;
     }
 
-    public void setPlatformId(String platformId) {
+    public void setPlatformId(PlatformEnum platformId) {
         this.platformId = platformId;
     }
 
-    public int getSeason() {
+    public Long getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(Long gameId) {
+        this.gameId = gameId;
+    }
+
+    public Integer getChampion() {
+        return champion;
+    }
+
+    public void setChampion(Integer champion) {
+        this.champion = champion;
+    }
+
+    public SeasonEnum getSeason() {
         return season;
     }
 
-    public void setSeason(int season) {
+    public void setSeason(SeasonEnum season) {
         this.season = season;
     }
 
-    public int getQueue() {
+    public MatchQueueEnum getQueue() {
         return queue;
     }
 
-    public void setQueue(int queue) {
+    public void setQueue(MatchQueueEnum queue) {
         this.queue = queue;
     }
 
-    public String getRole() {
+    public MatchRoleEnum getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(MatchRoleEnum role) {
         this.role = role;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public Date getGameCreation() {
+        return gameCreation;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    public void setGameCreation(Date gameCreation) {
+        this.gameCreation = gameCreation;
     }
 
     public String getSummonerId() {

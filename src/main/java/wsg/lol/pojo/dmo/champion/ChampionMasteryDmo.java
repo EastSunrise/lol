@@ -1,9 +1,10 @@
 package wsg.lol.pojo.dmo.champion;
 
-import org.springframework.data.annotation.Id;
+import tk.mybatis.mapper.annotation.KeySql;
 import wsg.lol.pojo.base.BaseDmo;
 import wsg.lol.pojo.base.Persistable;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -16,6 +17,7 @@ import java.util.Date;
 public class ChampionMasteryDmo extends BaseDmo implements Persistable {
 
     @Id
+    @KeySql(useGeneratedKeys = true)
     private Integer id;
 
     private String summonerId;

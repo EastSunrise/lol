@@ -9,5 +9,5 @@ import wsg.lol.pojo.base.Persistable;
  *
  * @author wangsigen
  */
-public interface MyMapper<T extends Persistable> extends Mapper<T>, MySqlMapper<T> {
+public interface BaseMapper<T extends Persistable> extends Mapper<T>, MySqlMapper<T> {
 }
