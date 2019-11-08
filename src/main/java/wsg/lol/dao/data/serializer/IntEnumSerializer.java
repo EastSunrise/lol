@@ -2,14 +2,14 @@ package wsg.lol.dao.data.serializer;
 
 import com.alibaba.fastjson.serializer.JSONSerializer;
 import com.alibaba.fastjson.serializer.SerializeWriter;
-import wsg.lol.pojo.base.BaseEnum;
+import wsg.lol.common.pojo.base.BaseEnum;
 
 import java.lang.reflect.Type;
 
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 public class IntEnumSerializer extends EnumSerializer {
 

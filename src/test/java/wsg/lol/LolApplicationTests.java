@@ -6,8 +6,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import wsg.lol.common.enums.rank.MatchLaneEnum;
 import wsg.lol.dao.mybatis.mapper.MatchReferenceMapper;
-import wsg.lol.pojo.enums.impl.code.MatchLaneEnum;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

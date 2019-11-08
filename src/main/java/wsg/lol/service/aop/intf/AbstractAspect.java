@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 public abstract class AbstractAspect {
 

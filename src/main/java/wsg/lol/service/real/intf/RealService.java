@@ -1,14 +1,14 @@
 package wsg.lol.service.real.intf;
 
-import wsg.lol.pojo.base.BaseResult;
-import wsg.lol.pojo.enums.impl.code.DivisionEnum;
-import wsg.lol.pojo.enums.impl.code.PositionEnum;
-import wsg.lol.pojo.enums.impl.code.TierEnum;
+import wsg.lol.common.enums.rank.DivisionEnum;
+import wsg.lol.common.enums.rank.PositionEnum;
+import wsg.lol.common.enums.rank.TierEnum;
+import wsg.lol.common.pojo.base.BaseResult;
 
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 public interface RealService {
 

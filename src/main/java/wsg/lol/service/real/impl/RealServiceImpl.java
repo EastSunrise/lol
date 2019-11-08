@@ -7,36 +7,33 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
-import wsg.lol.dao.data.api.impl.ChampionMasteryV4;
-import wsg.lol.dao.data.api.impl.LeagueV4;
-import wsg.lol.dao.data.api.impl.MatchV4;
-import wsg.lol.dao.data.api.impl.SummonerV4;
+import wsg.lol.common.enums.rank.DivisionEnum;
+import wsg.lol.common.enums.rank.PositionEnum;
+import wsg.lol.common.enums.rank.RankQueueEnum;
+import wsg.lol.common.enums.rank.TierEnum;
+import wsg.lol.common.pojo.base.AppException;
+import wsg.lol.common.pojo.base.BaseResult;
+import wsg.lol.common.pojo.base.Page;
+import wsg.lol.common.pojo.dmo.champion.ChampionMasteryDmo;
+import wsg.lol.common.pojo.dmo.league.LeaguePositionDmo;
+import wsg.lol.common.pojo.dmo.match.MatchReferenceDmo;
+import wsg.lol.common.pojo.dmo.summoner.SummonerDmo;
+import wsg.lol.common.pojo.dto.league.LeagueEntryDto;
+import wsg.lol.common.pojo.dto.league.LeagueItemDto;
+import wsg.lol.common.pojo.dto.league.LeagueListDto;
+import wsg.lol.common.pojo.dto.match.*;
+import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
+import wsg.lol.common.pojo.dto.summoner.SummonerDto;
+import wsg.lol.common.util.ResultUtils;
+import wsg.lol.dao.api.impl.ChampionMasteryV4;
+import wsg.lol.dao.api.impl.LeagueV4;
+import wsg.lol.dao.api.impl.MatchV4;
+import wsg.lol.dao.api.impl.SummonerV4;
 import wsg.lol.dao.mongo.intf.MongoDao;
 import wsg.lol.dao.mybatis.mapper.LeaguePositionMapper;
 import wsg.lol.dao.mybatis.mapper.MasteryMapper;
 import wsg.lol.dao.mybatis.mapper.MatchReferenceMapper;
 import wsg.lol.dao.mybatis.mapper.SummonerMapper;
-import wsg.lol.pojo.base.AppException;
-import wsg.lol.pojo.base.BaseResult;
-import wsg.lol.pojo.base.Page;
-import wsg.lol.pojo.dmo.champion.ChampionMasteryDmo;
-import wsg.lol.pojo.dmo.league.LeaguePositionDmo;
-import wsg.lol.pojo.dmo.match.MatchReferenceDmo;
-import wsg.lol.pojo.dmo.summoner.SummonerDmo;
-import wsg.lol.pojo.dto.api.champion.ChampionMasteryDto;
-import wsg.lol.pojo.dto.api.league.LeagueItemDto;
-import wsg.lol.pojo.dto.api.league.LeagueListDto;
-import wsg.lol.pojo.dto.api.league.LeaguePositionDto;
-import wsg.lol.pojo.dto.api.match.MatchDto;
-import wsg.lol.pojo.dto.api.match.MatchListDto;
-import wsg.lol.pojo.dto.api.match.MatchReferenceDto;
-import wsg.lol.pojo.dto.api.query.QueryMatchListDto;
-import wsg.lol.pojo.dto.api.summoner.SummonerDto;
-import wsg.lol.pojo.dto.query.GetSummonerDto;
-import wsg.lol.pojo.enums.impl.code.DivisionEnum;
-import wsg.lol.pojo.enums.impl.code.PositionEnum;
-import wsg.lol.pojo.enums.impl.code.RankQueueEnum;
-import wsg.lol.pojo.enums.impl.code.TierEnum;
 import wsg.lol.service.real.intf.RealService;
 
 import java.util.*;
@@ -44,7 +41,7 @@ import java.util.*;
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 @Service("realAction")
 public class RealServiceImpl implements RealService {
@@ -82,7 +79,7 @@ public class RealServiceImpl implements RealService {
         for (TierEnum tier : TierEnum.apexValues()) {
             for (RankQueueEnum queue : RankQueueEnum.values()) {
                 LeagueListDto leagueListDto = leagueV4.getApexLeagueByQueue(queue, tier);
-                for (LeagueItemDto leagueItemDto : leagueListDto.getItemDmoList()) {
+                for (LeagueItemDto leagueItemDto : leagueListDto.getEntries()) {
                     summonerIdSet.add(leagueItemDto.getSummonerId());
                 }
             }
@@ -96,12 +93,12 @@ public class RealServiceImpl implements RealService {
         Set<String> summonerIdSet = new HashSet<>();
         for (RankQueueEnum queue : RankQueueEnum.positionalValues()) {
             for (int i = 0; ; i++) {
-                List<LeaguePositionDto> leaguePositionDtoList = leagueV4.getAllPositionLeagues(queue, tier, division,
+                List<LeagueEntryDto> leagueEntryDtoList = leagueV4.getAllPositionLeagues(queue, tier, division,
                         position, i);
-                if (leaguePositionDtoList == null || leaguePositionDtoList.isEmpty())
+                if (leagueEntryDtoList == null || leagueEntryDtoList.isEmpty())
                     break;
-                for (LeaguePositionDto leaguePositionDto : leaguePositionDtoList) {
-                    summonerIdSet.add(leaguePositionDto.getSummonerId());
+                for (LeagueEntryDto leagueEntryDto : leagueEntryDtoList) {
+                    summonerIdSet.add(leagueEntryDto.getSummonerId());
                 }
             }
         }
@@ -131,9 +128,7 @@ public class RealServiceImpl implements RealService {
         // update base info.
         SummonerDmo summonerDmo = summonerMapper.selectByPrimaryKey(summonerId);
         if (summonerDmo == null) {
-            GetSummonerDto getSummonerDto = new GetSummonerDto();
-            getSummonerDto.setId(summonerId);
-            SummonerDto summonerDto = summonerV4.getSummoner(getSummonerDto);
+            SummonerDto summonerDto = summonerV4.getSummoner(SummonerV4.CondKeyEnum.ID, summonerId);
             if (1 != summonerMapper.insertSummoner(summonerDto)) {
                 throw new AppException("Fail to insert summoner.");
             }
@@ -141,8 +136,8 @@ public class RealServiceImpl implements RealService {
         }
 
         // update the league.
-        List<LeaguePositionDto> positionDtoList = leagueV4.getLeaguePositionsBySummonerId(summonerId);
-        for (LeaguePositionDto positionDto : positionDtoList) {
+        List<LeagueEntryDto> positionDtoList = leagueV4.getLeaguePositionsBySummonerId(summonerId);
+        for (LeagueEntryDto positionDto : positionDtoList) {
             LeaguePositionDmo leaguePositionDmo = leaguePositionMapper.selectByUnionKey(positionDto.getSummonerId(),
                     positionDto.getQueueType(), positionDto.getPosition());
             if (leaguePositionDmo == null) {
@@ -234,9 +229,9 @@ public class RealServiceImpl implements RealService {
         MatchDto matchDto = mongoDao.getCollectionById(referenceDmo.getGameId(), MatchDto.class);
         if (matchDto == null) {
             matchDto = matchV4.getMatchById(referenceDmo.getGameId());
-            List<MatchDto.ParticipantIdentityDto> identityDtoList = matchDto.getParticipantIdentities();
+            List<ParticipantIdentityDto> identityDtoList = matchDto.getParticipantIdentities();
             Set<String> idSet = new HashSet<>();
-            for (MatchDto.ParticipantIdentityDto identityDto : identityDtoList) {
+            for (ParticipantIdentityDto identityDto : identityDtoList) {
                 idSet.add(identityDto.getPlayer().getSummonerId());
             }
             BaseResult baseResult = saveSummoners(idSet);
@@ -261,11 +256,9 @@ public class RealServiceImpl implements RealService {
         List<String> idUncheckedList = summonerMapper.removeSummonersExist(new ArrayList<>(summonerIdSet));
 
         logger.info("Save summoners: " + idUncheckedList.size());
-        GetSummonerDto getSummonerDto = new GetSummonerDto();
         Set<String> errorSet = new HashSet<>();
         for (String id : idUncheckedList) {
-            getSummonerDto.setId(id);
-            SummonerDto summonerDto = summonerV4.getSummoner(getSummonerDto);
+            SummonerDto summonerDto = summonerV4.getSummoner(SummonerV4.CondKeyEnum.ID, id);
             if (1 != summonerMapper.insertSummoner(summonerDto)) {
                 logger.error("Fail to insert summoner.");
                 errorSet.add(id);
@@ -273,7 +266,7 @@ public class RealServiceImpl implements RealService {
         }
 
         if (!errorSet.isEmpty()) {
-            return BaseResult.fail("The summoners weren't all inserted successfully.");
+            return ResultUtils.fail("The summoners weren't all inserted successfully.");
         }
         return BaseResult.success();
     }

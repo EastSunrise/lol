@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 public interface RedisListDao {
 

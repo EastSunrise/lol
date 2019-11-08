@@ -2,9 +2,9 @@ package wsg.lol.dao.mybatis.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+import wsg.lol.common.pojo.dmo.summoner.SummonerDmo;
+import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 import wsg.lol.dao.mybatis.common.BaseMapper;
-import wsg.lol.pojo.dmo.summoner.SummonerDmo;
-import wsg.lol.pojo.dto.api.summoner.SummonerDto;
 
 import java.util.List;
 

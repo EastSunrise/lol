@@ -4,19 +4,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wsg.lol.dao.data.state.intf.StateDao;
+import org.springframework.transaction.annotation.Transactional;
+import wsg.lol.common.constant.ConfigConst;
+import wsg.lol.common.pojo.base.AppException;
+import wsg.lol.common.pojo.base.BaseResult;
+import wsg.lol.common.pojo.dto.state.ChampionDto;
+import wsg.lol.common.pojo.dto.state.ItemDto;
+import wsg.lol.common.pojo.dto.state.item.GroupDto;
+import wsg.lol.common.pojo.dto.state.item.ItemExtDto;
+import wsg.lol.common.pojo.dto.state.item.TreeDto;
+import wsg.lol.common.pojo.dto.state.others.MapDto;
+import wsg.lol.common.pojo.dto.state.rune.RuneTreeDto;
+import wsg.lol.common.pojo.dto.state.spell.SummonerSpellDto;
+import wsg.lol.common.result.version.VersionResult;
+import wsg.lol.common.util.AssertUtils;
+import wsg.lol.common.util.ResultUtils;
+import wsg.lol.dao.data.intf.DataDao;
+import wsg.lol.dao.data.intf.GeneralDao;
 import wsg.lol.dao.mongo.intf.MongoDao;
-import wsg.lol.pojo.base.BaseResult;
-import wsg.lol.pojo.dto.state.ChampionDto;
-import wsg.lol.pojo.dto.state.ItemDto;
-import wsg.lol.pojo.dto.state.item.GroupDto;
-import wsg.lol.pojo.dto.state.item.ItemExtDto;
-import wsg.lol.pojo.dto.state.item.TreeDto;
-import wsg.lol.pojo.dto.state.others.MapDto;
-import wsg.lol.pojo.dto.state.others.VersionDto;
-import wsg.lol.pojo.dto.state.rune.RuneTreeDto;
-import wsg.lol.pojo.dto.state.spell.SummonerSpellDto;
-import wsg.lol.pojo.result.VersionResult;
+import wsg.lol.dao.mybatis.mapper.ConfigMapper;
+import wsg.lol.service.main.intf.ChampionService;
 import wsg.lol.service.version.intf.VersionService;
 
 import java.util.List;
@@ -24,63 +31,52 @@ import java.util.List;
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 @Service("versionAction")
 public class VersionServiceImpl implements VersionService {
 
     private static Logger logger = LoggerFactory.getLogger(VersionService.class);
 
-    private StateDao stateDao;
+    private DataDao dataDao;
 
     private MongoDao mongoDao;
+
+    private GeneralDao generalDao;
+
+    private ConfigMapper configMapper;
+
+    private ChampionService championService;
 
     @Override
     public VersionResult getVersion() {
         VersionResult versionResult = new VersionResult();
-        List<VersionDto> versionDtoList = mongoDao.getCollections(VersionDto.class);
-        if (!versionDtoList.isEmpty()) {
-            versionResult.setCurrentVersion(versionDtoList.get(0).getVersion());
-        }
-        versionResult.setLatestVersion(stateDao.readLatestVersion());
+        versionResult.setCurrentVersion(configMapper.getConfigValue(ConfigConst.CONFIG_NAME_CURRENT_VERSION));
+        versionResult.setLatestVersion(generalDao.getLatestVersion());
         return versionResult;
     }
 
     @Override
+    @Transactional
     public BaseResult updateVersion(String version) {
-        BaseResult baseResult = updateChampionLib(version);
-        if (!baseResult.isSuccess()) {
-            return baseResult;
+        AssertUtils.isSuccess(this.updateChampionLib(version));
+        AssertUtils.isSuccess(this.updateItemLib(version));
+        AssertUtils.isSuccess(this.updateMapLib(version));
+        AssertUtils.isSuccess(this.updateRuneLib(version));
+        AssertUtils.isSuccess(this.updateSummonerSpellLib(version));
+
+        int count = configMapper.updateConfig(ConfigConst.CONFIG_NAME_CURRENT_VERSION, version);
+        if (1 != count) {
+            throw new AppException("Failed to update the config of current version.");
         }
-        baseResult = updateItemLib(version);
-        if (!baseResult.isSuccess()) {
-            return baseResult;
-        }
-        baseResult = updateMapLib(version);
-        if (!baseResult.isSuccess()) {
-            return baseResult;
-        }
-        baseResult = updateRuneLib(version);
-        if (!baseResult.isSuccess()) {
-            return baseResult;
-        }
-        baseResult = updateSummonerSpellLib(version);
-        if (!baseResult.isSuccess()) {
-            return baseResult;
-        }
-        mongoDao.dropCollection(VersionDto.class);
-        VersionDto versionDto = new VersionDto();
-        versionDto.setVersion(version);
-        mongoDao.insertDocument(versionDto);
-        return BaseResult.success();
+        return ResultUtils.success();
     }
 
     @Override
     public BaseResult updateChampionLib(String version) {
         logger.info("Start to update the data of champions.");
-        mongoDao.dropCollection(ChampionDto.class);
-        mongoDao.insertDocuments(stateDao.readChampions(version));
-        return BaseResult.success();
+        List<ChampionDto> championDtoList = dataDao.readChampions(version);
+        return championService.updateChampions(championDtoList);
     }
 
     @Override
@@ -89,44 +85,54 @@ public class VersionServiceImpl implements VersionService {
         mongoDao.dropCollection(ItemDto.class);
         mongoDao.dropCollection(GroupDto.class);
         mongoDao.dropCollection(TreeDto.class);
-        ItemExtDto itemExtDto = stateDao.readItems(version);
+        ItemExtDto itemExtDto = dataDao.readItems(version);
         mongoDao.insertDocuments(itemExtDto.getItemDtoList());
         mongoDao.insertDocuments(itemExtDto.getGroupDtoList());
         mongoDao.insertDocuments(itemExtDto.getTreeDtoList());
-        return BaseResult.success();
+        return ResultUtils.success();
     }
 
     @Override
     public BaseResult updateRuneLib(String version) {
         logger.info("Start to update the data of runes.");
         mongoDao.dropCollection(RuneTreeDto.class);
-        mongoDao.insertDocuments(stateDao.readRunes(version));
-        return BaseResult.success();
+        mongoDao.insertDocuments(dataDao.readRunes(version));
+        return ResultUtils.success();
     }
 
     @Override
     public BaseResult updateSummonerSpellLib(String version) {
         logger.info("Start to update the data of summoner spells.");
         mongoDao.dropCollection(SummonerSpellDto.class);
-        mongoDao.insertDocuments(stateDao.readSummonerSpells(version));
-        return BaseResult.success();
+        mongoDao.insertDocuments(dataDao.readSummonerSpells(version));
+        return ResultUtils.success();
     }
 
     @Override
     public BaseResult updateMapLib(String version) {
         logger.info("Start to update the data of maps.");
         mongoDao.dropCollection(MapDto.class);
-        mongoDao.insertDocuments(stateDao.readMaps(version));
-        return BaseResult.success();
+        mongoDao.insertDocuments(dataDao.readMaps(version));
+        return ResultUtils.success();
     }
 
     @Autowired
-    public void setStateDao(StateDao stateDao) {
-        this.stateDao = stateDao;
+    public void setGeneralDao(GeneralDao generalDao) {
+        this.generalDao = generalDao;
+    }
+
+    @Autowired
+    public void setDataDao(DataDao dataDao) {
+        this.dataDao = dataDao;
     }
 
     @Autowired
     public void setMongoDao(MongoDao mongoDao) {
         this.mongoDao = mongoDao;
+    }
+
+    @Autowired
+    public void setConfigMapper(ConfigMapper configMapper) {
+        this.configMapper = configMapper;
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wsg.lol.dao.mybatis.mapper.SummonerMapper">
-    <insert id="insertSummoner" parameterType="wsg.lol.pojo.dto.api.summoner.SummonerDto">
+    <insert id="insertSummoner" parameterType="wsg.lol.common.pojo.dto.summoner.SummonerDto">
         INSERT INTO s_summoner
         (ID, ACCOUNT_ID, PUUID, NAME, PROFILE_ICON_ID, REVISION_DATE, SUMMONER_LEVEL)
         VALUES (#{id}, #{accountId}, #{puuid}, #{name}, #{profileIconId}, #{revisionDate}, #{summonerLevel})

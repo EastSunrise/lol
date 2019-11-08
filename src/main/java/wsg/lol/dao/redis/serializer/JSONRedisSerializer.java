@@ -4,12 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
-import wsg.lol.common.constants.Constants;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 public class JSONRedisSerializer<T> implements RedisSerializer<T> {
 
@@ -25,7 +26,7 @@ public class JSONRedisSerializer<T> implements RedisSerializer<T> {
         if (t == null) {
             return new byte[0];
         }
-        return JSON.toJSONString(t, SerializerFeature.WriteClassName).getBytes(Constants.DEFAULT_CHARSET);
+        return JSON.toJSONString(t, SerializerFeature.WriteClassName).getBytes(StandardCharsets.UTF_8);
     }
 
     @Override
@@ -33,7 +34,7 @@ public class JSONRedisSerializer<T> implements RedisSerializer<T> {
         if (bytes == null || bytes.length <= 0) {
             return null;
         }
-        String string = new String(bytes, Constants.DEFAULT_CHARSET);
+        String string = new String(bytes, StandardCharsets.UTF_8);
         return JSON.parseObject(string, clazz);
     }
 }

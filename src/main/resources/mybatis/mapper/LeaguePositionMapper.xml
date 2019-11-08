@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wsg.lol.dao.mybatis.mapper.LeaguePositionMapper">
-    <insert id="insertPosition" parameterType="wsg.lol.pojo.dto.api.league.LeaguePositionDto" useGeneratedKeys="true">
+    <insert id="insertPosition" parameterType="wsg.lol.common.pojo.dto.league.LeagueEntryDto" useGeneratedKeys="true">
         INSERT INTO l_position
         (SUMMONER_ID, QUEUE_TYPE, POSITION, SUMMONER_NAME, LEAGUE_ID, LEAGUE_NAME, TIER, DIVISION, LEAGUE_POINTS, WINS,
          LOSSES, VETERAN, INACTIVE, FRESH_BLOOD, HOT_STREAK, MINI_SERIES_TARGET, MINI_SERIES_WINS, MINI_SERIES_LOSSES)
@@ -31,7 +31,7 @@
           AND POSITION = #{position}
     </update>
 
-    <select id="selectByUnionKey" resultType="wsg.lol.pojo.dmo.league.LeaguePositionDmo">
+    <select id="selectByUnionKey" resultType="wsg.lol.common.pojo.dmo.league.LeaguePositionDmo">
         SELECT ID,
                SUMMONER_ID,
                QUEUE_TYPE,

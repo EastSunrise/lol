@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 public interface RedisMapDao {
 

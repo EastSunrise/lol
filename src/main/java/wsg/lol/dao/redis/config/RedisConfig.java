@@ -10,7 +10,7 @@ import wsg.lol.dao.redis.serializer.JSONRedisSerializer;
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 @Configuration
 public class RedisConfig {

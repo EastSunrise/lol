@@ -5,9 +5,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import wsg.lol.common.pojo.base.IJson;
+import wsg.lol.common.pojo.base.QueryDto;
 import wsg.lol.dao.mongo.intf.MongoDao;
-import wsg.lol.pojo.base.IJson;
-import wsg.lol.pojo.base.QueryDto;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 @Repository
 public class MongoDaoImpl implements MongoDao {

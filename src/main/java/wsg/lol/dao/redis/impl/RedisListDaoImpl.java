@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 @Component
 public class RedisListDaoImpl implements RedisListDao {

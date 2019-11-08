@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 @Component
 public class RedisStringDaoImpl implements RedisStringDao {

@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 @Component
 public class RedisMapDaoImpl implements RedisMapDao {

@@ -1,7 +1,7 @@
 package wsg.lol.dao.mongo.intf;
 
-import wsg.lol.pojo.base.IJson;
-import wsg.lol.pojo.base.QueryDto;
+import wsg.lol.common.pojo.base.IJson;
+import wsg.lol.common.pojo.base.QueryDto;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 public interface MongoDao {
 

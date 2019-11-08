@@ -1,22 +1,22 @@
 package wsg.lol.service.version.intf;
 
-import wsg.lol.pojo.base.BaseResult;
-import wsg.lol.pojo.result.VersionResult;
+import wsg.lol.common.pojo.base.BaseResult;
+import wsg.lol.common.result.version.VersionResult;
 
 /**
- * wsg
+ * 版本更新
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 public interface VersionService {
 
     /**
-     * Check if the latest version.
+     * get info of version.
      */
     VersionResult getVersion();
 
     /**
-     * Update the static data ot the certain version.
+     * Update the static data to the certain version.
      */
     BaseResult updateVersion(String version);
 

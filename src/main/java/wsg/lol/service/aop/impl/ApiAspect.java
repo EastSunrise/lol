@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 @Aspect
 @Component
 public class ApiAspect {
 
-    @Pointcut(value = "@annotation(wsg.lol.pojo.annotation.AccessApi)")
+    @Pointcut(value = "@annotation(wsg.lol.common.annotation.AccessApi)")
     public void api() {
     }
 

@@ -1,0 +1,156 @@
+package wsg.lol.dao.api.client;
+
+import com.alibaba.fastjson.JSON;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import wsg.lol.common.pojo.base.IJson;
+import wsg.lol.common.pojo.base.QueryDto;
+import wsg.lol.common.util.HttpHelper;
+import wsg.lol.common.util.ThreadUtils;
+
+import javax.xml.ws.http.HTTPException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * API基类
+ *
+ * @author EastSunrise
+ */
+@Component
+public class BaseApi {
+
+    private static final String HTTPS = "https://";
+
+    private static final long TIME_OUT = DateUtils.MILLIS_PER_SECOND * 5;
+
+    private static Logger logger = LoggerFactory.getLogger(BaseApi.class);
+
+    private ApiClient apiClient;
+
+    /**
+     * get获取单个数据
+     *
+     * @param apiRef     接口
+     * @param pathParams URL路径参数
+     * @param queryDto   查询条件
+     * @param clazz      返回数据类型
+     */
+    protected <Q extends QueryDto, T extends IJson> T getObject(String apiRef, Map<String, Object> pathParams, Q queryDto, Class<T> clazz) {
+        String jsonStr = getJSONString(apiRef, pathParams, queryDto);
+        return JSON.parseObject(jsonStr, clazz);
+    }
+
+    protected <T extends IJson> T getObject(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
+        return getObject(apiRef, pathParams, null, clazz);
+    }
+
+    protected <T extends IJson> T getObject(String apiRef, Class<T> clazz) {
+        return getObject(apiRef, null, clazz);
+    }
+
+    /**
+     * get获取数据列表
+     *
+     * @param apiRef     接口
+     * @param pathParams URL路径参数
+     * @param queryDto   查询条件
+     * @param clazz      返回数据类型
+     */
+    protected <Q extends QueryDto, T extends IJson> List<T> getArray(String apiRef, Map<String, Object> pathParams, Q queryDto, Class<T> clazz) {
+        String jsonStr = getJSONString(apiRef, pathParams, queryDto);
+        return JSON.parseArray(jsonStr, clazz);
+    }
+
+    protected <T extends IJson> List<T> getArray(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
+        return getArray(apiRef, pathParams, null, clazz);
+    }
+
+    protected <T extends IJson> List<T> getArray(String apiRef, Class<T> clazz) {
+        return getArray(apiRef, null, clazz);
+    }
+
+    private String doHttpGet(String urlStr) {
+        logger.info("Getting from " + urlStr);
+        while (true) {
+            try {
+                URL url = new URL(urlStr);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setConnectTimeout((int) TIME_OUT);
+                urlConnection.setReadTimeout((int) TIME_OUT);
+                urlConnection.setRequestProperty("X-Riot-Token", apiClient.getToken());
+                urlConnection.setRequestProperty("Origin", "https://developer.riotgames.com");
+                urlConnection.setRequestProperty("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
+                urlConnection.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,zh-TW;q=0.8");
+                urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36");
+
+                int responseCode = urlConnection.getResponseCode();
+                if (ResponseCodeEnum.Success.getCode() == responseCode) {
+                    StringBuilder builder = new StringBuilder();
+                    BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    String inputLine;
+                    while ((inputLine = in.readLine()) != null) {
+                        builder.append(inputLine);
+                    }
+                    in.close();
+                    return builder.toString();
+                }
+
+                logger.info(urlConnection.getResponseMessage());
+                if (ResponseCodeEnum.RateLimitExceeded.getCode() == responseCode) {
+                    long retryAfter = Long.parseLong(urlConnection.getHeaderField("Retry-After")) * DateUtils.MILLIS_PER_SECOND;
+                    logger.info("Thread (" + Thread.currentThread().getName() + ") slept for " + retryAfter / 1000 + "s");
+                    ThreadUtils.threadSleep(retryAfter);
+                    continue;
+                }
+                if (ResponseCodeEnum.Unauthorized.getCode() == responseCode) {
+                    apiClient.regenerateToken();
+                    continue;
+                }
+                throw new HTTPException(responseCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+                logger.info("Thread (" + Thread.currentThread().getName() + ") slept for " + TIME_OUT / 1000 + "s");
+                ThreadUtils.threadSleep(TIME_OUT);
+            }
+        }
+    }
+
+    private String getJSONString(String host, String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams) {
+        if (MapUtils.isNotEmpty(pathParams)) {
+            for (Map.Entry<String, Object> entry : pathParams.entrySet()) {
+                apiRef = apiRef.replace("{" + entry.getKey() + "}", HttpHelper.encode(entry.getValue()));
+            }
+        }
+
+        String urlStr = HTTPS + (host + apiRef + "?" + HttpHelper.encodeMap2UrlParams(queryParams)).replace("+", "%20");
+        return doHttpGet(urlStr);
+    }
+
+    private <Q> String getJSONString(String apiRef, Map<String, Object> pathParams, Q query) {
+        Map<String, Object> queryParams = new HashMap<>();
+        try {
+            BeanUtils.populate(query, queryParams);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return getJSONString(apiClient.getRegion().getHost(), apiRef, pathParams, queryParams);
+    }
+
+    @Autowired
+    public void setApiClient(ApiClient apiClient) {
+        this.apiClient = apiClient;
+    }
+}

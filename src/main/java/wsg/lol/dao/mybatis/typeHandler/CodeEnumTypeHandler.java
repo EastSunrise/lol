@@ -3,9 +3,14 @@ package wsg.lol.dao.mybatis.typeHandler;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
-import wsg.lol.common.utils.EnumUtil;
-import wsg.lol.pojo.base.BaseEnum;
-import wsg.lol.pojo.enums.impl.code.*;
+import wsg.lol.common.enums.game.GameModeEnum;
+import wsg.lol.common.enums.game.GameTypeEnum;
+import wsg.lol.common.enums.game.MapEnum;
+import wsg.lol.common.enums.game.SeasonEnum;
+import wsg.lol.common.enums.rank.*;
+import wsg.lol.common.enums.route.PlatformEnum;
+import wsg.lol.common.pojo.base.BaseEnum;
+import wsg.lol.common.util.EnumUtils;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -15,7 +20,7 @@ import java.sql.SQLException;
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 @MappedTypes({
         DivisionEnum.class, GameModeEnum.class, GameTypeEnum.class, MapEnum.class, MatchLaneEnum.class,
@@ -46,18 +51,18 @@ public class CodeEnumTypeHandler<E extends Enum & BaseEnum<Integer>> extends Bas
     @Override
     public E getNullableResult(ResultSet resultSet, String columnName) throws SQLException {
         Integer value = resultSet.getInt(columnName);
-        return resultSet.wasNull() ? null : EnumUtil.parseFromValue(value, this.clazz);
+        return resultSet.wasNull() ? null : EnumUtils.parseFromValue(value, this.clazz);
     }
 
     @Override
     public E getNullableResult(ResultSet resultSet, int columnIndex) throws SQLException {
         Integer value = resultSet.getInt(columnIndex);
-        return resultSet.wasNull() ? null : EnumUtil.parseFromValue(value, this.clazz);
+        return resultSet.wasNull() ? null : EnumUtils.parseFromValue(value, this.clazz);
     }
 
     @Override
     public E getNullableResult(CallableStatement callableStatement, int columnIndex) throws SQLException {
         Integer value = callableStatement.getInt(columnIndex);
-        return callableStatement.wasNull() ? null : EnumUtil.parseFromValue(value, this.clazz);
+        return callableStatement.wasNull() ? null : EnumUtils.parseFromValue(value, this.clazz);
     }
 }

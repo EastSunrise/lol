@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 public interface RedisSetDao {
 

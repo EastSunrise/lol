@@ -3,7 +3,7 @@ package wsg.lol.dao.redis.intf;
 /**
  * wsg
  *
- * @author wangsigen
+ * @author EastSunrise
  */
 public interface RedisStringDao {
 
