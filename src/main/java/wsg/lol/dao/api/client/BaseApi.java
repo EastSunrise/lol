@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import wsg.lol.common.pojo.base.IJson;
 import wsg.lol.common.pojo.base.QueryDto;
 import wsg.lol.common.util.HttpHelper;
 import wsg.lol.common.util.ThreadUtils;
@@ -17,6 +16,7 @@ import javax.xml.ws.http.HTTPException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -48,16 +48,16 @@ public class BaseApi {
      * @param queryDto   查询条件
      * @param clazz      返回数据类型
      */
-    protected <Q extends QueryDto, T extends IJson> T getObject(String apiRef, Map<String, Object> pathParams, Q queryDto, Class<T> clazz) {
+    protected <Q extends QueryDto, T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Q queryDto, Class<T> clazz) {
         String jsonStr = getJSONString(apiRef, pathParams, queryDto);
         return JSON.parseObject(jsonStr, clazz);
     }
 
-    protected <T extends IJson> T getObject(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
+    protected <T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
         return getObject(apiRef, pathParams, null, clazz);
     }
 
-    protected <T extends IJson> T getObject(String apiRef, Class<T> clazz) {
+    protected <T extends Serializable> T getObject(String apiRef, Class<T> clazz) {
         return getObject(apiRef, null, clazz);
     }
 
@@ -69,16 +69,16 @@ public class BaseApi {
      * @param queryDto   查询条件
      * @param clazz      返回数据类型
      */
-    protected <Q extends QueryDto, T extends IJson> List<T> getArray(String apiRef, Map<String, Object> pathParams, Q queryDto, Class<T> clazz) {
+    protected <Q extends QueryDto, T extends Serializable> List<T> getArray(String apiRef, Map<String, Object> pathParams, Q queryDto, Class<T> clazz) {
         String jsonStr = getJSONString(apiRef, pathParams, queryDto);
         return JSON.parseArray(jsonStr, clazz);
     }
 
-    protected <T extends IJson> List<T> getArray(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
+    protected <T extends Serializable> List<T> getArray(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
         return getArray(apiRef, pathParams, null, clazz);
     }
 
-    protected <T extends IJson> List<T> getArray(String apiRef, Class<T> clazz) {
+    protected <T extends Serializable> List<T> getArray(String apiRef, Class<T> clazz) {
         return getArray(apiRef, null, clazz);
     }
 

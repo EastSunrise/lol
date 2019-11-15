@@ -6,6 +6,7 @@ import wsg.lol.common.pojo.base.BaseResult;
 import wsg.lol.common.pojo.dto.query.state.GetChampionDto;
 import wsg.lol.common.pojo.dto.query.state.GetChampionListDto;
 import wsg.lol.common.pojo.dto.state.ChampionDto;
+import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.mongo.intf.MongoDao;
 import wsg.lol.service.main.intf.ChampionService;
 
@@ -38,7 +39,7 @@ public class ChampionServiceImpl implements ChampionService {
     @Override
     public BaseResult updateChampions(List<ChampionDto> championDtoList) {
         // TODO: (wangsigen, 2019/11/8) update champions and extra info
-        return BaseResult.success();
+        return ResultUtils.success();
     }
 
     @Autowired

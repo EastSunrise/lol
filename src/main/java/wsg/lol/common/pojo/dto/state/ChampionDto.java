@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import wsg.lol.common.pojo.base.BaseDto;
 import wsg.lol.common.pojo.base.IJson;
+import wsg.lol.common.pojo.base.Persistable;
 import wsg.lol.common.pojo.dto.state.others.ImageDto;
 import wsg.lol.common.pojo.dto.state.spell.ChampionSpellDto;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * @author EastSunrise
  */
 @Document
-public class ChampionDto extends BaseDto implements IJson {
+public class ChampionDto extends BaseDto implements IJson, Persistable {
 
     @Id
     private String key;
