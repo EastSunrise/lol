@@ -1,7 +1,7 @@
 package wsg.lol.common.util;
 
 import wsg.lol.common.pojo.base.AppException;
-import wsg.lol.common.pojo.base.BaseResult;
+import wsg.lol.common.result.base.Result;
 
 /**
  * // TODO: (wangsigen, 2019/11/8)
@@ -12,7 +12,7 @@ import wsg.lol.common.pojo.base.BaseResult;
  */
 public class AssertUtils {
 
-    public static void isSuccess(BaseResult result) {
+    public static void isSuccess(Result result) {
         if (!result.isSuccess()) {
             throw new AppException(result);
         }

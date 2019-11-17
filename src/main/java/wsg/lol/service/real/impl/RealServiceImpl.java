@@ -12,7 +12,6 @@ import wsg.lol.common.enums.rank.PositionEnum;
 import wsg.lol.common.enums.rank.RankQueueEnum;
 import wsg.lol.common.enums.rank.TierEnum;
 import wsg.lol.common.pojo.base.AppException;
-import wsg.lol.common.pojo.base.BaseResult;
 import wsg.lol.common.pojo.base.Page;
 import wsg.lol.common.pojo.dmo.champion.ChampionMasteryDmo;
 import wsg.lol.common.pojo.dmo.league.LeaguePositionDmo;
@@ -21,15 +20,17 @@ import wsg.lol.common.pojo.dmo.summoner.SummonerDmo;
 import wsg.lol.common.pojo.dto.league.LeagueEntryDto;
 import wsg.lol.common.pojo.dto.league.LeagueItemDto;
 import wsg.lol.common.pojo.dto.league.LeagueListDto;
-import wsg.lol.common.pojo.dto.match.*;
+import wsg.lol.common.pojo.dto.match.MatchListDto;
+import wsg.lol.common.pojo.dto.match.MatchReferenceDto;
+import wsg.lol.common.pojo.dto.match.QueryMatchListDto;
 import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
+import wsg.lol.common.result.base.Result;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
 import wsg.lol.dao.api.impl.MatchV4;
 import wsg.lol.dao.api.impl.SummonerV4;
-import wsg.lol.dao.mongo.intf.MongoDao;
 import wsg.lol.dao.mybatis.mapper.LeaguePositionMapper;
 import wsg.lol.dao.mybatis.mapper.MasteryMapper;
 import wsg.lol.dao.mybatis.mapper.MatchReferenceMapper;
@@ -64,15 +65,13 @@ public class RealServiceImpl implements RealService {
 
     private SummonerV4 summonerV4;
 
-    private MongoDao mongoDao;
-
     @Override
-    public BaseResult buildBaseLib() {
+    public Result buildBaseLib() {
         return buildApexSummonerLib();
     }
 
     @Override
-    public BaseResult buildApexSummonerLib() {
+    public Result buildApexSummonerLib() {
         Set<String> summonerIdSet = new HashSet<>();
 
         // get apex summoners
@@ -89,7 +88,7 @@ public class RealServiceImpl implements RealService {
     }
 
     @Override
-    public BaseResult buildPositionalSummonerLib(TierEnum tier, DivisionEnum division, PositionEnum position) {
+    public Result buildPositionalSummonerLib(TierEnum tier, DivisionEnum division, PositionEnum position) {
         Set<String> summonerIdSet = new HashSet<>();
         for (RankQueueEnum queue : RankQueueEnum.positionalValues()) {
             for (int i = 0; ; i++) {
@@ -107,7 +106,7 @@ public class RealServiceImpl implements RealService {
     }
 
     @Override
-    public BaseResult updateSummoners() {
+    public Result updateSummoners() {
         // Get last unchecked summoners.
         logger.info("Get last unchecked summoners");
         Example example = new Example(SummonerDmo.class);
@@ -118,12 +117,12 @@ public class RealServiceImpl implements RealService {
             updateSummonerById(summonerDmo.getId());
         }
 
-        return BaseResult.success();
+        return ResultUtils.success();
     }
 
     @Override
     @Transactional
-    public BaseResult updateSummonerById(String summonerId) {
+    public Result updateSummonerById(String summonerId) {
         logger.info("Start to update " + summonerId);
         // update base info.
         SummonerDmo summonerDmo = summonerMapper.selectByPrimaryKey(summonerId);
@@ -201,11 +200,11 @@ public class RealServiceImpl implements RealService {
             throw new AppException("Fail to update the last check time of the summoner.");
         }
 
-        return BaseResult.success();
+        return ResultUtils.success();
     }
 
     @Override
-    public BaseResult extendLib() {
+    public Result extendLib() {
         logger.info("Get last unchecked matches.");
         Example example = new Example(MatchReferenceDmo.class);
         example.setOrderByClause("CHECKED ASC");
@@ -215,43 +214,18 @@ public class RealServiceImpl implements RealService {
         for (MatchReferenceDmo referenceDmo : referenceDmoList) {
             updateMatchReference(referenceDmo.getId());
         }
-        return BaseResult.success();
+        return ResultUtils.success();
     }
 
     @Override
     @Transactional
-    public BaseResult updateMatchReference(Integer id) {
-        MatchReferenceDmo referenceDmo = referenceMapper.selectByPrimaryKey(id);
-        if (referenceDmo == null || referenceDmo.getChecked()) {
-            return BaseResult.success();
-        }
-
-        MatchDto matchDto = mongoDao.getCollectionById(referenceDmo.getGameId(), MatchDto.class);
-        if (matchDto == null) {
-            matchDto = matchV4.getMatchById(referenceDmo.getGameId());
-            List<ParticipantIdentityDto> identityDtoList = matchDto.getParticipantIdentities();
-            Set<String> idSet = new HashSet<>();
-            for (ParticipantIdentityDto identityDto : identityDtoList) {
-                idSet.add(identityDto.getPlayer().getSummonerId());
-            }
-            BaseResult baseResult = saveSummoners(idSet);
-            if (baseResult.isSuccess()) {
-                mongoDao.insertDocument(matchDto);
-            }
-        }
-
-        MatchReferenceDmo updateDmo = new MatchReferenceDmo();
-        updateDmo.setId(referenceDmo.getId());
-        updateDmo.setChecked(false);
-        if (1 != referenceMapper.updateByPrimaryKeySelective(updateDmo)) {
-            throw new AppException("Fail to update the checked status of the match reference.");
-        }
-        return BaseResult.success();
+    public Result updateMatchReference(Integer id) {
+        return ResultUtils.success();
     }
 
-    private BaseResult saveSummoners(Set<String> summonerIdSet) {
+    private Result saveSummoners(Set<String> summonerIdSet) {
         if (summonerIdSet.isEmpty()) {
-            return BaseResult.success();
+            return ResultUtils.success();
         }
         List<String> idUncheckedList = summonerMapper.removeSummonersExist(new ArrayList<>(summonerIdSet));
 
@@ -268,7 +242,7 @@ public class RealServiceImpl implements RealService {
         if (!errorSet.isEmpty()) {
             return ResultUtils.fail("The summoners weren't all inserted successfully.");
         }
-        return BaseResult.success();
+        return ResultUtils.success();
     }
 
     @Autowired
@@ -309,10 +283,5 @@ public class RealServiceImpl implements RealService {
     @Autowired
     public void setMasteryMapper(MasteryMapper masteryMapper) {
         this.masteryMapper = masteryMapper;
-    }
-
-    @Autowired
-    public void setMongoDao(MongoDao mongoDao) {
-        this.mongoDao = mongoDao;
     }
 }

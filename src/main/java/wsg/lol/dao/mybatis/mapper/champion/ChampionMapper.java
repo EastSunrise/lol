@@ -1,14 +1,13 @@
 package wsg.lol.dao.mybatis.mapper.champion;
 
-import wsg.lol.common.pojo.dto.state.ChampionDto;
-import wsg.lol.dao.mybatis.common.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
+import wsg.lol.common.pojo.dto.champion.ChampionDto;
+import wsg.lol.dao.mybatis.common.StateStrategy;
 
-/**
- * // TODO: (wangsigen, 2019/11/15)
- *
- * @author wangsigen
- * @date 2019/11/15
- * @since 2.5.0
- */
-public interface ChampionMapper extends BaseMapper<ChampionDto> {
+@Repository
+@Mapper
+public interface ChampionMapper extends StateStrategy<ChampionDto> {
+
+    ChampionDto selectByPrimaryKey(String id);
 }

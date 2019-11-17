@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wsg.lol.dao.mybatis.mapper.champion.ChampionStatsMapper">
+    <resultMap id="BaseResultMap" type="wsg.lol.common.pojo.dto.champion.ChampionStatsDto">
+        <id column="champion_id" jdbcType="VARCHAR" property="championId"/>
+        <result column="hp" jdbcType="DOUBLE" property="hp"/>
+        <result column="hpperlevel" jdbcType="DOUBLE" property="hpperlevel"/>
+        <result column="hpregen" jdbcType="DOUBLE" property="hpregen"/>
+        <result column="hpregenperlevel" jdbcType="DOUBLE" property="hpregenperlevel"/>
+        <result column="mp" jdbcType="DOUBLE" property="mp"/>
+        <result column="mpperlevel" jdbcType="DOUBLE" property="mpperlevel"/>
+        <result column="mpregen" jdbcType="DOUBLE" property="mpregen"/>
+        <result column="mpregenperlevel" jdbcType="DOUBLE" property="mpregenperlevel"/>
+        <result column="attackdamage" jdbcType="DOUBLE" property="attackdamage"/>
+        <result column="attackdamageperlevel" jdbcType="DOUBLE" property="attackdamageperlevel"/>
+        <result column="armor" jdbcType="DOUBLE" property="armor"/>
+        <result column="armorperlevel" jdbcType="DOUBLE" property="armorperlevel"/>
+        <result column="spellblock" jdbcType="DOUBLE" property="spellblock"/>
+        <result column="spellblockperlevel" jdbcType="DOUBLE" property="spellblockperlevel"/>
+        <result column="attackspeed" jdbcType="DOUBLE" property="attackspeed"/>
+        <result column="attackspeedperlevel" jdbcType="DOUBLE" property="attackspeedperlevel"/>
+        <result column="attackrange" jdbcType="INTEGER" property="attackrange"/>
+        <result column="movespeed" jdbcType="INTEGER" property="movespeed"/>
+        <result column="crit" jdbcType="INTEGER" property="crit"/>
+        <result column="critperlevel" jdbcType="INTEGER" property="critperlevel"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, hp, hpperlevel, hpregen, hpregenperlevel, mp, mpperlevel, mpregen, mpregenperlevel,
+    attackdamage, attackdamageperlevel, armor, armorperlevel, spellblock, spellblockperlevel, 
+    attackspeed, attackspeedperlevel, attackrange, movespeed, crit, critperlevel
+    </sql>
+    <delete id="clear">
+        delete
+        from lol.c_stats
+    </delete>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from c_stats
+        where id = #{id}
+    </select>
+
+    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.champion.ChampionStatsDto" useGeneratedKeys="true">
+        insert into lol.c_stats(hp, hpperlevel, hpregen, hpregenperlevel, mp, mpperlevel, mpregen, mpregenperlevel,
+        attackdamage, attackdamageperlevel, armor, armorperlevel, spellblock, spellblockperlevel, attackspeed,
+        attackspeedperlevel, attackrange, movespeed, crit, critperlevel)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.hp},
+            #{item.hpperlevel},
+            #{item.hpregen},
+            #{item.hpregenperlevel},
+            #{item.mp},
+            #{item.mpperlevel},
+            #{item.mpregen},
+            #{item.mpregenperlevel},
+            #{item.attackdamage},
+            #{item.attackdamageperlevel},
+            #{item.armor},
+            #{item.armorperlevel},
+            #{item.spellblock},
+            #{item.spellblockperlevel},
+            #{item.attackspeed},
+            #{item.attackspeedperlevel},
+            #{item.attackrange},
+            #{item.movespeed},
+            #{item.crit},
+            #{item.critperlevel})
+        </foreach>
+    </insert>
+
+</mapper>

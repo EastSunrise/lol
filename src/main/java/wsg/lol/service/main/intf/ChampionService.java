@@ -1,9 +1,7 @@
 package wsg.lol.service.main.intf;
 
-import wsg.lol.common.pojo.base.BaseResult;
-import wsg.lol.common.pojo.dto.query.state.GetChampionDto;
-import wsg.lol.common.pojo.dto.query.state.GetChampionListDto;
-import wsg.lol.common.pojo.dto.state.ChampionDto;
+import wsg.lol.common.pojo.dto.champion.ChampionDto;
+import wsg.lol.common.result.base.Result;
 
 import java.util.List;
 
@@ -15,17 +13,7 @@ import java.util.List;
 public interface ChampionService {
 
     /**
-     * Query list of champions on the condition.
-     */
-    List<ChampionDto> getChampionList(GetChampionListDto getChampionListDto);
-
-    /**
-     * Query the detail of the specified champion.
-     */
-    ChampionDto getChampionInfo(GetChampionDto getChampionDto);
-
-    /**
      * update the info of champions.
      */
-    BaseResult updateChampions(List<ChampionDto> championDtoList);
+    Result updateChampions(List<ChampionDto> championDtoList);
 }

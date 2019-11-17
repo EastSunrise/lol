@@ -3,7 +3,7 @@ drop table if exists lol.r_rune;
 create table lol.r_rune
 (
     id         int           not null comment '主键',
-    'key'      varchar(32)   not null comment 'KEY',
+    `key`      varchar(32)   not null comment 'KEY',
     name       varchar(32)   not null comment '名称',
     icon       varchar(128)  null comment '图标地址',
     short_desc varchar(512)  null comment '简述',
@@ -16,11 +16,11 @@ create table lol.r_rune
 
 
 -- 符文系信息表
-drop table if exists lol.r_series;
-create table lol.r_series
+drop table if exists lol.r_tree;
+create table lol.r_tree
 (
     id    int          not null comment '主键',
-    'key' varchar(32)  not null comment 'KEY',
+    `key` varchar(32)  not null comment 'KEY',
     name  varchar(32)  not null comment '名称',
     icon  varchar(128) null comment '图标地址',
     constraint r_series_pk primary key (id)

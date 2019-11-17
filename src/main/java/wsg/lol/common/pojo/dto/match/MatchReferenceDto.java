@@ -1,13 +1,11 @@
 package wsg.lol.common.pojo.dto.match;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import wsg.lol.common.enums.game.SeasonEnum;
 import wsg.lol.common.enums.rank.MatchLaneEnum;
 import wsg.lol.common.enums.rank.MatchQueueEnum;
 import wsg.lol.common.enums.rank.MatchRoleEnum;
 import wsg.lol.common.enums.route.PlatformEnum;
 import wsg.lol.common.pojo.base.BaseDto;
-import wsg.lol.dao.data.serializer.IntEnumSerializer;
 
 import java.util.Date;
 
@@ -21,8 +19,6 @@ public class MatchReferenceDto extends BaseDto {
     private int champion;
     private PlatformEnum platformId;
     private SeasonEnum season;
-
-    @JSONField(serializeUsing = IntEnumSerializer.class, deserializeUsing = IntEnumSerializer.class)
     private MatchQueueEnum queue;
     private MatchRoleEnum role;
 

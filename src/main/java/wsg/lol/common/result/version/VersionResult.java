@@ -1,13 +1,13 @@
 package wsg.lol.common.result.version;
 
-import wsg.lol.common.pojo.base.BaseResult;
+import wsg.lol.common.result.base.Result;
 
 /**
  * wsg
  *
  * @author EastSunrise
  */
-public class VersionResult extends BaseResult {
+public class VersionResult extends Result {
 
     private String currentVersion;
 

@@ -1,31 +1,46 @@
 package wsg.lol.service.version.impl;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wsg.lol.common.constant.ConfigConst;
+import wsg.lol.common.constant.ErrorCodeConst;
+import wsg.lol.common.enums.champion.ChampionTipEnum;
+import wsg.lol.common.enums.champion.ImageGroupEnum;
+import wsg.lol.common.enums.champion.SpellNumEnum;
 import wsg.lol.common.pojo.base.AppException;
-import wsg.lol.common.pojo.base.BaseResult;
-import wsg.lol.common.pojo.dto.state.ChampionDto;
-import wsg.lol.common.pojo.dto.state.ItemDto;
-import wsg.lol.common.pojo.dto.state.item.GroupDto;
-import wsg.lol.common.pojo.dto.state.item.ItemExtDto;
-import wsg.lol.common.pojo.dto.state.item.TreeDto;
-import wsg.lol.common.pojo.dto.state.others.MapDto;
-import wsg.lol.common.pojo.dto.state.rune.RuneTreeDto;
-import wsg.lol.common.pojo.dto.state.spell.SummonerSpellDto;
+import wsg.lol.common.pojo.dto.champion.*;
+import wsg.lol.common.pojo.dto.general.ImageDto;
+import wsg.lol.common.pojo.dto.item.ItemDto;
+import wsg.lol.common.pojo.dto.item.ItemExtDto;
+import wsg.lol.common.pojo.dto.item.ItemStatsDto;
+import wsg.lol.common.pojo.dto.others.MapDto;
+import wsg.lol.common.pojo.dto.rune.RuneDto;
+import wsg.lol.common.pojo.dto.rune.RuneExtDto;
+import wsg.lol.common.pojo.dto.rune.RuneTreeDto;
+import wsg.lol.common.result.base.GenericResult;
+import wsg.lol.common.result.base.Result;
 import wsg.lol.common.result.version.VersionResult;
 import wsg.lol.common.util.AssertUtils;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.data.intf.DataDao;
 import wsg.lol.dao.data.intf.GeneralDao;
-import wsg.lol.dao.mongo.intf.MongoDao;
-import wsg.lol.dao.mybatis.mapper.ConfigMapper;
-import wsg.lol.service.main.intf.ChampionService;
+import wsg.lol.dao.mybatis.common.StateStrategy;
+import wsg.lol.dao.mybatis.mapper.champion.*;
+import wsg.lol.dao.mybatis.mapper.item.ItemMapper;
+import wsg.lol.dao.mybatis.mapper.item.ItemStatsMapper;
+import wsg.lol.dao.mybatis.mapper.rune.RuneMapper;
+import wsg.lol.dao.mybatis.mapper.rune.RuneTreeMapper;
+import wsg.lol.dao.mybatis.mapper.system.ConfigMapper;
+import wsg.lol.dao.mybatis.mapper.system.ImageMapper;
 import wsg.lol.service.version.intf.VersionService;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,13 +55,38 @@ public class VersionServiceImpl implements VersionService {
 
     private DataDao dataDao;
 
-    private MongoDao mongoDao;
-
     private GeneralDao generalDao;
 
     private ConfigMapper configMapper;
 
-    private ChampionService championService;
+    private ChampionMapper championMapper;
+
+    private ImageMapper imageMapper;
+
+    private SkinMapper skinMapper;
+
+    private ChampionStatsMapper championStatsMapper;
+
+    private ChampionSpellMapper championSpellMapper;
+
+    private ItemMapper itemMapper;
+
+    private ItemStatsMapper itemStatsMapper;
+
+    private ChampionTipMapper championTipMapper;
+
+    private RuneMapper runeMapper;
+
+    private RuneTreeMapper runeTreeMapper;
+
+    @Override
+    public GenericResult<Boolean> isCdnExists(String version) {
+        String cdnDir = dataDao.getCdnDir(version);
+        boolean exists = new File(cdnDir).exists();
+        GenericResult<Boolean> result = new GenericResult<>();
+        result.setObject(exists);
+        return result;
+    }
 
     @Override
     public VersionResult getVersion() {
@@ -57,63 +97,256 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    @Transactional
-    public BaseResult updateVersion(String version) {
-        AssertUtils.isSuccess(this.updateChampionLib(version));
-        AssertUtils.isSuccess(this.updateItemLib(version));
-        AssertUtils.isSuccess(this.updateMapLib(version));
-        AssertUtils.isSuccess(this.updateRuneLib(version));
-        AssertUtils.isSuccess(this.updateSummonerSpellLib(version));
-
-        int count = configMapper.updateConfig(ConfigConst.CONFIG_NAME_CURRENT_VERSION, version);
+    public Result updateVersion(String version) {
+        int count = configMapper.updateConfigValue(ConfigConst.CONFIG_NAME_CURRENT_VERSION, version);
         if (1 != count) {
-            throw new AppException("Failed to update the config of current version.");
+            logger.error("Failed to update the version config.");
+            throw new AppException(ErrorCodeConst.DATABASE_ERROR);
         }
         return ResultUtils.success();
     }
 
     @Override
-    public BaseResult updateChampionLib(String version) {
-        logger.info("Start to update the data of champions.");
-        List<ChampionDto> championDtoList = dataDao.readChampions(version);
-        return championService.updateChampions(championDtoList);
-    }
+    @Transactional
+    public Result updateChampions(String version) {
+        logger.info("Updating the data of champions.");
+        List<ChampionExtDto> championExtDtoList = dataDao.readChampions(version);
 
-    @Override
-    public BaseResult updateItemLib(String version) {
-        logger.info("Start to update the data of items.");
-        mongoDao.dropCollection(ItemDto.class);
-        mongoDao.dropCollection(GroupDto.class);
-        mongoDao.dropCollection(TreeDto.class);
-        ItemExtDto itemExtDto = dataDao.readItems(version);
-        mongoDao.insertDocuments(itemExtDto.getItemDtoList());
-        mongoDao.insertDocuments(itemExtDto.getGroupDtoList());
-        mongoDao.insertDocuments(itemExtDto.getTreeDtoList());
+        logger.info("Updating the champions.");
+        List<ChampionDto> championDtoList = new ArrayList<>(championExtDtoList);
+        AssertUtils.isSuccess(updateState(championMapper, championDtoList));
+
+        logger.info("Updating the images of champions.");
+        List<ImageDto> imageDtoList = new ArrayList<>();
+        for (ChampionExtDto championExtDto : championExtDtoList) {
+            ImageDto image = championExtDto.getImage();
+            image.setRelatedId(championExtDto.getKey());
+            imageDtoList.add(image);
+        }
+        AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.Champion));
+
+        logger.info("Updating the skins.");
+        List<SkinDto> skinDtoList = new ArrayList<>();
+        for (ChampionExtDto championExtDto : championExtDtoList) {
+            List<SkinDto> skins = championExtDto.getSkins();
+            String id = championExtDto.getId();
+            for (SkinDto skin : skins) {
+                skin.setChampionId(id);
+            }
+            skinDtoList.addAll(skins);
+        }
+        AssertUtils.isSuccess(updateState(skinMapper, skinDtoList));
+
+        logger.info("Updating the tips of champions.");
+        List<ChampionTipDto> championTipDtoList = new ArrayList<>();
+        for (ChampionExtDto championExtDto : championExtDtoList) {
+            String id = championExtDto.getId();
+            for (String tip : championExtDto.getAllytips()) {
+                ChampionTipDto championTipDto = new ChampionTipDto();
+                championTipDto.setChampionId(id);
+                championTipDto.setTip(tip);
+                championTipDto.setType(ChampionTipEnum.Ally);
+                championTipDtoList.add(championTipDto);
+            }
+            for (String tip : championExtDto.getEnemytips()) {
+                ChampionTipDto championTipDto = new ChampionTipDto();
+                championTipDto.setChampionId(id);
+                championTipDto.setTip(tip);
+                championTipDto.setType(ChampionTipEnum.Enemy);
+                championTipDtoList.add(championTipDto);
+            }
+        }
+        AssertUtils.isSuccess(updateState(championTipMapper, championTipDtoList));
+
+        logger.info("Updating the stats of champions.");
+        List<ChampionStatsDto> statsDtoList = new ArrayList<>();
+        for (ChampionExtDto championExtDto : championExtDtoList) {
+            ChampionStatsDto stats = championExtDto.getStats();
+            stats.setChampionId(championExtDto.getId());
+            statsDtoList.add(stats);
+        }
+        AssertUtils.isSuccess(updateState(championStatsMapper, statsDtoList));
+
+        logger.info("Updating the spells of champions.");
+        List<ChampionSpellDto> spellDtoList = new ArrayList<>();
+        imageDtoList = new ArrayList<>();
+        SpellNumEnum[] enums = new SpellNumEnum[]{
+                SpellNumEnum.Q, SpellNumEnum.W, SpellNumEnum.E, SpellNumEnum.R
+        };
+        for (ChampionExtDto championExtDto : championExtDtoList) {
+            List<ChampionSpellDto> spells = championExtDto.getSpells();
+            String id = championExtDto.getId();
+            for (int i = 0; i < spells.size(); i++) {
+                ChampionSpellDto spell = spells.get(i);
+                spell.setChampionId(id);
+                spell.setNum(enums[i]);
+                ImageDto image = spell.getImage();
+                image.setRelatedId(spell.hashCode());
+                imageDtoList.add(image);
+            }
+            spellDtoList.addAll(spells);
+
+            ChampionSpellDto passive = championExtDto.getPassive();
+            passive.setPassive(id);
+            spellDtoList.add(passive);
+            ImageDto image = passive.getImage();
+            image.setRelatedId(passive.hashCode());
+            imageDtoList.add(image);
+        }
+        AssertUtils.isSuccess(updateState(championSpellMapper, spellDtoList));
+        logger.info("Updating the images of champion spells.");
+        AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.Spell, ImageGroupEnum.Passive));
+
+        logger.info("Succeed in updating the data of champions.");
         return ResultUtils.success();
     }
 
     @Override
-    public BaseResult updateRuneLib(String version) {
-        logger.info("Start to update the data of runes.");
-        mongoDao.dropCollection(RuneTreeDto.class);
-        mongoDao.insertDocuments(dataDao.readRunes(version));
+    @Transactional
+    public Result updateItems(String version) {
+        logger.info("Updating the data of items.");
+        List<ItemExtDto> itemExtDtoList = dataDao.readItems(version);
+
+        logger.info("Updating the items.");
+        List<ItemDto> itemDtoList = new ArrayList<>(itemExtDtoList);
+        AssertUtils.isSuccess(updateState(itemMapper, itemDtoList));
+
+        logger.info("Updating the stats of items.");
+        List<ItemStatsDto> itemStatsDtoList = new ArrayList<>();
+        for (ItemExtDto itemExtDto : itemExtDtoList) {
+            ItemStatsDto stats = itemExtDto.getStats();
+            stats.setItemId(itemExtDto.getId());
+            itemStatsDtoList.add(stats);
+        }
+        AssertUtils.isSuccess(updateState(itemStatsMapper, itemStatsDtoList));
+
+        logger.info("Updating the images of items.");
+        List<ImageDto> imageDtoList = new ArrayList<>();
+        for (ItemExtDto itemExtDto : itemExtDtoList) {
+            ImageDto image = itemExtDto.getImage();
+            image.setRelatedId(itemExtDto.getId());
+            imageDtoList.add(image);
+        }
+        AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.Item));
+
         return ResultUtils.success();
     }
 
     @Override
-    public BaseResult updateSummonerSpellLib(String version) {
+    @Transactional
+    public Result updateRunes(String version) {
+        logger.info("Updating the data of runes.");
+        List<RuneExtDto> runeExtDtoList = dataDao.readRunes(version);
+
+        logger.info("Updating the rune trees.");
+        List<RuneTreeDto> runeTreeDtoList = new ArrayList<>(runeExtDtoList);
+        AssertUtils.isSuccess(updateState(runeTreeMapper, runeTreeDtoList));
+
+        logger.info("Updating the runes.");
+        List<RuneDto> runeDtoList = new ArrayList<>();
+        for (RuneExtDto runeExtDto : runeExtDtoList) {
+            RuneDto[][] slots = runeExtDto.getSlots();
+            int id = runeExtDto.getId();
+            for (int i = 0; i < slots.length; i++) {
+                RuneDto[] slot = slots[i];
+                for (int j = 0; j < slot.length; j++) {
+                    RuneDto runeDto = slot[j];
+                    runeDto.setTreeId(id);
+                    runeDto.setNumX(i);
+                    runeDto.setNumY(j);
+                    runeDtoList.add(runeDto);
+                }
+            }
+        }
+        AssertUtils.isSuccess(updateState(runeMapper, runeDtoList));
+
+        return ResultUtils.success();
+    }
+
+    @Override
+    @Transactional
+    public Result updateSummonerSpellLib(String version) {
         logger.info("Start to update the data of summoner spells.");
-        mongoDao.dropCollection(SummonerSpellDto.class);
-        mongoDao.insertDocuments(dataDao.readSummonerSpells(version));
         return ResultUtils.success();
     }
 
     @Override
-    public BaseResult updateMapLib(String version) {
-        logger.info("Start to update the data of maps.");
-        mongoDao.dropCollection(MapDto.class);
-        mongoDao.insertDocuments(dataDao.readMaps(version));
+    @Transactional
+    public Result updateMaps(String version) {
+        logger.info("Updating the images of maps.");
+        List<MapDto> mapDtoList = dataDao.readMaps(version);
+        List<ImageDto> imageDtoList = new ArrayList<>();
+        for (MapDto mapDto : mapDtoList) {
+            ImageDto image = mapDto.getImage();
+            image.setRelatedId(mapDto.getMap().getMapId());
+            imageDtoList.add(image);
+        }
+        AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.Map));
+
         return ResultUtils.success();
+    }
+
+    private <T> Result updateState(StateStrategy<T> strategy, List<T> data) {
+        if (CollectionUtils.isEmpty(data)) {
+            logger.info("Collection is empty. Nothing updated.");
+            return ResultUtils.success();
+        }
+
+        int count = strategy.clear();
+        logger.info(count + " Cleared.");
+        count = strategy.batchInsert(data);
+        if (count != data.size()) {
+            logger.error("Failed to insert the data");
+            throw new AppException(ErrorCodeConst.DATABASE_ERROR);
+        }
+        logger.info(count + " Inserted.");
+        return ResultUtils.success();
+    }
+
+    private Result updateImages(List<ImageDto> imageDtoList, ImageGroupEnum... groups) {
+        if (CollectionUtils.isEmpty(imageDtoList)) {
+            logger.info("Collection is empty. Nothing updated.");
+            return ResultUtils.success();
+        }
+
+        int count = 0;
+        for (ImageGroupEnum group : groups) {
+            count = imageMapper.deleteByGroup(group);
+            logger.info("Deleted " + count + " images of " + group);
+        }
+
+        count = imageMapper.batchInsert(imageDtoList);
+        if (count != imageDtoList.size()) {
+            logger.error("Failed to insert the images of " + StringUtils.join(groups, ", "));
+            throw new AppException(ErrorCodeConst.DATABASE_ERROR);
+        }
+        logger.info("Inserted " + count + " images of " + StringUtils.join(groups, ", "));
+        return ResultUtils.success();
+    }
+
+    @Autowired
+    public void setRuneMapper(RuneMapper runeMapper) {
+        this.runeMapper = runeMapper;
+    }
+
+    @Autowired
+    public void setRuneTreeMapper(RuneTreeMapper runeTreeMapper) {
+        this.runeTreeMapper = runeTreeMapper;
+    }
+
+    @Autowired
+    public void setChampionTipMapper(ChampionTipMapper championTipMapper) {
+        this.championTipMapper = championTipMapper;
+    }
+
+    @Autowired
+    public void setItemMapper(ItemMapper itemMapper) {
+        this.itemMapper = itemMapper;
+    }
+
+    @Autowired
+    public void setItemStatsMapper(ItemStatsMapper itemStatsMapper) {
+        this.itemStatsMapper = itemStatsMapper;
     }
 
     @Autowired
@@ -127,12 +360,32 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Autowired
-    public void setMongoDao(MongoDao mongoDao) {
-        this.mongoDao = mongoDao;
+    public void setConfigMapper(ConfigMapper configMapper) {
+        this.configMapper = configMapper;
     }
 
     @Autowired
-    public void setConfigMapper(ConfigMapper configMapper) {
-        this.configMapper = configMapper;
+    public void setChampionMapper(ChampionMapper championMapper) {
+        this.championMapper = championMapper;
+    }
+
+    @Autowired
+    public void setImageMapper(ImageMapper imageMapper) {
+        this.imageMapper = imageMapper;
+    }
+
+    @Autowired
+    public void setSkinMapper(SkinMapper skinMapper) {
+        this.skinMapper = skinMapper;
+    }
+
+    @Autowired
+    public void setChampionStatsMapper(ChampionStatsMapper championStatsMapper) {
+        this.championStatsMapper = championStatsMapper;
+    }
+
+    @Autowired
+    public void setChampionSpellMapper(ChampionSpellMapper championSpellMapper) {
+        this.championSpellMapper = championSpellMapper;
     }
 }

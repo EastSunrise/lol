@@ -1,6 +1,7 @@
 package wsg.lol.service.version.intf;
 
-import wsg.lol.common.pojo.base.BaseResult;
+import wsg.lol.common.result.base.GenericResult;
+import wsg.lol.common.result.base.Result;
 import wsg.lol.common.result.version.VersionResult;
 
 /**
@@ -11,6 +12,11 @@ import wsg.lol.common.result.version.VersionResult;
 public interface VersionService {
 
     /**
+     * 数据目录是否存在
+     */
+    GenericResult<Boolean> isCdnExists(String version);
+
+    /**
      * get info of version.
      */
     VersionResult getVersion();
@@ -18,30 +24,30 @@ public interface VersionService {
     /**
      * Update the static data to the certain version.
      */
-    BaseResult updateVersion(String version);
+    Result updateVersion(String version);
 
     /**
      * Update the data of champions once the version changes.
      */
-    BaseResult updateChampionLib(String version);
+    Result updateChampions(String version);
 
     /**
      * Update the data of items once the version changes.
      */
-    BaseResult updateItemLib(String version);
+    Result updateItems(String version);
 
     /**
      * Update the data of reforged runes once the version changes.
      */
-    BaseResult updateRuneLib(String version);
+    Result updateRunes(String version);
 
     /**
      * Update the data of summoner spells once the version changes.
      */
-    BaseResult updateSummonerSpellLib(String version);
+    Result updateSummonerSpellLib(String version);
 
     /**
      * Update the data of maps once the version changes.
      */
-    BaseResult updateMapLib(String version);
+    Result updateMaps(String version);
 }

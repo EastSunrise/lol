@@ -1,5 +1,7 @@
 package wsg.lol.common.pojo.base;
 
+import wsg.lol.common.result.base.Result;
+
 /**
  * @author EastSunrise
  */
@@ -29,7 +31,7 @@ public class AppException extends RuntimeException {
      * 构造函数
      * @param result 结果类
      */
-    public AppException(BaseResult result) {
+    public AppException(Result result) {
         super(result.getMessage());
         this.errorCode = result.getErrorCode();
         this.args = result.getArgs();

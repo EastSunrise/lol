@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wsg.lol.dao.mybatis.mapper.item.ItemStatsMapper">
+    <resultMap id="BaseResultMap" type="wsg.lol.common.pojo.dto.item.ItemStatsDto">
+        <id column="item_id" jdbcType="INTEGER" property="itemId"/>
+    </resultMap>
+    <delete id="clear">
+        delete
+        from lol.i_stats
+    </delete>
+    <insert id="batchInsert">
+        insert into lol.i_stats
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.itemId})
+        </foreach>
+    </insert>
+</mapper>

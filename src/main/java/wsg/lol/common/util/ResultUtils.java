@@ -1,7 +1,7 @@
 package wsg.lol.common.util;
 
-import wsg.lol.common.constant.SystemConst;
-import wsg.lol.common.pojo.base.BaseResult;
+import wsg.lol.common.constant.ErrorCodeConst;
+import wsg.lol.common.result.base.Result;
 
 /**
  * // TODO: (wangsigen, 2019/11/8)
@@ -12,29 +12,29 @@ import wsg.lol.common.pojo.base.BaseResult;
  */
 public class ResultUtils {
 
-    public static BaseResult success() {
-        BaseResult result = new BaseResult();
+    public static Result success() {
+        Result result = new Result();
         result.setSuccess(true);
         return result;
     }
 
-    public static BaseResult fail(String errorCode) {
-        BaseResult result = new BaseResult();
+    public static Result fail(String errorCode) {
+        Result result = new Result();
         result.setSuccess(false);
         result.setErrorCode(errorCode);
         return result;
     }
 
-    public static BaseResult fail(String errorCode, String errorMsg) {
-        BaseResult result = new BaseResult();
+    public static Result fail(String errorCode, String errorMsg) {
+        Result result = new Result();
         result.setSuccess(false);
         result.setErrorCode(errorCode);
         result.setMessage(errorMsg);
         return result;
     }
 
-    public static BaseResult fail(String errorCode, String message, String[] args) {
-        BaseResult result = new BaseResult();
+    public static Result fail(String errorCode, String message, String[] args) {
+        Result result = new Result();
         result.setSuccess(false);
         result.setErrorCode(errorCode);
         result.setMessage(message);
@@ -42,10 +42,10 @@ public class ResultUtils {
         return result;
     }
 
-    public static BaseResult fail(Exception e) {
-        BaseResult result = new BaseResult();
+    public static Result fail(Exception e) {
+        Result result = new Result();
         result.setSuccess(false);
-        result.setErrorCode(SystemConst.SYSTEM_ERROR);
+        result.setErrorCode(ErrorCodeConst.SYSTEM_ERROR);
         result.setMessage(e.toString());
         return result;
     }

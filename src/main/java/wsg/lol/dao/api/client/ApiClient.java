@@ -3,7 +3,7 @@ package wsg.lol.dao.api.client;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import wsg.lol.common.enums.route.RegionEnum;
+import wsg.lol.common.enums.route.PlatformRoutingEnum;
 
 import java.util.Date;
 
@@ -33,7 +33,7 @@ public class ApiClient {
      * 地区
      */
     @Value("${api.region}")
-    private RegionEnum region;
+    private PlatformRoutingEnum region;
 
     /**
      * api key
@@ -66,7 +66,7 @@ public class ApiClient {
         this.expiresTime = new Date();
     }
 
-    public RegionEnum getRegion() {
+    public PlatformRoutingEnum getRegion() {
         return region;
     }
 }

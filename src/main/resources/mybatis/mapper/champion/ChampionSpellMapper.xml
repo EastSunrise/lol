@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wsg.lol.dao.mybatis.mapper.champion.ChampionSpellMapper">
+    <resultMap id="BaseResultMap" type="wsg.lol.common.pojo.dto.champion.ChampionSpellDto">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="champion_id" jdbcType="VARCHAR" property="championId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="num" jdbcType="TINYINT" property="num"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="maxrank" jdbcType="INTEGER" property="maxrank"/>
+        <result column="tooltip" jdbcType="VARCHAR" property="tooltip"/>
+        <result column="leveltip_label" jdbcType="VARCHAR" property="leveltipLabel"/>
+        <result column="leveltip_effect" jdbcType="VARCHAR" property="leveltipEffect"/>
+        <result column="cooldown" jdbcType="VARCHAR" property="cooldown"/>
+        <result column="cooldown_burn" jdbcType="VARCHAR" property="cooldownBurn"/>
+        <result column="cost" jdbcType="VARCHAR" property="cost"/>
+        <result column="cost_burn" jdbcType="VARCHAR" property="costBurn"/>
+        <result column="range" jdbcType="VARCHAR" property="range"/>
+        <result column="range_burn" jdbcType="VARCHAR" property="rangeBurn"/>
+        <result column="datavalues" jdbcType="VARCHAR" property="datavalues"/>
+        <result column="effect" jdbcType="VARCHAR" property="effect"/>
+        <result column="effect_burn" jdbcType="VARCHAR" property="effectBurn"/>
+        <result column="vars" jdbcType="VARCHAR" property="vars"/>
+        <result column="cost_type" jdbcType="VARCHAR" property="costType"/>
+        <result column="maxammo" jdbcType="VARCHAR" property="maxammo"/>
+        <result column="resource" jdbcType="VARCHAR" property="resource"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, champion_id, name, num, description, maxrank, level_tips, tooltip, leveltip_label,
+    leveltip_effect, cooldown, cooldown_burn, cost, cost_burn, range, range_burn, datavalues, 
+    effect, effect_burn, vars, cost_type, maxammo, resource
+    </sql>
+    <delete id="clear">
+        delete
+        from lol.c_spell
+    </delete>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from c_spell
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.champion.ChampionSpellDto">
+        insert into lol.c_spell(id, champion_id, name, num, description, maxrank, tooltip, leveltip_label,
+        leveltip_effect, cooldown, cooldown_burn, cost, cost_burn, `range`, range_burn, datavalues, effect, effect_burn,
+        vars, cost_type, maxammo, resource)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},
+            #{item.championId},
+            #{item.name},
+            #{item.num},
+            #{item.description},
+            #{item.maxrank},
+            #{item.tooltip},
+            #{item.leveltipLabel},
+            #{item.leveltipEffect},
+            #{item.cooldown},
+            #{item.cooldownBurn},
+            #{item.cost},
+            #{item.costBurn},
+            #{item.range},
+            #{item.rangeBurn},
+            #{item.datavalues},
+            #{item.effect},
+            #{item.effectBurn},
+            #{item.vars},
+            #{item.costType},
+            #{item.maxammo},
+            #{item.resource})
+        </foreach>
+    </insert>
+</mapper>

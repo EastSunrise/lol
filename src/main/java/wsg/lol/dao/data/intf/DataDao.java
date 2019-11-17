@@ -1,10 +1,9 @@
 package wsg.lol.dao.data.intf;
 
-import wsg.lol.common.pojo.dto.state.ChampionDto;
-import wsg.lol.common.pojo.dto.state.item.ItemExtDto;
-import wsg.lol.common.pojo.dto.state.others.MapDto;
-import wsg.lol.common.pojo.dto.state.rune.RuneTreeDto;
-import wsg.lol.common.pojo.dto.state.spell.SummonerSpellDto;
+import wsg.lol.common.pojo.dto.champion.ChampionExtDto;
+import wsg.lol.common.pojo.dto.item.ItemExtDto;
+import wsg.lol.common.pojo.dto.others.MapDto;
+import wsg.lol.common.pojo.dto.rune.RuneExtDto;
 
 import java.util.List;
 
@@ -15,13 +14,16 @@ import java.util.List;
  */
 public interface DataDao {
 
-    List<ChampionDto> readChampions(String version);
+    /**
+     * 获取版本数据目录
+     */
+    String getCdnDir(String version);
 
-    ItemExtDto readItems(String version);
+    List<ChampionExtDto> readChampions(String version);
+
+    List<ItemExtDto> readItems(String version);
 
     List<MapDto> readMaps(String version);
 
-    List<RuneTreeDto> readRunes(String version);
-
-    List<SummonerSpellDto> readSummonerSpells(String version);
+    List<RuneExtDto> readRunes(String version);
 }

@@ -23,6 +23,7 @@ public enum MapEnum {
     Substructure43(19, "Substructure 43", "PROJECT: Hunters map"),
     CrashSite(20, "Crash Site", "Odyssey: Extraction map"),
     NexusBlitz(21, "Nexus Blitz", "Nexus Blitz map"),
+    TeamfightTactics(22, "Teamfight Tactics", "云顶之弈"),
     ;
 
     private int mapId;
@@ -45,5 +46,14 @@ public enum MapEnum {
 
     public String getNotes() {
         return notes;
+    }
+
+    public static MapEnum map(int mapId) {
+        for (MapEnum value : MapEnum.values()) {
+            if (mapId == value.mapId) {
+                return value;
+            }
+        }
+        throw new IllegalArgumentException("Unknown map enum with mapId " + mapId);
     }
 }

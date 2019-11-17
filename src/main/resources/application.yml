@@ -14,36 +14,21 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/lol?characterEncoding=utf-8&serverTimezone=UTC
     username: root
-    password: 4787
-  redis:
-    database: 0
-    host: localhost
-    port: 6380
-    password:
-    timeout: 1000
-    jedis:
-      pool:
-        max-idle: 10
-        max-active: 200
-        max-wait: 1
-        min-idle: 0
+    password: 2787
   resources:
     static-locations: classpath:/static/, classpath:/
-  data:
-    mongodb:
-      uri: mongodb://localhost/lol
 mybatis:
-  mapper-locations: classpath:mybatis/mapper/*.xml
-  type-aliases-package: wsg.lol.pojo.dmo
+  mapper-locations: classpath:mybatis/mapper/*/*Mapper.xml
   configuration:
     map-underscore-to-camel-case: true
-  type-handlers-package: wsg.lol.dao.mybatis.typeHandler
+  type-handlers-package: wsg.lol.dao.mybatis.typehandler
 server:
   port: 8090
 logging:
   pattern:
-    level: DEBUG
-#    config: classpath:config/logback.xml
+    file: classpath:config/logback.xml
+  level:
+    wsg.lol.dao.mybatis.mapper: debug
 mapper:
   mappers: wsg.lol.dao.mybatis.common.BaseMapper
   identity: MYSQL

@@ -8,6 +8,10 @@ create table lol.t_config
     constraint t_config_pk primary key (id)
 ) comment ='系统配置表';
 
+-- 初始化配置
+insert into lol.t_config
+values ('CURRENT_VERSION', '1.0', '当前版本');
+
 -- 图片资源表
 drop table if exists lol.t_image;
 create table lol.t_image

@@ -3,7 +3,7 @@ drop table if exists lol.c_champion;
 create table lol.c_champion
 (
     id              varchar(32) not null comment '主键，同英文名',
-    'key'           int         not null comment '序号',
+    `key`           int         not null comment '序号',
     name            varchar(32) not null comment '英雄名',
     title           varchar(32) not null comment '英雄称号',
     lore            varchar(1024) comment '简介',

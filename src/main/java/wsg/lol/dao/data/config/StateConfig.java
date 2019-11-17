@@ -1,8 +1,11 @@
 package wsg.lol.dao.data.config;
 
+import org.apache.commons.lang3.LocaleUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
+
+import java.util.Locale;
 
 /**
  * wsg
@@ -13,28 +16,21 @@ import org.springframework.stereotype.Component;
 @PropertySource(value = {"classpath:config/data-config.properties"})
 public class StateConfig {
 
-    @Value("${state.dataDir}")
-    private String dataDir;
+    @Value("${state.dir.cdn}")
+    private String cdnDir;
 
     @Value("${state.language}")
     private String language;
 
-    @Value("${state.versionPath}")
-    private String versionPath;
-
     @Value("${state.url.cdn}")
     private String cdnUrl;
 
-    public String getDataDir() {
-        return dataDir;
+    public String getCdnDir() {
+        return cdnDir;
     }
 
-    public String getLanguage() {
-        return language;
-    }
-
-    public String getVersionPath() {
-        return versionPath;
+    public Locale getLanguage() {
+        return LocaleUtils.toLocale(language);
     }
 
     public String getCdnUrl() {

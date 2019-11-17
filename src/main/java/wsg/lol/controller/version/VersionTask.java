@@ -1,19 +1,21 @@
 package wsg.lol.controller.version;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import wsg.lol.common.intf.Scheduler;
-import wsg.lol.common.pojo.base.BaseResult;
+import org.springframework.transaction.support.TransactionTemplate;
+import wsg.lol.common.pojo.base.AppException;
+import wsg.lol.common.result.base.GenericResult;
 import wsg.lol.common.result.version.VersionResult;
+import wsg.lol.common.util.AssertUtils;
+import wsg.lol.common.util.ResultUtils;
 import wsg.lol.service.version.intf.VersionService;
-
-import java.io.File;
 
 /**
  * // TODO: (wangsigen, 2019/11/8)
@@ -23,43 +25,74 @@ import java.io.File;
  * @since 2.4.9.3
  */
 @Service
-public class VersionTask implements Scheduler {
+public class VersionTask implements ApplicationRunner {
 
     private static Logger logger = LoggerFactory.getLogger(VersionTask.class);
 
     private VersionService versionService;
 
-    @Value("${state.dir.data}")
-    private String dataDir;
+    private TransactionTemplate transactionTemplate;
+
+    @Value("${state.dir.cdn}")
+    private String cdnDir;
 
     @Scheduled(fixedRate = DateUtils.MILLIS_PER_DAY)
     public void checkVersion() {
-        logger.info("Start to check the version.");
+        logger.info("Checking the version...");
         VersionResult versionResult = versionService.getVersion();
-        if (!versionResult.isLatestVersion()) {
-            String latestVersion = versionResult.getLatestVersion();
-            boolean exists = new File(StringUtils.join(dataDir, "/", latestVersion)).exists();
-            if (!exists) {
-                logger.info("The data of the latest version " + latestVersion + " don't exist. Please update the data dragon manually.");
-            } else {
-                // TODO: (wangsigen, 2019/11/8) shutdown the main thread
-
-                // update the version
-                logger.info("Start to update the version from " + versionResult.getCurrentVersion() + " to " + latestVersion);
-                BaseResult result = versionService.updateVersion(latestVersion);
-                if (!result.isSuccess()) {
-                    logger.info("Failed to updated the version: " + result.getErrorMsg());
-                } else {
-                    logger.info("Success to update the version from " + versionResult.getCurrentVersion() + " to " + latestVersion);
-                }
-
-                // TODO: (wangsigen, 2019/11/8) start the main thread
-            }
+        if (versionResult.isLatestVersion()) {
+            logger.info("The version is latest.");
+            return;
         }
+
+        logger.info("The latest version is " + versionResult.getLatestVersion() + ". Please update the version.");
+    }
+
+    /**
+     * update the version if not the latest.
+     */
+    @Override
+    public void run(ApplicationArguments args) {
+        logger.info("Checking the version...");
+        VersionResult versionResult = versionService.getVersion();
+        if (versionResult.isLatestVersion()) {
+            logger.info("The version is latest.");
+            return;
+        }
+
+        String version = versionResult.getLatestVersion();
+        GenericResult<Boolean> cdnExists = versionService.isCdnExists(version);
+        if (!cdnExists.getObject()) {
+            logger.info("The cdn of the version " + version + " doesn't exist. Please update the data dragon manually.");
+            return;
+        }
+
+        try {
+            transactionTemplate.execute(transactionStatus -> {
+                logger.info("Updating the version from " + versionResult.getCurrentVersion() + " to " + version);
+                AssertUtils.isSuccess(versionService.updateChampions(version));
+                AssertUtils.isSuccess(versionService.updateItems(version));
+                AssertUtils.isSuccess(versionService.updateMaps(version));
+                AssertUtils.isSuccess(versionService.updateRunes(version));
+//                AssertUtils.isSuccess(versionService.updateSummonerSpellLib(version));
+                AssertUtils.isSuccess(versionService.updateVersion(version));
+                return ResultUtils.success();
+            });
+        } catch (AppException e) {
+            logger.error(e.getMessage());
+            return;
+        }
+
+        logger.info("Succeed in updating the version from " + versionResult.getCurrentVersion() + " to " + version);
     }
 
     @Autowired
     public void setVersionService(VersionService versionService) {
         this.versionService = versionService;
+    }
+
+    @Autowired
+    public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+        this.transactionTemplate = transactionTemplate;
     }
 }

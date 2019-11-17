@@ -70,24 +70,6 @@
             <pattern>%d{yyyy-M-d HH:mm:ss} %t %p %m%n</pattern>
         </encoder>
     </appender>
-    <appender name="mongo" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/logback/mongo_%d{yyyy-M-d}.log</FileNamePattern>
-            <MaxHistory>10</MaxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{yyyy-M-d HH:mm:ss} %t %p %m%n</pattern>
-        </encoder>
-    </appender>
-    <appender name="redis" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/logback/redis_%d{yyyy-M-d}.log</FileNamePattern>
-            <MaxHistory>10</MaxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{yyyy-M-d HH:mm:ss} %t %p %m%n</pattern>
-        </encoder>
-    </appender>
     <appender name="state" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>logs/logback/state_%d{yyyy-M-d}.log</FileNamePattern>
@@ -119,12 +101,6 @@
     </logger>
     <logger name="wsg.lol.dao.mybatis" level="debug" additivity="false">
         <appender-ref ref="mybatis"/>
-    </logger>
-    <logger name="org.springframework.data.mongodb.core" level="DEBUG">
-        <appender-ref ref="mongo"/>
-    </logger>
-    <logger name="wsg.lol.dao.redis" level="debug" additivity="false">
-        <appender-ref ref="redis"/>
     </logger>
     <logger name="wsg.lol.dao.state" level="debug" additivity="false">
         <appender-ref ref="state"/>
