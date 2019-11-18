@@ -13,6 +13,4 @@ import wsg.lol.dao.mybatis.common.StaticStrategy;
 @Repository
 @Mapper
 public interface ChampionSpellMapper extends StaticStrategy<ChampionSpellDto> {
-
-    ChampionSpellDto selectByPrimaryKey(String id);
 }

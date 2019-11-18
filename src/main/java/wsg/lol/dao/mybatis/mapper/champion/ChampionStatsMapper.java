@@ -13,6 +13,4 @@ import wsg.lol.dao.mybatis.common.StaticStrategy;
 @Repository
 @Mapper
 public interface ChampionStatsMapper extends StaticStrategy<ChampionStatsDto> {
-
-    ChampionStatsDto selectByPrimaryKey(String id);
 }

@@ -13,6 +13,4 @@ import wsg.lol.dao.mybatis.common.StaticStrategy;
 @Repository
 @Mapper
 public interface ItemMapper extends StaticStrategy<ItemDto> {
-
-    ItemDto selectByPrimaryKey(Integer id);
 }

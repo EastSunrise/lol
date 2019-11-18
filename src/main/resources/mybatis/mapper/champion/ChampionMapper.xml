@@ -1,37 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wsg.lol.dao.mybatis.mapper.champion.ChampionMapper">
-    <resultMap id="BaseResultMap" type="wsg.lol.common.pojo.dto.champion.ChampionDto">
-        <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="key" jdbcType="INTEGER" property="key"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="title" jdbcType="VARCHAR" property="title"/>
-        <result column="lore" jdbcType="VARCHAR" property="lore"/>
-        <result column="blurb" jdbcType="VARCHAR" property="blurb"/>
-        <result column="tags" jdbcType="VARCHAR" property="tags"/>
-        <result column="partype" jdbcType="VARCHAR" property="partype"/>
-        <result column="info_attack" jdbcType="INTEGER" property="infoAttack"/>
-        <result column="info_defense" jdbcType="INTEGER" property="infoDefense"/>
-        <result column="info_magic" jdbcType="INTEGER" property="infoMagic"/>
-        <result column="info_difficulty" jdbcType="INTEGER" property="infoDifficulty"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        id, key, name, title, lore, blurb, tags, partype, info_attack, info_defense, info_magic,
-    info_difficulty
-    </sql>
-
-    <!--  clear the table-->
     <delete id="clear">
         delete
         from lol.c_champion
     </delete>
-
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from lol.c_champion
-        where id = #{id}
-    </select>
 
     <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.champion.ChampionDto">
         insert into lol.c_champion values

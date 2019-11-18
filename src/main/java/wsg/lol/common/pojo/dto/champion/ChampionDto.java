@@ -1,20 +1,17 @@
 package wsg.lol.common.pojo.dto.champion;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.alibaba.fastjson.parser.deserializer.PropertyProcessable;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.base.IJson;
 import wsg.lol.common.base.Persistable;
 import wsg.lol.common.enums.champion.ChampionTagEnum;
-
-import java.lang.reflect.Type;
 
 /**
  * wsg
  *
  * @author EastSunrise
  */
-public class ChampionDto extends BaseDto implements IJson, Persistable, PropertyProcessable {
+public class ChampionDto extends BaseDto implements IJson, Persistable {
 
     @JSONField(name = "key")
     private Integer id;
@@ -29,21 +26,11 @@ public class ChampionDto extends BaseDto implements IJson, Persistable, Property
     private String partype;
     private ChampionTagEnum[] tags;
 
-    @JSONField(name = "info['attack']]")
+    // TODO: (Kingen, 2019/11/18)
     private Integer infoAttack;
     private Integer infoDefense;
     private Integer infoMagic;
     private Integer infoDifficulty;
-
-    @Override
-    public Type getType(String name) {
-        return null;
-    }
-
-    @Override
-    public void apply(String name, Object value) {
-
-    }
 
     public Integer getId() {
         return id;

@@ -13,5 +13,4 @@ import wsg.lol.dao.mybatis.common.StaticStrategy;
 @Repository
 @Mapper
 public interface RuneTreeMapper extends StaticStrategy<RuneTreeDto> {
-    RuneTreeDto selectByPrimaryKey(Integer id);
 }

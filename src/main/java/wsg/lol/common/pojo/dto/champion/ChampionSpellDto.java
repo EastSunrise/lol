@@ -17,31 +17,24 @@ public class ChampionSpellDto {
     private String description;
     private Integer maxrank;
     private String tooltip;
+    // TODO: (Kingen, 2019/11/18)
     private List<String> leveltipLabel;
     private List<String> leveltipEffect;
-    private String cooldown;
+    private Double[] cooldown;
     private String cooldownBurn;
-    private String cost;
+    private Integer[] cost;
     private String costBurn;
-    private String range;
+    private Integer[] range;
     private String rangeBurn;
-    private String datavalues;
-    private String effect;
-    private String effectBurn;
-    private String vars;
+    private String datavalues;// TODO: (Kingen, 2019/11/18) all are '{}'
+    private Integer[][] effect;
+    private String[] effectBurn;
+    private List<SpellVarDto> vars;
     private String costType;
-    private String maxammo;
+    private Integer maxammo;
     private String resource;
 
     private ImageDto image;
-
-    public ImageDto getImage() {
-        return image;
-    }
-
-    public void setImage(ImageDto image) {
-        this.image = image;
-    }
 
     public String getId() {
         return id;
@@ -115,11 +108,11 @@ public class ChampionSpellDto {
         this.leveltipEffect = leveltipEffect;
     }
 
-    public String getCooldown() {
+    public Double[] getCooldown() {
         return cooldown;
     }
 
-    public void setCooldown(String cooldown) {
+    public void setCooldown(Double[] cooldown) {
         this.cooldown = cooldown;
     }
 
@@ -131,11 +124,11 @@ public class ChampionSpellDto {
         this.cooldownBurn = cooldownBurn;
     }
 
-    public String getCost() {
+    public Integer[] getCost() {
         return cost;
     }
 
-    public void setCost(String cost) {
+    public void setCost(Integer[] cost) {
         this.cost = cost;
     }
 
@@ -147,11 +140,11 @@ public class ChampionSpellDto {
         this.costBurn = costBurn;
     }
 
-    public String getRange() {
+    public Integer[] getRange() {
         return range;
     }
 
-    public void setRange(String range) {
+    public void setRange(Integer[] range) {
         this.range = range;
     }
 
@@ -171,27 +164,27 @@ public class ChampionSpellDto {
         this.datavalues = datavalues;
     }
 
-    public String getEffect() {
+    public Integer[][] getEffect() {
         return effect;
     }
 
-    public void setEffect(String effect) {
+    public void setEffect(Integer[][] effect) {
         this.effect = effect;
     }
 
-    public String getEffectBurn() {
+    public String[] getEffectBurn() {
         return effectBurn;
     }
 
-    public void setEffectBurn(String effectBurn) {
+    public void setEffectBurn(String[] effectBurn) {
         this.effectBurn = effectBurn;
     }
 
-    public String getVars() {
+    public List<SpellVarDto> getVars() {
         return vars;
     }
 
-    public void setVars(String vars) {
+    public void setVars(List<SpellVarDto> vars) {
         this.vars = vars;
     }
 
@@ -203,11 +196,11 @@ public class ChampionSpellDto {
         this.costType = costType;
     }
 
-    public String getMaxammo() {
+    public Integer getMaxammo() {
         return maxammo;
     }
 
-    public void setMaxammo(String maxammo) {
+    public void setMaxammo(Integer maxammo) {
         this.maxammo = maxammo;
     }
 
@@ -219,8 +212,48 @@ public class ChampionSpellDto {
         this.resource = resource;
     }
 
+    public ImageDto getImage() {
+        return image;
+    }
+
+    public void setImage(ImageDto image) {
+        this.image = image;
+    }
+
     @Override
     public int hashCode() {
         return this.getId().hashCode();
+    }
+
+    static class SpellVarDto {
+        private String link;
+
+        //        @JSONField(deserializeUsing = CoeffDeserializer.class)
+        private List<Double> coeff;
+        private String key;
+
+        public String getLink() {
+            return link;
+        }
+
+        public void setLink(String link) {
+            this.link = link;
+        }
+
+        public List<Double> getCoeff() {
+            return coeff;
+        }
+
+        public void setCoeff(List<Double> coeff) {
+            this.coeff = coeff;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
     }
 }

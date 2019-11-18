@@ -73,8 +73,9 @@ public class VersionTask implements ApplicationRunner {
                 AssertUtils.isSuccess(versionService.updateItems(version));
                 AssertUtils.isSuccess(versionService.updateMaps(version));
                 AssertUtils.isSuccess(versionService.updateRunes(version));
-//                AssertUtils.isSuccess(versionService.updateSummonerSpells(version));
-                AssertUtils.isSuccess(versionService.updateVersion(version));
+                // TODO: (Kingen, 2019/11/19)
+                // AssertUtils.isSuccess(versionService.updateSummonerSpells(version));
+                // AssertUtils.isSuccess(versionService.updateVersion(version));
                 return ResultUtils.success();
             });
         } catch (AppException e) {

@@ -1,31 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wsg.lol.dao.mybatis.mapper.system.ImageMapper">
-    <resultMap id="BaseResultMap" type="wsg.lol.common.pojo.dto.general.ImageDto">
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="related_id" jdbcType="VARCHAR" property="relatedId"/>
-        <result column="full" jdbcType="VARCHAR" property="full"/>
-        <result column="sprite" jdbcType="VARCHAR" property="sprite"/>
-        <result column="group" jdbcType="TINYINT" property="group"/>
-        <result column="x" jdbcType="INTEGER" property="x"/>
-        <result column="y" jdbcType="INTEGER" property="y"/>
-        <result column="w" jdbcType="INTEGER" property="w"/>
-        <result column="h" jdbcType="INTEGER" property="h"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        id, related_id, full, sprite, group, x, y, w, h
-    </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from t_image
-        where id = #{id,jdbcType=INTEGER}
-    </select>
     <delete id="deleteByGroup" parameterType="wsg.lol.common.enums.champion.ImageGroupEnum">
         delete
         from lol.t_image t
         where t.`group` = #{group}
     </delete>
+
     <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.general.ImageDto" useGeneratedKeys="true">
         insert into lol.t_image(related_id, full, sprite, `group`, x, y, w, h)
         values

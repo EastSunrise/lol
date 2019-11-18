@@ -1,36 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wsg.lol.dao.mybatis.mapper.item.ItemMapper">
-    <resultMap id="BaseResultMap" type="wsg.lol.common.pojo.dto.item.ItemDto">
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="colloq" jdbcType="VARCHAR" property="colloq"/>
-        <result column="plaintext" jdbcType="VARCHAR" property="plaintext"/>
-        <result column="from" jdbcType="VARCHAR" property="from"/>
-        <result column="into" jdbcType="VARCHAR" property="into"/>
-        <result column="gold_base" jdbcType="INTEGER" property="goldBase"/>
-        <result column="gold_purchasable" jdbcType="TINYINT" property="goldPurchasable"/>
-        <result column="gold_total" jdbcType="INTEGER" property="goldTotal"/>
-        <result column="gold_sell" jdbcType="INTEGER" property="goldSell"/>
-        <result column="tags" jdbcType="VARCHAR" property="tags"/>
-        <result column="map" jdbcType="VARCHAR" property="map"/>
-        <result column="depth" jdbcType="INTEGER" property="depth"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        id, name, description, colloq, plaintext, from, into, gold_base, gold_purchasable,
-    gold_total, gold_sell, tags, map, depth
-    </sql>
     <delete id="clear">
         delete
         from lol.i_item
     </delete>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from i_item
-        where id = #{id,jdbcType=INTEGER}
-    </select>
 
     <insert id="batchInsert">
         insert into lol.i_item

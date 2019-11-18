@@ -1,6 +1,7 @@
 package wsg.lol.common.pojo.dto.champion;
 
 import wsg.lol.common.pojo.dto.general.ImageDto;
+import wsg.lol.common.pojo.dto.recommend.RecommendedDto;
 
 import java.util.List;
 

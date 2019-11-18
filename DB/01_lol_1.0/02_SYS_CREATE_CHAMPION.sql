@@ -67,7 +67,6 @@ create table lol.c_spell
     num             tinyint       not null comment '技能位. Ref. SpellNumEnum',
     description     varchar(512)  not null comment '描述',
     maxrank         int           null comment '最高等级',
-    level_tips      varchar(512)  null comment '等级提示',
     tooltip         varchar(1024) null comment '工具提示',
     leveltip_label  varchar(256)  null comment '升级提示标签数组，逗号分隔',
     leveltip_effect varchar(1024) null comment '升级数值算式数组，逗号分隔',

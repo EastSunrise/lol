@@ -15,9 +15,6 @@ import java.util.List;
 @Repository
 @Mapper
 public interface ImageMapper {
-
-    ImageDto selectByPrimaryKey(Integer id);
-
     int deleteByGroup(ImageGroupEnum group);
 
     int batchInsert(List<ImageDto> imageDtoList);

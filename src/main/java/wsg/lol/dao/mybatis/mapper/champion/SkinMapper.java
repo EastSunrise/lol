@@ -13,6 +13,4 @@ import wsg.lol.dao.mybatis.common.StaticStrategy;
 @Repository
 @Mapper
 public interface SkinMapper extends StaticStrategy<SkinDto> {
-
-    SkinDto selectByPrimaryKey(String id);
 }
