@@ -1,13 +1,16 @@
 package wsg.lol.common.pojo.dmo.summoner;
 
 
-import wsg.lol.common.pojo.base.BaseDmo;
-import wsg.lol.common.pojo.base.Persistable;
+import wsg.lol.common.base.BaseDmo;
+import wsg.lol.common.base.Persistable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
+/**
+ * // TODO: (Kingen, 2019/11/18)
+ */
 @Table(name = "s_summoner")
 public class SummonerDmo extends BaseDmo implements Persistable {
 

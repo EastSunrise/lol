@@ -1,6 +1,6 @@
 package wsg.lol.common.pojo.dto.share;
 
-import wsg.lol.common.pojo.base.BaseDto;
+import wsg.lol.common.base.BaseDto;
 
 import java.util.List;
 

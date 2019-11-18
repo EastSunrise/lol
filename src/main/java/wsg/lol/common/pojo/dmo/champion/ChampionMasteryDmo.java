@@ -1,8 +1,8 @@
 package wsg.lol.common.pojo.dmo.champion;
 
 import tk.mybatis.mapper.annotation.KeySql;
-import wsg.lol.common.pojo.base.BaseDmo;
-import wsg.lol.common.pojo.base.Persistable;
+import wsg.lol.common.base.BaseDmo;
+import wsg.lol.common.base.Persistable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;

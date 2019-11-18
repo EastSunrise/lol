@@ -1,12 +1,10 @@
 package wsg.lol.common.enums.route;
 
 /**
- * 地区地址枚举
+ * Enums for routes of regions.
  *
- * @author EastSunrise
- * @date 2019/11/7
+ * @author Kingen
  * @see <a href="https://developer.riotgames.com/docs/lol#_routing-values">Routing Values</a>
- * @since 1.0
  */
 public enum RegionalRoutingEnum {
     AMERICAS("americas.api.riotgames.com"),

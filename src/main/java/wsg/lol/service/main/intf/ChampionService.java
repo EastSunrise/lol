@@ -1,7 +1,7 @@
 package wsg.lol.service.main.intf;
 
+import wsg.lol.common.base.Result;
 import wsg.lol.common.pojo.dto.champion.ChampionDto;
-import wsg.lol.common.result.base.Result;
 
 import java.util.List;
 

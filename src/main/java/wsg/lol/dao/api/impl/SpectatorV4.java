@@ -1,7 +1,6 @@
 package wsg.lol.dao.api.impl;
 
 import org.springframework.stereotype.Component;
-import wsg.lol.common.annotation.AccessApi;
 import wsg.lol.common.pojo.dto.spectator.CurrentGameInfo;
 import wsg.lol.common.pojo.dto.spectator.FeaturedGames;
 import wsg.lol.dao.api.client.BaseApi;
@@ -10,11 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author EastSunrise
+ * @author Kingen
  * @see <a href="https://developer.riotgames.com/apis#spectator-v4">SPECTATOR-V4</a>
  */
 @Component
-@AccessApi
 public class SpectatorV4 extends BaseApi {
 
     /**

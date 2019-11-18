@@ -1,6 +1,6 @@
 package wsg.lol.common.pojo.dto.item;
 
-import wsg.lol.common.pojo.base.BaseDto;
+import wsg.lol.common.base.BaseDto;
 
 /**
  * wsg
@@ -11,71 +11,71 @@ public class ItemStatsDto extends BaseDto {
 
     private Integer itemId;
 
-    private int FlatHPPoolMod;
-    private int rFlatHPModPerLevel;
-    private int FlatMPPoolMod;
-    private int rFlatMPModPerLevel;
-    private int PercentHPPoolMod;
-    private int PercentMPPoolMod;
-    private int FlatHPRegenMod;
-    private int rFlatHPRegenModPerLevel;
-    private int PercentHPRegenMod;
-    private int FlatMPRegenMod;
-    private int rFlatMPRegenModPerLevel;
-    private int PercentMPRegenMod;
-    private int FlatArmorMod;
-    private int rFlatArmorModPerLevel;
-    private int PercentArmorMod;
-    private int rFlatArmorPenetrationMod;
-    private int rFlatArmorPenetrationModPerLevel;
-    private int rPercentArmorPenetrationMod;
-    private int rPercentArmorPenetrationModPerLevel;
-    private int FlatPhysicalDamageMod;
-    private int rFlatPhysicalDamageModPerLevel;
-    private int PercentPhysicalDamageMod;
-    private int FlatMagicDamageMod;
-    private int rFlatMagicDamageModPerLevel;
-    private int PercentMagicDamageMod;
-    private int FlatMovementSpeedMod;
-    private int rFlatMovementSpeedModPerLevel;
-    private int PercentMovementSpeedMod;
-    private int rPercentMovementSpeedModPerLevel;
-    private int FlatAttackSpeedMod;
-    private int PercentAttackSpeedMod;
-    private int rPercentAttackSpeedModPerLevel;
-    private int rFlatDodgeMod;
-    private int rFlatDodgeModPerLevel;
-    private int PercentDodgeMod;
-    private int FlatCritChanceMod;
-    private int rFlatCritChanceModPerLevel;
-    private int PercentCritChanceMod;
-    private int FlatCritDamageMod;
-    private int rFlatCritDamageModPerLevel;
-    private int PercentCritDamageMod;
-    private int FlatBlockMod;
-    private int PercentBlockMod;
-    private int FlatSpellBlockMod;
-    private int rFlatSpellBlockModPerLevel;
-    private int PercentSpellBlockMod;
-    private int FlatEXPBonus;
-    private int PercentEXPBonus;
-    private int rPercentCooldownMod;
-    private int rPercentCooldownModPerLevel;
-    private int rFlatTimeDeadMod;
-    private int rFlatTimeDeadModPerLevel;
-    private int rPercentTimeDeadMod;
-    private int rPercentTimeDeadModPerLevel;
-    private int rFlatGoldPer10Mod;
-    private int rFlatMagicPenetrationMod;
-    private int rFlatMagicPenetrationModPerLevel;
-    private int rPercentMagicPenetrationMod;
-    private int rPercentMagicPenetrationModPerLevel;
-    private int FlatEnergyRegenMod;
-    private int rFlatEnergyRegenModPerLevel;
-    private int FlatEnergyPoolMod;
-    private int rFlatEnergyModPerLevel;
-    private int PercentLifeStealMod;
-    private int PercentSpellVampMod;
+    private Integer FlatHPPoolMod;
+    private Integer rFlatHPModPerLevel;
+    private Integer FlatMPPoolMod;
+    private Integer rFlatMPModPerLevel;
+    private Integer PercentHPPoolMod;
+    private Integer PercentMPPoolMod;
+    private Integer FlatHPRegenMod;
+    private Integer rFlatHPRegenModPerLevel;
+    private Integer PercentHPRegenMod;
+    private Integer FlatMPRegenMod;
+    private Integer rFlatMPRegenModPerLevel;
+    private Integer PercentMPRegenMod;
+    private Integer FlatArmorMod;
+    private Integer rFlatArmorModPerLevel;
+    private Integer PercentArmorMod;
+    private Integer rFlatArmorPenetrationMod;
+    private Integer rFlatArmorPenetrationModPerLevel;
+    private Integer rPercentArmorPenetrationMod;
+    private Integer rPercentArmorPenetrationModPerLevel;
+    private Integer FlatPhysicalDamageMod;
+    private Integer rFlatPhysicalDamageModPerLevel;
+    private Integer PercentPhysicalDamageMod;
+    private Integer FlatMagicDamageMod;
+    private Integer rFlatMagicDamageModPerLevel;
+    private Integer PercentMagicDamageMod;
+    private Integer FlatMovementSpeedMod;
+    private Integer rFlatMovementSpeedModPerLevel;
+    private Integer PercentMovementSpeedMod;
+    private Integer rPercentMovementSpeedModPerLevel;
+    private Integer FlatAttackSpeedMod;
+    private Integer PercentAttackSpeedMod;
+    private Integer rPercentAttackSpeedModPerLevel;
+    private Integer rFlatDodgeMod;
+    private Integer rFlatDodgeModPerLevel;
+    private Integer PercentDodgeMod;
+    private Integer FlatCritChanceMod;
+    private Integer rFlatCritChanceModPerLevel;
+    private Integer PercentCritChanceMod;
+    private Integer FlatCritDamageMod;
+    private Integer rFlatCritDamageModPerLevel;
+    private Integer PercentCritDamageMod;
+    private Integer FlatBlockMod;
+    private Integer PercentBlockMod;
+    private Integer FlatSpellBlockMod;
+    private Integer rFlatSpellBlockModPerLevel;
+    private Integer PercentSpellBlockMod;
+    private Integer FlatEXPBonus;
+    private Integer PercentEXPBonus;
+    private Integer rPercentCooldownMod;
+    private Integer rPercentCooldownModPerLevel;
+    private Integer rFlatTimeDeadMod;
+    private Integer rFlatTimeDeadModPerLevel;
+    private Integer rPercentTimeDeadMod;
+    private Integer rPercentTimeDeadModPerLevel;
+    private Integer rFlatGoldPer10Mod;
+    private Integer rFlatMagicPenetrationMod;
+    private Integer rFlatMagicPenetrationModPerLevel;
+    private Integer rPercentMagicPenetrationMod;
+    private Integer rPercentMagicPenetrationModPerLevel;
+    private Integer FlatEnergyRegenMod;
+    private Integer rFlatEnergyRegenModPerLevel;
+    private Integer FlatEnergyPoolMod;
+    private Integer rFlatEnergyModPerLevel;
+    private Integer PercentLifeStealMod;
+    private Integer PercentSpellVampMod;
 
     public Integer getItemId() {
         return itemId;
@@ -85,523 +85,523 @@ public class ItemStatsDto extends BaseDto {
         this.itemId = itemId;
     }
 
-    public int getFlatHPPoolMod() {
+    public Integer getFlatHPPoolMod() {
         return FlatHPPoolMod;
     }
 
-    public void setFlatHPPoolMod(int FlatHPPoolMod) {
+    public void setFlatHPPoolMod(Integer FlatHPPoolMod) {
         this.FlatHPPoolMod = FlatHPPoolMod;
     }
 
-    public int getRFlatHPModPerLevel() {
+    public Integer getRFlatHPModPerLevel() {
         return rFlatHPModPerLevel;
     }
 
-    public void setRFlatHPModPerLevel(int rFlatHPModPerLevel) {
+    public void setRFlatHPModPerLevel(Integer rFlatHPModPerLevel) {
         this.rFlatHPModPerLevel = rFlatHPModPerLevel;
     }
 
-    public int getFlatMPPoolMod() {
+    public Integer getFlatMPPoolMod() {
         return FlatMPPoolMod;
     }
 
-    public void setFlatMPPoolMod(int FlatMPPoolMod) {
+    public void setFlatMPPoolMod(Integer FlatMPPoolMod) {
         this.FlatMPPoolMod = FlatMPPoolMod;
     }
 
-    public int getRFlatMPModPerLevel() {
+    public Integer getRFlatMPModPerLevel() {
         return rFlatMPModPerLevel;
     }
 
-    public void setRFlatMPModPerLevel(int rFlatMPModPerLevel) {
+    public void setRFlatMPModPerLevel(Integer rFlatMPModPerLevel) {
         this.rFlatMPModPerLevel = rFlatMPModPerLevel;
     }
 
-    public int getPercentHPPoolMod() {
+    public Integer getPercentHPPoolMod() {
         return PercentHPPoolMod;
     }
 
-    public void setPercentHPPoolMod(int PercentHPPoolMod) {
+    public void setPercentHPPoolMod(Integer PercentHPPoolMod) {
         this.PercentHPPoolMod = PercentHPPoolMod;
     }
 
-    public int getPercentMPPoolMod() {
+    public Integer getPercentMPPoolMod() {
         return PercentMPPoolMod;
     }
 
-    public void setPercentMPPoolMod(int PercentMPPoolMod) {
+    public void setPercentMPPoolMod(Integer PercentMPPoolMod) {
         this.PercentMPPoolMod = PercentMPPoolMod;
     }
 
-    public int getFlatHPRegenMod() {
+    public Integer getFlatHPRegenMod() {
         return FlatHPRegenMod;
     }
 
-    public void setFlatHPRegenMod(int FlatHPRegenMod) {
+    public void setFlatHPRegenMod(Integer FlatHPRegenMod) {
         this.FlatHPRegenMod = FlatHPRegenMod;
     }
 
-    public int getRFlatHPRegenModPerLevel() {
+    public Integer getRFlatHPRegenModPerLevel() {
         return rFlatHPRegenModPerLevel;
     }
 
-    public void setRFlatHPRegenModPerLevel(int rFlatHPRegenModPerLevel) {
+    public void setRFlatHPRegenModPerLevel(Integer rFlatHPRegenModPerLevel) {
         this.rFlatHPRegenModPerLevel = rFlatHPRegenModPerLevel;
     }
 
-    public int getPercentHPRegenMod() {
+    public Integer getPercentHPRegenMod() {
         return PercentHPRegenMod;
     }
 
-    public void setPercentHPRegenMod(int PercentHPRegenMod) {
+    public void setPercentHPRegenMod(Integer PercentHPRegenMod) {
         this.PercentHPRegenMod = PercentHPRegenMod;
     }
 
-    public int getFlatMPRegenMod() {
+    public Integer getFlatMPRegenMod() {
         return FlatMPRegenMod;
     }
 
-    public void setFlatMPRegenMod(int FlatMPRegenMod) {
+    public void setFlatMPRegenMod(Integer FlatMPRegenMod) {
         this.FlatMPRegenMod = FlatMPRegenMod;
     }
 
-    public int getRFlatMPRegenModPerLevel() {
+    public Integer getRFlatMPRegenModPerLevel() {
         return rFlatMPRegenModPerLevel;
     }
 
-    public void setRFlatMPRegenModPerLevel(int rFlatMPRegenModPerLevel) {
+    public void setRFlatMPRegenModPerLevel(Integer rFlatMPRegenModPerLevel) {
         this.rFlatMPRegenModPerLevel = rFlatMPRegenModPerLevel;
     }
 
-    public int getPercentMPRegenMod() {
+    public Integer getPercentMPRegenMod() {
         return PercentMPRegenMod;
     }
 
-    public void setPercentMPRegenMod(int PercentMPRegenMod) {
+    public void setPercentMPRegenMod(Integer PercentMPRegenMod) {
         this.PercentMPRegenMod = PercentMPRegenMod;
     }
 
-    public int getFlatArmorMod() {
+    public Integer getFlatArmorMod() {
         return FlatArmorMod;
     }
 
-    public void setFlatArmorMod(int FlatArmorMod) {
+    public void setFlatArmorMod(Integer FlatArmorMod) {
         this.FlatArmorMod = FlatArmorMod;
     }
 
-    public int getRFlatArmorModPerLevel() {
+    public Integer getRFlatArmorModPerLevel() {
         return rFlatArmorModPerLevel;
     }
 
-    public void setRFlatArmorModPerLevel(int rFlatArmorModPerLevel) {
+    public void setRFlatArmorModPerLevel(Integer rFlatArmorModPerLevel) {
         this.rFlatArmorModPerLevel = rFlatArmorModPerLevel;
     }
 
-    public int getPercentArmorMod() {
+    public Integer getPercentArmorMod() {
         return PercentArmorMod;
     }
 
-    public void setPercentArmorMod(int PercentArmorMod) {
+    public void setPercentArmorMod(Integer PercentArmorMod) {
         this.PercentArmorMod = PercentArmorMod;
     }
 
-    public int getRFlatArmorPenetrationMod() {
+    public Integer getRFlatArmorPenetrationMod() {
         return rFlatArmorPenetrationMod;
     }
 
-    public void setRFlatArmorPenetrationMod(int rFlatArmorPenetrationMod) {
+    public void setRFlatArmorPenetrationMod(Integer rFlatArmorPenetrationMod) {
         this.rFlatArmorPenetrationMod = rFlatArmorPenetrationMod;
     }
 
-    public int getRFlatArmorPenetrationModPerLevel() {
+    public Integer getRFlatArmorPenetrationModPerLevel() {
         return rFlatArmorPenetrationModPerLevel;
     }
 
-    public void setRFlatArmorPenetrationModPerLevel(int rFlatArmorPenetrationModPerLevel) {
+    public void setRFlatArmorPenetrationModPerLevel(Integer rFlatArmorPenetrationModPerLevel) {
         this.rFlatArmorPenetrationModPerLevel = rFlatArmorPenetrationModPerLevel;
     }
 
-    public int getRPercentArmorPenetrationMod() {
+    public Integer getRPercentArmorPenetrationMod() {
         return rPercentArmorPenetrationMod;
     }
 
-    public void setRPercentArmorPenetrationMod(int rPercentArmorPenetrationMod) {
+    public void setRPercentArmorPenetrationMod(Integer rPercentArmorPenetrationMod) {
         this.rPercentArmorPenetrationMod = rPercentArmorPenetrationMod;
     }
 
-    public int getRPercentArmorPenetrationModPerLevel() {
+    public Integer getRPercentArmorPenetrationModPerLevel() {
         return rPercentArmorPenetrationModPerLevel;
     }
 
-    public void setRPercentArmorPenetrationModPerLevel(int rPercentArmorPenetrationModPerLevel) {
+    public void setRPercentArmorPenetrationModPerLevel(Integer rPercentArmorPenetrationModPerLevel) {
         this.rPercentArmorPenetrationModPerLevel = rPercentArmorPenetrationModPerLevel;
     }
 
-    public int getFlatPhysicalDamageMod() {
+    public Integer getFlatPhysicalDamageMod() {
         return FlatPhysicalDamageMod;
     }
 
-    public void setFlatPhysicalDamageMod(int FlatPhysicalDamageMod) {
+    public void setFlatPhysicalDamageMod(Integer FlatPhysicalDamageMod) {
         this.FlatPhysicalDamageMod = FlatPhysicalDamageMod;
     }
 
-    public int getRFlatPhysicalDamageModPerLevel() {
+    public Integer getRFlatPhysicalDamageModPerLevel() {
         return rFlatPhysicalDamageModPerLevel;
     }
 
-    public void setRFlatPhysicalDamageModPerLevel(int rFlatPhysicalDamageModPerLevel) {
+    public void setRFlatPhysicalDamageModPerLevel(Integer rFlatPhysicalDamageModPerLevel) {
         this.rFlatPhysicalDamageModPerLevel = rFlatPhysicalDamageModPerLevel;
     }
 
-    public int getPercentPhysicalDamageMod() {
+    public Integer getPercentPhysicalDamageMod() {
         return PercentPhysicalDamageMod;
     }
 
-    public void setPercentPhysicalDamageMod(int PercentPhysicalDamageMod) {
+    public void setPercentPhysicalDamageMod(Integer PercentPhysicalDamageMod) {
         this.PercentPhysicalDamageMod = PercentPhysicalDamageMod;
     }
 
-    public int getFlatMagicDamageMod() {
+    public Integer getFlatMagicDamageMod() {
         return FlatMagicDamageMod;
     }
 
-    public void setFlatMagicDamageMod(int FlatMagicDamageMod) {
+    public void setFlatMagicDamageMod(Integer FlatMagicDamageMod) {
         this.FlatMagicDamageMod = FlatMagicDamageMod;
     }
 
-    public int getRFlatMagicDamageModPerLevel() {
+    public Integer getRFlatMagicDamageModPerLevel() {
         return rFlatMagicDamageModPerLevel;
     }
 
-    public void setRFlatMagicDamageModPerLevel(int rFlatMagicDamageModPerLevel) {
+    public void setRFlatMagicDamageModPerLevel(Integer rFlatMagicDamageModPerLevel) {
         this.rFlatMagicDamageModPerLevel = rFlatMagicDamageModPerLevel;
     }
 
-    public int getPercentMagicDamageMod() {
+    public Integer getPercentMagicDamageMod() {
         return PercentMagicDamageMod;
     }
 
-    public void setPercentMagicDamageMod(int PercentMagicDamageMod) {
+    public void setPercentMagicDamageMod(Integer PercentMagicDamageMod) {
         this.PercentMagicDamageMod = PercentMagicDamageMod;
     }
 
-    public int getFlatMovementSpeedMod() {
+    public Integer getFlatMovementSpeedMod() {
         return FlatMovementSpeedMod;
     }
 
-    public void setFlatMovementSpeedMod(int FlatMovementSpeedMod) {
+    public void setFlatMovementSpeedMod(Integer FlatMovementSpeedMod) {
         this.FlatMovementSpeedMod = FlatMovementSpeedMod;
     }
 
-    public int getRFlatMovementSpeedModPerLevel() {
+    public Integer getRFlatMovementSpeedModPerLevel() {
         return rFlatMovementSpeedModPerLevel;
     }
 
-    public void setRFlatMovementSpeedModPerLevel(int rFlatMovementSpeedModPerLevel) {
+    public void setRFlatMovementSpeedModPerLevel(Integer rFlatMovementSpeedModPerLevel) {
         this.rFlatMovementSpeedModPerLevel = rFlatMovementSpeedModPerLevel;
     }
 
-    public int getPercentMovementSpeedMod() {
+    public Integer getPercentMovementSpeedMod() {
         return PercentMovementSpeedMod;
     }
 
-    public void setPercentMovementSpeedMod(int PercentMovementSpeedMod) {
+    public void setPercentMovementSpeedMod(Integer PercentMovementSpeedMod) {
         this.PercentMovementSpeedMod = PercentMovementSpeedMod;
     }
 
-    public int getRPercentMovementSpeedModPerLevel() {
+    public Integer getRPercentMovementSpeedModPerLevel() {
         return rPercentMovementSpeedModPerLevel;
     }
 
-    public void setRPercentMovementSpeedModPerLevel(int rPercentMovementSpeedModPerLevel) {
+    public void setRPercentMovementSpeedModPerLevel(Integer rPercentMovementSpeedModPerLevel) {
         this.rPercentMovementSpeedModPerLevel = rPercentMovementSpeedModPerLevel;
     }
 
-    public int getFlatAttackSpeedMod() {
+    public Integer getFlatAttackSpeedMod() {
         return FlatAttackSpeedMod;
     }
 
-    public void setFlatAttackSpeedMod(int FlatAttackSpeedMod) {
+    public void setFlatAttackSpeedMod(Integer FlatAttackSpeedMod) {
         this.FlatAttackSpeedMod = FlatAttackSpeedMod;
     }
 
-    public int getPercentAttackSpeedMod() {
+    public Integer getPercentAttackSpeedMod() {
         return PercentAttackSpeedMod;
     }
 
-    public void setPercentAttackSpeedMod(int PercentAttackSpeedMod) {
+    public void setPercentAttackSpeedMod(Integer PercentAttackSpeedMod) {
         this.PercentAttackSpeedMod = PercentAttackSpeedMod;
     }
 
-    public int getRPercentAttackSpeedModPerLevel() {
+    public Integer getRPercentAttackSpeedModPerLevel() {
         return rPercentAttackSpeedModPerLevel;
     }
 
-    public void setRPercentAttackSpeedModPerLevel(int rPercentAttackSpeedModPerLevel) {
+    public void setRPercentAttackSpeedModPerLevel(Integer rPercentAttackSpeedModPerLevel) {
         this.rPercentAttackSpeedModPerLevel = rPercentAttackSpeedModPerLevel;
     }
 
-    public int getRFlatDodgeMod() {
+    public Integer getRFlatDodgeMod() {
         return rFlatDodgeMod;
     }
 
-    public void setRFlatDodgeMod(int rFlatDodgeMod) {
+    public void setRFlatDodgeMod(Integer rFlatDodgeMod) {
         this.rFlatDodgeMod = rFlatDodgeMod;
     }
 
-    public int getRFlatDodgeModPerLevel() {
+    public Integer getRFlatDodgeModPerLevel() {
         return rFlatDodgeModPerLevel;
     }
 
-    public void setRFlatDodgeModPerLevel(int rFlatDodgeModPerLevel) {
+    public void setRFlatDodgeModPerLevel(Integer rFlatDodgeModPerLevel) {
         this.rFlatDodgeModPerLevel = rFlatDodgeModPerLevel;
     }
 
-    public int getPercentDodgeMod() {
+    public Integer getPercentDodgeMod() {
         return PercentDodgeMod;
     }
 
-    public void setPercentDodgeMod(int PercentDodgeMod) {
+    public void setPercentDodgeMod(Integer PercentDodgeMod) {
         this.PercentDodgeMod = PercentDodgeMod;
     }
 
-    public int getFlatCritChanceMod() {
+    public Integer getFlatCritChanceMod() {
         return FlatCritChanceMod;
     }
 
-    public void setFlatCritChanceMod(int FlatCritChanceMod) {
+    public void setFlatCritChanceMod(Integer FlatCritChanceMod) {
         this.FlatCritChanceMod = FlatCritChanceMod;
     }
 
-    public int getRFlatCritChanceModPerLevel() {
+    public Integer getRFlatCritChanceModPerLevel() {
         return rFlatCritChanceModPerLevel;
     }
 
-    public void setRFlatCritChanceModPerLevel(int rFlatCritChanceModPerLevel) {
+    public void setRFlatCritChanceModPerLevel(Integer rFlatCritChanceModPerLevel) {
         this.rFlatCritChanceModPerLevel = rFlatCritChanceModPerLevel;
     }
 
-    public int getPercentCritChanceMod() {
+    public Integer getPercentCritChanceMod() {
         return PercentCritChanceMod;
     }
 
-    public void setPercentCritChanceMod(int PercentCritChanceMod) {
+    public void setPercentCritChanceMod(Integer PercentCritChanceMod) {
         this.PercentCritChanceMod = PercentCritChanceMod;
     }
 
-    public int getFlatCritDamageMod() {
+    public Integer getFlatCritDamageMod() {
         return FlatCritDamageMod;
     }
 
-    public void setFlatCritDamageMod(int FlatCritDamageMod) {
+    public void setFlatCritDamageMod(Integer FlatCritDamageMod) {
         this.FlatCritDamageMod = FlatCritDamageMod;
     }
 
-    public int getRFlatCritDamageModPerLevel() {
+    public Integer getRFlatCritDamageModPerLevel() {
         return rFlatCritDamageModPerLevel;
     }
 
-    public void setRFlatCritDamageModPerLevel(int rFlatCritDamageModPerLevel) {
+    public void setRFlatCritDamageModPerLevel(Integer rFlatCritDamageModPerLevel) {
         this.rFlatCritDamageModPerLevel = rFlatCritDamageModPerLevel;
     }
 
-    public int getPercentCritDamageMod() {
+    public Integer getPercentCritDamageMod() {
         return PercentCritDamageMod;
     }
 
-    public void setPercentCritDamageMod(int PercentCritDamageMod) {
+    public void setPercentCritDamageMod(Integer PercentCritDamageMod) {
         this.PercentCritDamageMod = PercentCritDamageMod;
     }
 
-    public int getFlatBlockMod() {
+    public Integer getFlatBlockMod() {
         return FlatBlockMod;
     }
 
-    public void setFlatBlockMod(int FlatBlockMod) {
+    public void setFlatBlockMod(Integer FlatBlockMod) {
         this.FlatBlockMod = FlatBlockMod;
     }
 
-    public int getPercentBlockMod() {
+    public Integer getPercentBlockMod() {
         return PercentBlockMod;
     }
 
-    public void setPercentBlockMod(int PercentBlockMod) {
+    public void setPercentBlockMod(Integer PercentBlockMod) {
         this.PercentBlockMod = PercentBlockMod;
     }
 
-    public int getFlatSpellBlockMod() {
+    public Integer getFlatSpellBlockMod() {
         return FlatSpellBlockMod;
     }
 
-    public void setFlatSpellBlockMod(int FlatSpellBlockMod) {
+    public void setFlatSpellBlockMod(Integer FlatSpellBlockMod) {
         this.FlatSpellBlockMod = FlatSpellBlockMod;
     }
 
-    public int getRFlatSpellBlockModPerLevel() {
+    public Integer getRFlatSpellBlockModPerLevel() {
         return rFlatSpellBlockModPerLevel;
     }
 
-    public void setRFlatSpellBlockModPerLevel(int rFlatSpellBlockModPerLevel) {
+    public void setRFlatSpellBlockModPerLevel(Integer rFlatSpellBlockModPerLevel) {
         this.rFlatSpellBlockModPerLevel = rFlatSpellBlockModPerLevel;
     }
 
-    public int getPercentSpellBlockMod() {
+    public Integer getPercentSpellBlockMod() {
         return PercentSpellBlockMod;
     }
 
-    public void setPercentSpellBlockMod(int PercentSpellBlockMod) {
+    public void setPercentSpellBlockMod(Integer PercentSpellBlockMod) {
         this.PercentSpellBlockMod = PercentSpellBlockMod;
     }
 
-    public int getFlatEXPBonus() {
+    public Integer getFlatEXPBonus() {
         return FlatEXPBonus;
     }
 
-    public void setFlatEXPBonus(int FlatEXPBonus) {
+    public void setFlatEXPBonus(Integer FlatEXPBonus) {
         this.FlatEXPBonus = FlatEXPBonus;
     }
 
-    public int getPercentEXPBonus() {
+    public Integer getPercentEXPBonus() {
         return PercentEXPBonus;
     }
 
-    public void setPercentEXPBonus(int PercentEXPBonus) {
+    public void setPercentEXPBonus(Integer PercentEXPBonus) {
         this.PercentEXPBonus = PercentEXPBonus;
     }
 
-    public int getRPercentCooldownMod() {
+    public Integer getRPercentCooldownMod() {
         return rPercentCooldownMod;
     }
 
-    public void setRPercentCooldownMod(int rPercentCooldownMod) {
+    public void setRPercentCooldownMod(Integer rPercentCooldownMod) {
         this.rPercentCooldownMod = rPercentCooldownMod;
     }
 
-    public int getRPercentCooldownModPerLevel() {
+    public Integer getRPercentCooldownModPerLevel() {
         return rPercentCooldownModPerLevel;
     }
 
-    public void setRPercentCooldownModPerLevel(int rPercentCooldownModPerLevel) {
+    public void setRPercentCooldownModPerLevel(Integer rPercentCooldownModPerLevel) {
         this.rPercentCooldownModPerLevel = rPercentCooldownModPerLevel;
     }
 
-    public int getRFlatTimeDeadMod() {
+    public Integer getRFlatTimeDeadMod() {
         return rFlatTimeDeadMod;
     }
 
-    public void setRFlatTimeDeadMod(int rFlatTimeDeadMod) {
+    public void setRFlatTimeDeadMod(Integer rFlatTimeDeadMod) {
         this.rFlatTimeDeadMod = rFlatTimeDeadMod;
     }
 
-    public int getRFlatTimeDeadModPerLevel() {
+    public Integer getRFlatTimeDeadModPerLevel() {
         return rFlatTimeDeadModPerLevel;
     }
 
-    public void setRFlatTimeDeadModPerLevel(int rFlatTimeDeadModPerLevel) {
+    public void setRFlatTimeDeadModPerLevel(Integer rFlatTimeDeadModPerLevel) {
         this.rFlatTimeDeadModPerLevel = rFlatTimeDeadModPerLevel;
     }
 
-    public int getRPercentTimeDeadMod() {
+    public Integer getRPercentTimeDeadMod() {
         return rPercentTimeDeadMod;
     }
 
-    public void setRPercentTimeDeadMod(int rPercentTimeDeadMod) {
+    public void setRPercentTimeDeadMod(Integer rPercentTimeDeadMod) {
         this.rPercentTimeDeadMod = rPercentTimeDeadMod;
     }
 
-    public int getRPercentTimeDeadModPerLevel() {
+    public Integer getRPercentTimeDeadModPerLevel() {
         return rPercentTimeDeadModPerLevel;
     }
 
-    public void setRPercentTimeDeadModPerLevel(int rPercentTimeDeadModPerLevel) {
+    public void setRPercentTimeDeadModPerLevel(Integer rPercentTimeDeadModPerLevel) {
         this.rPercentTimeDeadModPerLevel = rPercentTimeDeadModPerLevel;
     }
 
-    public int getRFlatGoldPer10Mod() {
+    public Integer getRFlatGoldPer10Mod() {
         return rFlatGoldPer10Mod;
     }
 
-    public void setRFlatGoldPer10Mod(int rFlatGoldPer10Mod) {
+    public void setRFlatGoldPer10Mod(Integer rFlatGoldPer10Mod) {
         this.rFlatGoldPer10Mod = rFlatGoldPer10Mod;
     }
 
-    public int getRFlatMagicPenetrationMod() {
+    public Integer getRFlatMagicPenetrationMod() {
         return rFlatMagicPenetrationMod;
     }
 
-    public void setRFlatMagicPenetrationMod(int rFlatMagicPenetrationMod) {
+    public void setRFlatMagicPenetrationMod(Integer rFlatMagicPenetrationMod) {
         this.rFlatMagicPenetrationMod = rFlatMagicPenetrationMod;
     }
 
-    public int getRFlatMagicPenetrationModPerLevel() {
+    public Integer getRFlatMagicPenetrationModPerLevel() {
         return rFlatMagicPenetrationModPerLevel;
     }
 
-    public void setRFlatMagicPenetrationModPerLevel(int rFlatMagicPenetrationModPerLevel) {
+    public void setRFlatMagicPenetrationModPerLevel(Integer rFlatMagicPenetrationModPerLevel) {
         this.rFlatMagicPenetrationModPerLevel = rFlatMagicPenetrationModPerLevel;
     }
 
-    public int getRPercentMagicPenetrationMod() {
+    public Integer getRPercentMagicPenetrationMod() {
         return rPercentMagicPenetrationMod;
     }
 
-    public void setRPercentMagicPenetrationMod(int rPercentMagicPenetrationMod) {
+    public void setRPercentMagicPenetrationMod(Integer rPercentMagicPenetrationMod) {
         this.rPercentMagicPenetrationMod = rPercentMagicPenetrationMod;
     }
 
-    public int getRPercentMagicPenetrationModPerLevel() {
+    public Integer getRPercentMagicPenetrationModPerLevel() {
         return rPercentMagicPenetrationModPerLevel;
     }
 
-    public void setRPercentMagicPenetrationModPerLevel(int rPercentMagicPenetrationModPerLevel) {
+    public void setRPercentMagicPenetrationModPerLevel(Integer rPercentMagicPenetrationModPerLevel) {
         this.rPercentMagicPenetrationModPerLevel = rPercentMagicPenetrationModPerLevel;
     }
 
-    public int getFlatEnergyRegenMod() {
+    public Integer getFlatEnergyRegenMod() {
         return FlatEnergyRegenMod;
     }
 
-    public void setFlatEnergyRegenMod(int FlatEnergyRegenMod) {
+    public void setFlatEnergyRegenMod(Integer FlatEnergyRegenMod) {
         this.FlatEnergyRegenMod = FlatEnergyRegenMod;
     }
 
-    public int getRFlatEnergyRegenModPerLevel() {
+    public Integer getRFlatEnergyRegenModPerLevel() {
         return rFlatEnergyRegenModPerLevel;
     }
 
-    public void setRFlatEnergyRegenModPerLevel(int rFlatEnergyRegenModPerLevel) {
+    public void setRFlatEnergyRegenModPerLevel(Integer rFlatEnergyRegenModPerLevel) {
         this.rFlatEnergyRegenModPerLevel = rFlatEnergyRegenModPerLevel;
     }
 
-    public int getFlatEnergyPoolMod() {
+    public Integer getFlatEnergyPoolMod() {
         return FlatEnergyPoolMod;
     }
 
-    public void setFlatEnergyPoolMod(int FlatEnergyPoolMod) {
+    public void setFlatEnergyPoolMod(Integer FlatEnergyPoolMod) {
         this.FlatEnergyPoolMod = FlatEnergyPoolMod;
     }
 
-    public int getRFlatEnergyModPerLevel() {
+    public Integer getRFlatEnergyModPerLevel() {
         return rFlatEnergyModPerLevel;
     }
 
-    public void setRFlatEnergyModPerLevel(int rFlatEnergyModPerLevel) {
+    public void setRFlatEnergyModPerLevel(Integer rFlatEnergyModPerLevel) {
         this.rFlatEnergyModPerLevel = rFlatEnergyModPerLevel;
     }
 
-    public int getPercentLifeStealMod() {
+    public Integer getPercentLifeStealMod() {
         return PercentLifeStealMod;
     }
 
-    public void setPercentLifeStealMod(int PercentLifeStealMod) {
+    public void setPercentLifeStealMod(Integer PercentLifeStealMod) {
         this.PercentLifeStealMod = PercentLifeStealMod;
     }
 
-    public int getPercentSpellVampMod() {
+    public Integer getPercentSpellVampMod() {
         return PercentSpellVampMod;
     }
 
-    public void setPercentSpellVampMod(int PercentSpellVampMod) {
+    public void setPercentSpellVampMod(Integer PercentSpellVampMod) {
         this.PercentSpellVampMod = PercentSpellVampMod;
     }
 }

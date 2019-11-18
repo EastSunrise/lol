@@ -1,12 +1,10 @@
 package wsg.lol.common.enums.game;
 
 /**
- * 对局地图枚举类
+ * Enums for maps.
  *
- * @author EastSunrise
- * @date 2019/11/6
+ * @author Kingen
  * @see <a href="http://static.developer.riotgames.com/docs/lol/maps.json">maps.json</a>
- * @since 1.0
  */
 public enum MapEnum {
     SummonersRiftOriginalSummer(1, "Summoner's Rift", "Original Summer variant"),
@@ -36,6 +34,18 @@ public enum MapEnum {
         this.notes = notes;
     }
 
+    /**
+     * Get the enum by the map id.
+     */
+    public static MapEnum map(int mapId) {
+        for (MapEnum value : MapEnum.values()) {
+            if (mapId == value.mapId) {
+                return value;
+            }
+        }
+        throw new IllegalArgumentException("Unknown map enum with mapId " + mapId);
+    }
+
     public int getMapId() {
         return mapId;
     }
@@ -46,14 +56,5 @@ public enum MapEnum {
 
     public String getNotes() {
         return notes;
-    }
-
-    public static MapEnum map(int mapId) {
-        for (MapEnum value : MapEnum.values()) {
-            if (mapId == value.mapId) {
-                return value;
-            }
-        }
-        throw new IllegalArgumentException("Unknown map enum with mapId " + mapId);
     }
 }

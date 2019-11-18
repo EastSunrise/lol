@@ -1,15 +1,16 @@
 package wsg.lol.common.pojo.dto.match;
 
+import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.game.SeasonEnum;
 import wsg.lol.common.enums.rank.MatchLaneEnum;
 import wsg.lol.common.enums.rank.MatchQueueEnum;
 import wsg.lol.common.enums.rank.MatchRoleEnum;
 import wsg.lol.common.enums.route.PlatformEnum;
-import wsg.lol.common.pojo.base.BaseDto;
 
 import java.util.Date;
 
 /**
+ * // TODO: (Kingen, 2019/11/18)
  * @author EastSunrise
  */
 public class MatchReferenceDto extends BaseDto {

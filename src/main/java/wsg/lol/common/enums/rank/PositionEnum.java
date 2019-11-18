@@ -1,6 +1,8 @@
 package wsg.lol.common.enums.rank;
 
 /**
+ * // TODO: (Kingen, 2019/11/18)
+ *
  * @author EastSunrise
  */
 public enum PositionEnum {

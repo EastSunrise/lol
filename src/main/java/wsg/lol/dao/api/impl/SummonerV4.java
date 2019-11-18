@@ -1,7 +1,6 @@
 package wsg.lol.dao.api.impl;
 
 import org.springframework.stereotype.Component;
-import wsg.lol.common.annotation.AccessApi;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 import wsg.lol.dao.api.client.BaseApi;
 
@@ -9,11 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author EastSunrise
+ * @author Kingen
  * @see <a href="https://developer.riotgames.com/apis#summoner-v4">SUMMONER-V4</a>
  */
 @Component
-@AccessApi
 public class SummonerV4 extends BaseApi {
 
     /**

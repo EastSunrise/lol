@@ -1,6 +1,6 @@
 package wsg.lol.common.enums.rank;
 
-import wsg.lol.common.pojo.base.BaseEnum;
+import wsg.lol.common.base.BaseEnum;
 
 /**
  * wsg

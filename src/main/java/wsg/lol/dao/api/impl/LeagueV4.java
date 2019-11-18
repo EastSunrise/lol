@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author EastSunrise
+ * @author Kingen
  * @see <a href="https://developer.riotgames.com/apis#league-v4">LEAGUE-V4</a>
  */
 @Component

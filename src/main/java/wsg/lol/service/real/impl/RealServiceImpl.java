@@ -7,12 +7,13 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+import wsg.lol.common.base.AppException;
+import wsg.lol.common.base.Page;
+import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.rank.DivisionEnum;
 import wsg.lol.common.enums.rank.PositionEnum;
 import wsg.lol.common.enums.rank.RankQueueEnum;
 import wsg.lol.common.enums.rank.TierEnum;
-import wsg.lol.common.pojo.base.AppException;
-import wsg.lol.common.pojo.base.Page;
 import wsg.lol.common.pojo.dmo.champion.ChampionMasteryDmo;
 import wsg.lol.common.pojo.dmo.league.LeaguePositionDmo;
 import wsg.lol.common.pojo.dmo.match.MatchReferenceDmo;
@@ -23,9 +24,8 @@ import wsg.lol.common.pojo.dto.league.LeagueListDto;
 import wsg.lol.common.pojo.dto.match.MatchListDto;
 import wsg.lol.common.pojo.dto.match.MatchReferenceDto;
 import wsg.lol.common.pojo.dto.match.QueryMatchListDto;
-import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
-import wsg.lol.common.result.base.Result;
+import wsg.lol.common.pojo.dto.summoner.SummonerMasteryDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
@@ -151,8 +151,8 @@ public class RealServiceImpl implements RealService {
         }
 
         // update the mastery.
-        List<ChampionMasteryDto> masteryDtoList = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
-        for (ChampionMasteryDto masteryDto : masteryDtoList) {
+        List<SummonerMasteryDto> masteryDtoList = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
+        for (SummonerMasteryDto masteryDto : masteryDtoList) {
             ChampionMasteryDmo masteryDmo = masteryMapper.selectByUnionKey(masteryDto.getSummonerId(),
                     masteryDto.getChampionId());
             if (masteryDmo == null) {

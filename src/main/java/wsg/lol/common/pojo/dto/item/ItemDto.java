@@ -1,13 +1,12 @@
 package wsg.lol.common.pojo.dto.item;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import wsg.lol.common.base.BaseDto;
+import wsg.lol.common.base.IJson;
 import wsg.lol.common.enums.champion.ItemTagEnum;
 import wsg.lol.common.enums.game.MapEnum;
-import wsg.lol.common.pojo.base.BaseDto;
-import wsg.lol.common.pojo.base.IJson;
 import wsg.lol.common.pojo.deserializer.MapsDeserializer;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,30 +16,30 @@ import java.util.Map;
  */
 public class ItemDto extends BaseDto implements IJson {
 
-    private int id;
+    private Integer id;
 
     private String name;
     private String description;
     private String colloq;
     private String plaintext;
-    private List<Integer> from;
-    private List<Integer> into;
-    private int goldBase;
+    private Integer[] from;
+    private Integer[] into;
+    private Integer goldBase;
     private boolean goldPurchasable;
-    private int goldTotal;
-    private int goldSell;
+    private Integer goldTotal;
+    private Integer goldSell;
     private ItemTagEnum[] tags;
 
     @JSONField(deserializeUsing = MapsDeserializer.class)
     private MapEnum[] maps;
-    private int depth;
+    private Integer depth;
     private Map<String, Double> effect;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -76,27 +75,27 @@ public class ItemDto extends BaseDto implements IJson {
         this.plaintext = plaintext;
     }
 
-    public List<Integer> getFrom() {
+    public Integer[] getFrom() {
         return from;
     }
 
-    public void setFrom(List<Integer> from) {
+    public void setFrom(Integer[] from) {
         this.from = from;
     }
 
-    public List<Integer> getInto() {
+    public Integer[] getInto() {
         return into;
     }
 
-    public void setInto(List<Integer> into) {
+    public void setInto(Integer[] into) {
         this.into = into;
     }
 
-    public int getGoldBase() {
+    public Integer getGoldBase() {
         return goldBase;
     }
 
-    public void setGoldBase(int goldBase) {
+    public void setGoldBase(Integer goldBase) {
         this.goldBase = goldBase;
     }
 
@@ -108,19 +107,19 @@ public class ItemDto extends BaseDto implements IJson {
         this.goldPurchasable = goldPurchasable;
     }
 
-    public int getGoldTotal() {
+    public Integer getGoldTotal() {
         return goldTotal;
     }
 
-    public void setGoldTotal(int goldTotal) {
+    public void setGoldTotal(Integer goldTotal) {
         this.goldTotal = goldTotal;
     }
 
-    public int getGoldSell() {
+    public Integer getGoldSell() {
         return goldSell;
     }
 
-    public void setGoldSell(int goldSell) {
+    public void setGoldSell(Integer goldSell) {
         this.goldSell = goldSell;
     }
 
@@ -140,11 +139,11 @@ public class ItemDto extends BaseDto implements IJson {
         this.maps = maps;
     }
 
-    public int getDepth() {
+    public Integer getDepth() {
         return depth;
     }
 
-    public void setDepth(int depth) {
+    public void setDepth(Integer depth) {
         this.depth = depth;
     }
 

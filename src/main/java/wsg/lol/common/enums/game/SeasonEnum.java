@@ -1,12 +1,10 @@
 package wsg.lol.common.enums.game;
 
 /**
- * 赛季枚举
+ * Enums for seasons.
  *
- * @author EastSunrise
- * @date 2019/11/6
+ * @author Kingen
  * @see <a href="http://static.developer.riotgames.com/docs/lol/seasons.json">seasons.json</a>
- * @since 1.0
  */
 public enum SeasonEnum {
     PRESEASON3(0, "PRESEASON 3"),

@@ -1,18 +1,20 @@
 package wsg.lol.common.pojo.dto.champion;
 
-import wsg.lol.common.pojo.base.BaseDto;
-import wsg.lol.common.pojo.base.IJson;
+import wsg.lol.common.base.BaseDto;
+import wsg.lol.common.base.IJson;
 
 import java.util.List;
 
 /**
+ * // TODO: (Kingen, 2019/11/18)
+ *
  * @author EastSunrise
  */
 public class ChampionRotationDto extends BaseDto implements IJson {
 
     private List<Integer> freeChampionIdsForNewPlayers;
     private List<Integer> freeChampionIds;
-    private int maxNewPlayerLevel;
+    private Integer maxNewPlayerLevel;
 
     public List<Integer> getFreeChampionIdsForNewPlayers() {
         return freeChampionIdsForNewPlayers;
@@ -30,11 +32,11 @@ public class ChampionRotationDto extends BaseDto implements IJson {
         this.freeChampionIds = freeChampionIds;
     }
 
-    public int getMaxNewPlayerLevel() {
+    public Integer getMaxNewPlayerLevel() {
         return maxNewPlayerLevel;
     }
 
-    public void setMaxNewPlayerLevel(int maxNewPlayerLevel) {
+    public void setMaxNewPlayerLevel(Integer maxNewPlayerLevel) {
         this.maxNewPlayerLevel = maxNewPlayerLevel;
     }
 }

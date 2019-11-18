@@ -12,6 +12,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Custom handler between the list and the corresponding json string.
+ *
+ * @author Kingen
+ */
 @MappedTypes({
         List.class
 })
@@ -29,7 +34,7 @@ public class ListTypeHandler<T> implements TypeHandler<List<T>> {
         if (!CollectionUtils.isEmpty(ts)) {
             str = JSON.toJSONString(ts);
         }
-        preparedStatement.setObject(index, str, JdbcType.VARCHAR.TYPE_CODE);
+        preparedStatement.setString(index, str);
     }
 
     @Override

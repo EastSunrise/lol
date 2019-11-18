@@ -1,7 +1,7 @@
 package wsg.lol.common.pojo.dto.rune;
 
-import wsg.lol.common.pojo.base.BaseDto;
-import wsg.lol.common.pojo.base.IJson;
+import wsg.lol.common.base.BaseDto;
+import wsg.lol.common.base.IJson;
 
 /**
  * wsg
@@ -10,16 +10,16 @@ import wsg.lol.common.pojo.base.IJson;
  */
 public class RuneTreeDto extends BaseDto implements IJson {
 
-    private int id;
+    private Integer id;
     private String key;
     private String icon;
     private String name;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

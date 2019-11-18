@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import wsg.lol.common.pojo.base.QueryDto;
+import wsg.lol.common.base.QueryDto;
 import wsg.lol.common.util.HttpHelper;
 import wsg.lol.common.util.ThreadUtils;
 
@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * API基类
+ * Base class for api.
  *
- * @author EastSunrise
+ * @author Kingen.
  */
 @Component
 public class BaseApi {
@@ -41,12 +41,12 @@ public class BaseApi {
     private ApiClient apiClient;
 
     /**
-     * get获取单个数据
+     * Get single object.
      *
-     * @param apiRef     接口
-     * @param pathParams URL路径参数
-     * @param queryDto   查询条件
-     * @param clazz      返回数据类型
+     * @param apiRef     the relative url of the api.
+     * @param pathParams params filled in the url
+     * @param queryDto   query bean transferred to params appended at the end of the url.
+     * @param clazz      the type of object parsed from the return.
      */
     protected <Q extends QueryDto, T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Q queryDto, Class<T> clazz) {
         String jsonStr = getJSONString(apiRef, pathParams, queryDto);
@@ -62,12 +62,12 @@ public class BaseApi {
     }
 
     /**
-     * get获取数据列表
+     * Get multiple objects.
      *
-     * @param apiRef     接口
-     * @param pathParams URL路径参数
-     * @param queryDto   查询条件
-     * @param clazz      返回数据类型
+     * @param apiRef     the relative url of the api.
+     * @param pathParams params filled in the url
+     * @param queryDto   query bean transferred to params appended at the end of the url.
+     * @param clazz      the type of the single object parsed from the return.
      */
     protected <Q extends QueryDto, T extends Serializable> List<T> getArray(String apiRef, Map<String, Object> pathParams, Q queryDto, Class<T> clazz) {
         String jsonStr = getJSONString(apiRef, pathParams, queryDto);

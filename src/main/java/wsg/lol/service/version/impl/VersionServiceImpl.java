@@ -7,12 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wsg.lol.common.base.AppException;
+import wsg.lol.common.base.GenericResult;
+import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ConfigConst;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.champion.ChampionTipEnum;
 import wsg.lol.common.enums.champion.ImageGroupEnum;
 import wsg.lol.common.enums.champion.SpellNumEnum;
-import wsg.lol.common.pojo.base.AppException;
 import wsg.lol.common.pojo.dto.champion.*;
 import wsg.lol.common.pojo.dto.general.ImageDto;
 import wsg.lol.common.pojo.dto.item.ItemDto;
@@ -22,14 +24,12 @@ import wsg.lol.common.pojo.dto.others.MapDto;
 import wsg.lol.common.pojo.dto.rune.RuneDto;
 import wsg.lol.common.pojo.dto.rune.RuneExtDto;
 import wsg.lol.common.pojo.dto.rune.RuneTreeDto;
-import wsg.lol.common.result.base.GenericResult;
-import wsg.lol.common.result.base.Result;
 import wsg.lol.common.result.version.VersionResult;
 import wsg.lol.common.util.AssertUtils;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.dao.data.intf.DataDao;
-import wsg.lol.dao.data.intf.GeneralDao;
-import wsg.lol.dao.mybatis.common.StateStrategy;
+import wsg.lol.dao.dragon.intf.DragonDao;
+import wsg.lol.dao.dragon.intf.GeneralDao;
+import wsg.lol.dao.mybatis.common.StaticStrategy;
 import wsg.lol.dao.mybatis.mapper.champion.*;
 import wsg.lol.dao.mybatis.mapper.item.ItemMapper;
 import wsg.lol.dao.mybatis.mapper.item.ItemStatsMapper;
@@ -44,16 +44,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * wsg
- *
- * @author EastSunrise
+ * @author Kingen
  */
-@Service("versionAction")
+@Service("versionService")
 public class VersionServiceImpl implements VersionService {
 
     private static Logger logger = LoggerFactory.getLogger(VersionService.class);
 
-    private DataDao dataDao;
+    private DragonDao dragonDao;
 
     private GeneralDao generalDao;
 
@@ -80,9 +78,12 @@ public class VersionServiceImpl implements VersionService {
     private RuneTreeMapper runeTreeMapper;
 
     @Override
-    public GenericResult<Boolean> isCdnExists(String version) {
-        String cdnDir = dataDao.getCdnDir(version);
+    public GenericResult<Boolean> checkCdn(String version) {
+        String cdnDir = dragonDao.getCdnDir(version);
         boolean exists = new File(cdnDir).exists();
+        if (!exists) {
+            logger.info("Can't find cdn in " + cdnDir + ". Please update the data dragon manually.");
+        }
         GenericResult<Boolean> result = new GenericResult<>();
         result.setObject(exists);
         return result;
@@ -110,7 +111,7 @@ public class VersionServiceImpl implements VersionService {
     @Transactional
     public Result updateChampions(String version) {
         logger.info("Updating the data of champions.");
-        List<ChampionExtDto> championExtDtoList = dataDao.readChampions(version);
+        List<ChampionExtDto> championExtDtoList = dragonDao.readChampions(version);
 
         logger.info("Updating the champions.");
         List<ChampionDto> championDtoList = new ArrayList<>(championExtDtoList);
@@ -120,7 +121,7 @@ public class VersionServiceImpl implements VersionService {
         List<ImageDto> imageDtoList = new ArrayList<>();
         for (ChampionExtDto championExtDto : championExtDtoList) {
             ImageDto image = championExtDto.getImage();
-            image.setRelatedId(championExtDto.getKey());
+            image.setRelatedId(championExtDto.getId());
             imageDtoList.add(image);
         }
         AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.Champion));
@@ -129,7 +130,7 @@ public class VersionServiceImpl implements VersionService {
         List<SkinDto> skinDtoList = new ArrayList<>();
         for (ChampionExtDto championExtDto : championExtDtoList) {
             List<SkinDto> skins = championExtDto.getSkins();
-            String id = championExtDto.getId();
+            Integer id = championExtDto.getId();
             for (SkinDto skin : skins) {
                 skin.setChampionId(id);
             }
@@ -140,7 +141,7 @@ public class VersionServiceImpl implements VersionService {
         logger.info("Updating the tips of champions.");
         List<ChampionTipDto> championTipDtoList = new ArrayList<>();
         for (ChampionExtDto championExtDto : championExtDtoList) {
-            String id = championExtDto.getId();
+            Integer id = championExtDto.getId();
             for (String tip : championExtDto.getAllytips()) {
                 ChampionTipDto championTipDto = new ChampionTipDto();
                 championTipDto.setChampionId(id);
@@ -175,7 +176,7 @@ public class VersionServiceImpl implements VersionService {
         };
         for (ChampionExtDto championExtDto : championExtDtoList) {
             List<ChampionSpellDto> spells = championExtDto.getSpells();
-            String id = championExtDto.getId();
+            Integer id = championExtDto.getId();
             for (int i = 0; i < spells.size(); i++) {
                 ChampionSpellDto spell = spells.get(i);
                 spell.setChampionId(id);
@@ -187,10 +188,12 @@ public class VersionServiceImpl implements VersionService {
             spellDtoList.addAll(spells);
 
             ChampionSpellDto passive = championExtDto.getPassive();
-            passive.setPassive(id);
+            passive.setChampionId(id);
+            passive.setNum(SpellNumEnum.Passive);
+            passive.setId(championExtDto.getKey() + "Passive");
             spellDtoList.add(passive);
             ImageDto image = passive.getImage();
-            image.setRelatedId(passive.hashCode());
+            image.setRelatedId(passive.hashCode());// TODO: (Kingen, 2019/11/18)
             imageDtoList.add(image);
         }
         AssertUtils.isSuccess(updateState(championSpellMapper, spellDtoList));
@@ -205,7 +208,7 @@ public class VersionServiceImpl implements VersionService {
     @Transactional
     public Result updateItems(String version) {
         logger.info("Updating the data of items.");
-        List<ItemExtDto> itemExtDtoList = dataDao.readItems(version);
+        List<ItemExtDto> itemExtDtoList = dragonDao.readItems(version);
 
         logger.info("Updating the items.");
         List<ItemDto> itemDtoList = new ArrayList<>(itemExtDtoList);
@@ -236,7 +239,7 @@ public class VersionServiceImpl implements VersionService {
     @Transactional
     public Result updateRunes(String version) {
         logger.info("Updating the data of runes.");
-        List<RuneExtDto> runeExtDtoList = dataDao.readRunes(version);
+        List<RuneExtDto> runeExtDtoList = dragonDao.readRunes(version);
 
         logger.info("Updating the rune trees.");
         List<RuneTreeDto> runeTreeDtoList = new ArrayList<>(runeExtDtoList);
@@ -265,7 +268,7 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     @Transactional
-    public Result updateSummonerSpellLib(String version) {
+    public Result updateSummonerSpells(String version) {
         logger.info("Start to update the data of summoner spells.");
         return ResultUtils.success();
     }
@@ -274,7 +277,7 @@ public class VersionServiceImpl implements VersionService {
     @Transactional
     public Result updateMaps(String version) {
         logger.info("Updating the images of maps.");
-        List<MapDto> mapDtoList = dataDao.readMaps(version);
+        List<MapDto> mapDtoList = dragonDao.readMaps(version);
         List<ImageDto> imageDtoList = new ArrayList<>();
         for (MapDto mapDto : mapDtoList) {
             ImageDto image = mapDto.getImage();
@@ -286,7 +289,7 @@ public class VersionServiceImpl implements VersionService {
         return ResultUtils.success();
     }
 
-    private <T> Result updateState(StateStrategy<T> strategy, List<T> data) {
+    private <T> Result updateState(StaticStrategy<T> strategy, List<T> data) {
         if (CollectionUtils.isEmpty(data)) {
             logger.info("Collection is empty. Nothing updated.");
             return ResultUtils.success();
@@ -309,7 +312,7 @@ public class VersionServiceImpl implements VersionService {
             return ResultUtils.success();
         }
 
-        int count = 0;
+        int count;
         for (ImageGroupEnum group : groups) {
             count = imageMapper.deleteByGroup(group);
             logger.info("Deleted " + count + " images of " + group);
@@ -355,8 +358,8 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Autowired
-    public void setDataDao(DataDao dataDao) {
-        this.dataDao = dataDao;
+    public void setDragonDao(DragonDao dragonDao) {
+        this.dragonDao = dragonDao;
     }
 
     @Autowired

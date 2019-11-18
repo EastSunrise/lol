@@ -1,7 +1,6 @@
 package wsg.lol.dao.api.impl;
 
 import org.springframework.stereotype.Component;
-import wsg.lol.common.annotation.AccessApi;
 import wsg.lol.common.pojo.dto.match.MatchDto;
 import wsg.lol.common.pojo.dto.match.MatchListDto;
 import wsg.lol.common.pojo.dto.match.MatchTimelineDto;
@@ -13,11 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author EastSunrise
+ * @author Kingen
  * @see <a href="https://developer.riotgames.com/apis#match-v4">MATCH-V4</a>
  */
 @Component
-@AccessApi
 public class MatchV4 extends BaseApi {
 
     /**

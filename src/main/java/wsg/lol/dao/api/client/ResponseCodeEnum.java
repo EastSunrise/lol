@@ -1,12 +1,10 @@
 package wsg.lol.dao.api.client;
 
 /**
- * api请求响应码枚举
+ * Table of response codes of the api.
  *
- * @author EastSunrise
- * @date 2019/11/6
+ * @author Kingen
  * @see <a href="https://developer.riotgames.com/docs/portal#web-apis_response-codes">Response Codes</a>
- * @since 1.0
  */
 public enum ResponseCodeEnum {
     Success(200, "Success"),

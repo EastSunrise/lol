@@ -6,9 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * wsg
+ * Mark if the field of the condition is optional.
  *
- * @author EastSunrise
+ * @author Kingen
+ * @see wsg.lol.common.pojo.dto.query
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

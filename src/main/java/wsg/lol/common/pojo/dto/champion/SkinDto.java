@@ -1,6 +1,6 @@
 package wsg.lol.common.pojo.dto.champion;
 
-import wsg.lol.common.pojo.base.BaseDto;
+import wsg.lol.common.base.BaseDto;
 
 /**
  * wsg
@@ -9,18 +9,18 @@ import wsg.lol.common.pojo.base.BaseDto;
  */
 public class SkinDto extends BaseDto {
 
-    private String championId;
+    private Integer championId;
 
     private Integer id;
-    private int num;
+    private Integer num;
     private String name;
-    private boolean chromas;
+    private Boolean chromas;
 
-    public String getChampionId() {
+    public Integer getChampionId() {
         return championId;
     }
 
-    public void setChampionId(String championId) {
+    public void setChampionId(Integer championId) {
         this.championId = championId;
     }
 
@@ -32,11 +32,11 @@ public class SkinDto extends BaseDto {
         this.id = id;
     }
 
-    public int getNum() {
+    public Integer getNum() {
         return num;
     }
 
-    public void setNum(int num) {
+    public void setNum(Integer num) {
         this.num = num;
     }
 
@@ -48,11 +48,11 @@ public class SkinDto extends BaseDto {
         this.name = name;
     }
 
-    public boolean isChromas() {
+    public Boolean getChromas() {
         return chromas;
     }
 
-    public void setChromas(boolean chromas) {
+    public void setChromas(Boolean chromas) {
         this.chromas = chromas;
     }
 }

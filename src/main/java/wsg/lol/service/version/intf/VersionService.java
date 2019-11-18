@@ -1,28 +1,28 @@
 package wsg.lol.service.version.intf;
 
-import wsg.lol.common.result.base.GenericResult;
-import wsg.lol.common.result.base.Result;
+import wsg.lol.common.base.GenericResult;
+import wsg.lol.common.base.Result;
 import wsg.lol.common.result.version.VersionResult;
 
 /**
- * 版本更新
+ * Service for version control.
  *
- * @author EastSunrise
+ * @author Kingen
  */
 public interface VersionService {
 
     /**
-     * 数据目录是否存在
+     * Check if the cdn directory exists.
      */
-    GenericResult<Boolean> isCdnExists(String version);
+    GenericResult<Boolean> checkCdn(String version);
 
     /**
-     * get info of version.
+     * Get info of version.
      */
     VersionResult getVersion();
 
     /**
-     * Update the static data to the certain version.
+     * Update config of current version.
      */
     Result updateVersion(String version);
 
@@ -42,12 +42,12 @@ public interface VersionService {
     Result updateRunes(String version);
 
     /**
-     * Update the data of summoner spells once the version changes.
-     */
-    Result updateSummonerSpellLib(String version);
-
-    /**
      * Update the data of maps once the version changes.
      */
     Result updateMaps(String version);
+
+    /**
+     * Update the data of summoner spells once the version changes.
+     */
+    Result updateSummonerSpells(String version);
 }

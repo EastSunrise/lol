@@ -1,12 +1,10 @@
 package wsg.lol.common.enums.game;
 
 /**
- * 游戏类型枚举
+ * Enums for the type of the game.
  *
- * @author EastSunrise
- * @date 2019/11/6
+ * @author Kingen
  * @see <a href="http://static.developer.riotgames.com/docs/lol/gameTypes.json>gameTypes.jspn</a>
- * @since 1.0
  */
 public enum GameTypeEnum {
     CUSTOM_GAME("CUSTOM_GAME", "Custom games");

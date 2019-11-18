@@ -5,7 +5,7 @@ import wsg.lol.common.pojo.dto.champion.ChampionRotationDto;
 import wsg.lol.dao.api.client.BaseApi;
 
 /**
- * @author EastSunrise
+ * @author Kingen
  * @see <a href="https://developer.riotgames.com/apis#champion-v3">CHAMPION-V3</a>
  */
 @Component

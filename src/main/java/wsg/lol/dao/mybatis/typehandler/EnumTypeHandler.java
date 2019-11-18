@@ -14,9 +14,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * wsg
+ * Custom handler between the enum and {@link Enum#ordinal()}.
  *
- * @author EastSunrise
+ * @author Kingen
  */
 @MappedTypes({
         ImageGroupEnum.class, ChampionTipEnum.class, SpellNumEnum.class
@@ -25,6 +25,9 @@ public class EnumTypeHandler<T extends Enum<T>> implements TypeHandler<T> {
 
     private Class<T> clazz;
 
+    /**
+     * Assign the class of the enum.
+     */
     public EnumTypeHandler(Class<T> clazz) {
         if (clazz == null) {
             throw new IllegalArgumentException("Type argument cannot be null");

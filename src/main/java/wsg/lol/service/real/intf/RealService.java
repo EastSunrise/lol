@@ -1,9 +1,9 @@
 package wsg.lol.service.real.intf;
 
+import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.rank.DivisionEnum;
 import wsg.lol.common.enums.rank.PositionEnum;
 import wsg.lol.common.enums.rank.TierEnum;
-import wsg.lol.common.result.base.Result;
 
 /**
  * wsg

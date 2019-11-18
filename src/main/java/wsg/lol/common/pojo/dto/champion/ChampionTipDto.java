@@ -2,11 +2,14 @@ package wsg.lol.common.pojo.dto.champion;
 
 import wsg.lol.common.enums.champion.ChampionTipEnum;
 
+/**
+ * // TODO: (Kingen, 2019/11/18)
+ */
 public class ChampionTipDto {
 
     private Integer id;
 
-    private String championId;
+    private Integer championId;
 
     private String tip;
 
@@ -20,12 +23,12 @@ public class ChampionTipDto {
         this.id = id;
     }
 
-    public String getChampionId() {
+    public Integer getChampionId() {
         return championId;
     }
 
-    public void setChampionId(String championId) {
-        this.championId = championId == null ? null : championId.trim();
+    public void setChampionId(Integer championId) {
+        this.championId = championId;
     }
 
     public String getTip() {

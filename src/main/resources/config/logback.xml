@@ -70,9 +70,9 @@
             <pattern>%d{yyyy-M-d HH:mm:ss} %t %p %m%n</pattern>
         </encoder>
     </appender>
-    <appender name="state" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="dragon" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/logback/state_%d{yyyy-M-d}.log</FileNamePattern>
+            <FileNamePattern>logs/logback/dragon_%d{yyyy-M-d}.log</FileNamePattern>
             <MaxHistory>10</MaxHistory>
         </rollingPolicy>
         <encoder>
@@ -96,14 +96,14 @@
     <logger name="wsg.lol.service" level="debug" additivity="false">
         <appender-ref ref="service"/>
     </logger>
-    <logger name="wsg.lol.dao.data.api" level="debug" additivity="false">
+    <logger name="wsg.lol.dao.api" level="debug" additivity="false">
         <appender-ref ref="api"/>
     </logger>
     <logger name="wsg.lol.dao.mybatis" level="debug" additivity="false">
         <appender-ref ref="mybatis"/>
     </logger>
-    <logger name="wsg.lol.dao.state" level="debug" additivity="false">
-        <appender-ref ref="state"/>
+    <logger name="wsg.lol.dao.dragon" level="debug" additivity="false">
+        <appender-ref ref="dragon"/>
     </logger>
     <root level="debug">
         <appender-ref ref="stdout"/>

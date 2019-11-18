@@ -1,16 +1,14 @@
 package wsg.lol.common.util;
 
 /**
- * 线程工具类
+ * Utility class for thread.
  *
- * @author wangsigen
- * @date 2019/11/8
- * @since 1.0
+ * @author Kingen
  */
 public class ThreadUtils {
 
     /**
-     * 暂停线程等待
+     * Thread sleeps for milliseconds.
      */
     public static void threadSleep(long millis) {
         try {

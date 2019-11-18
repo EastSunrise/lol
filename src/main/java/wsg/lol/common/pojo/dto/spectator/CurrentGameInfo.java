@@ -1,11 +1,12 @@
 package wsg.lol.common.pojo.dto.spectator;
 
-import wsg.lol.common.pojo.base.BaseDto;
-import wsg.lol.common.pojo.base.IJson;
+import wsg.lol.common.base.BaseDto;
+import wsg.lol.common.base.IJson;
 
 import java.util.List;
 
 /**
+ * // TODO: (Kingen, 2019/11/18)
  * @author EastSunrise
  */
 public class CurrentGameInfo extends BaseDto implements IJson {

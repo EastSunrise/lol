@@ -1,12 +1,12 @@
 package wsg.lol.common.util;
 
-import wsg.lol.common.pojo.base.AppException;
-import wsg.lol.common.result.base.Result;
+import wsg.lol.common.base.AppException;
+import wsg.lol.common.base.Result;
 
 /**
- * // TODO: (wangsigen, 2019/11/8)
+ * // TODO: (Kingen, 2019/11/8)
  *
- * @author wangsigen
+ * @author Kingen
  * @date 2019/11/8
  * @since 2.4.9.3
  */

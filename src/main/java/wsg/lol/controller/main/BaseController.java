@@ -1,7 +1,7 @@
 package wsg.lol.controller.main;
 
 import org.springframework.ui.Model;
-import wsg.lol.common.result.base.Result;
+import wsg.lol.common.base.Result;
 
 /**
  * wsg

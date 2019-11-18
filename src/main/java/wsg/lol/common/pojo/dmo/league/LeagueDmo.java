@@ -1,9 +1,9 @@
 package wsg.lol.common.pojo.dmo.league;
 
+import wsg.lol.common.base.BaseDmo;
+import wsg.lol.common.base.Persistable;
 import wsg.lol.common.enums.rank.RankQueueEnum;
 import wsg.lol.common.enums.rank.TierEnum;
-import wsg.lol.common.pojo.base.BaseDmo;
-import wsg.lol.common.pojo.base.Persistable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;

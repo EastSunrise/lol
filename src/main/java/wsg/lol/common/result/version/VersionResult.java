@@ -1,6 +1,6 @@
 package wsg.lol.common.result.version;
 
-import wsg.lol.common.result.base.Result;
+import wsg.lol.common.base.Result;
 
 /**
  * wsg

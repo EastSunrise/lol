@@ -8,6 +8,9 @@ import wsg.lol.dao.mybatis.common.BaseMapper;
 
 import java.util.List;
 
+/**
+ * // TODO: (Kingen, 2019/11/18)
+ */
 @Repository
 @Mapper
 public interface SummonerMapper extends BaseMapper<SummonerDmo> {

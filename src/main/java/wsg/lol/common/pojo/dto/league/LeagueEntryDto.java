@@ -1,11 +1,11 @@
 package wsg.lol.common.pojo.dto.league;
 
+import wsg.lol.common.base.BaseDto;
+import wsg.lol.common.base.IJson;
 import wsg.lol.common.enums.rank.DivisionEnum;
 import wsg.lol.common.enums.rank.PositionEnum;
 import wsg.lol.common.enums.rank.RankQueueEnum;
 import wsg.lol.common.enums.rank.TierEnum;
-import wsg.lol.common.pojo.base.BaseDto;
-import wsg.lol.common.pojo.base.IJson;
 
 /**
  * wsg

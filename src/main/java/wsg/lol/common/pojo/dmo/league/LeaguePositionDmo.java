@@ -1,16 +1,19 @@
 package wsg.lol.common.pojo.dmo.league;
 
 import tk.mybatis.mapper.annotation.KeySql;
+import wsg.lol.common.base.BaseDmo;
+import wsg.lol.common.base.Persistable;
 import wsg.lol.common.enums.rank.DivisionEnum;
 import wsg.lol.common.enums.rank.PositionEnum;
 import wsg.lol.common.enums.rank.RankQueueEnum;
 import wsg.lol.common.enums.rank.TierEnum;
-import wsg.lol.common.pojo.base.BaseDmo;
-import wsg.lol.common.pojo.base.Persistable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * // TODO: (Kingen, 2019/11/18)
+ */
 @Table(name = "l_position")
 public class LeaguePositionDmo extends BaseDmo implements Persistable {
 

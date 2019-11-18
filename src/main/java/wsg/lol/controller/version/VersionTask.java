@@ -10,17 +10,17 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
-import wsg.lol.common.pojo.base.AppException;
-import wsg.lol.common.result.base.GenericResult;
+import wsg.lol.common.base.AppException;
+import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.result.version.VersionResult;
 import wsg.lol.common.util.AssertUtils;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.service.version.intf.VersionService;
 
 /**
- * // TODO: (wangsigen, 2019/11/8)
+ * // TODO: (Kingen, 2019/11/8)
  *
- * @author wangsigen
+ * @author Kingen
  * @date 2019/11/8
  * @since 2.4.9.3
  */
@@ -33,7 +33,7 @@ public class VersionTask implements ApplicationRunner {
 
     private TransactionTemplate transactionTemplate;
 
-    @Value("${state.dir.cdn}")
+    @Value("${dragon.dir.cdn}")
     private String cdnDir;
 
     @Scheduled(fixedRate = DateUtils.MILLIS_PER_DAY)
@@ -61,9 +61,8 @@ public class VersionTask implements ApplicationRunner {
         }
 
         String version = versionResult.getLatestVersion();
-        GenericResult<Boolean> cdnExists = versionService.isCdnExists(version);
+        GenericResult<Boolean> cdnExists = versionService.checkCdn(version);
         if (!cdnExists.getObject()) {
-            logger.info("The cdn of the version " + version + " doesn't exist. Please update the data dragon manually.");
             return;
         }
 
@@ -74,7 +73,7 @@ public class VersionTask implements ApplicationRunner {
                 AssertUtils.isSuccess(versionService.updateItems(version));
                 AssertUtils.isSuccess(versionService.updateMaps(version));
                 AssertUtils.isSuccess(versionService.updateRunes(version));
-//                AssertUtils.isSuccess(versionService.updateSummonerSpellLib(version));
+//                AssertUtils.isSuccess(versionService.updateSummonerSpells(version));
                 AssertUtils.isSuccess(versionService.updateVersion(version));
                 return ResultUtils.success();
             });

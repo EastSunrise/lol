@@ -1,13 +1,13 @@
 package wsg.lol.common.pojo.dmo.match;
 
 import tk.mybatis.mapper.annotation.KeySql;
+import wsg.lol.common.base.BaseDmo;
+import wsg.lol.common.base.Persistable;
 import wsg.lol.common.enums.game.SeasonEnum;
 import wsg.lol.common.enums.rank.MatchLaneEnum;
 import wsg.lol.common.enums.rank.MatchQueueEnum;
 import wsg.lol.common.enums.rank.MatchRoleEnum;
 import wsg.lol.common.enums.route.PlatformEnum;
-import wsg.lol.common.pojo.base.BaseDmo;
-import wsg.lol.common.pojo.base.Persistable;
 
 import javax.persistence.Id;
 import javax.persistence.Table;

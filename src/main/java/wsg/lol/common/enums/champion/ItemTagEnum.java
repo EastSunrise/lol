@@ -1,5 +1,10 @@
 package wsg.lol.common.enums.champion;
 
+/**
+ * Enums for tags of the item.
+ *
+ * @author Kingen
+ */
 public enum ItemTagEnum {
     Bilgewater,
     Mana,

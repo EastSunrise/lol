@@ -1,8 +1,8 @@
 package wsg.lol.common.pojo.dto.others;
 
+import wsg.lol.common.base.BaseDto;
+import wsg.lol.common.base.IJson;
 import wsg.lol.common.enums.game.MapEnum;
-import wsg.lol.common.pojo.base.BaseDto;
-import wsg.lol.common.pojo.base.IJson;
 import wsg.lol.common.pojo.dto.general.ImageDto;
 
 /**

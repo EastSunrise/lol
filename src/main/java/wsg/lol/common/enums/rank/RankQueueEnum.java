@@ -1,9 +1,11 @@
 package wsg.lol.common.enums.rank;
 
-import wsg.lol.common.pojo.base.BaseEnum;
+import wsg.lol.common.base.BaseEnum;
 
 /**
- * @author EastSunrise
+ * // TODO: (Kingen, 2019/11/18)
+ *
+ * @author Kingen
  */
 public enum RankQueueEnum implements BaseEnum<Integer> {
     RANKED_SOLO_5x5(1),

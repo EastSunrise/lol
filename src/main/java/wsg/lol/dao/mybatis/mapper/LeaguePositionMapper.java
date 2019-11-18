@@ -8,6 +8,9 @@ import wsg.lol.common.pojo.dmo.league.LeaguePositionDmo;
 import wsg.lol.common.pojo.dto.league.LeagueEntryDto;
 import wsg.lol.dao.mybatis.common.BaseMapper;
 
+/**
+ * // TODO: (Kingen, 2019/11/18)
+ */
 @Repository
 @Mapper
 public interface LeaguePositionMapper extends BaseMapper<LeaguePositionDmo> {

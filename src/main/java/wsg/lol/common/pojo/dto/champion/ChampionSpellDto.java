@@ -3,13 +3,15 @@ package wsg.lol.common.pojo.dto.champion;
 import wsg.lol.common.enums.champion.SpellNumEnum;
 import wsg.lol.common.pojo.dto.general.ImageDto;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
+/**
+ * // TODO: (Kingen, 2019/11/18)
+ */
 public class ChampionSpellDto {
 
     private String id;
-    private String championId;
+    private Integer championId;
     private String name;
     private SpellNumEnum num;
     private String description;
@@ -49,11 +51,11 @@ public class ChampionSpellDto {
         this.id = id;
     }
 
-    public String getChampionId() {
+    public Integer getChampionId() {
         return championId;
     }
 
-    public void setChampionId(String championId) {
+    public void setChampionId(Integer championId) {
         this.championId = championId;
     }
 
@@ -220,11 +222,5 @@ public class ChampionSpellDto {
     @Override
     public int hashCode() {
         return this.getId().hashCode();
-    }
-
-    public void setPassive(@NotNull String championId) {
-        this.setChampionId(championId);
-        this.setNum(SpellNumEnum.Passive);
-        this.setId(championId + "Passive");
     }
 }

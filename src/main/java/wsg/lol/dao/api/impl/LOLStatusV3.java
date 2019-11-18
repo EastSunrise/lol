@@ -1,16 +1,14 @@
 package wsg.lol.dao.api.impl;
 
 import org.springframework.stereotype.Component;
-import wsg.lol.common.annotation.AccessApi;
 import wsg.lol.common.pojo.dto.share.ShardStatus;
 import wsg.lol.dao.api.client.BaseApi;
 
 /**
- * @author EastSunrise
+ * @author Kingen
  * <a href="https://developer.riotgames.com/apis#lol-status-v3">LOL-STATUS-V3</a>
  */
 @Component
-@AccessApi
 public class LOLStatusV3 extends BaseApi {
 
     /**

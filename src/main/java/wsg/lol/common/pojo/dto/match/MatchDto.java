@@ -1,8 +1,8 @@
 package wsg.lol.common.pojo.dto.match;
 
 import org.springframework.data.annotation.Id;
-import wsg.lol.common.pojo.base.BaseDto;
-import wsg.lol.common.pojo.base.IJson;
+import wsg.lol.common.base.BaseDto;
+import wsg.lol.common.base.IJson;
 
 import java.util.List;
 

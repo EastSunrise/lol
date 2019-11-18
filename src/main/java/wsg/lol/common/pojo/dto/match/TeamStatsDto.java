@@ -1,10 +1,11 @@
 package wsg.lol.common.pojo.dto.match;
 
-import wsg.lol.common.pojo.base.BaseDto;
+import wsg.lol.common.base.BaseDto;
 
 import java.util.List;
 
 /**
+ * // TODO: (Kingen, 2019/11/18)
  * @author EastSunrise
  */
 public class TeamStatsDto extends BaseDto {

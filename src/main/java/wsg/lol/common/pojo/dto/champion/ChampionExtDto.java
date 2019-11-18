@@ -1,10 +1,12 @@
 package wsg.lol.common.pojo.dto.champion;
 
 import wsg.lol.common.pojo.dto.general.ImageDto;
-import wsg.lol.common.pojo.dto.state.RecommendedDto;
 
 import java.util.List;
 
+/**
+ * // TODO: (Kingen, 2019/11/18)
+ */
 public class ChampionExtDto extends ChampionDto {
 
     private ImageDto image;

@@ -1,6 +1,6 @@
 package wsg.lol.common.pojo.dto.champion;
 
-import wsg.lol.common.pojo.base.BaseDto;
+import wsg.lol.common.base.BaseDto;
 
 /**
  * wsg
@@ -9,194 +9,194 @@ import wsg.lol.common.pojo.base.BaseDto;
  */
 public class ChampionStatsDto extends BaseDto {
 
-    private String championId;
+    private Integer championId;
 
-    private int hp;
-    private int hpperlevel;
-    private int mp;
-    private int mpperlevel;
-    private int movespeed;
-    private int armor;
-    private double armorperlevel;
-    private double spellblock;
-    private double spellblockperlevel;
-    private int attackrange;
-    private int hpregen;
-    private double hpregenperlevel;
-    private int mpregen;
-    private int mpregenperlevel;
-    private int crit;
-    private int critperlevel;
-    private int attackdamage;
-    private int attackdamageperlevel;
-    private double attackspeedperlevel;
-    private double attackspeed;
+    private Integer hp;
+    private Integer hpperlevel;
+    private Integer mp;
+    private Integer mpperlevel;
+    private Integer movespeed;
+    private Integer armor;
+    private Double armorperlevel;
+    private Double spellblock;
+    private Double spellblockperlevel;
+    private Integer attackrange;
+    private Integer hpregen;
+    private Double hpregenperlevel;
+    private Integer mpregen;
+    private Integer mpregenperlevel;
+    private Integer crit;
+    private Integer critperlevel;
+    private Integer attackdamage;
+    private Integer attackdamageperlevel;
+    private Double attackspeedperlevel;
+    private Double attackspeed;
 
-    public String getChampionId() {
+    public Integer getChampionId() {
         return championId;
     }
 
-    public void setChampionId(String championId) {
+    public void setChampionId(Integer championId) {
         this.championId = championId;
     }
 
-    public int getHp() {
+    public Integer getHp() {
         return hp;
     }
 
-    public void setHp(int hp) {
+    public void setHp(Integer hp) {
         this.hp = hp;
     }
 
-    public int getHpperlevel() {
+    public Integer getHpperlevel() {
         return hpperlevel;
     }
 
-    public void setHpperlevel(int hpperlevel) {
+    public void setHpperlevel(Integer hpperlevel) {
         this.hpperlevel = hpperlevel;
     }
 
-    public int getMp() {
+    public Integer getMp() {
         return mp;
     }
 
-    public void setMp(int mp) {
+    public void setMp(Integer mp) {
         this.mp = mp;
     }
 
-    public int getMpperlevel() {
+    public Integer getMpperlevel() {
         return mpperlevel;
     }
 
-    public void setMpperlevel(int mpperlevel) {
+    public void setMpperlevel(Integer mpperlevel) {
         this.mpperlevel = mpperlevel;
     }
 
-    public int getMovespeed() {
+    public Integer getMovespeed() {
         return movespeed;
     }
 
-    public void setMovespeed(int movespeed) {
+    public void setMovespeed(Integer movespeed) {
         this.movespeed = movespeed;
     }
 
-    public int getArmor() {
+    public Integer getArmor() {
         return armor;
     }
 
-    public void setArmor(int armor) {
+    public void setArmor(Integer armor) {
         this.armor = armor;
     }
 
-    public double getArmorperlevel() {
+    public Double getArmorperlevel() {
         return armorperlevel;
     }
 
-    public void setArmorperlevel(double armorperlevel) {
+    public void setArmorperlevel(Double armorperlevel) {
         this.armorperlevel = armorperlevel;
     }
 
-    public double getSpellblock() {
+    public Double getSpellblock() {
         return spellblock;
     }
 
-    public void setSpellblock(double spellblock) {
+    public void setSpellblock(Double spellblock) {
         this.spellblock = spellblock;
     }
 
-    public double getSpellblockperlevel() {
+    public Double getSpellblockperlevel() {
         return spellblockperlevel;
     }
 
-    public void setSpellblockperlevel(double spellblockperlevel) {
+    public void setSpellblockperlevel(Double spellblockperlevel) {
         this.spellblockperlevel = spellblockperlevel;
     }
 
-    public int getAttackrange() {
+    public Integer getAttackrange() {
         return attackrange;
     }
 
-    public void setAttackrange(int attackrange) {
+    public void setAttackrange(Integer attackrange) {
         this.attackrange = attackrange;
     }
 
-    public int getHpregen() {
+    public Integer getHpregen() {
         return hpregen;
     }
 
-    public void setHpregen(int hpregen) {
+    public void setHpregen(Integer hpregen) {
         this.hpregen = hpregen;
     }
 
-    public double getHpregenperlevel() {
+    public Double getHpregenperlevel() {
         return hpregenperlevel;
     }
 
-    public void setHpregenperlevel(double hpregenperlevel) {
+    public void setHpregenperlevel(Double hpregenperlevel) {
         this.hpregenperlevel = hpregenperlevel;
     }
 
-    public int getMpregen() {
+    public Integer getMpregen() {
         return mpregen;
     }
 
-    public void setMpregen(int mpregen) {
+    public void setMpregen(Integer mpregen) {
         this.mpregen = mpregen;
     }
 
-    public int getMpregenperlevel() {
+    public Integer getMpregenperlevel() {
         return mpregenperlevel;
     }
 
-    public void setMpregenperlevel(int mpregenperlevel) {
+    public void setMpregenperlevel(Integer mpregenperlevel) {
         this.mpregenperlevel = mpregenperlevel;
     }
 
-    public int getCrit() {
+    public Integer getCrit() {
         return crit;
     }
 
-    public void setCrit(int crit) {
+    public void setCrit(Integer crit) {
         this.crit = crit;
     }
 
-    public int getCritperlevel() {
+    public Integer getCritperlevel() {
         return critperlevel;
     }
 
-    public void setCritperlevel(int critperlevel) {
+    public void setCritperlevel(Integer critperlevel) {
         this.critperlevel = critperlevel;
     }
 
-    public int getAttackdamage() {
+    public Integer getAttackdamage() {
         return attackdamage;
     }
 
-    public void setAttackdamage(int attackdamage) {
+    public void setAttackdamage(Integer attackdamage) {
         this.attackdamage = attackdamage;
     }
 
-    public int getAttackdamageperlevel() {
+    public Integer getAttackdamageperlevel() {
         return attackdamageperlevel;
     }
 
-    public void setAttackdamageperlevel(int attackdamageperlevel) {
+    public void setAttackdamageperlevel(Integer attackdamageperlevel) {
         this.attackdamageperlevel = attackdamageperlevel;
     }
 
-    public double getAttackspeedperlevel() {
+    public Double getAttackspeedperlevel() {
         return attackspeedperlevel;
     }
 
-    public void setAttackspeedperlevel(double attackspeedperlevel) {
+    public void setAttackspeedperlevel(Double attackspeedperlevel) {
         this.attackspeedperlevel = attackspeedperlevel;
     }
 
-    public double getAttackspeed() {
+    public Double getAttackspeed() {
         return attackspeed;
     }
 
-    public void setAttackspeed(double attackspeed) {
+    public void setAttackspeed(Double attackspeed) {
         this.attackspeed = attackspeed;
     }
 }

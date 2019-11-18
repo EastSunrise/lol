@@ -7,46 +7,46 @@ package wsg.lol.common.pojo.dto.rune;
  */
 public class RuneDto {
 
-    private int treeId;
-    private int numX;
-    private int numY;
+    private Integer treeId;
+    private Integer numX;
+    private Integer numY;
 
-    private int id;
+    private Integer id;
     private String key;
     private String icon;
     private String name;
     private String shortDesc;
     private String longDesc;
 
-    public int getTreeId() {
+    public Integer getTreeId() {
         return treeId;
     }
 
-    public void setTreeId(int treeId) {
+    public void setTreeId(Integer treeId) {
         this.treeId = treeId;
     }
 
-    public int getNumX() {
+    public Integer getNumX() {
         return numX;
     }
 
-    public void setNumX(int numX) {
+    public void setNumX(Integer numX) {
         this.numX = numX;
     }
 
-    public int getNumY() {
+    public Integer getNumY() {
         return numY;
     }
 
-    public void setNumY(int numY) {
+    public void setNumY(Integer numY) {
         this.numY = numY;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

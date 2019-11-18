@@ -1,16 +1,16 @@
 package wsg.lol.dao.api.impl;
 
-import wsg.lol.common.annotation.AccessApi;
+import org.springframework.stereotype.Component;
 import wsg.lol.dao.api.client.BaseApi;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author EastSunrise
+ * @author Kingen
  * @see <a href="https://developer.riotgames.com/apis#third-party-code-v4">THIRD-PARTY-CODE-V4</a>
  */
-@AccessApi
+@Component
 public class ThirdPartyCodeV4 extends BaseApi {
 
     /**

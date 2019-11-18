@@ -1,6 +1,7 @@
 package wsg.lol.common.pojo.dto.spectator;
 
 /**
+ * // TODO: (Kingen, 2019/11/18)
  * @author EastSunrise
  */
 public class BannedChampion {

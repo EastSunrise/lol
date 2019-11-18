@@ -1,15 +1,11 @@
 package wsg.lol.common.enums.champion;
 
-import wsg.lol.common.enums.intf.EnumList;
-
 /**
- * // TODO: (wangsigen, 2019/11/8)
+ * Enums for tags of the champion.
  *
- * @author wangsigen
- * @date 2019/11/8
- * @since 1.0
+ * @author Kingen
  */
-public enum ChampionTagEnum implements EnumList {
+public enum ChampionTagEnum {
     Fighter("战士"),
     Tank("坦克"),
     Assassin("刺客"),

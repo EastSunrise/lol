@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Custom deserializer from key-value of available maps to array of {@link MapEnum}
+ *
+ * @author Kingen
+ */
 public class MapsDeserializer implements ObjectDeserializer {
 
     @Override

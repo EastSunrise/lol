@@ -1,48 +1,63 @@
 package wsg.lol.common.pojo.dto.champion;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.parser.deserializer.PropertyProcessable;
+import wsg.lol.common.base.BaseDto;
+import wsg.lol.common.base.IJson;
+import wsg.lol.common.base.Persistable;
 import wsg.lol.common.enums.champion.ChampionTagEnum;
-import wsg.lol.common.pojo.base.BaseDto;
-import wsg.lol.common.pojo.base.IJson;
-import wsg.lol.common.pojo.base.Persistable;
+
+import java.lang.reflect.Type;
 
 /**
  * wsg
  *
  * @author EastSunrise
  */
-public class ChampionDto extends BaseDto implements IJson, Persistable {
+public class ChampionDto extends BaseDto implements IJson, Persistable, PropertyProcessable {
 
-    private String id;
-    private Integer key;
+    @JSONField(name = "key")
+    private Integer id;
+
+    @JSONField(name = "id")
+    private String key;
+
     private String name;
     private String title;
     private String lore;
     private String blurb;
     private String partype;
     private ChampionTagEnum[] tags;
-    @JSONField(unwrapped = true)
+
+    @JSONField(name = "info['attack']]")
     private Integer infoAttack;
-    @JSONField(unwrapped = true)
     private Integer infoDefense;
-    @JSONField(unwrapped = true)
     private Integer infoMagic;
-    @JSONField(unwrapped = true)
     private Integer infoDifficulty;
 
-    public String getId() {
+    @Override
+    public Type getType(String name) {
+        return null;
+    }
+
+    @Override
+    public void apply(String name, Object value) {
+
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Integer getKey() {
+    public String getKey() {
         return key;
     }
 
-    public void setKey(Integer key) {
+    public void setKey(String key) {
         this.key = key;
     }
 

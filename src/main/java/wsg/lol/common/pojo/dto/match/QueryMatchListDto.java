@@ -1,11 +1,12 @@
 package wsg.lol.common.pojo.dto.match;
 
 import wsg.lol.common.annotation.Optional;
-import wsg.lol.common.pojo.base.QueryDto;
+import wsg.lol.common.base.QueryDto;
 
 import java.util.List;
 
 /**
+ * // TODO: (Kingen, 2019/11/18)
  * @author EastSunrise
  */
 public class QueryMatchListDto extends QueryDto {

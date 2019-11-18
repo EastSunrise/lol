@@ -1,6 +1,6 @@
 package wsg.lol.common.pojo.dto.league;
 
-import wsg.lol.common.pojo.base.BaseDto;
+import wsg.lol.common.base.BaseDto;
 
 /**
  * wsg

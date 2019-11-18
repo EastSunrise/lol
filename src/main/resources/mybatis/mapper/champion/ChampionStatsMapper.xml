@@ -41,12 +41,11 @@
     </select>
 
     <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.champion.ChampionStatsDto" useGeneratedKeys="true">
-        insert into lol.c_stats(hp, hpperlevel, hpregen, hpregenperlevel, mp, mpperlevel, mpregen, mpregenperlevel,
-        attackdamage, attackdamageperlevel, armor, armorperlevel, spellblock, spellblockperlevel, attackspeed,
-        attackspeedperlevel, attackrange, movespeed, crit, critperlevel)
+        insert into lol.c_stats
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.hp},
+            (#{item.championId},
+            #{item.hp},
             #{item.hpperlevel},
             #{item.hpregen},
             #{item.hpregenperlevel},

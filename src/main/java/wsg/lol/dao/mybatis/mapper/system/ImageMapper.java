@@ -7,6 +7,11 @@ import wsg.lol.common.pojo.dto.general.ImageDto;
 
 import java.util.List;
 
+/**
+ * Mapper interface for information of images.
+ *
+ * @author Kingen
+ */
 @Repository
 @Mapper
 public interface ImageMapper {

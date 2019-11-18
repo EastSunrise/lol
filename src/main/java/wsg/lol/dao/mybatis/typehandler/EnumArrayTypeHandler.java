@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
 import org.apache.ibatis.type.TypeHandler;
-import wsg.lol.common.constant.DatabaseConst;
 import wsg.lol.common.enums.champion.ChampionTagEnum;
 import wsg.lol.common.enums.champion.ItemTagEnum;
 import wsg.lol.common.enums.game.MapEnum;
@@ -17,15 +16,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Custom handler transferring enum array to string joined the ordinals of enums separated with <code>ORDINAL_SEPARATOR</code>
+ * Custom handler between the enum array and the string joining the {@link Enum#ordinal()} separated with {@link EnumArrayTypeHandler#SEPARATOR}
+ *
+ * @author Kingen
  */
 @MappedTypes({
         ChampionTagEnum[].class, ItemTagEnum[].class, MapEnum[].class
 })
 public class EnumArrayTypeHandler<T extends Enum<T>> implements TypeHandler<T[]> {
 
+    private static final String SEPARATOR = ",";
+
     private Class<T> clazz;
 
+    /**
+     * Assign the class of the enum
+     */
     public EnumArrayTypeHandler(Class<T> clazz) {
         if (clazz == null) {
             throw new IllegalArgumentException("Type argument cannot be null");
@@ -42,10 +48,10 @@ public class EnumArrayTypeHandler<T extends Enum<T>> implements TypeHandler<T[]>
             for (int i = 0; i < enums.length; i++) {
                 ordinals[i] = enums[i].ordinal() + "";
             }
-            str = StringUtils.join(ordinals, DatabaseConst.ORDINAL_SEPARATOR);
+            str = StringUtils.join(ordinals, SEPARATOR);
         }
 
-        preparedStatement.setObject(index, str, JdbcType.VARCHAR.TYPE_CODE);
+        preparedStatement.setString(index, str);
     }
 
     @Override
@@ -65,10 +71,10 @@ public class EnumArrayTypeHandler<T extends Enum<T>> implements TypeHandler<T[]>
 
     @SuppressWarnings("unchecked")
     private T[] getEnumsFromString(String value) {
-        if (value == null) {
+        String[] ordinals = StringUtils.split(value, SEPARATOR);
+        if (ordinals == null) {
             return null;
         }
-        String[] ordinals = StringUtils.split(value, DatabaseConst.ORDINAL_SEPARATOR);
         T[] enums = (T[]) Array.newInstance(clazz, ordinals.length);
         for (int i = 0; i < ordinals.length; i++) {
             enums[i] = EnumUtils.parseEnumByOrdinal(Integer.parseInt(ordinals[i]), clazz);
