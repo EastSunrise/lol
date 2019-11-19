@@ -1,6 +1,7 @@
 package wsg.lol.common.pojo.dto.champion;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.champion.SpellNumEnum;
 import wsg.lol.common.enums.game.GameModeEnum;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * // TODO: (Kingen, 2019/11/18)
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class SpellDto extends BaseDto {
 
@@ -57,33 +59,10 @@ public class SpellDto extends BaseDto {
 
     }
 
-    static class SpellVarDto {
+    @Data
+    private static class SpellVarDto {
         private String link;
         private List<Double> coeff;
         private String key;
-
-        public String getLink() {
-            return link;
-        }
-
-        public void setLink(String link) {
-            this.link = link;
-        }
-
-        public List<Double> getCoeff() {
-            return coeff;
-        }
-
-        public void setCoeff(List<Double> coeff) {
-            this.coeff = coeff;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public void setKey(String key) {
-            this.key = key;
-        }
     }
 }

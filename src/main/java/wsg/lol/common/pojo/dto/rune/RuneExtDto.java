@@ -1,20 +1,20 @@
 package wsg.lol.common.pojo.dto.rune;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * // TODO: (Kingen, 2019/11/18)
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class RuneExtDto extends RuneTreeDto {
 
-    @JSONField(deserialize = false)
-    private RuneDto[][] slots;
+    public static final String RUNES = "runes";
 
-    public RuneDto[][] getSlots() {
-        return slots;
-    }
-
-    public void setSlots(RuneDto[][] slots) {
-        this.slots = slots;
-    }
+    //    @JSONField(deserialize = false)
+    private List<Map<String, List<RuneDto>>> slots;
 }

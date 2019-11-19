@@ -69,10 +69,7 @@
                 enableCountByExample: 是否可以通过对象查数量
                 enableUpdateByExample: 是否可以通过对象进行更新
         -->
-        <table schema="lol" tableName="r_rune" domainObjectName="Rune" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table schema="lol" tableName="r_tree" domainObjectName="RuneTree" enableCountByExample="false"
+        <table schema="lol" tableName="i_item" domainObjectName="Item" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>
     </context>

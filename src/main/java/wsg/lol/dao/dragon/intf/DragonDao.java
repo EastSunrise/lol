@@ -4,7 +4,6 @@ import wsg.lol.common.pojo.dto.champion.ChampionExtDto;
 import wsg.lol.common.pojo.dto.champion.SpellDto;
 import wsg.lol.common.pojo.dto.general.ImageDto;
 import wsg.lol.common.pojo.dto.item.ItemExtDto;
-import wsg.lol.common.pojo.dto.others.MapDto;
 import wsg.lol.common.pojo.dto.rune.RuneExtDto;
 
 import java.util.List;
@@ -32,9 +31,9 @@ public interface DragonDao {
     List<ItemExtDto> readItems(String version);
 
     /**
-     * Read the data of maps.
+     * Read the data of images of maps.
      */
-    List<MapDto> readMaps(String version);
+    List<ImageDto> readMaps(String version);
 
     /**
      * Read the data of reforged runes
@@ -42,7 +41,7 @@ public interface DragonDao {
     List<RuneExtDto> readRunes(String version);
 
     /**
-     * Read the data of profile icons.
+     * Read the data of images of profile icons.
      */
     List<ImageDto> readProfileIcons(String version);
 

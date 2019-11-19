@@ -18,7 +18,8 @@ public class SummonerServiceImpl implements SummonerService {
 
     @Override
     public SummonerDmo getSummonerById(String id) {
-        return summonerMapper.selectByPrimaryKey(id);
+//        return summonerMapper.selectByPrimaryKey(id);
+        return null;
     }
 
     @Autowired

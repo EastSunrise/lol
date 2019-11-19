@@ -6,7 +6,7 @@
         from lol.i_item
     </delete>
 
-    <insert id="batchInsert">
+    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.item.ItemDto">
         insert into lol.i_item
         values
         <foreach collection="list" item="item" separator=",">
@@ -23,7 +23,15 @@
             #{item.goldSell},
             #{item.tags},
             #{item.maps},
-            #{item.depth})
+            #{item.depth},
+            #{item.consumed},
+            #{item.consumeOnFull},
+            #{item.inStore},
+            #{item.hideFromAll},
+            #{item.stacks},
+            #{item.requiredChampion},
+            #{item.specialRecipe},
+            #{item.requiredAlly})
         </foreach>
     </insert>
 </mapper>

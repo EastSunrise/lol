@@ -2,8 +2,10 @@ package wsg.lol.dao.mybatis.mapper.champion;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+import wsg.lol.common.enums.champion.SpellNumEnum;
 import wsg.lol.common.pojo.dto.champion.SpellDto;
-import wsg.lol.dao.mybatis.common.StaticStrategy;
+
+import java.util.List;
 
 /**
  * Mapper interface for spells of champions.
@@ -12,5 +14,8 @@ import wsg.lol.dao.mybatis.common.StaticStrategy;
  */
 @Repository
 @Mapper
-public interface SpellMapper extends StaticStrategy<SpellDto> {
+public interface SpellMapper {
+    int deleteByNum(SpellNumEnum num);
+
+    int batchInsert(List<SpellDto> list);
 }

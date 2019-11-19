@@ -20,7 +20,6 @@ import wsg.lol.common.pojo.dto.general.ImageDto;
 import wsg.lol.common.pojo.dto.item.ItemDto;
 import wsg.lol.common.pojo.dto.item.ItemExtDto;
 import wsg.lol.common.pojo.dto.item.ItemStatsDto;
-import wsg.lol.common.pojo.dto.others.MapDto;
 import wsg.lol.common.pojo.dto.rune.RuneDto;
 import wsg.lol.common.pojo.dto.rune.RuneExtDto;
 import wsg.lol.common.pojo.dto.rune.RuneTreeDto;
@@ -42,6 +41,7 @@ import wsg.lol.service.version.intf.VersionService;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kingen
@@ -199,7 +199,14 @@ public class VersionServiceImpl implements VersionService {
             image.setRelatedId(passive.getKey());
             imageDtoList.add(image);
         }
-        AssertUtils.isSuccess(updateState(spellMapper, spellDtoList));
+        for (SpellDto spellDto : spellDtoList) {
+            if (spellDto.getKey() == null) {
+                logger.error(spellDto.getId());
+            }
+        }
+        AssertUtils.isSuccess(updateSpells(spellDtoList,
+                SpellNumEnum.P, SpellNumEnum.Q, SpellNumEnum.W, SpellNumEnum.E, SpellNumEnum.R
+        ));
         logger.info("Updating the images of champion spells.");
         AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.Spell, ImageGroupEnum.Passive));
 
@@ -235,6 +242,7 @@ public class VersionServiceImpl implements VersionService {
         }
         AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.Item));
 
+        logger.info("Succeed in updating the data of items.");
         return ResultUtils.success();
     }
 
@@ -251,12 +259,13 @@ public class VersionServiceImpl implements VersionService {
         logger.info("Updating the runes.");
         List<RuneDto> runeDtoList = new ArrayList<>();
         for (RuneExtDto runeExtDto : runeExtDtoList) {
-            RuneDto[][] slots = runeExtDto.getSlots();
+            List<Map<String, List<RuneDto>>> slots = runeExtDto.getSlots();
             int id = runeExtDto.getId();
-            for (int i = 0; i < slots.length; i++) {
-                RuneDto[] slot = slots[i];
-                for (int j = 0; j < slot.length; j++) {
-                    RuneDto runeDto = slot[j];
+            for (int i = 0; i < slots.size(); i++) {
+                Map<String, List<RuneDto>> slot = slots.get(i);
+                List<RuneDto> runes = slot.get(RuneExtDto.RUNES);
+                for (int j = 0; j < runes.size(); j++) {
+                    RuneDto runeDto = runes.get(j);
                     runeDto.setTreeId(id);
                     runeDto.setNumX(i);
                     runeDto.setNumY(j);
@@ -266,6 +275,7 @@ public class VersionServiceImpl implements VersionService {
         }
         AssertUtils.isSuccess(updateState(runeMapper, runeDtoList));
 
+        logger.info("Succeed in updating the data of runes.");
         return ResultUtils.success();
     }
 
@@ -281,10 +291,11 @@ public class VersionServiceImpl implements VersionService {
             image.setRelatedId(spellDto.getKey());
             imageDtoList.add(image);
         }
-        AssertUtils.isSuccess(updateState(spellMapper, spellDtoList));
+        AssertUtils.isSuccess(updateSpells(spellDtoList, SpellNumEnum.S));
         logger.info("Updating the images of summoner spells.");
         AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.SummonerSpell));
 
+        logger.info("Succeed in updating the data of summoner spells.");
         return ResultUtils.success();
     }
 
@@ -292,15 +303,10 @@ public class VersionServiceImpl implements VersionService {
     @Transactional
     public Result updateMaps(String version) {
         logger.info("Updating the images of maps.");
-        List<MapDto> mapDtoList = dragonDao.readMaps(version);
-        List<ImageDto> imageDtoList = new ArrayList<>();
-        for (MapDto mapDto : mapDtoList) {
-            ImageDto image = mapDto.getImage();
-            image.setRelatedId(mapDto.getMap().getMapId());
-            imageDtoList.add(image);
-        }
+        List<ImageDto> imageDtoList = dragonDao.readMaps(version);
         AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.Map));
 
+        logger.info("Succeed in updating the data of maps.");
         return ResultUtils.success();
     }
 
@@ -310,6 +316,7 @@ public class VersionServiceImpl implements VersionService {
         List<ImageDto> imageDtoList = dragonDao.readProfileIcons(version);
         AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.ProfileIcon));
 
+        logger.info("Succeed in updating the data of profile icons.");
         return ResultUtils.success();
     }
 
@@ -332,7 +339,7 @@ public class VersionServiceImpl implements VersionService {
 
     private Result updateImages(List<ImageDto> imageDtoList, ImageGroupEnum... groups) {
         if (CollectionUtils.isEmpty(imageDtoList)) {
-            logger.info("Collection is empty. Nothing updated.");
+            logger.info("Images is empty. Nothing updated.");
             return ResultUtils.success();
         }
 
@@ -344,10 +351,31 @@ public class VersionServiceImpl implements VersionService {
 
         count = imageMapper.batchInsert(imageDtoList);
         if (count != imageDtoList.size()) {
-            logger.error("Failed to insert the images of " + StringUtils.join(groups, ", "));
+            logger.error("Failed to insert images of " + StringUtils.join(groups, ", "));
             throw new AppException(ErrorCodeConst.DATABASE_ERROR);
         }
         logger.info("Inserted " + count + " images of " + StringUtils.join(groups, ", "));
+        return ResultUtils.success();
+    }
+
+    private Result updateSpells(List<SpellDto> spells, SpellNumEnum... nums) {
+        if (CollectionUtils.isEmpty(spells)) {
+            logger.info("Spells is empty. Nothing updated.");
+            return ResultUtils.success();
+        }
+
+        int count;
+        for (SpellNumEnum num : nums) {
+            count = spellMapper.deleteByNum(num);
+            logger.info("Deleted " + count + " spells of " + num);
+        }
+
+        count = spellMapper.batchInsert(spells);
+        if (count != spells.size()) {
+            logger.error("Failed to insert spells of " + StringUtils.join(nums, ", "));
+            throw new AppException(ErrorCodeConst.DATABASE_ERROR);
+        }
+        logger.info("Inserted " + count + " spells of " + StringUtils.join(nums, ", "));
         return ResultUtils.success();
     }
 

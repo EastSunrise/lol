@@ -3,12 +3,9 @@ package wsg.lol.service.real.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 import wsg.lol.common.base.AppException;
-import wsg.lol.common.base.Page;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.rank.DivisionEnum;
 import wsg.lol.common.enums.rank.PositionEnum;
@@ -16,14 +13,9 @@ import wsg.lol.common.enums.rank.RankQueueEnum;
 import wsg.lol.common.enums.rank.TierEnum;
 import wsg.lol.common.pojo.dmo.champion.ChampionMasteryDmo;
 import wsg.lol.common.pojo.dmo.league.LeaguePositionDmo;
-import wsg.lol.common.pojo.dmo.match.MatchReferenceDmo;
-import wsg.lol.common.pojo.dmo.summoner.SummonerDmo;
 import wsg.lol.common.pojo.dto.league.LeagueEntryDto;
 import wsg.lol.common.pojo.dto.league.LeagueItemDto;
 import wsg.lol.common.pojo.dto.league.LeagueListDto;
-import wsg.lol.common.pojo.dto.match.MatchListDto;
-import wsg.lol.common.pojo.dto.match.MatchReferenceDto;
-import wsg.lol.common.pojo.dto.match.QueryMatchListDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerMasteryDto;
 import wsg.lol.common.util.ResultUtils;
@@ -37,7 +29,10 @@ import wsg.lol.dao.mybatis.mapper.MatchReferenceMapper;
 import wsg.lol.dao.mybatis.mapper.SummonerMapper;
 import wsg.lol.service.real.intf.RealService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * wsg
@@ -109,13 +104,13 @@ public class RealServiceImpl implements RealService {
     public Result updateSummoners() {
         // Get last unchecked summoners.
         logger.info("Get last unchecked summoners");
-        Example example = new Example(SummonerDmo.class);
-        example.setOrderByClause("LAST_CHECKED_TIME ASC");
-        List<SummonerDmo> summonerBaseList = summonerMapper.selectByExampleAndRowBounds(example,
-                new Page().getRowBounds());
-        for (SummonerDmo summonerDmo : summonerBaseList) {
-            updateSummonerById(summonerDmo.getId());
-        }
+//        Example example = new Example(SummonerDmo.class);
+//        example.setOrderByClause("LAST_CHECKED_TIME ASC");
+//        List<SummonerDmo> summonerBaseList = summonerMapper.selectByExampleAndRowBounds(example,
+//                new Page().getRowBounds());
+//        for (SummonerDmo summonerDmo : summonerBaseList) {
+//            updateSummonerById(summonerDmo.getId());
+//        }
 
         return ResultUtils.success();
     }
@@ -125,14 +120,14 @@ public class RealServiceImpl implements RealService {
     public Result updateSummonerById(String summonerId) {
         logger.info("Start to update " + summonerId);
         // update base info.
-        SummonerDmo summonerDmo = summonerMapper.selectByPrimaryKey(summonerId);
-        if (summonerDmo == null) {
-            SummonerDto summonerDto = summonerV4.getSummoner(SummonerV4.CondKeyEnum.ID, summonerId);
-            if (1 != summonerMapper.insertSummoner(summonerDto)) {
-                throw new AppException("Fail to insert summoner.");
-            }
-            summonerDmo = summonerMapper.selectByPrimaryKey(summonerId);
-        }
+//        SummonerDmo summonerDmo = summonerMapper.selectByPrimaryKey(summonerId);
+//        if (summonerDmo == null) {
+//            SummonerDto summonerDto = summonerV4.getSummoner(SummonerV4.CondKeyEnum.ID, summonerId);
+//            if (1 != summonerMapper.insertSummoner(summonerDto)) {
+//                throw new AppException("Fail to insert summoner.");
+//            }
+//            summonerDmo = summonerMapper.selectByPrimaryKey(summonerId);
+//        }
 
         // update the league.
         List<LeagueEntryDto> positionDtoList = leagueV4.getLeaguePositionsBySummonerId(summonerId);
@@ -166,39 +161,39 @@ public class RealServiceImpl implements RealService {
             }
         }
 
-        Date lastCheckedTime = summonerDmo.getLastCheckedTime();
-        QueryMatchListDto queryMatchListDto = new QueryMatchListDto();
-        queryMatchListDto.setBeginTime(lastCheckedTime.getTime());
-        for (long beginIndex = 0; ; beginIndex += QueryMatchListDto.MAX_INDEX_RANGE) {
-            queryMatchListDto.setBeginIndex(beginIndex);
-            lastCheckedTime = new Date();
-            MatchListDto matchListDto = matchV4.getMatchListByAccount(summonerDmo.getAccountId(), queryMatchListDto);
-            if (matchListDto == null) {
-                break;
-            }
-            List<MatchReferenceDto> referenceDtoList = matchListDto.getMatches();
-            if (referenceDtoList.isEmpty()) {
-                break;
-            }
-            for (MatchReferenceDto referenceDto : referenceDtoList) {
-                referenceDto.setSummonerId(summonerId);
-                try {
-                    if (1 != referenceMapper.insertReference(referenceDto)) {
-                        throw new AppException("Fail to insert match reference.");
-                    }
-                } catch (DuplicateKeyException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        // update the last check time.
-        SummonerDmo updateDmo = new SummonerDmo();
-        updateDmo.setId(summonerDmo.getId());
-        updateDmo.setLastCheckedTime(lastCheckedTime);
-        if (1 != summonerMapper.updateByPrimaryKeySelective(updateDmo)) {
-            throw new AppException("Fail to update the last check time of the summoner.");
-        }
+//        Date lastCheckedTime = summonerDmo.getLastCheckedTime();
+//        QueryMatchListDto queryMatchListDto = new QueryMatchListDto();
+//        queryMatchListDto.setBeginTime(lastCheckedTime.getTime());
+//        for (long beginIndex = 0; ; beginIndex += QueryMatchListDto.MAX_INDEX_RANGE) {
+//            queryMatchListDto.setBeginIndex(beginIndex);
+//            lastCheckedTime = new Date();
+//            MatchListDto matchListDto = matchV4.getMatchListByAccount(summonerDmo.getAccountId(), queryMatchListDto);
+//            if (matchListDto == null) {
+//                break;
+//            }
+//            List<MatchReferenceDto> referenceDtoList = matchListDto.getMatches();
+//            if (referenceDtoList.isEmpty()) {
+//                break;
+//            }
+//            for (MatchReferenceDto referenceDto : referenceDtoList) {
+//                referenceDto.setSummonerId(summonerId);
+//                try {
+//                    if (1 != referenceMapper.insertReference(referenceDto)) {
+//                        throw new AppException("Fail to insert match reference.");
+//                    }
+//                } catch (DuplicateKeyException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//
+//        // update the last check time.
+//        SummonerDmo updateDmo = new SummonerDmo();
+//        updateDmo.setId(summonerDmo.getId());
+//        updateDmo.setLastCheckedTime(lastCheckedTime);
+//        if (1 != summonerMapper.updateByPrimaryKeySelective(updateDmo)) {
+//            throw new AppException("Fail to update the last check time of the summoner.");
+//        }
 
         return ResultUtils.success();
     }
@@ -206,14 +201,14 @@ public class RealServiceImpl implements RealService {
     @Override
     public Result extendLib() {
         logger.info("Get last unchecked matches.");
-        Example example = new Example(MatchReferenceDmo.class);
-        example.setOrderByClause("CHECKED ASC");
-        List<MatchReferenceDmo> referenceDmoList = referenceMapper.selectByExampleAndRowBounds(example,
-                new Page().getRowBounds());
-
-        for (MatchReferenceDmo referenceDmo : referenceDmoList) {
-            updateMatchReference(referenceDmo.getId());
-        }
+//        Example example = new Example(MatchReferenceDmo.class);
+//        example.setOrderByClause("CHECKED ASC");
+//        List<MatchReferenceDmo> referenceDmoList = referenceMapper.selectByExampleAndRowBounds(example,
+//                new Page().getRowBounds());
+//
+//        for (MatchReferenceDmo referenceDmo : referenceDmoList) {
+//            updateMatchReference(referenceDmo.getId());
+//        }
         return ResultUtils.success();
     }
 

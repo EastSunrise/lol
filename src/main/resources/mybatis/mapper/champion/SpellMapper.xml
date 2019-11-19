@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wsg.lol.dao.mybatis.mapper.champion.SpellMapper">
-    <delete id="clear">
+    <delete id="deleteByNum">
         delete
         from lol.c_spell
+        where num = #{num}
     </delete>
 
     <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.champion.SpellDto">
-        insert into lol.c_spell(id, champion_id, name, num, description, maxrank, tooltip, leveltip_label,
-        leveltip_effect, cooldown, cooldown_burn, cost, cost_burn, `range`, range_burn, datavalues, effect, effect_burn,
-        vars, cost_type, maxammo, resource)
+        insert into lol.c_spell
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.id},
             #{item.championId},
+            #{item.key},
             #{item.name},
             #{item.num},
             #{item.description},
@@ -33,7 +33,9 @@
             #{item.vars},
             #{item.costType},
             #{item.maxammo},
-            #{item.resource})
+            #{item.resource},
+            #{item.summonerLevel},
+            #{item.modes})
         </foreach>
     </insert>
 </mapper>

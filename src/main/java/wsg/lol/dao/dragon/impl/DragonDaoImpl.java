@@ -1,8 +1,6 @@
 package wsg.lol.dao.dragon.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
@@ -12,14 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ErrorCodeConst;
-import wsg.lol.common.enums.game.MapEnum;
-import wsg.lol.common.pojo.deserializer.RecordExtraProcessor;
 import wsg.lol.common.pojo.dto.champion.ChampionExtDto;
 import wsg.lol.common.pojo.dto.champion.SpellDto;
 import wsg.lol.common.pojo.dto.general.ImageDto;
 import wsg.lol.common.pojo.dto.item.ItemExtDto;
-import wsg.lol.common.pojo.dto.others.MapDto;
-import wsg.lol.common.pojo.dto.rune.RuneDto;
 import wsg.lol.common.pojo.dto.rune.RuneExtDto;
 import wsg.lol.dao.dragon.config.StaticConfig;
 import wsg.lol.dao.dragon.intf.DragonDao;
@@ -28,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,14 +42,14 @@ public class DragonDaoImpl implements DragonDao {
 
     @Override
     public List<ChampionExtDto> readChampions(String version) {
-        return new ArrayList<>(getDataMapByKey(version, DataKeyEnum.ChampionFull, ChampionExtDto.class).values());
+        return getValues(version, DataKeyEnum.ChampionFull, new TypeReference<FileDto<ChampionExtDto>>() {});
     }
 
     @Override
     public List<ItemExtDto> readItems(String version) {
-        Map<String, ItemExtDto> itemMap = getDataMapByKey(version, DataKeyEnum.Item, ItemExtDto.class);
+        Map<String, ItemExtDto> map = getMap(version, DataKeyEnum.Item, new TypeReference<FileDto<ItemExtDto>>() {});
         List<ItemExtDto> list = new ArrayList<>();
-        for (Map.Entry<String, ItemExtDto> entry : itemMap.entrySet()) {
+        for (Map.Entry<String, ItemExtDto> entry : map.entrySet()) {
             ItemExtDto itemExtDto = entry.getValue();
             itemExtDto.setId(Integer.parseInt(entry.getKey()));
             list.add(itemExtDto);
@@ -65,77 +58,47 @@ public class DragonDaoImpl implements DragonDao {
     }
 
     @Override
-    public List<MapDto> readMaps(String version) {
-        Map<String, MapDto> map = getDataMapByKey(version, DataKeyEnum.Map, MapDto.class);
-        List<MapDto> list = new ArrayList<>();
-        for (Map.Entry<String, MapDto> entry : map.entrySet()) {
-            MapDto mapDto = entry.getValue();
-            mapDto.setMap(MapEnum.map(Integer.parseInt(entry.getKey())));
-            list.add(mapDto);
+    public List<ImageDto> readMaps(String version) {
+        List<MapDto> maps = getValues(version, DataKeyEnum.Map, new TypeReference<FileDto<MapDto>>() {});
+        List<ImageDto> images = new ArrayList<>();
+        for (MapDto map : maps) {
+            ImageDto image = map.image;
+            image.setRelatedId(map.MapId);
+            images.add(image);
         }
-        return list;
+        return images;
     }
 
     @Override
     public List<RuneExtDto> readRunes(String version) {
         String jsonStr = getJsonStr(version, DataKeyEnum.Rune);
-        JSONArray treeArray = JSON.parseArray(jsonStr);
-        List<RuneExtDto> runeExtDtoList = new ArrayList<>();
-        for (Object tree : treeArray) {
-            RuneExtDto runeExtDto = JSON.parseObject(((JSON) tree).toJSONString(), RuneExtDto.class, new RecordExtraProcessor(DragonDao.class));
-            JSONArray slotsJson = ((JSONObject) tree).getJSONArray("slots");
-            RuneDto[][] slots = new RuneDto[slotsJson.size()][];
-            for (int i = 0; i < slotsJson.size(); i++) {
-                Object slot = slotsJson.get(i);
-                JSONArray runesJson = ((JSONObject) slot).getJSONArray("runes");
-                RuneDto[] runes = new RuneDto[runesJson.size()];
-                for (int j = 0; j < runesJson.size(); j++) {
-                    Object rune = runesJson.get(j);
-                    runes[j] = JSON.parseObject(((JSON) rune).toJSONString(), RuneDto.class, new RecordExtraProcessor(DragonDao.class));
-                }
-                slots[i] = runes;
-            }
-            runeExtDto.setSlots(slots);
-            runeExtDtoList.add(runeExtDto);
-        }
-        return runeExtDtoList;
+        return JSON.parseArray(jsonStr, RuneExtDto.class);
     }
 
     @Override
     public List<ImageDto> readProfileIcons(String version) {
-        FileDto<ProfileIconDto> fileDto = getFileDto(version, DataKeyEnum.ProfileIcon);
-        List<ImageDto> imageDtoList = new ArrayList<>();
-        for (ProfileIconDto profileIconDto : fileDto.data.values()) {
-            ImageDto image = profileIconDto.getImage();
-            image.setRelatedId(image.getId());
+        List<ProfileIconDto> icons = getValues(version, DataKeyEnum.ProfileIcon, new TypeReference<FileDto<ProfileIconDto>>() {});
+        List<ImageDto> images = new ArrayList<>();
+        for (ProfileIconDto iconDto : icons) {
+            ImageDto image = iconDto.getImage();
+            image.setRelatedId(iconDto.getId());
             image.setId(null);
-            imageDtoList.add(image);
+            images.add(image);
         }
-        return imageDtoList;
+        return images;
     }
 
     @Override
     public List<SpellDto> readSummonerSpells(String version) {
-        return new ArrayList<>(getDataMapByKey(version, DataKeyEnum.SummonerSpell, SpellDto.class).values());
+        return getValues(version, DataKeyEnum.SummonerSpell, new TypeReference<FileDto<SpellDto>>() {});
     }
 
-    private <T> FileDto<T> getFileDto(String version, DataKeyEnum key) {
-        return JSON.parseObject(getJsonStr(version, key), new TypeReference<FileDto<T>>() {
-        });
+    private <T> List<T> getValues(String version, DataKeyEnum key, TypeReference<FileDto<T>> typeReference) {
+        return new ArrayList<>(getMap(version, key, typeReference).values());
     }
 
-    /**
-     * Get the file of the key under the cdn of the defined version
-     */
-    private <T> Map<String, T> getDataMapByKey(String version, DataKeyEnum key, Class<T> clazz) {
-        String jsonStr = getJsonStr(version, key);
-        JSONObject data = JSON.parseObject(jsonStr).getJSONObject("data");
-        Map<String, T> map = new HashMap<>();
-        for (Map.Entry<String, Object> entry : data.entrySet()) {
-            map.put(entry.getKey(), JSON.parseObject(((JSON) entry.getValue()).toJSONString(), clazz, new RecordExtraProcessor(DragonDao.class)));
-        }
-        return map;
-
+    private <T> Map<String, T> getMap(String version, DataKeyEnum key, TypeReference<FileDto<T>> typeReference) {
+        return JSON.parseObject(getJsonStr(version, key), typeReference).getData();
     }
 
     @Autowired
@@ -176,15 +139,29 @@ public class DragonDaoImpl implements DragonDao {
         }
     }
 
+    /**
+     * Bean for the whole json file.
+     */
     @Data
     private static class FileDto<T> {
         private Map<String, T> data;
     }
 
+    /**
+     * Bean for map object.
+     */
+    @Data
+    private static class MapDto {
+        private Integer MapId;
+        private ImageDto image;
+    }
+
+    /**
+     * Bean for profile icon object.
+     */
     @Data
     private static class ProfileIconDto {
         private Integer id;
         private ImageDto image;
     }
-
 }
