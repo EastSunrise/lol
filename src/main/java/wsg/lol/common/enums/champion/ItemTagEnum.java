@@ -1,7 +1,7 @@
 package wsg.lol.common.enums.champion;
 
 /**
- * Enums for tags of the item.
+ * Enums for tags of the item. todo: title to add.
  *
  * @author Kingen
  */
@@ -35,5 +35,19 @@ public enum ItemTagEnum {
     Jungle,
     Stealth,
     Trinket,
-    SpellBlock
+    SpellBlock;
+
+    private String title;
+
+    ItemTagEnum() {
+        this.title = this.name();
+    }
+
+    ItemTagEnum(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
 }

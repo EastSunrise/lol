@@ -3,6 +3,8 @@ package wsg.lol.dao.dragon.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +13,10 @@ import org.springframework.stereotype.Component;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.game.MapEnum;
+import wsg.lol.common.pojo.deserializer.RecordExtraProcessor;
 import wsg.lol.common.pojo.dto.champion.ChampionExtDto;
+import wsg.lol.common.pojo.dto.champion.SpellDto;
+import wsg.lol.common.pojo.dto.general.ImageDto;
 import wsg.lol.common.pojo.dto.item.ItemExtDto;
 import wsg.lol.common.pojo.dto.others.MapDto;
 import wsg.lol.common.pojo.dto.rune.RuneDto;
@@ -77,7 +82,7 @@ public class DragonDaoImpl implements DragonDao {
         JSONArray treeArray = JSON.parseArray(jsonStr);
         List<RuneExtDto> runeExtDtoList = new ArrayList<>();
         for (Object tree : treeArray) {
-            RuneExtDto runeExtDto = JSON.parseObject(((JSON) tree).toJSONString(), RuneExtDto.class);
+            RuneExtDto runeExtDto = JSON.parseObject(((JSON) tree).toJSONString(), RuneExtDto.class, new RecordExtraProcessor(DragonDao.class));
             JSONArray slotsJson = ((JSONObject) tree).getJSONArray("slots");
             RuneDto[][] slots = new RuneDto[slotsJson.size()][];
             for (int i = 0; i < slotsJson.size(); i++) {
@@ -86,7 +91,7 @@ public class DragonDaoImpl implements DragonDao {
                 RuneDto[] runes = new RuneDto[runesJson.size()];
                 for (int j = 0; j < runesJson.size(); j++) {
                     Object rune = runesJson.get(j);
-                    runes[j] = JSON.parseObject(((JSON) rune).toJSONString(), RuneDto.class);
+                    runes[j] = JSON.parseObject(((JSON) rune).toJSONString(), RuneDto.class, new RecordExtraProcessor(DragonDao.class));
                 }
                 slots[i] = runes;
             }
@@ -94,6 +99,29 @@ public class DragonDaoImpl implements DragonDao {
             runeExtDtoList.add(runeExtDto);
         }
         return runeExtDtoList;
+    }
+
+    @Override
+    public List<ImageDto> readProfileIcons(String version) {
+        FileDto<ProfileIconDto> fileDto = getFileDto(version, DataKeyEnum.ProfileIcon);
+        List<ImageDto> imageDtoList = new ArrayList<>();
+        for (ProfileIconDto profileIconDto : fileDto.data.values()) {
+            ImageDto image = profileIconDto.getImage();
+            image.setRelatedId(image.getId());
+            image.setId(null);
+            imageDtoList.add(image);
+        }
+        return imageDtoList;
+    }
+
+    @Override
+    public List<SpellDto> readSummonerSpells(String version) {
+        return new ArrayList<>(getDataMapByKey(version, DataKeyEnum.SummonerSpell, SpellDto.class).values());
+    }
+
+    private <T> FileDto<T> getFileDto(String version, DataKeyEnum key) {
+        return JSON.parseObject(getJsonStr(version, key), new TypeReference<FileDto<T>>() {
+        });
     }
 
     /**
@@ -104,7 +132,7 @@ public class DragonDaoImpl implements DragonDao {
         JSONObject data = JSON.parseObject(jsonStr).getJSONObject("data");
         Map<String, T> map = new HashMap<>();
         for (Map.Entry<String, Object> entry : data.entrySet()) {
-            map.put(entry.getKey(), JSON.parseObject(((JSON) entry.getValue()).toJSONString(), clazz));
+            map.put(entry.getKey(), JSON.parseObject(((JSON) entry.getValue()).toJSONString(), clazz, new RecordExtraProcessor(DragonDao.class)));
         }
         return map;
 
@@ -121,7 +149,7 @@ public class DragonDaoImpl implements DragonDao {
     private String getJsonStr(String version, DataKeyEnum key) {
         String path = StringUtils.joinWith(File.separator, getCdnDir(version), version, "data", config.getLanguage(), key.getFileName());
         try {
-            logger.info("Reading file in " + path);
+            logger.info("Reading file " + path);
             return org.apache.commons.io.FileUtils.readFileToString(new File(path), StandardCharsets.UTF_8);
         } catch (IOException e) {
             logger.error("Read file error.", e);
@@ -134,6 +162,8 @@ public class DragonDaoImpl implements DragonDao {
         Item("item.json"),
         Map("map.json"),
         Rune("runesReforged.json"),
+        ProfileIcon("profileicon.json"),
+        SummonerSpell("summoner.json"),
         ;
         private String fileName;
 
@@ -145,4 +175,16 @@ public class DragonDaoImpl implements DragonDao {
             return fileName;
         }
     }
+
+    @Data
+    private static class FileDto<T> {
+        private Map<String, T> data;
+    }
+
+    @Data
+    private static class ProfileIconDto {
+        private Integer id;
+        private ImageDto image;
+    }
+
 }

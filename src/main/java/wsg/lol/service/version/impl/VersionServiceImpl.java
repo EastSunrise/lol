@@ -65,7 +65,7 @@ public class VersionServiceImpl implements VersionService {
 
     private ChampionStatsMapper championStatsMapper;
 
-    private ChampionSpellMapper championSpellMapper;
+    private SpellMapper spellMapper;
 
     private ItemMapper itemMapper;
 
@@ -169,34 +169,37 @@ public class VersionServiceImpl implements VersionService {
         AssertUtils.isSuccess(updateState(championStatsMapper, statsDtoList));
 
         logger.info("Updating the spells of champions.");
-        List<ChampionSpellDto> spellDtoList = new ArrayList<>();
+        List<SpellDto> spellDtoList = new ArrayList<>();
         imageDtoList = new ArrayList<>();
         SpellNumEnum[] enums = new SpellNumEnum[]{
                 SpellNumEnum.Q, SpellNumEnum.W, SpellNumEnum.E, SpellNumEnum.R
         };
         for (ChampionExtDto championExtDto : championExtDtoList) {
-            List<ChampionSpellDto> spells = championExtDto.getSpells();
+            List<SpellDto> spells = championExtDto.getSpells();
             Integer id = championExtDto.getId();
             for (int i = 0; i < spells.size(); i++) {
-                ChampionSpellDto spell = spells.get(i);
+                SpellDto spell = spells.get(i);
                 spell.setChampionId(id);
                 spell.setNum(enums[i]);
+                spell.setKey(SpellDto.calcKey(id, enums[i]));
+
                 ImageDto image = spell.getImage();
-                image.setRelatedId(spell.hashCode());
+                image.setRelatedId(spell.getKey());
                 imageDtoList.add(image);
             }
             spellDtoList.addAll(spells);
 
-            ChampionSpellDto passive = championExtDto.getPassive();
+            SpellDto passive = championExtDto.getPassive();
             passive.setChampionId(id);
-            passive.setNum(SpellNumEnum.Passive);
-            passive.setId(championExtDto.getKey() + "Passive");
+            passive.setNum(SpellNumEnum.P);
+            passive.setId(championExtDto.getKey() + SpellNumEnum.P.name());
+            passive.setKey(SpellDto.calcKey(id, SpellNumEnum.P));
             spellDtoList.add(passive);
             ImageDto image = passive.getImage();
-            image.setRelatedId(passive.hashCode());// TODO: (Kingen, 2019/11/18)
+            image.setRelatedId(passive.getKey());
             imageDtoList.add(image);
         }
-        AssertUtils.isSuccess(updateState(championSpellMapper, spellDtoList));
+        AssertUtils.isSuccess(updateState(spellMapper, spellDtoList));
         logger.info("Updating the images of champion spells.");
         AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.Spell, ImageGroupEnum.Passive));
 
@@ -269,7 +272,19 @@ public class VersionServiceImpl implements VersionService {
     @Override
     @Transactional
     public Result updateSummonerSpells(String version) {
-        logger.info("Start to update the data of summoner spells.");
+        logger.info("Updating the summoner spells.");
+        List<SpellDto> spellDtoList = dragonDao.readSummonerSpells(version);
+        List<ImageDto> imageDtoList = new ArrayList<>();
+        for (SpellDto spellDto : spellDtoList) {
+            spellDto.setNum(SpellNumEnum.S);
+            ImageDto image = spellDto.getImage();
+            image.setRelatedId(spellDto.getKey());
+            imageDtoList.add(image);
+        }
+        AssertUtils.isSuccess(updateState(spellMapper, spellDtoList));
+        logger.info("Updating the images of summoner spells.");
+        AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.SummonerSpell));
+
         return ResultUtils.success();
     }
 
@@ -285,6 +300,15 @@ public class VersionServiceImpl implements VersionService {
             imageDtoList.add(image);
         }
         AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.Map));
+
+        return ResultUtils.success();
+    }
+
+    @Override
+    public Result updateProfileIcons(String version) {
+        logger.info("Updating the images of profile icons.");
+        List<ImageDto> imageDtoList = dragonDao.readProfileIcons(version);
+        AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.ProfileIcon));
 
         return ResultUtils.success();
     }
@@ -388,7 +412,7 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Autowired
-    public void setChampionSpellMapper(ChampionSpellMapper championSpellMapper) {
-        this.championSpellMapper = championSpellMapper;
+    public void setSpellMapper(SpellMapper spellMapper) {
+        this.spellMapper = spellMapper;
     }
 }

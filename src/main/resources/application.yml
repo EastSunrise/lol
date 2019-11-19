@@ -25,10 +25,7 @@ mybatis:
 server:
   port: 8090
 logging:
-  pattern:
-    file: classpath:config/logback.xml
-  level:
-    wsg.lol.dao.mybatis.mapper: debug
+  config: classpath:config/logback.xml
 mapper:
   mappers: wsg.lol.dao.mybatis.common.BaseMapper
   identity: MYSQL

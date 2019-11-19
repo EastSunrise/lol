@@ -7,7 +7,7 @@ package wsg.lol.common.enums.game;
  * @see <a href="http://static.developer.riotgames.com/docs/lol/queues.json">queues.json</a>
  */
 public enum QueueIdEnum {
-    BlindPickGames5v5(2, MapEnum.SummonerRift, "5v5 Blind Pick games", "Deprecated in patch 7.19 in favor of queueId 430");
+    BlindPickGames5v5(2, MapEnum.SR, "5v5 Blind Pick games", "Deprecated in patch 7.19 in favor of queueId 430");
 
     private int queueId;
     private MapEnum map;

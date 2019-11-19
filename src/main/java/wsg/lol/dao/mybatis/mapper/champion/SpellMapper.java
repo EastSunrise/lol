@@ -2,7 +2,7 @@ package wsg.lol.dao.mybatis.mapper.champion;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-import wsg.lol.common.pojo.dto.champion.ChampionSpellDto;
+import wsg.lol.common.pojo.dto.champion.SpellDto;
 import wsg.lol.dao.mybatis.common.StaticStrategy;
 
 /**
@@ -12,5 +12,5 @@ import wsg.lol.dao.mybatis.common.StaticStrategy;
  */
 @Repository
 @Mapper
-public interface ChampionSpellMapper extends StaticStrategy<ChampionSpellDto> {
+public interface SpellMapper extends StaticStrategy<SpellDto> {
 }

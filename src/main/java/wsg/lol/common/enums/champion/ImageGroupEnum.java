@@ -10,5 +10,8 @@ public enum ImageGroupEnum {
     Item,
     Map,
     Spell,
-    Passive;
+    Passive,
+    SummonerSpell,
+    Mission, // TODO: (Kingen, 2019/11/19) mission-assets
+    ProfileIcon,
 }

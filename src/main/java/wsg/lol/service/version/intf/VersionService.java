@@ -47,6 +47,11 @@ public interface VersionService {
     Result updateMaps(String version);
 
     /**
+     * Update the data of profile icons once the version changes.
+     */
+    Result updateProfileIcons(String version);
+
+    /**
      * Update the data of summoner spells once the version changes.
      */
     Result updateSummonerSpells(String version);

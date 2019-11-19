@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.base.QueryDto;
+import wsg.lol.common.pojo.deserializer.RecordExtraProcessor;
 import wsg.lol.common.util.HttpHelper;
 import wsg.lol.common.util.ThreadUtils;
 
@@ -50,7 +51,7 @@ public class BaseApi {
      */
     protected <Q extends QueryDto, T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Q queryDto, Class<T> clazz) {
         String jsonStr = getJSONString(apiRef, pathParams, queryDto);
-        return JSON.parseObject(jsonStr, clazz);
+        return JSON.parseObject(jsonStr, clazz, new RecordExtraProcessor(BaseApi.class));
     }
 
     protected <T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {

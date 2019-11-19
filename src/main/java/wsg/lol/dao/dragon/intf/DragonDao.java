@@ -1,6 +1,8 @@
 package wsg.lol.dao.dragon.intf;
 
 import wsg.lol.common.pojo.dto.champion.ChampionExtDto;
+import wsg.lol.common.pojo.dto.champion.SpellDto;
+import wsg.lol.common.pojo.dto.general.ImageDto;
 import wsg.lol.common.pojo.dto.item.ItemExtDto;
 import wsg.lol.common.pojo.dto.others.MapDto;
 import wsg.lol.common.pojo.dto.rune.RuneExtDto;
@@ -38,4 +40,14 @@ public interface DragonDao {
      * Read the data of reforged runes
      */
     List<RuneExtDto> readRunes(String version);
+
+    /**
+     * Read the data of profile icons.
+     */
+    List<ImageDto> readProfileIcons(String version);
+
+    /**
+     * Read the data of summoner spells.
+     */
+    List<SpellDto> readSummonerSpells(String version);
 }

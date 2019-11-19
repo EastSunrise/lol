@@ -1,111 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration scan="true" scanPeriod="60 seconds">
+    <property name="LOG_HOME" value="./logs"/>
+
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{yyyy-M-d HH:mm:ss} %t %p %m%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
         </encoder>
     </appender>
     <appender name="springboot" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- <Encoding>UTF-8</Encoding> -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/logback/springboot_%d{yyyy-M-d}.log</FileNamePattern>
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/springboot.log</FileNamePattern>
             <MaxHistory>10</MaxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-M-d HH:mm:ss} %t %p %m%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
         </encoder>
     </appender>
     <appender name="controller" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/logback/controller_%d{yyyy-M-d}.log</FileNamePattern>
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/controller.log</FileNamePattern>
             <MaxHistory>10</MaxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-M-d HH:mm:ss} %t %p %m%n</pattern>
-        </encoder>
-    </appender>
-    <appender name="scheduler" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/logback/scheduler_%d{yyyy-M-d}.log</FileNamePattern>
-            <MaxHistory>10</MaxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{yyyy-M-d HH:mm:ss} %t %p %m%n</pattern>
-        </encoder>
-    </appender>
-    <appender name="runner" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/logback/runner_%d{yyyy-M-d}.log</FileNamePattern>
-            <MaxHistory>10</MaxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{yyyy-M-d HH:mm:ss} %t %p %m%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
         </encoder>
     </appender>
     <appender name="service" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/logback/service_%d{yyyy-M-d}.log</FileNamePattern>
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/service.log</FileNamePattern>
             <MaxHistory>10</MaxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-M-d HH:mm:ss} %t %p %m%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
         </encoder>
     </appender>
     <appender name="api" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/logback/api_%d{yyyy-M-d}.log</FileNamePattern>
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/api.log</FileNamePattern>
             <MaxHistory>10</MaxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-M-d HH:mm:ss} %t %p %m%n</pattern>
-        </encoder>
-    </appender>
-    <appender name="mybatis" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/logback/mybatis_%d{yyyy-M-d}.log</FileNamePattern>
-            <MaxHistory>10</MaxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{yyyy-M-d HH:mm:ss} %t %p %m%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
         </encoder>
     </appender>
     <appender name="dragon" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/logback/dragon_%d{yyyy-M-d}.log</FileNamePattern>
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/dragon.log</FileNamePattern>
             <MaxHistory>10</MaxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-M-d HH:mm:ss} %t %p %m%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="mybatis" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/mybatis.log</FileNamePattern>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="root" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/root.log</FileNamePattern>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
         </encoder>
     </appender>
 
-
+    <!--log file-->
     <logger name="org.springframework.boot" level="debug" additivity="false">
         <appender-ref ref="springboot"/>
     </logger>
     <logger name="wsg.lol.controller" level="debug" additivity="false">
         <appender-ref ref="controller"/>
-    </logger>
-    <logger name="wsg.lol.scheduler" level="debug" additivity="false">
-        <appender-ref ref="scheduler"/>
-    </logger>
-    <logger name="wsg.lol.runner" level="debug" additivity="false">
-        <appender-ref ref="runner"/>
+        <appender-ref ref="stdout"/>
     </logger>
     <logger name="wsg.lol.service" level="debug" additivity="false">
         <appender-ref ref="service"/>
+        <appender-ref ref="stdout"/>
     </logger>
     <logger name="wsg.lol.dao.api" level="debug" additivity="false">
         <appender-ref ref="api"/>
+        <appender-ref ref="stdout"/>
+    </logger>
+    <logger name="wsg.lol.dao.dragon" level="debug" additivity="false">
+        <appender-ref ref="dragon"/>
+        <appender-ref ref="stdout"/>
     </logger>
     <logger name="wsg.lol.dao.mybatis" level="debug" additivity="false">
         <appender-ref ref="mybatis"/>
     </logger>
-    <logger name="wsg.lol.dao.dragon" level="debug" additivity="false">
-        <appender-ref ref="dragon"/>
+    <root level="info">
+        <appender-ref ref="root"/>
+    </root>
+
+    <!--console-->
+    <logger name="org.springframework.boot" level="info" additivity="false">
+        <appender-ref ref="stdout"/>
     </logger>
-    <root level="debug">
+    <logger name="wsg.lol" level="info" additivity="false">
+        <appender-ref ref="stdout"/>
+    </logger>
+    <root level="warn">
         <appender-ref ref="stdout"/>
     </root>
 </configuration>
