@@ -11,9 +11,8 @@ import wsg.lol.common.enums.rank.DivisionEnum;
 import wsg.lol.common.enums.rank.PositionEnum;
 import wsg.lol.common.enums.rank.RankQueueEnum;
 import wsg.lol.common.enums.rank.TierEnum;
-import wsg.lol.common.pojo.dmo.champion.ChampionMasteryDmo;
-import wsg.lol.common.pojo.dmo.league.LeaguePositionDmo;
-import wsg.lol.common.pojo.dto.league.LeagueEntryDto;
+import wsg.lol.common.pojo.dmo.champion.ChampionMasteryDto;
+import wsg.lol.common.pojo.dmo.league.LeagueEntryDto;
 import wsg.lol.common.pojo.dto.league.LeagueItemDto;
 import wsg.lol.common.pojo.dto.league.LeagueListDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
@@ -87,11 +86,11 @@ public class RealServiceImpl implements RealService {
         Set<String> summonerIdSet = new HashSet<>();
         for (RankQueueEnum queue : RankQueueEnum.positionalValues()) {
             for (int i = 0; ; i++) {
-                List<LeagueEntryDto> leagueEntryDtoList = leagueV4.getAllPositionLeagues(queue, tier, division,
+                List<wsg.lol.common.pojo.dto.league.LeagueEntryDto> leagueEntryDtoList = leagueV4.getAllPositionLeagues(queue, tier, division,
                         position, i);
                 if (leagueEntryDtoList == null || leagueEntryDtoList.isEmpty())
                     break;
-                for (LeagueEntryDto leagueEntryDto : leagueEntryDtoList) {
+                for (wsg.lol.common.pojo.dto.league.LeagueEntryDto leagueEntryDto : leagueEntryDtoList) {
                     summonerIdSet.add(leagueEntryDto.getSummonerId());
                 }
             }
@@ -104,11 +103,11 @@ public class RealServiceImpl implements RealService {
     public Result updateSummoners() {
         // Get last unchecked summoners.
         logger.info("Get last unchecked summoners");
-//        Example example = new Example(SummonerDmo.class);
+//        Example example = new Example(SummonerDto.class);
 //        example.setOrderByClause("LAST_CHECKED_TIME ASC");
-//        List<SummonerDmo> summonerBaseList = summonerMapper.selectByExampleAndRowBounds(example,
+//        List<SummonerDto> summonerBaseList = summonerMapper.selectByExampleAndRowBounds(example,
 //                new Page().getRowBounds());
-//        for (SummonerDmo summonerDmo : summonerBaseList) {
+//        for (SummonerDto summonerDmo : summonerBaseList) {
 //            updateSummonerById(summonerDmo.getId());
 //        }
 
@@ -120,7 +119,7 @@ public class RealServiceImpl implements RealService {
     public Result updateSummonerById(String summonerId) {
         logger.info("Start to update " + summonerId);
         // update base info.
-//        SummonerDmo summonerDmo = summonerMapper.selectByPrimaryKey(summonerId);
+//        SummonerDto summonerDmo = summonerMapper.selectByPrimaryKey(summonerId);
 //        if (summonerDmo == null) {
 //            SummonerDto summonerDto = summonerV4.getSummoner(SummonerV4.CondKeyEnum.ID, summonerId);
 //            if (1 != summonerMapper.insertSummoner(summonerDto)) {
@@ -130,11 +129,11 @@ public class RealServiceImpl implements RealService {
 //        }
 
         // update the league.
-        List<LeagueEntryDto> positionDtoList = leagueV4.getLeaguePositionsBySummonerId(summonerId);
-        for (LeagueEntryDto positionDto : positionDtoList) {
-            LeaguePositionDmo leaguePositionDmo = leaguePositionMapper.selectByUnionKey(positionDto.getSummonerId(),
+        List<wsg.lol.common.pojo.dto.league.LeagueEntryDto> positionDtoList = leagueV4.getLeaguePositionsBySummonerId(summonerId);
+        for (wsg.lol.common.pojo.dto.league.LeagueEntryDto positionDto : positionDtoList) {
+            LeagueEntryDto leagueEntryDto = leaguePositionMapper.selectByUnionKey(positionDto.getSummonerId(),
                     positionDto.getQueueType(), positionDto.getPosition());
-            if (leaguePositionDmo == null) {
+            if (leagueEntryDto == null) {
                 if (1 != leaguePositionMapper.insertPosition(positionDto)) {
                     throw new AppException("Fail to insert position.");
                 }
@@ -148,7 +147,7 @@ public class RealServiceImpl implements RealService {
         // update the mastery.
         List<SummonerMasteryDto> masteryDtoList = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
         for (SummonerMasteryDto masteryDto : masteryDtoList) {
-            ChampionMasteryDmo masteryDmo = masteryMapper.selectByUnionKey(masteryDto.getSummonerId(),
+            ChampionMasteryDto masteryDmo = masteryMapper.selectByUnionKey(masteryDto.getSummonerId(),
                     masteryDto.getChampionId());
             if (masteryDmo == null) {
                 if (1 != masteryMapper.insertMastery(masteryDto)) {
@@ -188,7 +187,7 @@ public class RealServiceImpl implements RealService {
 //        }
 //
 //        // update the last check time.
-//        SummonerDmo updateDmo = new SummonerDmo();
+//        SummonerDto updateDmo = new SummonerDto();
 //        updateDmo.setId(summonerDmo.getId());
 //        updateDmo.setLastCheckedTime(lastCheckedTime);
 //        if (1 != summonerMapper.updateByPrimaryKeySelective(updateDmo)) {
@@ -201,12 +200,12 @@ public class RealServiceImpl implements RealService {
     @Override
     public Result extendLib() {
         logger.info("Get last unchecked matches.");
-//        Example example = new Example(MatchReferenceDmo.class);
+//        Example example = new Example(MatchReferenceDto.class);
 //        example.setOrderByClause("CHECKED ASC");
-//        List<MatchReferenceDmo> referenceDmoList = referenceMapper.selectByExampleAndRowBounds(example,
+//        List<MatchReferenceDto> referenceDmoList = referenceMapper.selectByExampleAndRowBounds(example,
 //                new Page().getRowBounds());
 //
-//        for (MatchReferenceDmo referenceDmo : referenceDmoList) {
+//        for (MatchReferenceDto referenceDmo : referenceDmoList) {
 //            updateMatchReference(referenceDmo.getId());
 //        }
         return ResultUtils.success();

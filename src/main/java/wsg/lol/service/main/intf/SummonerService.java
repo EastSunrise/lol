@@ -1,6 +1,6 @@
 package wsg.lol.service.main.intf;
 
-import wsg.lol.common.pojo.dmo.summoner.SummonerDmo;
+import wsg.lol.common.pojo.dmo.summoner.SummonerDto;
 
 /**
  * wsg
@@ -9,5 +9,5 @@ import wsg.lol.common.pojo.dmo.summoner.SummonerDmo;
  */
 public interface SummonerService {
 
-    SummonerDmo getSummonerById(String id);
+    SummonerDto getSummonerById(String id);
 }

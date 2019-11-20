@@ -28,6 +28,6 @@ public enum ChampionTagEnum implements JsonSerializable {
 
     @Override
     public String serialize() {
-        return null;
+        return name();
     }
 }

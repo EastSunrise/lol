@@ -1,9 +1,9 @@
 package wsg.lol.common.base;
 
 /**
- * wsg
+ * Base class of query condition.
  *
- * @author EastSunrise
+ * @author Kingen
  */
 public class QueryDto {
 

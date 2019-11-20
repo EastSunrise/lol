@@ -1,9 +1,9 @@
 package wsg.lol.common.base;
 
 /**
- * wsg
+ * Interface for custom enums.
  *
- * @author EastSunrise
+ * @author Kingen
  */
 public interface BaseEnum<T> {
     T getValue();

@@ -1,23 +1,20 @@
 package wsg.lol.common.pojo.dmo.champion;
 
-import tk.mybatis.mapper.annotation.KeySql;
-import wsg.lol.common.base.BaseDmo;
-import wsg.lol.common.base.Persistable;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import wsg.lol.common.base.BaseDto;
 
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 
 /**
- * wsg
+ * Bean for champion mastery of summoners.
  *
- * @author EastSunrise
+ * @author Kingen
  */
-@Table(name = "c_mastery")
-public class ChampionMasteryDmo extends BaseDmo implements Persistable {
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class ChampionMasteryDto extends BaseDto {
 
-    @Id
-    @KeySql(useGeneratedKeys = true)
     private Integer id;
 
     private String summonerId;

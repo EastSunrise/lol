@@ -1,9 +1,9 @@
 package wsg.lol.common.base;
 
 /**
- * wsg
+ * Base class of beans.
  *
- * @author EastSunrise
+ * @author Kingen
  */
 public class BaseDto {
 }

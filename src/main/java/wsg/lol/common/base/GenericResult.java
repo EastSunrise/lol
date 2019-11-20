@@ -1,7 +1,7 @@
 package wsg.lol.common.base;
 
 /**
- * Generic result
+ * Generic result.
  *
  * @author Kingen
  */
