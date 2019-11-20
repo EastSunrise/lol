@@ -24,7 +24,7 @@ create table lol.i_item
     required_champion varchar(32)   null comment '可购买的英雄',
     special_recipe    int           null comment '？？？',
     required_ally     varchar(32)   null comment '友方英雄要求，目前仅有Ornn',
-    constraint i_item_pk primary key (id)
+    primary key (id)
 ) comment ='装备表';
 
 
@@ -32,31 +32,43 @@ create table lol.i_item
 drop table if exists lol.i_stats;
 create table lol.i_stats
 (
-    item_id int not null comment '主键',
-    constraint i_stats_pk primary key (item_id)
+    item_id                    int    not null comment '主键',
+    flat_hp_pool_mod           int    null comment '？？？',
+    flat_mp_pool_mod           int    null comment '？？？',
+    flat_hp_regen_mod          double null comment '？？？',
+    flat_armor_mod             int    null comment '？？？',
+    flat_physical_damage_mod   int    null comment '？？？',
+    flat_magic_damage_mod      int    null comment '？？？',
+    flat_movement_speed_mod    int    null comment '？？？',
+    percent_movement_speed_mod double null comment '？？？',
+    percent_attack_speed_mod   double null comment '？？？',
+    flat_crit_chance_mod       double null comment '？？？',
+    flat_spell_block_mod       int    null comment '？？？',
+    percent_life_steal_mod     double null comment '？？？',
+    primary key (item_id)
 ) comment ='装备统计数据表';
 
 -- 装备推荐表
 drop table if exists lol.ct_recommended;
 create table lol.ct_recommended
 (
-    id                              int auto_increment not null comment '主键',
-    champion                        varchar(32)        not null comment '英雄KEY',
-    title                           varchar(32)        not null comment '标题',
-    map                             tinyint            not null comment '适用地图枚举',
-    mode                            tinyint            not null comment '适用模式枚举',
-    type                            tinyint            not null comment '类型枚举',
-    priority                        tinyint            null comment '？？？',
-    custom_tag                      varchar(32)        null comment '自定义标签',
-    sortrank                        int                null comment '？？？',
-    extension_page                  tinyint            null comment '？？？',
-    use_obvious_checkmark           tinyint            null comment '？？？',
-    exten_ornn_page                 tinyint            null comment '？？？',
-    required_perk                   varchar(32)        null comment '？？？',
-    custom_panel                    varchar(32)        null comment '？？？',
-    custom_panel_buff_currency_name varchar(32)        null comment '？？？',
-    custom_panel_currency_type      varchar(32)        null comment '？？？',
-    constraint ct_recommended_pk primary key (id)
+    id                              int         not null comment '主键，手动生成',
+    champion                        varchar(32) not null comment '英雄KEY',
+    title                           varchar(32) not null comment '标题',
+    map                             tinyint     null comment '适用地图枚举',
+    mode                            tinyint     null comment '适用模式枚举',
+    type                            tinyint     null comment '类型枚举',
+    priority                        tinyint     null comment '？？？',
+    custom_tag                      varchar(32) null comment '自定义标签',
+    sortrank                        int         null comment '？？？',
+    extension_page                  tinyint     null comment '？？？',
+    use_obvious_checkmark           tinyint     null comment '？？？',
+    exten_ornn_page                 tinyint     null comment '？？？',
+    required_perk                   varchar(32) null comment '？？？',
+    custom_panel                    varchar(32) null comment '？？？',
+    custom_panel_buff_currency_name varchar(32) null comment '？？？',
+    custom_panel_currency_type      varchar(32) null comment '？？？',
+    primary key (id)
 ) comment ='装备推荐表';
 
 -- 装备推荐分区表
@@ -65,7 +77,7 @@ create table lol.ct_block
 (
     id                     int auto_increment not null comment '主键',
     recommended_id         int                not null comment '所属推荐主键',
-    type                   tinyint            not null comment '类型枚举',
+    type                   tinyint            null comment '类型枚举',
     rec_math               tinyint            null comment '？？？',
     rec_steps              tinyint            null comment '？？？',
     min_summoner_level     int                null comment '最低召唤师等级',
@@ -75,8 +87,8 @@ create table lol.ct_block
     append_after_section   varchar(32)        null comment '？？？',
     visible_with_all_of    varchar(32)        null comment '？？？',
     hidden_with_any_of     varchar(32)        null comment '？？？',
-    items                  varchar(32)        null comment '推荐的装备数组',
-    constraint ct_block_pk primary key (id)
+    items                  varchar(1024)      null comment '推荐的装备数组',
+    primary key (id)
 ) comment ='装备推荐分区表';
 
 commit;

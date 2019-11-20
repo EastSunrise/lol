@@ -9,7 +9,7 @@
 
     <!--指定特定数据库的jdbc驱动jar包的位置-->
     <classPathEntry
-            location="C:\Users\wsg78\.IntelliJIdea2019.2\config\jdbc-drivers\MySQL Connector\J 8\8.0.15\mysql-connector-java-8.0.15.jar"/>
+            location="D:\Devs\apache-maven-3.6.1\repository\mysql\mysql-connector-java\8.0.15\mysql-connector-java-8.0.15.jar"/>
 
     <context id="default" targetRuntime="MyBatis3">
 
@@ -69,7 +69,10 @@
                 enableCountByExample: 是否可以通过对象查数量
                 enableUpdateByExample: 是否可以通过对象进行更新
         -->
-        <table schema="lol" tableName="i_item" domainObjectName="Item" enableCountByExample="false"
+        <table schema="lol" tableName="ct_recommended" domainObjectName="Recommended" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="ct_block" domainObjectName="Block" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>
     </context>

@@ -1,5 +1,6 @@
 package wsg.lol.controller.version;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.GenericResult;
+import wsg.lol.common.pojo.deserializer.RecordExtraProcessor;
 import wsg.lol.common.result.version.VersionResult;
-import wsg.lol.common.util.AssertUtils;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.service.version.intf.VersionService;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * // TODO: (Kingen, 2019/11/8)
@@ -69,13 +73,16 @@ public class VersionTask implements ApplicationRunner {
         try {
             transactionTemplate.execute(transactionStatus -> {
                 logger.info("Updating the version from " + versionResult.getCurrentVersion() + " to " + version);
-                AssertUtils.isSuccess(versionService.updateChampions(version));
-                AssertUtils.isSuccess(versionService.updateItems(version));
-                AssertUtils.isSuccess(versionService.updateMaps(version));
-                AssertUtils.isSuccess(versionService.updateRunes(version));
-                AssertUtils.isSuccess(versionService.updateProfileIcons(version));
-                AssertUtils.isSuccess(versionService.updateSummonerSpells(version));
-//                AssertUtils.isSuccess(versionService.updateVersion(version));
+                ResultUtils.assertSuccess(versionService.updateChampions(version));
+                ResultUtils.assertSuccess(versionService.updateItems(version));
+                ResultUtils.assertSuccess(versionService.updateMaps(version));
+                ResultUtils.assertSuccess(versionService.updateRunes(version));
+                ResultUtils.assertSuccess(versionService.updateProfileIcons(version));
+                ResultUtils.assertSuccess(versionService.updateSummonerSpells(version));
+                for (Map.Entry<String, Set<Object>> entry : RecordExtraProcessor.getExtraMap().entrySet()) {
+                    logger.info("Extra field. Field: {}; value: {}.", entry.getKey(), StringUtils.join(entry.getValue(), ","));
+                }
+//                AssertUtils.assertSuccess(versionService.updateVersion(version));
                 return ResultUtils.success();
             });
         } catch (AppException e) {

@@ -7,12 +7,10 @@ import wsg.lol.common.enums.champion.RecommendedTypeEnum;
 import wsg.lol.common.enums.game.GameModeEnum;
 import wsg.lol.common.enums.game.MapEnum;
 
-import java.util.List;
-
 /**
- * wsg
+ * Bean for recommended items.
  *
- * @author EastSunrise
+ * @author Kingen
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -35,5 +33,11 @@ public class RecommendedDto extends BaseDto {
     private Object customPanel;
     private Object customPanelBuffCurrencyName;
     private Object customPanelCurrencyType;
-    private List<BlockDto> blocks;
+
+    /**
+     * Generate the id by <expression>{@param #index} * 10000 + {@param #championId}</expression>
+     */
+    public static Integer generateId(Integer championId, int index) {
+        return index * 10000 + championId;
+    }
 }

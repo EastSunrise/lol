@@ -17,11 +17,14 @@ public enum MapEnum {
     HA(12, "Howling Abyss", "ARAM map", "嚎哭深渊"),
     ButchersBridge(14, "Butcher's Bridge", "Alternate ARAM map", "屠夫之桥"),
     CosmicRuins(16, "Cosmic Ruins", "Dark Star: Singularity map"),
-    ValoranCityPark(18, "Valoran City Park", "Star Guardian Invasion map"),
+    CityPark(18, "Valoran City Park", "Star Guardian Invasion map"),
     Substructure43(19, "Substructure 43", "PROJECT: Hunters map"),
     Odyssey(20, "Crash Site", "Odyssey: Extraction map", "奥德赛"),
     NexusBlitz(21, "Nexus Blitz", "Nexus Blitz map", "扭曲闪电战"),
     TeamfightTactics(22, "Teamfight Tactics", "Teamfight Tactics map", "云顶之弈"),
+
+    SL(30, "", ""),
+    ProjectSlums(31, "", ""),
     ;
 
     private int mapId;

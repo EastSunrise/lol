@@ -6,7 +6,7 @@
         from lol.c_stats
     </delete>
 
-    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.champion.ChampionStatsDto" useGeneratedKeys="true">
+    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.champion.ChampionStatsDto">
         insert into lol.c_stats
         values
         <foreach collection="list" item="item" separator=",">

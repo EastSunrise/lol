@@ -6,7 +6,7 @@
         from lol.c_skin
     </delete>
 
-    <insert id="batchInsert">
+    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.champion.SkinDto">
         insert into lol.c_skin
         values
         <foreach collection="list" item="item" separator=",">

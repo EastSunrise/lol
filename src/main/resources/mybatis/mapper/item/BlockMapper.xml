@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wsg.lol.dao.mybatis.mapper.item.BlockMapper">
+    <delete id="clear">
+        delete
+        from lol.ct_block
+    </delete>
+    <insert id="batchInsert" useGeneratedKeys="true" parameterType="wsg.lol.common.pojo.dto.recommend.BlockDto">
+        insert into lol.ct_block
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},
+            #{item.recommendedId},
+            #{item.type},
+            #{item.recMath},
+            #{item.recSteps},
+            #{item.minSummonerLevel},
+            #{item.maxSummonerLevel},
+            #{item.showIfSummonerSpell},
+            #{item.hideIfSummonerSpell},
+            #{item.appendAfterSection},
+            #{item.visibleWithAllOf},
+            #{item.hiddenWithAnyOf},
+            #{item.items})
+        </foreach>
+
+    </insert>
+</mapper>

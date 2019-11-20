@@ -1,5 +1,6 @@
 package wsg.lol.service.version.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,18 +21,22 @@ import wsg.lol.common.pojo.dto.general.ImageDto;
 import wsg.lol.common.pojo.dto.item.ItemDto;
 import wsg.lol.common.pojo.dto.item.ItemExtDto;
 import wsg.lol.common.pojo.dto.item.ItemStatsDto;
+import wsg.lol.common.pojo.dto.recommend.BlockDto;
+import wsg.lol.common.pojo.dto.recommend.RecommendedDto;
+import wsg.lol.common.pojo.dto.recommend.RecommendedExtDto;
 import wsg.lol.common.pojo.dto.rune.RuneDto;
 import wsg.lol.common.pojo.dto.rune.RuneExtDto;
 import wsg.lol.common.pojo.dto.rune.RuneTreeDto;
 import wsg.lol.common.result.version.VersionResult;
-import wsg.lol.common.util.AssertUtils;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.dragon.intf.GeneralDao;
 import wsg.lol.dao.mybatis.common.StaticStrategy;
 import wsg.lol.dao.mybatis.mapper.champion.*;
+import wsg.lol.dao.mybatis.mapper.item.BlockMapper;
 import wsg.lol.dao.mybatis.mapper.item.ItemMapper;
 import wsg.lol.dao.mybatis.mapper.item.ItemStatsMapper;
+import wsg.lol.dao.mybatis.mapper.item.RecommendedMapper;
 import wsg.lol.dao.mybatis.mapper.rune.RuneMapper;
 import wsg.lol.dao.mybatis.mapper.rune.RuneTreeMapper;
 import wsg.lol.dao.mybatis.mapper.system.ConfigMapper;
@@ -77,6 +82,10 @@ public class VersionServiceImpl implements VersionService {
 
     private RuneTreeMapper runeTreeMapper;
 
+    private RecommendedMapper recommendedMapper;
+
+    private BlockMapper blockMapper;
+
     @Override
     public GenericResult<Boolean> checkCdn(String version) {
         String cdnDir = dragonDao.getCdnDir(version);
@@ -115,7 +124,7 @@ public class VersionServiceImpl implements VersionService {
 
         logger.info("Updating the champions.");
         List<ChampionDto> championDtoList = new ArrayList<>(championExtDtoList);
-        AssertUtils.isSuccess(updateState(championMapper, championDtoList));
+        ResultUtils.assertSuccess(updateStatic(championMapper, championDtoList));
 
         logger.info("Updating the images of champions.");
         List<ImageDto> imageDtoList = new ArrayList<>();
@@ -124,7 +133,7 @@ public class VersionServiceImpl implements VersionService {
             image.setRelatedId(championExtDto.getId());
             imageDtoList.add(image);
         }
-        AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.Champion));
+        ResultUtils.assertSuccess(updateImages(imageDtoList, ImageGroupEnum.Champion));
 
         logger.info("Updating the skins.");
         List<SkinDto> skinDtoList = new ArrayList<>();
@@ -136,7 +145,7 @@ public class VersionServiceImpl implements VersionService {
             }
             skinDtoList.addAll(skins);
         }
-        AssertUtils.isSuccess(updateState(skinMapper, skinDtoList));
+        ResultUtils.assertSuccess(updateStatic(skinMapper, skinDtoList));
 
         logger.info("Updating the tips of champions.");
         List<ChampionTipDto> championTipDtoList = new ArrayList<>();
@@ -157,7 +166,7 @@ public class VersionServiceImpl implements VersionService {
                 championTipDtoList.add(championTipDto);
             }
         }
-        AssertUtils.isSuccess(updateState(championTipMapper, championTipDtoList));
+        ResultUtils.assertSuccess(updateStatic(championTipMapper, championTipDtoList));
 
         logger.info("Updating the stats of champions.");
         List<ChampionStatsDto> statsDtoList = new ArrayList<>();
@@ -166,7 +175,7 @@ public class VersionServiceImpl implements VersionService {
             stats.setChampionId(championExtDto.getId());
             statsDtoList.add(stats);
         }
-        AssertUtils.isSuccess(updateState(championStatsMapper, statsDtoList));
+        ResultUtils.assertSuccess(updateStatic(championStatsMapper, statsDtoList));
 
         logger.info("Updating the spells of champions.");
         List<SpellDto> spellDtoList = new ArrayList<>();
@@ -204,11 +213,36 @@ public class VersionServiceImpl implements VersionService {
                 logger.error(spellDto.getId());
             }
         }
-        AssertUtils.isSuccess(updateSpells(spellDtoList,
+        ResultUtils.assertSuccess(updateSpells(spellDtoList,
                 SpellNumEnum.P, SpellNumEnum.Q, SpellNumEnum.W, SpellNumEnum.E, SpellNumEnum.R
         ));
         logger.info("Updating the images of champion spells.");
-        AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.Spell, ImageGroupEnum.Passive));
+        ResultUtils.assertSuccess(updateImages(imageDtoList, ImageGroupEnum.Spell, ImageGroupEnum.Passive));
+
+        logger.info("Updating the recommended items of champions.");
+        List<RecommendedDto> recommendedDtoList = new ArrayList<>();
+        List<BlockDto> blockDtoList = new ArrayList<>();
+        int max = 0;
+        for (ChampionExtDto championExtDto : championExtDtoList) {
+            List<RecommendedExtDto> recommendedExtDtoList = championExtDto.getRecommended();
+            for (int i = 0; i < recommendedExtDtoList.size(); i++) {
+                RecommendedExtDto recommendedExtDto = recommendedExtDtoList.get(i);
+                Integer generateId = RecommendedDto.generateId(championExtDto.getId(), i);
+                recommendedExtDto.setId(generateId);
+                recommendedDtoList.add(recommendedExtDto);
+
+                for (BlockDto block : recommendedExtDto.getBlocks()) {
+                    block.setRecommendedId(generateId);
+                    blockDtoList.add(block);
+                    int length = JSONArray.toJSONString(block.getItems()).length();
+                    if (length > max) {
+                        max = length;
+                    }
+                }
+            }
+        }
+        ResultUtils.assertSuccess(updateStatic(recommendedMapper, recommendedDtoList));
+        ResultUtils.assertSuccess(updateStatic(blockMapper, blockDtoList));
 
         logger.info("Succeed in updating the data of champions.");
         return ResultUtils.success();
@@ -222,7 +256,7 @@ public class VersionServiceImpl implements VersionService {
 
         logger.info("Updating the items.");
         List<ItemDto> itemDtoList = new ArrayList<>(itemExtDtoList);
-        AssertUtils.isSuccess(updateState(itemMapper, itemDtoList));
+        ResultUtils.assertSuccess(updateStatic(itemMapper, itemDtoList));
 
         logger.info("Updating the stats of items.");
         List<ItemStatsDto> itemStatsDtoList = new ArrayList<>();
@@ -231,7 +265,7 @@ public class VersionServiceImpl implements VersionService {
             stats.setItemId(itemExtDto.getId());
             itemStatsDtoList.add(stats);
         }
-        AssertUtils.isSuccess(updateState(itemStatsMapper, itemStatsDtoList));
+        ResultUtils.assertSuccess(updateStatic(itemStatsMapper, itemStatsDtoList));
 
         logger.info("Updating the images of items.");
         List<ImageDto> imageDtoList = new ArrayList<>();
@@ -240,7 +274,7 @@ public class VersionServiceImpl implements VersionService {
             image.setRelatedId(itemExtDto.getId());
             imageDtoList.add(image);
         }
-        AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.Item));
+        ResultUtils.assertSuccess(updateImages(imageDtoList, ImageGroupEnum.Item));
 
         logger.info("Succeed in updating the data of items.");
         return ResultUtils.success();
@@ -254,7 +288,7 @@ public class VersionServiceImpl implements VersionService {
 
         logger.info("Updating the rune trees.");
         List<RuneTreeDto> runeTreeDtoList = new ArrayList<>(runeExtDtoList);
-        AssertUtils.isSuccess(updateState(runeTreeMapper, runeTreeDtoList));
+        ResultUtils.assertSuccess(updateStatic(runeTreeMapper, runeTreeDtoList));
 
         logger.info("Updating the runes.");
         List<RuneDto> runeDtoList = new ArrayList<>();
@@ -273,7 +307,7 @@ public class VersionServiceImpl implements VersionService {
                 }
             }
         }
-        AssertUtils.isSuccess(updateState(runeMapper, runeDtoList));
+        ResultUtils.assertSuccess(updateStatic(runeMapper, runeDtoList));
 
         logger.info("Succeed in updating the data of runes.");
         return ResultUtils.success();
@@ -291,9 +325,9 @@ public class VersionServiceImpl implements VersionService {
             image.setRelatedId(spellDto.getKey());
             imageDtoList.add(image);
         }
-        AssertUtils.isSuccess(updateSpells(spellDtoList, SpellNumEnum.S));
+        ResultUtils.assertSuccess(updateSpells(spellDtoList, SpellNumEnum.S));
         logger.info("Updating the images of summoner spells.");
-        AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.SummonerSpell));
+        ResultUtils.assertSuccess(updateImages(imageDtoList, ImageGroupEnum.SummonerSpell));
 
         logger.info("Succeed in updating the data of summoner spells.");
         return ResultUtils.success();
@@ -303,8 +337,14 @@ public class VersionServiceImpl implements VersionService {
     @Transactional
     public Result updateMaps(String version) {
         logger.info("Updating the images of maps.");
-        List<ImageDto> imageDtoList = dragonDao.readMaps(version);
-        AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.Map));
+        Map<Integer, ImageDto> map = dragonDao.readMaps(version);
+        List<ImageDto> images = new ArrayList<>();
+        for (Map.Entry<Integer, ImageDto> entry : map.entrySet()) {
+            ImageDto image = entry.getValue();
+            image.setRelatedId(entry.getKey());
+            images.add(image);
+        }
+        ResultUtils.assertSuccess(updateImages(images, ImageGroupEnum.Map));
 
         logger.info("Succeed in updating the data of maps.");
         return ResultUtils.success();
@@ -313,14 +353,20 @@ public class VersionServiceImpl implements VersionService {
     @Override
     public Result updateProfileIcons(String version) {
         logger.info("Updating the images of profile icons.");
-        List<ImageDto> imageDtoList = dragonDao.readProfileIcons(version);
-        AssertUtils.isSuccess(updateImages(imageDtoList, ImageGroupEnum.ProfileIcon));
+        Map<Integer, ImageDto> map = dragonDao.readProfileIcons(version);
+        List<ImageDto> images = new ArrayList<>();
+        for (Map.Entry<Integer, ImageDto> entry : map.entrySet()) {
+            ImageDto image = entry.getValue();
+            image.setRelatedId(entry.getKey());
+            images.add(image);
+        }
+        ResultUtils.assertSuccess(updateImages(images, ImageGroupEnum.ProfileIcon));
 
         logger.info("Succeed in updating the data of profile icons.");
         return ResultUtils.success();
     }
 
-    private <T> Result updateState(StaticStrategy<T> strategy, List<T> data) {
+    private <T> Result updateStatic(StaticStrategy<T> strategy, List<T> data) {
         if (CollectionUtils.isEmpty(data)) {
             logger.info("Collection is empty. Nothing updated.");
             return ResultUtils.success();
@@ -377,6 +423,16 @@ public class VersionServiceImpl implements VersionService {
         }
         logger.info("Inserted " + count + " spells of " + StringUtils.join(nums, ", "));
         return ResultUtils.success();
+    }
+
+    @Autowired
+    public void setRecommendedMapper(RecommendedMapper recommendedMapper) {
+        this.recommendedMapper = recommendedMapper;
+    }
+
+    @Autowired
+    public void setBlockMapper(BlockMapper blockMapper) {
+        this.blockMapper = blockMapper;
     }
 
     @Autowired

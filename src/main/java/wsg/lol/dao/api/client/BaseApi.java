@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import wsg.lol.common.base.QueryDto;
 import wsg.lol.common.pojo.deserializer.RecordExtraProcessor;
 import wsg.lol.common.util.HttpHelper;
-import wsg.lol.common.util.ThreadUtils;
 
 import javax.xml.ws.http.HTTPException;
 import java.io.BufferedReader;
@@ -112,8 +111,7 @@ public class BaseApi {
                 logger.info(urlConnection.getResponseMessage());
                 if (ResponseCodeEnum.RateLimitExceeded.getCode() == responseCode) {
                     long retryAfter = Long.parseLong(urlConnection.getHeaderField("Retry-After")) * DateUtils.MILLIS_PER_SECOND;
-                    logger.info("Thread (" + Thread.currentThread().getName() + ") slept for " + retryAfter / 1000 + "s");
-                    ThreadUtils.threadSleep(retryAfter);
+                    threadSleep(retryAfter);
                     continue;
                 }
                 if (ResponseCodeEnum.Unauthorized.getCode() == responseCode) {
@@ -123,8 +121,7 @@ public class BaseApi {
                 throw new HTTPException(responseCode);
             } catch (IOException e) {
                 e.printStackTrace();
-                logger.info("Thread (" + Thread.currentThread().getName() + ") slept for " + TIME_OUT / 1000 + "s");
-                ThreadUtils.threadSleep(TIME_OUT);
+                threadSleep(TIME_OUT);
             }
         }
     }
@@ -148,6 +145,15 @@ public class BaseApi {
             e.printStackTrace();
         }
         return getJSONString(apiClient.getRegion().getHost(), apiRef, pathParams, queryParams);
+    }
+
+    private void threadSleep(long millis) {
+        try {
+            logger.info("Thread (" + Thread.currentThread().getName() + ") sleeps for " + millis + " ms.");
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Autowired

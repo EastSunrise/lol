@@ -3,6 +3,7 @@ package wsg.lol.dao.dragon.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import lombok.Data;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ErrorCodeConst;
+import wsg.lol.common.pojo.deserializer.CustomParseConfig;
+import wsg.lol.common.pojo.deserializer.RecordExtraProcessor;
 import wsg.lol.common.pojo.dto.champion.ChampionExtDto;
 import wsg.lol.common.pojo.dto.champion.SpellDto;
 import wsg.lol.common.pojo.dto.general.ImageDto;
@@ -22,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,12 +46,12 @@ public class DragonDaoImpl implements DragonDao {
 
     @Override
     public List<ChampionExtDto> readChampions(String version) {
-        return getValues(version, DataKeyEnum.ChampionFull, new TypeReference<FileDto<ChampionExtDto>>() {});
+        return getValues(version, JsonTypeEnum.ChampionFull, new TypeReference<FileDto<ChampionExtDto>>() {});
     }
 
     @Override
     public List<ItemExtDto> readItems(String version) {
-        Map<String, ItemExtDto> map = getMap(version, DataKeyEnum.Item, new TypeReference<FileDto<ItemExtDto>>() {});
+        Map<String, ItemExtDto> map = getMap(version, JsonTypeEnum.Item, new TypeReference<FileDto<ItemExtDto>>() {});
         List<ItemExtDto> list = new ArrayList<>();
         for (Map.Entry<String, ItemExtDto> entry : map.entrySet()) {
             ItemExtDto itemExtDto = entry.getValue();
@@ -58,47 +62,61 @@ public class DragonDaoImpl implements DragonDao {
     }
 
     @Override
-    public List<ImageDto> readMaps(String version) {
-        List<MapDto> maps = getValues(version, DataKeyEnum.Map, new TypeReference<FileDto<MapDto>>() {});
-        List<ImageDto> images = new ArrayList<>();
-        for (MapDto map : maps) {
-            ImageDto image = map.image;
-            image.setRelatedId(map.MapId);
-            images.add(image);
+    public Map<Integer, ImageDto> readMaps(String version) {
+        Map<String, ImageDto> map = getImageMap(version, JsonTypeEnum.Map);
+        Map<Integer, ImageDto> result = new HashMap<>();
+        for (Map.Entry<String, ImageDto> entry : map.entrySet()) {
+            result.put(Integer.parseInt(entry.getKey()), entry.getValue());
         }
-        return images;
+        return result;
     }
 
     @Override
     public List<RuneExtDto> readRunes(String version) {
-        String jsonStr = getJsonStr(version, DataKeyEnum.Rune);
-        return JSON.parseArray(jsonStr, RuneExtDto.class);
+        return JSON.parseArray(getJsonStr(version, JsonTypeEnum.Rune), RuneExtDto.class);
     }
 
     @Override
-    public List<ImageDto> readProfileIcons(String version) {
-        List<ProfileIconDto> icons = getValues(version, DataKeyEnum.ProfileIcon, new TypeReference<FileDto<ProfileIconDto>>() {});
-        List<ImageDto> images = new ArrayList<>();
-        for (ProfileIconDto iconDto : icons) {
-            ImageDto image = iconDto.getImage();
-            image.setRelatedId(iconDto.getId());
-            image.setId(null);
-            images.add(image);
+    public Map<Integer, ImageDto> readProfileIcons(String version) {
+        Map<String, ImageDto> map = getImageMap(version, JsonTypeEnum.ProfileIcon);
+        Map<Integer, ImageDto> result = new HashMap<>();
+        for (Map.Entry<String, ImageDto> entry : map.entrySet()) {
+            result.put(Integer.parseInt(entry.getKey()), entry.getValue());
         }
-        return images;
+        return result;
     }
 
     @Override
     public List<SpellDto> readSummonerSpells(String version) {
-        return getValues(version, DataKeyEnum.SummonerSpell, new TypeReference<FileDto<SpellDto>>() {});
+        return getValues(version, JsonTypeEnum.SummonerSpell, new TypeReference<FileDto<SpellDto>>() {});
     }
 
-    private <T> List<T> getValues(String version, DataKeyEnum key, TypeReference<FileDto<T>> typeReference) {
+    @Override
+    public Map<String, String> readLanguages(String version) {
+        return getMap(version, JsonTypeEnum.Language, new TypeReference<FileDto<String>>() {});
+    }
+
+    @Override
+    public Map<String, ImageDto> readMissionAssets(String version) {
+        return getImageMap(version, JsonTypeEnum.MissionAsset);
+    }
+
+    private Map<String, ImageDto> getImageMap(String version, JsonTypeEnum key) {
+        Map<String, ImageExtDto> map = getMap(version, key, new TypeReference<FileDto<ImageExtDto>>() {});
+        Map<String, ImageDto> result = new HashMap<>();
+        for (Map.Entry<String, ImageExtDto> entry : map.entrySet()) {
+            result.put(entry.getKey(), entry.getValue().getImage());
+        }
+        return result;
+    }
+
+    private <T> List<T> getValues(String version, JsonTypeEnum key, TypeReference<FileDto<T>> typeReference) {
         return new ArrayList<>(getMap(version, key, typeReference).values());
     }
 
-    private <T> Map<String, T> getMap(String version, DataKeyEnum key, TypeReference<FileDto<T>> typeReference) {
-        return JSON.parseObject(getJsonStr(version, key), typeReference).getData();
+    @SuppressWarnings("unchecked")
+    private <T> Map<String, T> getMap(String version, JsonTypeEnum key, TypeReference<FileDto<T>> typeReference) {
+        return ((FileDto<T>) JSON.parseObject(getJsonStr(version, key), typeReference.getType(), new CustomParseConfig(), new RecordExtraProcessor(DragonDao.class), JSON.DEFAULT_PARSER_FEATURE)).getData();
     }
 
     @Autowired
@@ -109,38 +127,41 @@ public class DragonDaoImpl implements DragonDao {
     /**
      * Get the json string from the file.
      */
-    private String getJsonStr(String version, DataKeyEnum key) {
-        String path = StringUtils.joinWith(File.separator, getCdnDir(version), version, "data", config.getLanguage(), key.getFileName());
+    private String getJsonStr(String version, JsonTypeEnum key) {
+        String path = StringUtils.joinWith(File.separator, getCdnDir(version), version, "data", config.getLanguage(), key.getFilename());
         try {
             logger.info("Reading file " + path);
-            return org.apache.commons.io.FileUtils.readFileToString(new File(path), StandardCharsets.UTF_8);
+            return FileUtils.readFileToString(new File(path), StandardCharsets.UTF_8);
         } catch (IOException e) {
             logger.error("Read file error.", e);
             throw new AppException(ErrorCodeConst.DRAGON_FILE_IO_ERROR);
         }
     }
 
-    private enum DataKeyEnum {
+    private enum JsonTypeEnum {
         ChampionFull("championFull.json"),
         Item("item.json"),
         Map("map.json"),
         Rune("runesReforged.json"),
         ProfileIcon("profileicon.json"),
         SummonerSpell("summoner.json"),
+        Language("language.json"),
+        MissionAsset("mission-assets"),
         ;
-        private String fileName;
 
-        DataKeyEnum(String fileName) {
-            this.fileName = fileName;
+        private String filename;
+
+        JsonTypeEnum(String filename) {
+            this.filename = filename;
         }
 
-        public String getFileName() {
-            return fileName;
+        public String getFilename() {
+            return filename;
         }
     }
 
     /**
-     * Bean for the whole json file.
+     * Bean for the whole json file with "data".
      */
     @Data
     private static class FileDto<T> {
@@ -148,20 +169,10 @@ public class DragonDaoImpl implements DragonDao {
     }
 
     /**
-     * Bean for map object.
+     * Bean for extended images.
      */
     @Data
-    private static class MapDto {
-        private Integer MapId;
-        private ImageDto image;
-    }
-
-    /**
-     * Bean for profile icon object.
-     */
-    @Data
-    private static class ProfileIconDto {
-        private Integer id;
+    private static class ImageExtDto {
         private ImageDto image;
     }
 }

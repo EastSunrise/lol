@@ -11,6 +11,8 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Abstract handler between {@link T} array and the string joining the {@link #toString(T)} array separated with {@link #getSeparator()}
@@ -41,11 +43,11 @@ public abstract class AbstractArrayTypeHandler<T> implements TypeHandler<T[]> {
     public void setParameter(PreparedStatement preparedStatement, int index, T[] ts, JdbcType jdbcType) throws SQLException {
         String str = null;
         if (!ArrayUtils.isEmpty(ts)) {
-            String[] strings = new String[ts.length];
-            for (int i = 0; i < ts.length; i++) {
-                strings[i] = ts[i] == null ? null : toString(ts[i]);
+            List<String> list = new ArrayList<>();
+            for (T t : ts) {
+                list.add(t == null ? null : toString(t));
             }
-            str = StringUtils.join(strings, getSeparator());
+            str = StringUtils.join(list, getSeparator());
         }
         preparedStatement.setString(index, str);
     }

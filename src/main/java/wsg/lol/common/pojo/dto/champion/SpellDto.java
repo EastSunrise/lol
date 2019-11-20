@@ -11,7 +11,9 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * // TODO: (Kingen, 2019/11/18)
+ * Bean for spells of champions or summoners.
+ *
+ * @author Kingen
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -25,7 +27,6 @@ public class SpellDto extends BaseDto {
     private String description;
     private Integer maxrank;
     private String tooltip;
-    // TODO: (Kingen, 2019/11/18)
     private List<String> leveltipLabel;
     private List<String> leveltipEffect;
     private Double[] cooldown;
@@ -34,7 +35,7 @@ public class SpellDto extends BaseDto {
     private String costBurn;
     private Integer[] range;
     private String rangeBurn;
-    private String datavalues;// TODO: (Kingen, 2019/11/18) all are '{}'
+    private String datavalues;
     private Integer[][] effect;
     private String[] effectBurn;
     private List<SpellVarDto> vars;

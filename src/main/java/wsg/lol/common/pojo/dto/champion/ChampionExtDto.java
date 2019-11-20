@@ -3,7 +3,7 @@ package wsg.lol.common.pojo.dto.champion;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.pojo.dto.general.ImageDto;
-import wsg.lol.common.pojo.dto.recommend.RecommendedDto;
+import wsg.lol.common.pojo.dto.recommend.RecommendedExtDto;
 
 import java.util.List;
 
@@ -23,5 +23,5 @@ public class ChampionExtDto extends ChampionDto {
     private List<String> allytips;
     private List<String> enemytips;
     private List<SpellDto> spells;
-    private List<RecommendedDto> recommended;
+    private List<RecommendedExtDto> recommended;
 }

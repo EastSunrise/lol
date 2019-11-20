@@ -7,6 +7,7 @@ import wsg.lol.common.pojo.dto.item.ItemExtDto;
 import wsg.lol.common.pojo.dto.rune.RuneExtDto;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Static data interface.
@@ -32,21 +33,35 @@ public interface DragonDao {
 
     /**
      * Read the data of images of maps.
+     *
+     * @return key-values for map id mapping the image of the map.
      */
-    List<ImageDto> readMaps(String version);
+    Map<Integer, ImageDto> readMaps(String version);
 
     /**
-     * Read the data of reforged runes
+     * Read reforged runes.
      */
     List<RuneExtDto> readRunes(String version);
 
     /**
      * Read the data of images of profile icons.
+     *
+     * @return key-values for profile icon id mapping the image of the icon.
      */
-    List<ImageDto> readProfileIcons(String version);
+    Map<Integer, ImageDto> readProfileIcons(String version);
 
     /**
      * Read the data of summoner spells.
      */
     List<SpellDto> readSummonerSpells(String version);
+
+    /**
+     * Read the data of languages.
+     */
+    Map<String, String> readLanguages(String version);
+
+    /**
+     * Read the data of mission assets.
+     */
+    Map<String, ImageDto> readMissionAssets(String version);
 }

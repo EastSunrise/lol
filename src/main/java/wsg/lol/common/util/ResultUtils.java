@@ -1,5 +1,6 @@
 package wsg.lol.common.util;
 
+import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
 
@@ -48,5 +49,11 @@ public class ResultUtils {
         result.setErrorCode(ErrorCodeConst.SYSTEM_ERROR);
         result.setMessage(e.toString());
         return result;
+    }
+
+    public static void assertSuccess(Result result) {
+        if (!result.isSuccess()) {
+            throw new AppException(result);
+        }
     }
 }

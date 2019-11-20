@@ -119,6 +119,6 @@ public class HttpHelper {
                 }
             }
         }
-        return StringUtils.join(list.toArray(new String[0]), "&");
+        return StringUtils.join(list, "&");
     }
 }

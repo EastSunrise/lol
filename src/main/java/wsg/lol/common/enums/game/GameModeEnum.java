@@ -30,6 +30,10 @@ public enum GameModeEnum {
     PROJECT("PROJECT: Hunters games"),
     GAMEMODEX("Nexus Blitz games"),
     ODYSSEY("Odyssey: Extraction games"),
+
+    INTRO(""),
+    TUTORIAL_MODULE_2(""),
+    TUTORIAL_MODULE_3(""),
     ;
 
     private String description;

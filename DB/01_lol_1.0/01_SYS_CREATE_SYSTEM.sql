@@ -5,7 +5,7 @@ create table lol.t_config
     name        varchar(32)  not null comment '配置名',
     value       varchar(512) not null comment '配置值',
     description varchar(512) not null comment '描述',
-    constraint t_config_pk primary key (name)
+    primary key (name)
 ) comment ='系统配置表';
 
 -- 图片资源表
@@ -21,7 +21,7 @@ create table lol.t_image
     y          int                null comment '纵坐标',
     w          int                null comment '宽',
     h          int                null comment '高',
-    constraint t_image_pk primary key (id)
+    primary key (id)
 ) comment ='图片资源表';
 
 
@@ -31,7 +31,7 @@ create table lol.t_event
 (
     id   int auto_increment not null comment '主键',
     name varchar(32)        not null comment '召唤师名称',
-    constraint t_event_pk primary key (id)
+    primary key (id)
 ) comment ='事件表';
 
 commit;

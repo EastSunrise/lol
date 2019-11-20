@@ -14,7 +14,8 @@ create table lol.c_champion
     info_defense    int           null comment '防御',
     info_magic      int           null comment '法术',
     info_difficulty int           null comment '难度',
-    constraint c_champion_pk primary key (id)
+    primary key (id),
+    unique (`key`)
 ) comment ='英雄信息表';
 
 -- 皮肤表
@@ -26,7 +27,7 @@ create table lol.c_skin
     num         int         not null comment '编号',
     name        varchar(32) not null comment '皮肤名',
     chromas     tinyint     null comment '有无炫彩',
-    constraint c_skin_pk primary key (id)
+    primary key (id)
 ) comment = '皮肤表';
 
 -- 英雄统计数据表
@@ -54,7 +55,7 @@ create table lol.c_stats
     movespeed            int    null comment '移动速度',
     crit                 int    null comment '暴击',
     critperlevel         int    null comment '成长暴击',
-    constraint c_stats_pk primary key (champion_id)
+    primary key (champion_id)
 ) comment ='英雄统计数据表';
 
 -- 英雄技能表
@@ -86,7 +87,7 @@ create table lol.c_spell
     resource        varchar(64)   null comment '？？？',
     summoner_level  int           null comment '最低可用召唤师等级',
     modes           varchar(64)   null comment '适用模式枚举数组',
-    constraint c_spell_pk primary key (id)
+    primary key (id)
 ) comment ='英雄技能表';
 
 -- 使用技巧表
@@ -97,7 +98,7 @@ create table lol.c_tip
     champion_id int                not null comment '英雄ID',
     tip         varchar(512)       not null comment '内容',
     type        tinyint            not null comment '技巧类型枚举',
-    constraint c_tip_pk primary key (id)
+    primary key (id)
 ) comment = '使用技巧表';
 
 commit;

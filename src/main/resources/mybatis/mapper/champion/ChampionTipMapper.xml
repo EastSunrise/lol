@@ -7,10 +7,11 @@
     </delete>
 
     <insert id="batchInsert" useGeneratedKeys="true" parameterType="wsg.lol.common.pojo.dto.champion.ChampionTipDto">
-        insert into lol.c_tip (champion_id, tip, type)
+        insert into lol.c_tip
         values
         <foreach collection="list" separator="," item="item">
-            (#{item.championId},
+            (#{item.id},
+            #{item.championId},
             #{item.tip},
             #{item.type})
         </foreach>
