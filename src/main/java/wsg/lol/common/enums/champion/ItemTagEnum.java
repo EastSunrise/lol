@@ -1,11 +1,13 @@
 package wsg.lol.common.enums.champion;
 
+import wsg.lol.common.pojo.parser.JsonSerializable;
+
 /**
  * Enums for tags of the item. todo: title to add.
  *
  * @author Kingen
  */
-public enum ItemTagEnum {
+public enum ItemTagEnum implements JsonSerializable {
     Bilgewater,
     Mana,
     Slow,
@@ -49,5 +51,10 @@ public enum ItemTagEnum {
 
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public String serialize() {
+        return name();
     }
 }

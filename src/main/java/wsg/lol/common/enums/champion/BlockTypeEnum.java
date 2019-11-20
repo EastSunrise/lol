@@ -1,74 +1,76 @@
 package wsg.lol.common.enums.champion;
 
+import wsg.lol.common.pojo.parser.JsonSerializable;
+
 /**
  * Enums for types of blocks in recommendations of items. todo: to extend
  *
  * @author Kingen
  */
-public enum BlockTypeEnum {
-    beginner_Starter,
+public enum BlockTypeEnum implements JsonSerializable {
+    KingPoroSnax,
+    ability_scaling,
+    aggressive,
     beginner_Advanced,
-    beginner_MovementSpeed,
     beginner_LegendaryItem,
     beginner_MoreLegendaryItems,
-    starting("起始装备"),
-    essential("核心装备"),
-    offensive("进攻型物品"),
-    defensive("防御型物品"),
-    consumables("消耗品"),
-    early,
-    startingjungle,
-    essentialjungle,
-    KingPoroSnax,
-    siegeOffense,
-    siegeDefense,
-    earlyjungle,
-    offmeta,
-    ability_scaling,
-    odysona1,
-    odysona2,
-    odysona3,
-    situational,
-    beginner_starter,
+    beginner_MovementSpeed,
+    beginner_Starter,
     beginner_advanced,
-    beginner_movementspeed,
+    beginner_legendary,
     beginner_legendaryitem,
     beginner_morelegendaryitems,
-    recommended,
+    beginner_movementspeed,
     beginner_movespeed,
-    protective,
-    aggressive,
-    kingporosnax,
-    siegeoffense,
-    siegedefense,
+    beginner_starter,
+    buystarteritems,
+    champspecific,
+    consumable,
+    consumables("消耗品"),
+    consumablesjungle,
+    defensive("防御型物品"),
     defensivejungle,
-    situationaljungle,
-    standard,
-    support,
-    selective,
-    beginner_legendary,
-    ornnupgrades,
+    early,
+    earlyjungle,
+    essential("核心装备"),
+    essentialjungle,
+    kingporosnax,
     npe1,
     npe2,
     npe3,
     npe4,
-    odyyasuo1,
-    odyyasuo2,
-    odyyasuo3,
     odyjinx1,
     odyjinx2,
     odyjinx3,
-    champspecific,
-    buystarteritems,
-    odyziggs1,
-    odyziggs2,
-    odyziggs3,
-    consumablesjungle,
-    standardjungle,
     odymalphite1,
     odymalphite2,
     odymalphite3,
-    consumable,
+    odysona1,
+    odysona2,
+    odysona3,
+    odyyasuo1,
+    odyyasuo2,
+    odyyasuo3,
+    odyziggs1,
+    odyziggs2,
+    odyziggs3,
+    offensive("进攻型物品"),
+    offmeta,
+    ornnupgrades,
+    protective,
+    recommended,
+    selective,
+    siegeDefense,
+    siegeOffense,
+    siegedefense,
+    siegeoffense,
+    situational,
+    situationaljungle,
+    standard,
+    standardjungle,
+    starting("起始装备"),
+    startingjungle,
+    support,
     ;
 
     private String title;
@@ -83,5 +85,10 @@ public enum BlockTypeEnum {
 
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public String serialize() {
+        return name();
     }
 }

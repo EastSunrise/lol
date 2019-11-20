@@ -323,6 +323,7 @@ public class VersionServiceImpl implements VersionService {
             spellDto.setNum(SpellNumEnum.S);
             ImageDto image = spellDto.getImage();
             image.setRelatedId(spellDto.getKey());
+            image.setGroup(ImageGroupEnum.SummonerSpell);
             imageDtoList.add(image);
         }
         ResultUtils.assertSuccess(updateSpells(spellDtoList, SpellNumEnum.S));

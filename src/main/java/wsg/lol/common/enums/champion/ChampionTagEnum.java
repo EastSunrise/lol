@@ -1,11 +1,13 @@
 package wsg.lol.common.enums.champion;
 
+import wsg.lol.common.pojo.parser.JsonSerializable;
+
 /**
  * Enums for tags of the champion.
  *
  * @author Kingen
  */
-public enum ChampionTagEnum {
+public enum ChampionTagEnum implements JsonSerializable {
     Fighter("战士"),
     Tank("坦克"),
     Assassin("刺客"),
@@ -22,5 +24,10 @@ public enum ChampionTagEnum {
 
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public String serialize() {
+        return null;
     }
 }

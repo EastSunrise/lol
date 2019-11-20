@@ -1,4 +1,4 @@
-package wsg.lol.common.pojo.deserializer;
+package wsg.lol.common.pojo.parser;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.DefaultJSONParser;

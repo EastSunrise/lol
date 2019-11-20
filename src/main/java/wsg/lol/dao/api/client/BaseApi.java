@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.base.QueryDto;
-import wsg.lol.common.pojo.deserializer.RecordExtraProcessor;
+import wsg.lol.common.pojo.parser.RecordExtraProcessor;
 import wsg.lol.common.util.HttpHelper;
 
 import javax.xml.ws.http.HTTPException;

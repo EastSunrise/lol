@@ -27,8 +27,6 @@ public class GeneralDaoImpl implements GeneralDao {
 
     @Override
     public String getLatestVersion() {
-        return "9.22.1";
-        // TODO: (Kingen, 2019/11/20)
-//        return getVersions().get(0);
+        return getVersions().get(0);
     }
 }

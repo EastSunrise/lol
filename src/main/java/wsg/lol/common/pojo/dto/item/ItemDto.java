@@ -7,7 +7,7 @@ import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.base.IJson;
 import wsg.lol.common.enums.champion.ItemTagEnum;
 import wsg.lol.common.enums.game.MapEnum;
-import wsg.lol.common.pojo.deserializer.MapsDeserializer;
+import wsg.lol.common.pojo.parser.MapsDeserializer;
 
 import java.util.Map;
 
@@ -36,6 +36,7 @@ public class ItemDto extends BaseDto implements IJson {
 
     @JSONField(deserializeUsing = MapsDeserializer.class)
     private MapEnum[] maps;
+
     private Integer depth;
     private Map<String, Double> effect;
 

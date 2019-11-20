@@ -1,12 +1,14 @@
 package wsg.lol.common.enums.game;
 
+import wsg.lol.common.pojo.parser.JsonSerializable;
+
 /**
  * Enums for maps. TODO: enum to extend and title to add.
  *
  * @author Kingen
  * @see <a href="http://static.developer.riotgames.com/docs/lol/maps.json">maps.json</a>
  */
-public enum MapEnum {
+public enum MapEnum implements JsonSerializable {
     SummonersRiftOriginalSummer(1, "Summoner's Rift", "Original Summer variant", "原始夏季峡谷"),
     SummonersRiftOriginalAutumn(2, "Summoner's Rift", "Original Autumn variant", "原始秋季峡谷"),
     ProvingGrounds(3, "The Proving Grounds", "Tutorial Map", "练习地图"),
@@ -25,6 +27,8 @@ public enum MapEnum {
 
     SL(30, "", ""),
     ProjectSlums(31, "", ""),
+    any(32, "", ""),
+    gang3(33, "", ""),
     ;
 
     private int mapId;
@@ -72,5 +76,13 @@ public enum MapEnum {
 
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public String serialize() {
+        if (this.equals(gang3)) {
+            return "3";
+        }
+        return name();
     }
 }

@@ -1,11 +1,13 @@
 package wsg.lol.common.pojo.dto.recommend;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.champion.RecommendedTypeEnum;
 import wsg.lol.common.enums.game.GameModeEnum;
 import wsg.lol.common.enums.game.MapEnum;
+import wsg.lol.common.pojo.parser.CustomEnumDeserializer;
 
 /**
  * Bean for recommended items.
@@ -20,9 +22,16 @@ public class RecommendedDto extends BaseDto {
 
     private String champion;// champion key
     private String title;
+
+    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private MapEnum map;
+
+    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private GameModeEnum mode;
+
+    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private RecommendedTypeEnum type;
+
     private Boolean priority;
     private Object customTag;
     private Integer sortrank;

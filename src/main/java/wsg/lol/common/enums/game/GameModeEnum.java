@@ -1,9 +1,6 @@
 package wsg.lol.common.enums.game;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import wsg.lol.common.util.HttpHelper;
+import wsg.lol.common.pojo.parser.JsonSerializable;
 
 /**
  * Enums for the mode of the game. todo: titles to add.
@@ -11,7 +8,7 @@ import wsg.lol.common.util.HttpHelper;
  * @author Kingen
  * @see <a href="http://static.developer.riotgames.com/docs/lol/gameModes.json">gameModes.json</a>
  */
-public enum GameModeEnum {
+public enum GameModeEnum implements JsonSerializable {
     CLASSIC("Classic Summoner's Rift and Twisted Treeline games", "经典模式"),
     ODIN("Dominion/Crystal Scar games", "这货不是统治战场"),
     ARAM("ARAM games", "极地大乱斗"),
@@ -34,6 +31,7 @@ public enum GameModeEnum {
     INTRO(""),
     TUTORIAL_MODULE_2(""),
     TUTORIAL_MODULE_3(""),
+    any(""),
     ;
 
     private String description;
@@ -49,21 +47,16 @@ public enum GameModeEnum {
         this.title = title;
     }
 
-    public static void main(String[] args) {
-        String url = "http://static.developer.riotgames.com/docs/lol/maps.json";
-        String jsonStr = HttpHelper.getString(url);
-        JSONArray array = JSON.parseArray(jsonStr);
-        for (Object object : array) {
-            JSONObject jsonObject = (JSONObject) object;
-            System.out.println(jsonObject.getString("mapName") + "(" + jsonObject.getString("mapId") + ",\"" + jsonObject.getString("mapName") + "\",\"" + jsonObject.getString("notes") + "\"),");
-        }
-    }
-
     public String getDescription() {
         return description;
     }
 
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public String serialize() {
+        return name();
     }
 }

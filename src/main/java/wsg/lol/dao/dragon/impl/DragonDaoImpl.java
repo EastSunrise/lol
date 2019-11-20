@@ -2,6 +2,7 @@ package wsg.lol.dao.dragon.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.parser.ParserConfig;
 import lombok.Data;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -11,13 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ErrorCodeConst;
-import wsg.lol.common.pojo.deserializer.CustomParseConfig;
-import wsg.lol.common.pojo.deserializer.RecordExtraProcessor;
 import wsg.lol.common.pojo.dto.champion.ChampionExtDto;
 import wsg.lol.common.pojo.dto.champion.SpellDto;
 import wsg.lol.common.pojo.dto.general.ImageDto;
 import wsg.lol.common.pojo.dto.item.ItemExtDto;
 import wsg.lol.common.pojo.dto.rune.RuneExtDto;
+import wsg.lol.common.pojo.parser.RecordExtraProcessor;
 import wsg.lol.dao.dragon.config.StaticConfig;
 import wsg.lol.dao.dragon.intf.DragonDao;
 
@@ -116,7 +116,7 @@ public class DragonDaoImpl implements DragonDao {
 
     @SuppressWarnings("unchecked")
     private <T> Map<String, T> getMap(String version, JsonTypeEnum key, TypeReference<FileDto<T>> typeReference) {
-        return ((FileDto<T>) JSON.parseObject(getJsonStr(version, key), typeReference.getType(), new CustomParseConfig(), new RecordExtraProcessor(DragonDao.class), JSON.DEFAULT_PARSER_FEATURE)).getData();
+        return ((FileDto<T>) JSON.parseObject(getJsonStr(version, key), typeReference.getType(), ParserConfig.getGlobalInstance(), new RecordExtraProcessor(DragonDao.class), JSON.DEFAULT_PARSER_FEATURE)).getData();
     }
 
     @Autowired
