@@ -3,7 +3,7 @@ package wsg.lol.common.result.version;
 import wsg.lol.common.base.Result;
 
 /**
- * wsg
+ * todo
  *
  * @author EastSunrise
  */

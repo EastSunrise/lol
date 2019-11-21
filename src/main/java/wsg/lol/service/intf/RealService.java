@@ -6,7 +6,7 @@ import wsg.lol.common.enums.rank.PositionEnum;
 import wsg.lol.common.enums.rank.TierEnum;
 
 /**
- * wsg
+ * todo
  *
  * @author EastSunrise
  */

@@ -4,3 +4,6 @@ values ('CURRENT_VERSION', '1.0', '当前版本');
 
 insert into lol.t_config
 values ('SHARED_STATUS', '{}', '公用数据');
+
+insert into lol.t_config
+values ('CHAMPION_ROTATION', '{}', '公用数据');

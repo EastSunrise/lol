@@ -1,7 +1,7 @@
 package wsg.lol.common.pojo.dto.rune;
 
 /**
- * wsg
+ * todo
  *
  * @author EastSunrise
  */

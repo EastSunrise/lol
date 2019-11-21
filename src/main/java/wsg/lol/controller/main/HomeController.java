@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * wsg
+ * todo
  *
  * @author EastSunrise
  */
@@ -14,7 +14,7 @@ public class HomeController extends BaseController {
 
     @RequestMapping("/index")
     public String homePage() {
-        return redirect("/lol/summoner/index");
+        return redirect();
     }
 
     @Override

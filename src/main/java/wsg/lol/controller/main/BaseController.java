@@ -4,7 +4,7 @@ import org.springframework.ui.Model;
 import wsg.lol.common.base.Result;
 
 /**
- * wsg
+ * todo
  *
  * @author EastSunrise
  */
@@ -19,7 +19,7 @@ public abstract class BaseController {
 
     abstract String templatePath(String fileName);
 
-    protected String redirect(String redirectUrl) {
-        return "redirect:" + redirectUrl;
+    String redirect() {
+        return "redirect:" + "/lol/summoner/index";
     }
 }

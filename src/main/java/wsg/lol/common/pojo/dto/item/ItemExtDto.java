@@ -3,7 +3,7 @@ package wsg.lol.common.pojo.dto.item;
 import wsg.lol.common.pojo.dto.general.ImageDto;
 
 /**
- * wsg
+ * todo
  *
  * @author EastSunrise
  */

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import wsg.lol.service.intf.ChampionService;
 
 /**
- * wsg
+ * todo
  *
  * @author EastSunrise
  */

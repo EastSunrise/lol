@@ -3,7 +3,7 @@ package wsg.lol.common.pojo.dto.champion;
 import wsg.lol.common.base.BaseDto;
 
 /**
- * wsg
+ * todo
  *
  * @author EastSunrise
  */

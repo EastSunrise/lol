@@ -3,7 +3,7 @@ package wsg.lol.common.enums.rank;
 import wsg.lol.common.base.BaseEnum;
 
 /**
- * wsg
+ * todo
  *
  * @author EastSunrise
  */

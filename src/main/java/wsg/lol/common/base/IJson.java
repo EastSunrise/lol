@@ -3,7 +3,7 @@ package wsg.lol.common.base;
 import java.io.Serializable;
 
 /**
- * wsg
+ * todo
  *
  * @author EastSunrise
  */

@@ -4,7 +4,7 @@ import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.base.IJson;
 
 /**
- * wsg
+ * todo
  *
  * @author EastSunrise
  */
