@@ -5,7 +5,7 @@
         delete
         from lol.ct_block
     </delete>
-    <insert id="batchInsert" useGeneratedKeys="true" parameterType="wsg.lol.common.pojo.dto.recommend.BlockDto">
+    <insert id="batchInsert" useGeneratedKeys="true" parameterType="wsg.lol.common.pojo.dto.item.BlockDto">
         insert into lol.ct_block
         values
         <foreach collection="list" item="item" separator=",">

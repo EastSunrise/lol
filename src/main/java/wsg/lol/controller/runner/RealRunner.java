@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
 public class RealRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
-
+        // get from event
     }
 }

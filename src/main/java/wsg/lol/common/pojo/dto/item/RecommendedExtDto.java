@@ -1,4 +1,4 @@
-package wsg.lol.common.pojo.dto.recommend;
+package wsg.lol.common.pojo.dto.item;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

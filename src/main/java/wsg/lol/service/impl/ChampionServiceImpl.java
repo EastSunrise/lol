@@ -16,9 +16,9 @@ import wsg.lol.common.enums.champion.ImageGroupEnum;
 import wsg.lol.common.enums.champion.SpellNumEnum;
 import wsg.lol.common.pojo.dto.champion.*;
 import wsg.lol.common.pojo.dto.general.ImageDto;
-import wsg.lol.common.pojo.dto.recommend.BlockDto;
-import wsg.lol.common.pojo.dto.recommend.RecommendedDto;
-import wsg.lol.common.pojo.dto.recommend.RecommendedExtDto;
+import wsg.lol.common.pojo.dto.item.BlockDto;
+import wsg.lol.common.pojo.dto.item.RecommendedDto;
+import wsg.lol.common.pojo.dto.item.RecommendedExtDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.mybatis.common.StaticExecutor;
@@ -26,7 +26,7 @@ import wsg.lol.dao.mybatis.mapper.champion.*;
 import wsg.lol.dao.mybatis.mapper.item.BlockMapper;
 import wsg.lol.dao.mybatis.mapper.item.RecommendedMapper;
 import wsg.lol.service.intf.ChampionService;
-import wsg.lol.service.intf.SystemService;
+import wsg.lol.service.intf.SharedService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class ChampionServiceImpl implements ChampionService {
 
     private SpellMapper spellMapper;
 
-    private SystemService systemService;
+    private SharedService sharedService;
 
     @Override
     @Transactional
@@ -74,7 +74,7 @@ public class ChampionServiceImpl implements ChampionService {
             image.setRelatedId(championExtDto.getId());
             imageDtoList.add(image);
         }
-        ResultUtils.assertSuccess(systemService.updateImages(imageDtoList, ImageGroupEnum.Champion));
+        ResultUtils.assertSuccess(sharedService.updateImages(imageDtoList, ImageGroupEnum.Champion));
 
         logger.info("Updating the skins.");
         List<SkinDto> skinDtoList = new ArrayList<>();
@@ -154,11 +154,11 @@ public class ChampionServiceImpl implements ChampionService {
                 logger.error(spellDto.getId());
             }
         }
-        ResultUtils.assertSuccess(updateSpells(spellDtoList,
+        ResultUtils.assertSuccess(this.updateSpells(spellDtoList,
                 SpellNumEnum.P, SpellNumEnum.Q, SpellNumEnum.W, SpellNumEnum.E, SpellNumEnum.R
         ));
         logger.info("Updating the images of champion spells.");
-        ResultUtils.assertSuccess(systemService.updateImages(imageDtoList, ImageGroupEnum.Spell, ImageGroupEnum.Passive));
+        ResultUtils.assertSuccess(sharedService.updateImages(imageDtoList, ImageGroupEnum.Spell, ImageGroupEnum.Passive));
 
         logger.info("Updating the recommended items of champions.");
         List<RecommendedDto> recommendedDtoList = new ArrayList<>();
@@ -189,10 +189,29 @@ public class ChampionServiceImpl implements ChampionService {
         return ResultUtils.success();
     }
 
-    // TODO: (Kingen, 2019/11/21) 事务嵌套
     @Override
     @Transactional
-    public Result updateSpells(List<SpellDto> spells, SpellNumEnum... nums) {
+    public Result updateSummonerSpells(String version) {
+        logger.info("Updating the summoner spells.");
+        List<SpellDto> spellDtoList = dragonDao.readSummonerSpells(version);
+        List<ImageDto> imageDtoList = new ArrayList<>();
+        for (SpellDto spellDto : spellDtoList) {
+            spellDto.setNum(SpellNumEnum.S);
+            ImageDto image = spellDto.getImage();
+            image.setRelatedId(spellDto.getKey());
+            image.setGroup(ImageGroupEnum.SummonerSpell);
+            imageDtoList.add(image);
+        }
+        ResultUtils.assertSuccess(this.updateSpells(spellDtoList, SpellNumEnum.S));
+        logger.info("Updating the images of summoner spells.");
+        ResultUtils.assertSuccess(sharedService.updateImages(imageDtoList, ImageGroupEnum.SummonerSpell));
+
+        logger.info("Succeed in updating the data of summoner spells.");
+        return ResultUtils.success();
+    }
+
+    // TODO: (Kingen, 2019/11/21) 事务嵌套
+    private Result updateSpells(List<SpellDto> spells, SpellNumEnum... nums) {
         if (CollectionUtils.isEmpty(spells)) {
             logger.info("Spells is empty. Nothing updated.");
             return ResultUtils.success();
@@ -254,7 +273,7 @@ public class ChampionServiceImpl implements ChampionService {
     }
 
     @Autowired
-    public void setSystemService(SystemService systemService) {
-        this.systemService = systemService;
+    public void setSharedService(SharedService sharedService) {
+        this.sharedService = sharedService;
     }
 }

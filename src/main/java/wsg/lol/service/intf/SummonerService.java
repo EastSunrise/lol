@@ -1,7 +1,5 @@
 package wsg.lol.service.intf;
 
-import wsg.lol.common.base.Result;
-
 /**
  * Service for summoners.
  *
@@ -9,8 +7,4 @@ import wsg.lol.common.base.Result;
  */
 public interface SummonerService {
 
-    /**
-     * Update the data of summoner spells once the version changes.
-     */
-    Result updateSummonerSpells(String version);
 }

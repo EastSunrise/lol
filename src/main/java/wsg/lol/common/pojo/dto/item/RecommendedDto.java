@@ -1,4 +1,4 @@
-package wsg.lol.common.pojo.dto.recommend;
+package wsg.lol.common.pojo.dto.item;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;

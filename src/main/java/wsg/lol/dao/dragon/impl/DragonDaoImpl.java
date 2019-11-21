@@ -35,7 +35,7 @@ import java.util.Map;
 @Component
 public class DragonDaoImpl implements DragonDao {
 
-    private static Logger logger = LoggerFactory.getLogger(DragonDao.class);
+    private static final Logger logger = LoggerFactory.getLogger(DragonDao.class);
 
     private StaticConfig config;
 

@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class HttpHelper {
 
-    private static Logger logger = LoggerFactory.getLogger(HttpHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(HttpHelper.class);
 
     /**
      * 从指定的URL获取json字符串

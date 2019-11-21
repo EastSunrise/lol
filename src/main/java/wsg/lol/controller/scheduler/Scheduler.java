@@ -8,30 +8,27 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.result.version.VersionResult;
-import wsg.lol.service.intf.MessageService;
 import wsg.lol.service.intf.SharedService;
-import wsg.lol.service.intf.VersionService;
+import wsg.lol.service.intf.SystemService;
 
 /**
- * // TODO: (Kingen, 2019/11/21) *
+ * Scheduler.
  *
  * @author Kingen
  */
 @Service
 public class Scheduler {
 
-    private static Logger logger = LoggerFactory.getLogger(Scheduler.class);
+    private static final Logger logger = LoggerFactory.getLogger(Scheduler.class);
 
-    private VersionService versionService;
-
-    private MessageService messageService;
+    private SystemService systemService;
 
     private SharedService sharedService;
 
     @Scheduled(fixedRate = DateUtils.MILLIS_PER_DAY)
     public void checkVersion() {
         logger.info("Checking the version...");
-        VersionResult versionResult = versionService.getVersion();
+        VersionResult versionResult = systemService.getVersion();
         if (versionResult.isLatestVersion()) {
             logger.info("The version is latest.");
             return;
@@ -39,26 +36,22 @@ public class Scheduler {
 
         String message = "The latest version is " + versionResult.getLatestVersion() + ". Please update the version.";
         logger.info(message);
-        messageService.sendMessage(message);
+        systemService.sendMessage(message);
     }
 
     @Scheduled(fixedRate = DateUtils.MILLIS_PER_HOUR)
-    public void updateGeneralData() {
+    public void updateGSharedData() {
+        logger.info("Updating the shared data.");
         Result result = sharedService.updateSharedStatus();
-        messageService.sendWarnMessage(result);
+        systemService.sendWarnMessage(result);
 
         result = sharedService.updateChampionRotation();
-        messageService.sendWarnMessage(result);
+        systemService.sendWarnMessage(result);
     }
 
     @Autowired
-    public void setMessageService(MessageService messageService) {
-        this.messageService = messageService;
-    }
-
-    @Autowired
-    public void setVersionService(VersionService versionService) {
-        this.versionService = versionService;
+    public void setSystemService(SystemService systemService) {
+        this.systemService = systemService;
     }
 
     @Autowired

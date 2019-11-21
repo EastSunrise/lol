@@ -1,4 +1,4 @@
-package wsg.lol.common.pojo.dto.recommend;
+package wsg.lol.common.pojo.dto.item;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,9 +8,9 @@ import wsg.lol.common.enums.champion.BlockTypeEnum;
 import java.util.List;
 
 /**
- * wsg
+ * Bean for blocks of recommended items.
  *
- * @author EastSunrise
+ * @author Kingen
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

@@ -1,10 +1,6 @@
 package wsg.lol.service.intf;
 
 import wsg.lol.common.base.Result;
-import wsg.lol.common.enums.champion.SpellNumEnum;
-import wsg.lol.common.pojo.dto.champion.SpellDto;
-
-import java.util.List;
 
 /**
  * Service for champions.
@@ -19,7 +15,7 @@ public interface ChampionService {
     Result updateChampions(String version);
 
     /**
-     * Update the spells of champions or summoners.
+     * Update the data of summoner spells once the version changes.
      */
-    Result updateSpells(List<SpellDto> spells, SpellNumEnum... nums);
+    Result updateSummonerSpells(String version);
 }

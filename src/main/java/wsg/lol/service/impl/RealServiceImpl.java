@@ -41,7 +41,7 @@ import java.util.Set;
 @Service("readService")
 public class RealServiceImpl implements RealService {
 
-    private static Logger logger = LoggerFactory.getLogger(RealService.class);
+    private static final Logger logger = LoggerFactory.getLogger(RealService.class);
 
     private SummonerMapper summonerMapper;
 

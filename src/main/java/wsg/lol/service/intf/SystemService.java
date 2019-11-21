@@ -1,10 +1,7 @@
 package wsg.lol.service.intf;
 
 import wsg.lol.common.base.Result;
-import wsg.lol.common.enums.champion.ImageGroupEnum;
-import wsg.lol.common.pojo.dto.general.ImageDto;
-
-import java.util.List;
+import wsg.lol.common.result.version.VersionResult;
 
 /**
  * Service for system.
@@ -14,17 +11,27 @@ import java.util.List;
 public interface SystemService {
 
     /**
-     * Update images of specified groups.
+     * Check if the cdn directory exists.
      */
-    Result updateImages(List<ImageDto> imageDtoList, ImageGroupEnum... groups);
+    Result checkCdn(String version);
 
     /**
-     * Update the data of maps once the version changes.
+     * Get info of version.
      */
-    Result updateMaps(String version);
+    VersionResult getVersion();
 
     /**
-     * Update the data of profile icons once the version changes.
+     * Update config of current version.
      */
-    Result updateProfileIcons(String version);
+    Result updateVersion(String version);
+
+    /**
+     * Send a message.
+     */
+    void sendMessage(String message);
+
+    /**
+     * Send messages of warning.
+     */
+    void sendWarnMessage(Result result);
 }

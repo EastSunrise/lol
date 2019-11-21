@@ -37,7 +37,7 @@ public class BaseApi {
 
     private static final long TIME_OUT = DateUtils.MILLIS_PER_SECOND * 5;
 
-    private static Logger logger = LoggerFactory.getLogger(BaseApi.class);
+    private static final Logger logger = LoggerFactory.getLogger(BaseApi.class);
 
     private ApiClient apiClient;
 

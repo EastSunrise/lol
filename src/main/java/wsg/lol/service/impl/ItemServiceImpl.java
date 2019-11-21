@@ -17,7 +17,7 @@ import wsg.lol.dao.mybatis.common.StaticExecutor;
 import wsg.lol.dao.mybatis.mapper.item.ItemMapper;
 import wsg.lol.dao.mybatis.mapper.item.ItemStatsMapper;
 import wsg.lol.service.intf.ItemService;
-import wsg.lol.service.intf.SystemService;
+import wsg.lol.service.intf.SharedService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +32,11 @@ public class ItemServiceImpl implements ItemService {
 
     private DragonDao dragonDao;
 
-    private SystemService systemService;
-
     private ItemMapper itemMapper;
 
     private ItemStatsMapper itemStatsMapper;
+
+    private SharedService sharedService;
 
     @Override
     @Transactional
@@ -64,7 +64,7 @@ public class ItemServiceImpl implements ItemService {
             image.setRelatedId(itemExtDto.getId());
             imageDtoList.add(image);
         }
-        ResultUtils.assertSuccess(systemService.updateImages(imageDtoList, ImageGroupEnum.Item));
+        ResultUtils.assertSuccess(sharedService.updateImages(imageDtoList, ImageGroupEnum.Item));
 
         logger.info("Succeed in updating the data of items.");
         return ResultUtils.success();
@@ -76,11 +76,6 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Autowired
-    public void setSystemService(SystemService systemService) {
-        this.systemService = systemService;
-    }
-
-    @Autowired
     public void setItemMapper(ItemMapper itemMapper) {
         this.itemMapper = itemMapper;
     }
@@ -88,5 +83,10 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     public void setItemStatsMapper(ItemStatsMapper itemStatsMapper) {
         this.itemStatsMapper = itemStatsMapper;
+    }
+
+    @Autowired
+    public void setSharedService(SharedService sharedService) {
+        this.sharedService = sharedService;
     }
 }
