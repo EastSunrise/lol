@@ -51,6 +51,12 @@ public class ResultUtils {
         return result;
     }
 
+    public static Result fail(AppException e) {
+        Result result = new Result();
+        result.fail(e);
+        return result;
+    }
+
     public static void assertSuccess(Result result) {
         if (!result.isSuccess()) {
             throw new AppException(result);

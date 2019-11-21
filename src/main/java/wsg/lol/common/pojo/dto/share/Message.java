@@ -1,76 +1,36 @@
 package wsg.lol.common.pojo.dto.share;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
+import wsg.lol.common.enums.shared.MessageSeverityEnum;
+import wsg.lol.common.pojo.parser.CustomEnumDeserializer;
 
+import java.util.Date;
 import java.util.List;
 
 /**
- * @author EastSunrise
+ * Bean for message.
+ *
+ * @author Kingen
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class Message extends BaseDto {
 
-    private String severity;
-    private String author;
-    private String createdAt;
-    private List<Translation> translations;
-    private String updatedAt;
-    private String content;
     private String id;
+    private String author;
+    private String content;
+    private String heading;
 
-    public String getSeverity() {
-        return severity;
-    }
+    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
+    private MessageSeverityEnum severity;
 
-    public void setSeverity(String severity) {
-        this.severity = severity;
-    }
+    private List<Translation> translations;
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public List<Translation> getTranslations() {
-        return translations;
-    }
-
-    public void setTranslations(List<Translation> translations) {
-        this.translations = translations;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
+    @JSONField(format = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private Date createdAt;
+    @JSONField(format = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private Date updatedAt;
 }

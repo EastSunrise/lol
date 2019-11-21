@@ -1,50 +1,30 @@
 package wsg.lol.common.pojo.dto.share;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
+import wsg.lol.common.enums.shared.ServiceEnum;
+import wsg.lol.common.enums.shared.ServiceStatusEnum;
+import wsg.lol.common.pojo.parser.CustomEnumDeserializer;
 
 import java.util.List;
 
 /**
- * // TODO: (Kingen, 2019/11/18)
- * @author EastSunrise
+ * Bean for service of shared status.
+ *
+ * @author Kingen
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class Service extends BaseDto {
 
-    private String status;
+    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
+    private ServiceEnum name;
+
+    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
+    private ServiceStatusEnum status;
+
     private List<Incident> incidents;
-    private String name;
     private String slug;
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public List<Incident> getIncidents() {
-        return incidents;
-    }
-
-    public void setIncidents(List<Incident> incidents) {
-        this.incidents = incidents;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
-
 }

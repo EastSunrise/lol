@@ -5,6 +5,9 @@ HELP.md
 #log
 *.log
 
+#json
+*.json
+
 ### STS ###
 .apt_generated
 .classpath

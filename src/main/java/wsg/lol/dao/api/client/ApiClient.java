@@ -1,11 +1,16 @@
 package wsg.lol.dao.api.client;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import wsg.lol.common.base.AppException;
+import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.route.PlatformRoutingEnum;
 
+import java.text.ParseException;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Client for api.
@@ -28,6 +33,17 @@ public class ApiClient {
 
     private Date expiresTime;
 
+    private static Date parseDate(String str) {
+        String[] parts = str.split(",");
+        parts[1] = parts[1].substring(0, parts[1].length() - 2);
+        try {
+            return DateUtils.parseDate(org.apache.commons.lang3.StringUtils.join(parts, ","), Locale.ENGLISH, "EEE, MMM dd, yyyy @ h:mmaa (Z)");
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new AppException(ErrorCodeConst.SYSTEM_ERROR, e);
+        }
+    }
+
     /**
      * Get current api token. Regenerate it if invalid.
      */
@@ -43,11 +59,11 @@ public class ApiClient {
      */
     void regenerateToken() {
         // TODO: (Kingen, 2019/11/6) regenerate token
-        this.token = "";
-        this.expiresTime = new Date();
+        this.token = "RGAPI-a5041332-0993-43f6-b4f6-7779d5cfeb94";
+        this.expiresTime = parseDate("Thu, Nov 21st, 2019 @ 6:45pm (PT)");
     }
 
-    PlatformRoutingEnum getRegion() {
+    public PlatformRoutingEnum getRegion() {
         return region;
     }
 }

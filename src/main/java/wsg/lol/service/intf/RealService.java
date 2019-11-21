@@ -1,4 +1,4 @@
-package wsg.lol.service.real.intf;
+package wsg.lol.service.intf;
 
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.rank.DivisionEnum;

@@ -1,4 +1,4 @@
-package wsg.lol.service.real.impl;
+package wsg.lol.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +15,8 @@ import wsg.lol.common.pojo.dmo.champion.ChampionMasteryDto;
 import wsg.lol.common.pojo.dmo.league.LeagueEntryDto;
 import wsg.lol.common.pojo.dto.league.LeagueItemDto;
 import wsg.lol.common.pojo.dto.league.LeagueListDto;
+import wsg.lol.common.pojo.dto.summoner.MasteryDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
-import wsg.lol.common.pojo.dto.summoner.SummonerMasteryDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
@@ -26,7 +26,7 @@ import wsg.lol.dao.mybatis.mapper.LeaguePositionMapper;
 import wsg.lol.dao.mybatis.mapper.MasteryMapper;
 import wsg.lol.dao.mybatis.mapper.MatchReferenceMapper;
 import wsg.lol.dao.mybatis.mapper.SummonerMapper;
-import wsg.lol.service.real.intf.RealService;
+import wsg.lol.service.intf.RealService;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,7 +38,7 @@ import java.util.Set;
  *
  * @author EastSunrise
  */
-@Service("realAction")
+@Service("readService")
 public class RealServiceImpl implements RealService {
 
     private static Logger logger = LoggerFactory.getLogger(RealService.class);
@@ -145,8 +145,8 @@ public class RealServiceImpl implements RealService {
         }
 
         // update the mastery.
-        List<SummonerMasteryDto> masteryDtoList = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
-        for (SummonerMasteryDto masteryDto : masteryDtoList) {
+        List<MasteryDto> masteryDtoList = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
+        for (MasteryDto masteryDto : masteryDtoList) {
             ChampionMasteryDto masteryDmo = masteryMapper.selectByUnionKey(masteryDto.getSummonerId(),
                     masteryDto.getChampionId());
             if (masteryDmo == null) {
@@ -226,7 +226,7 @@ public class RealServiceImpl implements RealService {
         logger.info("Save summoners: " + idUncheckedList.size());
         Set<String> errorSet = new HashSet<>();
         for (String id : idUncheckedList) {
-            SummonerDto summonerDto = summonerV4.getSummoner(SummonerV4.CondKeyEnum.ID, id);
+            SummonerDto summonerDto = summonerV4.getSummoner(id, SummonerV4.CondKeyEnum.ID);
             if (1 != summonerMapper.insertSummoner(summonerDto)) {
                 logger.error("Fail to insert summoner.");
                 errorSet.add(id);

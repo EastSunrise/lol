@@ -24,10 +24,14 @@ public class SummonerV4 extends BaseApi {
      * @see <a href="https://developer.riotgames.com/apis#summoner-v4/GET_getByPUUID"/>
      * @see <a href="https://developer.riotgames.com/apis#summoner-v4/GET_getBySummonerId"/>
      */
-    public SummonerDto getSummoner(CondKeyEnum condKeyEnum, String value) {
+    public SummonerDto getSummoner(String value, CondKeyEnum condKeyEnum) {
         Map<String, Object> params = new HashMap<>();
         params.put(condKeyEnum.key, value);
         return this.getObject("/lol/summoner/v4/summoners/" + condKeyEnum.url, params, SummonerDto.class);
+    }
+
+    public SummonerDto getSummonerById(String encryptedId) {
+        return getSummoner(encryptedId, CondKeyEnum.ID);
     }
 
     public enum CondKeyEnum {

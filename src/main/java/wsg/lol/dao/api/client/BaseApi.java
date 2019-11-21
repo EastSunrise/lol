@@ -3,23 +3,24 @@ package wsg.lol.dao.api.client;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.QueryDto;
+import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.pojo.parser.RecordExtraProcessor;
 import wsg.lol.common.util.HttpHelper;
 
 import javax.xml.ws.http.HTTPException;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Serializable;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,25 +127,39 @@ public class BaseApi {
         }
     }
 
-    private String getJSONString(String host, String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams) {
-        if (MapUtils.isNotEmpty(pathParams)) {
-            for (Map.Entry<String, Object> entry : pathParams.entrySet()) {
-                apiRef = apiRef.replace("{" + entry.getKey() + "}", HttpHelper.encode(entry.getValue()));
-            }
-        }
-
-        String urlStr = HTTPS + (host + apiRef + "?" + HttpHelper.encodeMap2UrlParams(queryParams)).replace("+", "%20");
-        return doHttpGet(urlStr);
-    }
-
     private <Q> String getJSONString(String apiRef, Map<String, Object> pathParams, Q query) {
         Map<String, Object> queryParams = new HashMap<>();
         try {
             BeanUtils.populate(query, queryParams);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
+            throw new AppException(ErrorCodeConst.SYSTEM_ERROR, e);
         }
-        return getJSONString(apiClient.getRegion().getHost(), apiRef, pathParams, queryParams);
+        if (MapUtils.isNotEmpty(pathParams)) {
+            for (Map.Entry<String, Object> entry : pathParams.entrySet()) {
+                apiRef = apiRef.replace("{" + entry.getKey() + "}", HttpHelper.encode(entry.getValue()));
+            }
+        }
+
+        String urlStr = HTTPS + (apiClient.getRegion().getHost() + apiRef + "?" + HttpHelper.encodeMap2UrlParams(queryParams)).replace("+", "%20");
+
+        // TODO: (Kingen, 2019/11/21) to delete
+        String filename = "api/" + urlStr.substring(HTTPS.length()).replace("?", "#") + ".json";
+        try {
+            logger.info("Read from {}.", filename);
+            return FileUtils.readFileToString(new File(filename), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            logger.info("Can't read from {}.", filename);
+        }
+
+        String jsonStr = doHttpGet(urlStr);
+        try {
+            logger.info("Write to {}.", filename);
+            FileUtils.writeStringToFile(new File(filename), jsonStr, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return jsonStr;
     }
 
     private void threadSleep(long millis) {

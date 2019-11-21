@@ -2,9 +2,9 @@
 drop table if exists lol.t_config;
 create table lol.t_config
 (
-    name        varchar(32)  not null comment '配置名',
-    value       varchar(512) not null comment '配置值',
-    description varchar(512) not null comment '描述',
+    name        varchar(32)   not null comment '配置名',
+    value       varchar(1024) not null comment '配置值',
+    description varchar(512)  not null comment '描述',
     primary key (name)
 ) comment ='系统配置表';
 
@@ -29,8 +29,10 @@ create table lol.t_image
 drop table if exists lol.t_event;
 create table lol.t_event
 (
-    id   int auto_increment not null comment '主键',
-    name varchar(32)        not null comment '召唤师名称',
+    id      int auto_increment not null comment '主键',
+    type    tinyint            not null comment '类型，对应处理方式',
+    context varchar(64)        not null comment '上下文',
+    status  tinyint            not null comment '状态',
     primary key (id)
 ) comment ='事件表';
 

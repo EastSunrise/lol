@@ -1,7 +1,7 @@
 package wsg.lol.dao.api.impl;
 
 import org.springframework.stereotype.Component;
-import wsg.lol.common.pojo.dto.summoner.SummonerMasteryDto;
+import wsg.lol.common.pojo.dto.summoner.MasteryDto;
 import wsg.lol.dao.api.client.BaseApi;
 
 import java.util.HashMap;
@@ -20,10 +20,10 @@ public class ChampionMasteryV4 extends BaseApi {
      *
      * @see <a href="https://developer.riotgames.com/apis#champion-mastery-v4/GET_getAllChampionMasteries"/>
      */
-    public List<SummonerMasteryDto> getChampionMasteryBySummonerId(String summonerId) {
+    public List<MasteryDto> getChampionMasteryBySummonerId(String summonerId) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedSummonerId", summonerId);
-        return this.getArray("/lol/champion-mastery/v4/champion-masteries/by-summoner/{encryptedSummonerId}", params, SummonerMasteryDto.class);
+        return this.getArray("/lol/champion-mastery/v4/champion-masteries/by-summoner/{encryptedSummonerId}", params, MasteryDto.class);
     }
 
     /**
@@ -31,11 +31,11 @@ public class ChampionMasteryV4 extends BaseApi {
      *
      * @see <a href="https://developer.riotgames.com/apis#champion-mastery-v4/GET_getChampionMastery"/>
      */
-    public SummonerMasteryDto getChampionMasteryBySummonerAndChampion(long championId, String summonerId) {
+    public MasteryDto getChampionMasteryBySummonerAndChampion(long championId, String summonerId) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedSummonerId", summonerId);
         params.put("championId", championId);
-        return this.getObject("/lol/champion-mastery/v4/champion-masteries/by-summoner/{encryptedSummonerId}/by-champion/{championId}", params, SummonerMasteryDto.class);
+        return this.getObject("/lol/champion-mastery/v4/champion-masteries/by-summoner/{encryptedSummonerId}/by-champion/{championId}", params, MasteryDto.class);
     }
 
     /**

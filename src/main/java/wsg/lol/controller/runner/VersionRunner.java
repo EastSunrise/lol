@@ -1,62 +1,44 @@
-package wsg.lol.controller.version;
+package wsg.lol.controller.runner;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.base.AppException;
-import wsg.lol.common.base.GenericResult;
+import wsg.lol.common.base.Result;
 import wsg.lol.common.pojo.parser.RecordExtraProcessor;
 import wsg.lol.common.result.version.VersionResult;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.service.version.intf.VersionService;
+import wsg.lol.service.intf.MessageService;
+import wsg.lol.service.intf.VersionService;
 
 import java.util.Map;
 import java.util.Set;
 
 /**
- * // TODO: (Kingen, 2019/11/8)
+ * Runner to update the version to the latest.
  *
  * @author Kingen
- * @date 2019/11/8
- * @since 2.4.9.3
  */
 @Service
-public class VersionTask implements ApplicationRunner {
+@Order(value = 1)
+public class VersionRunner implements ApplicationRunner {
 
-    private static Logger logger = LoggerFactory.getLogger(VersionTask.class);
+    private static Logger logger = LoggerFactory.getLogger(VersionRunner.class);
 
     private VersionService versionService;
 
     private TransactionTemplate transactionTemplate;
 
-    @Value("${dragon.dir.cdn}")
-    private String cdnDir;
+    private MessageService messageService;
 
-    @Scheduled(fixedRate = DateUtils.MILLIS_PER_DAY)
-    public void checkVersion() {
-        logger.info("Checking the version...");
-        VersionResult versionResult = versionService.getVersion();
-        if (versionResult.isLatestVersion()) {
-            logger.info("The version is latest.");
-            return;
-        }
-
-        logger.info("The latest version is " + versionResult.getLatestVersion() + ". Please update the version.");
-    }
-
-    /**
-     * update the version if not the latest.
-     */
     @Override
-    public void run(ApplicationArguments args) {
+    public void run(ApplicationArguments args) throws Exception {
         logger.info("Checking the version...");
         VersionResult versionResult = versionService.getVersion();
         if (versionResult.isLatestVersion()) {
@@ -65,8 +47,9 @@ public class VersionTask implements ApplicationRunner {
         }
 
         String version = versionResult.getLatestVersion();
-        GenericResult<Boolean> cdnExists = versionService.checkCdn(version);
-        if (!cdnExists.getObject()) {
+        Result result = versionService.checkCdn(version);
+        if (!result.isSuccess()) {
+            messageService.sendWarnMessage(result);
             return;
         }
 
@@ -82,15 +65,21 @@ public class VersionTask implements ApplicationRunner {
                 for (Map.Entry<String, Set<Object>> entry : RecordExtraProcessor.getExtraMap().entrySet()) {
                     logger.info("Extra field. Field: {}; value: {}.", entry.getKey(), StringUtils.join(entry.getValue(), ","));
                 }
-//                AssertUtils.assertSuccess(versionService.updateVersion(version));
+                ResultUtils.assertSuccess(versionService.updateVersion(version));
                 return ResultUtils.success();
             });
         } catch (AppException e) {
             logger.error(e.getMessage());
+            messageService.sendWarnMessage(ResultUtils.fail(e));
             return;
         }
 
         logger.info("Succeed in updating the version from " + versionResult.getCurrentVersion() + " to " + version);
+    }
+
+    @Autowired
+    public void setMessageService(MessageService messageService) {
+        this.messageService = messageService;
     }
 
     @Autowired

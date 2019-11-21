@@ -1,69 +1,25 @@
 package wsg.lol.common.pojo.dto.share;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
-import wsg.lol.common.base.IJson;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
- * // TODO: (Kingen, 2019/11/18)
- * @author EastSunrise
+ * Bean for shared status.
+ *
+ * @author Kingen
  */
-public class ShardStatus extends BaseDto implements IJson {
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class ShardStatus extends BaseDto {
 
     private String name;
     private String regionTag;
     private String hostname;
     private List<Service> services;
     private String slug;
-    private List<String> locales;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getRegionTag() {
-        return regionTag;
-    }
-
-    public void setRegionTag(String regionTag) {
-        this.regionTag = regionTag;
-    }
-
-    public String getHostname() {
-        return hostname;
-    }
-
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
-    }
-
-    public List<Service> getServices() {
-        return services;
-    }
-
-    public void setServices(List<Service> services) {
-        this.services = services;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
-
-    public List<String> getLocales() {
-        return locales;
-    }
-
-    public void setLocales(List<String> locales) {
-        this.locales = locales;
-    }
-
+    private List<Locale> locales;
 }

@@ -3,7 +3,7 @@ package wsg.lol.dao.mybatis.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import wsg.lol.common.pojo.dmo.champion.ChampionMasteryDto;
-import wsg.lol.common.pojo.dto.summoner.SummonerMasteryDto;
+import wsg.lol.common.pojo.dto.summoner.MasteryDto;
 import wsg.lol.dao.mybatis.common.BaseMapper;
 
 /**
@@ -15,7 +15,7 @@ public interface MasteryMapper extends BaseMapper<ChampionMasteryDto> {
 
     ChampionMasteryDto selectByUnionKey(String summonerId, Integer championId);
 
-    int insertMastery(SummonerMasteryDto masteryDto);
+    int insertMastery(MasteryDto masteryDto);
 
-    int updateByUnionKey(SummonerMasteryDto masteryDto);
+    int updateByUnionKey(MasteryDto masteryDto);
 }

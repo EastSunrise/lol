@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import wsg.lol.service.main.intf.ChampionService;
+import wsg.lol.service.intf.ChampionService;
 
 /**
  * wsg
