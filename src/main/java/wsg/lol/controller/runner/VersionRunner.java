@@ -9,10 +9,14 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.base.AppException;
-import wsg.lol.common.base.Result;
+import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.result.version.VersionResult;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.service.intf.*;
+import wsg.lol.service.intf.ChampionService;
+import wsg.lol.service.intf.ItemService;
+import wsg.lol.service.intf.RuneService;
+import wsg.lol.service.intf.SharedService;
+import wsg.lol.service.system.intf.SystemService;
 
 /**
  * Runner to update the version to the latest.
@@ -47,15 +51,15 @@ public class VersionRunner implements ApplicationRunner {
         }
 
         String version = versionResult.getLatestVersion();
-        Result result = systemService.checkCdn(version);
-        if (!result.isSuccess()) {
-            systemService.sendWarnMessage(result);
+        GenericResult<Boolean> result = systemService.checkCdn(version);
+        if (!result.getObject()) {
+            systemService.sendMessage("Can't find cdn for " + version + ". Please update the data dragon manually.");
             return;
         }
 
         try {
             transactionTemplate.execute(transactionStatus -> {
-                logger.info("Updating the version from " + versionResult.getCurrentVersion() + " to " + version);
+                logger.info("Updating the version from {} to {}...", versionResult.getCurrentVersion(), version);
                 ResultUtils.assertSuccess(championService.updateChampions(version));
                 ResultUtils.assertSuccess(itemService.updateItems(version));
                 ResultUtils.assertSuccess(sharedService.updateMaps(version));

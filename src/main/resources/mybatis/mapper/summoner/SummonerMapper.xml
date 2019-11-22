@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wsg.lol.dao.mybatis.mapper.summoner.SummonerMapper">
+    <insert id="insert" parameterType="wsg.lol.common.Summoner">
+        insert into lol.s_summoner
+        values (#{id},
+                #{accountId},
+                #{puuid},
+                #{name},
+                #{profileIconId},
+                #{revisionDate},
+                #{summonerLevel},
+                #{score},
+                #{lastUpdate})
+    </insert>
+</mapper>

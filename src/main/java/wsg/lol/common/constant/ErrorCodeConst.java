@@ -14,4 +14,6 @@ public class ErrorCodeConst {
     public static final String DATABASE_ERROR = "DATABASE_ERROR";
 
     public static final String CDN_NOT_EXIST = "CDN_NOT_EXIST";
+
+    public static final String ILLEGAL_ARGS = "ILLEGAL_ARGS";
 }

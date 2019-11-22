@@ -1,7 +1,9 @@
 package wsg.lol.common.enums.rank;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 /**
- * // TODO: (Kingen, 2019/11/18)
+ * Enum for divisions.
  *
  * @author Kingen
  */
@@ -10,4 +12,17 @@ public enum DivisionEnum {
     II,
     III,
     IV;
+
+    public static DivisionEnum[] validDivisions(TierEnum tier) {
+        if (ArrayUtils.contains(TierEnum.APEX_TIERS, tier)) {
+            return new DivisionEnum[]{
+                    I
+            };
+        }
+        return values();
+    }
+
+    public boolean isValidDivision(TierEnum tier) {
+        return ArrayUtils.contains(validDivisions(tier), this);
+    }
 }

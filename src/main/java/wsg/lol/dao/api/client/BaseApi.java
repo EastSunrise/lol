@@ -38,24 +38,37 @@ public class BaseApi {
     private static final long TIME_OUT = DateUtils.MILLIS_PER_SECOND * 5;
 
     private static final Logger logger = LoggerFactory.getLogger(BaseApi.class);
+    private static long retryCount = 0L;
+    private static long retrySum = 0L;
 
     private ApiClient apiClient;
 
     /**
      * Get single object.
      *
-     * @param apiRef     the relative url of the api.
-     * @param pathParams params filled in the url
-     * @param queryDto   query bean transferred to params appended at the end of the url.
-     * @param clazz      the type of object parsed from the return.
+     * @param apiRef      the relative url of the api.
+     * @param pathParams  params filled in the url
+     * @param queryParams query params after the '?', joined with '&'.
+     * @param clazz       the type of object parsed from the return.
      */
-    protected <Q extends QueryDto, T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Q queryDto, Class<T> clazz) {
-        String jsonStr = getJSONString(apiRef, pathParams, queryDto);
+    protected <Q extends QueryDto, T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams, Class<T> clazz) {
+        String jsonStr = getJSONString(apiRef, pathParams, queryParams);
         return JSON.parseObject(jsonStr, clazz, new RecordExtraProcessor(BaseApi.class));
     }
 
+    protected <Q extends QueryDto, T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Q queryDto, Class<T> clazz) {
+        Map<String, Object> queryParams = new HashMap<>();
+        try {
+            BeanUtils.populate(queryDto, queryParams);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            throw new AppException(ErrorCodeConst.SYSTEM_ERROR, e);
+        }
+        return getObject(apiRef, pathParams, queryParams, clazz);
+    }
+
     protected <T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
-        return getObject(apiRef, pathParams, null, clazz);
+        return getObject(apiRef, pathParams, new HashMap<>(), clazz);
     }
 
     protected <T extends Serializable> T getObject(String apiRef, Class<T> clazz) {
@@ -65,22 +78,46 @@ public class BaseApi {
     /**
      * Get multiple objects.
      *
-     * @param apiRef     the relative url of the api.
-     * @param pathParams params filled in the url
-     * @param queryDto   query bean transferred to params appended at the end of the url.
-     * @param clazz      the type of the single object parsed from the return.
+     * @param apiRef      the relative url of the api.
+     * @param pathParams  params filled in the url
+     * @param queryParams query params after the '?', joined with '&'.
+     * @param clazz       the type of the single object parsed from the return.
      */
-    protected <Q extends QueryDto, T extends Serializable> List<T> getArray(String apiRef, Map<String, Object> pathParams, Q queryDto, Class<T> clazz) {
-        String jsonStr = getJSONString(apiRef, pathParams, queryDto);
+    protected <Q extends QueryDto, T extends Serializable> List<T> getArray(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams, Class<T> clazz) {
+        String jsonStr = getJSONString(apiRef, pathParams, queryParams);
         return JSON.parseArray(jsonStr, clazz);
     }
 
     protected <T extends Serializable> List<T> getArray(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
-        return getArray(apiRef, pathParams, null, clazz);
+        return getArray(apiRef, pathParams, new HashMap<>(), clazz);
     }
 
-    protected <T extends Serializable> List<T> getArray(String apiRef, Class<T> clazz) {
-        return getArray(apiRef, null, clazz);
+    private <Q> String getJSONString(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams) {
+        if (MapUtils.isNotEmpty(pathParams)) {
+            for (Map.Entry<String, Object> entry : pathParams.entrySet()) {
+                apiRef = apiRef.replace("{" + entry.getKey() + "}", HttpHelper.encode(entry.getValue()));
+            }
+        }
+
+        String urlStr = HTTPS + (apiClient.getRegion().getHost() + apiRef + "?" + HttpHelper.encodeMap2UrlParams(queryParams)).replace("+", "%20");
+
+        // TODO: (Kingen, 2019/11/21) to delete
+        String filename = "api/" + urlStr.substring(HTTPS.length()).replace("?", "#") + ".json";
+        try {
+            logger.info("Read from {}.", filename);
+            return FileUtils.readFileToString(new File(filename), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            logger.info("Can't read from {}.", filename);
+        }
+
+        String jsonStr = doHttpGet(urlStr);
+        try {
+            logger.info("Write to {}.", filename);
+            FileUtils.writeStringToFile(new File(filename), jsonStr, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return jsonStr;
     }
 
     private String doHttpGet(String urlStr) {
@@ -112,6 +149,9 @@ public class BaseApi {
                 logger.info(urlConnection.getResponseMessage());
                 if (ResponseCodeEnum.RateLimitExceeded.getCode() == responseCode) {
                     long retryAfter = Long.parseLong(urlConnection.getHeaderField("Retry-After")) * DateUtils.MILLIS_PER_SECOND;
+                    retryCount += 1;
+                    retrySum += retryAfter;
+                    logger.info("Rate limit exceeded. Wait for {} ms.", retryAfter);
                     threadSleep(retryAfter);
                     continue;
                 }
@@ -119,47 +159,15 @@ public class BaseApi {
                     apiClient.regenerateToken();
                     continue;
                 }
+                if (ResponseCodeEnum.BadRequest.getCode() == responseCode) {
+                    logger.error("Bas request: {}.", urlStr);
+                }
                 throw new HTTPException(responseCode);
             } catch (IOException e) {
                 e.printStackTrace();
                 threadSleep(TIME_OUT);
             }
         }
-    }
-
-    private <Q> String getJSONString(String apiRef, Map<String, Object> pathParams, Q query) {
-        Map<String, Object> queryParams = new HashMap<>();
-        try {
-            BeanUtils.populate(query, queryParams);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            throw new AppException(ErrorCodeConst.SYSTEM_ERROR, e);
-        }
-        if (MapUtils.isNotEmpty(pathParams)) {
-            for (Map.Entry<String, Object> entry : pathParams.entrySet()) {
-                apiRef = apiRef.replace("{" + entry.getKey() + "}", HttpHelper.encode(entry.getValue()));
-            }
-        }
-
-        String urlStr = HTTPS + (apiClient.getRegion().getHost() + apiRef + "?" + HttpHelper.encodeMap2UrlParams(queryParams)).replace("+", "%20");
-
-        // TODO: (Kingen, 2019/11/21) to delete
-        String filename = "api/" + urlStr.substring(HTTPS.length()).replace("?", "#") + ".json";
-        try {
-            logger.info("Read from {}.", filename);
-            return FileUtils.readFileToString(new File(filename), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            logger.info("Can't read from {}.", filename);
-        }
-
-        String jsonStr = doHttpGet(urlStr);
-        try {
-            logger.info("Write to {}.", filename);
-            FileUtils.writeStringToFile(new File(filename), jsonStr, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return jsonStr;
     }
 
     private void threadSleep(long millis) {

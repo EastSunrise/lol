@@ -1,8 +1,10 @@
 package wsg.lol.common.pojo.dto.summoner;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
+import wsg.lol.common.constant.JSONConst;
 
 import java.util.Date;
 
@@ -13,7 +15,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class MasteryDto extends BaseDto {
+public class ChampionMasteryDto extends BaseDto {
 
     private String summonerId;
     private Integer championId;
@@ -23,5 +25,7 @@ public class MasteryDto extends BaseDto {
     private Integer championPointsUntilNextLevel;
     private Integer championPointsSinceLastLevel;
     private Integer tokensEarned;
+
+    @JSONField(format = JSONConst.DATE_FORMAT)
     private Date lastPlayTime;
 }

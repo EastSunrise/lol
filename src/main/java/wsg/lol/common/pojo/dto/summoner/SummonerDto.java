@@ -38,7 +38,7 @@ public class SummonerDto extends BaseDto {
     /**
      * ID of the summoner icon associated with the summoner.
      */
-    private int profileIconId;
+    private Integer profileIconId;
 
     /**
      * Date summoner was last modified specified as epoch milliseconds. The following events will update this timestamp:
@@ -49,7 +49,9 @@ public class SummonerDto extends BaseDto {
     /**
      * Summoner level associated with the summoner.
      */
-    private long summonerLevel;
+    private Long summonerLevel;
 
-//    private Date lastCheckedTime;
+    private Integer score;
+
+    private Date lastUpdate;
 }

@@ -23,7 +23,7 @@ public abstract class AbstractArrayTypeHandler<T> implements TypeHandler<T[]> {
 
     protected Class<T> clazz;
 
-    public AbstractArrayTypeHandler(Class<T> clazz) {
+    AbstractArrayTypeHandler(Class<T> clazz) {
         if (clazz == null) {
             throw new IllegalArgumentException("Array type argument cannot be null.");
         } else {
@@ -35,7 +35,7 @@ public abstract class AbstractArrayTypeHandler<T> implements TypeHandler<T[]> {
 
     protected abstract T parseObject(@NotNull String string);
 
-    protected String getSeparator() {
+    String getSeparator() {
         return ",";
     }
 

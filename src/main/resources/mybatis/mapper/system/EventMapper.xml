@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wsg.lol.dao.mybatis.mapper.system.EventMapper">
+    <insert id="insertEventsOfType" useGeneratedKeys="true">
+        insert into lol.t_event(type, context, status)
+        values
+        <foreach collection="contexts" item="item" separator=",">
+            (#{type},
+            #{item},
+            #{status})
+        </foreach>
+    </insert>
+
+    <select id="selectEventContext" resultType="java.lang.String">
+        select context
+        from lol.t_event
+        where type = #{type}
+          and status = #{status}
+    </select>
+</mapper>

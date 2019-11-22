@@ -9,17 +9,17 @@ import org.springframework.stereotype.Service;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.result.version.VersionResult;
 import wsg.lol.service.intf.SharedService;
-import wsg.lol.service.intf.SystemService;
+import wsg.lol.service.system.intf.SystemService;
 
 /**
- * Scheduler.
+ * Scheduler for shared data.
  *
  * @author Kingen
  */
 @Service
-public class Scheduler {
+public class SharedScheduler {
 
-    private static final Logger logger = LoggerFactory.getLogger(Scheduler.class);
+    private static final Logger logger = LoggerFactory.getLogger(SharedScheduler.class);
 
     private SystemService systemService;
 

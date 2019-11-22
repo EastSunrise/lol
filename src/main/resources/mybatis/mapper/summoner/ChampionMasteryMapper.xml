@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wsg.lol.dao.mybatis.mapper.summoner.ChampionMasteryMapper">
+    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto">
+        insert into lol.s_mastery
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.summonerId},
+            #{item.championId},
+            #{item.chestGranted},
+            #{item.championLevel},
+            #{item.championPoints},
+            #{item.championPointsUntilNextLevel},
+            #{item.championPointsSinceLastLevel},
+            #{item.tokensEarned},
+            #{item.lastPlayTime})
+        </foreach>
+    </insert>
+</mapper>

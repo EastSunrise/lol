@@ -1,6 +1,8 @@
-package wsg.lol.service.intf;
+package wsg.lol.service.system.intf;
 
+import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
+import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.result.version.VersionResult;
 
 /**
@@ -13,7 +15,7 @@ public interface SystemService {
     /**
      * Check if the cdn directory exists.
      */
-    Result checkCdn(String version);
+    GenericResult<Boolean> checkCdn(String version);
 
     /**
      * Get info of version.
@@ -34,4 +36,14 @@ public interface SystemService {
      * Send messages of warning.
      */
     void sendWarnMessage(Result result);
+
+    /**
+     * Check if the database has been initialized.
+     */
+    GenericResult<Boolean> isDatabaseInitialized();
+
+    /**
+     * Handle events of the specified type.
+     */
+    Result handle(EventTypeEnum eventType);
 }

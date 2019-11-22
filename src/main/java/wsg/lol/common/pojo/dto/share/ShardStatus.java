@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
+import wsg.lol.common.constant.JSONConst;
 import wsg.lol.common.enums.shared.MessageSeverityEnum;
 import wsg.lol.common.enums.shared.ServiceEnum;
 import wsg.lol.common.enums.shared.ServiceStatusEnum;
@@ -48,7 +49,7 @@ public class ShardStatus extends BaseDto {
             private Long id;
             private List<Message> updates;
 
-            @JSONField(format = "yyyy-MM-dd'T'HH:mm:ss.SSS'T'")
+            @JSONField(format = JSONConst.DATE_FORMAT)
             private Date createdAt;
 
             @Data
@@ -64,9 +65,9 @@ public class ShardStatus extends BaseDto {
 
                 private List<Translation> translations;
 
-                @JSONField(format = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                @JSONField(format = JSONConst.DATE_FORMAT)
                 private Date createdAt;
-                @JSONField(format = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                @JSONField(format = JSONConst.DATE_FORMAT)
                 private Date updatedAt;
 
                 @Data
@@ -75,7 +76,7 @@ public class ShardStatus extends BaseDto {
                     private Locale locale;
                     private String content;
 
-                    @JSONField(format = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                    @JSONField(format = JSONConst.DATE_FORMAT)
                     private Date updatedAt;
                 }
             }

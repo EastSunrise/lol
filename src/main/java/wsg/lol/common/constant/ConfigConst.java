@@ -21,4 +21,9 @@ public class ConfigConst {
      * Rotation of champions.
      */
     public static final String CHAMPION_ROTATION = "CHAMPION_ROTATION";
+
+    /**
+     * Flag marked if the database has been initialized.
+     */
+    public static final String IS_DATABASE_INITIALIZED = "IS_DATABASE_INITIALIZED";
 }

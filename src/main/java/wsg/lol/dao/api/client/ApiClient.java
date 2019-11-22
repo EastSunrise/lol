@@ -59,8 +59,8 @@ public class ApiClient {
      */
     void regenerateToken() {
         // TODO: (Kingen, 2019/11/6) regenerate token
-        this.token = "RGAPI-a5041332-0993-43f6-b4f6-7779d5cfeb94";
-        this.expiresTime = parseDate("Thu, Nov 21st, 2019 @ 6:45pm (PT)");
+        this.token = "RGAPI-5186675a-9991-4879-8290-a9491f7585fa";
+        this.expiresTime = parseDate("Fri, Nov 22nd, 2019 @ 6:44pm (PT)");
     }
 
     public PlatformRoutingEnum getRegion() {

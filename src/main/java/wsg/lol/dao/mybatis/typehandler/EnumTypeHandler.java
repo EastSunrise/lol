@@ -6,6 +6,8 @@ import org.apache.ibatis.type.TypeHandler;
 import wsg.lol.common.enums.champion.*;
 import wsg.lol.common.enums.game.GameModeEnum;
 import wsg.lol.common.enums.game.MapEnum;
+import wsg.lol.common.enums.system.EventStatusEnum;
+import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.util.EnumUtils;
 
 import java.sql.CallableStatement;
@@ -19,7 +21,8 @@ import java.sql.SQLException;
  * @author Kingen
  */
 @MappedTypes({
-        ImageGroupEnum.class, ChampionTipEnum.class, SpellNumEnum.class, MapEnum.class, GameModeEnum.class, RecommendedTypeEnum.class, BlockTypeEnum.class
+        ImageGroupEnum.class, ChampionTipEnum.class, SpellNumEnum.class, MapEnum.class, GameModeEnum.class, RecommendedTypeEnum.class,
+        BlockTypeEnum.class, EventTypeEnum.class, EventStatusEnum.class
 })
 public class EnumTypeHandler<T extends Enum<T>> implements TypeHandler<T> {
 
