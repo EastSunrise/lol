@@ -14,4 +14,6 @@ import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 public interface SummonerMapper {
 
     int insert(SummonerDto summonerDto);
+
+    SummonerDto selectById(String id);
 }

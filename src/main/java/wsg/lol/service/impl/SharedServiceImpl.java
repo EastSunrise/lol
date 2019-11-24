@@ -13,8 +13,9 @@ import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ConfigConst;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.champion.ImageGroupEnum;
+import wsg.lol.common.enums.route.PlatformRoutingEnum;
 import wsg.lol.common.pojo.dto.champion.ChampionRotationDto;
-import wsg.lol.common.pojo.dto.general.ImageDto;
+import wsg.lol.common.pojo.dto.share.ImageDto;
 import wsg.lol.common.pojo.dto.share.ShardStatus;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionV3;
@@ -109,7 +110,7 @@ public class SharedServiceImpl implements SharedService {
         logger.info("Updating the shared status.");
         ShardStatus sharedData = lolStatusV3.getSharedData();
         String value = JSON.toJSONString(sharedData);
-        int count = configMapper.updateConfigValue(ConfigConst.SHARED_STATUS, value);
+        int count = configMapper.updateConfigValue(PlatformRoutingEnum.LOL, ConfigConst.SHARED_STATUS, value);
         if (count != 1) {
             logger.error("Failed to update the shared status.");
             return ResultUtils.fail(ErrorCodeConst.DATABASE_ERROR, "Failed to update the shared status.");
@@ -124,7 +125,7 @@ public class SharedServiceImpl implements SharedService {
         logger.info("Updating the rotation of champions.");
         ChampionRotationDto rotation = championV3.getChampionRotation();
         String value = JSON.toJSONString(rotation);
-        int count = configMapper.updateConfigValue(ConfigConst.CHAMPION_ROTATION, value);
+        int count = configMapper.updateConfigValue(PlatformRoutingEnum.LOL, ConfigConst.CHAMPION_ROTATION, value);
         if (count != 1) {
             logger.error("Failed to update the rotation of champions.");
             return ResultUtils.fail(ErrorCodeConst.DATABASE_ERROR, "Failed to update the rotation of champions.");

@@ -1,6 +1,6 @@
 package wsg.lol.common.pojo.dto.item;
 
-import wsg.lol.common.pojo.dto.general.ImageDto;
+import wsg.lol.common.pojo.dto.share.ImageDto;
 
 /**
  * todo

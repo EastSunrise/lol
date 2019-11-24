@@ -10,7 +10,7 @@ public class ConfigConst {
     /**
      * Current version of the static data.
      */
-    public static final String CONFIG_NAME_CURRENT_VERSION = "CURRENT_VERSION";
+    public static final String CURRENT_VERSION = "CURRENT_VERSION";
 
     /**
      * Shared status.

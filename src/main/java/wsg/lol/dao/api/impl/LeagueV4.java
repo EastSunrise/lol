@@ -33,7 +33,7 @@ public class LeagueV4 extends BaseApi {
     public List<LeagueEntryDto> getLeagueEntriesBySummonerId(String summonerId) {
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedSummonerId", summonerId);
-        return this.getArray("/lol/league/v4/positions/by-summoner/{encryptedSummonerId}", params, LeagueEntryDto.class);
+        return this.getArray("/lol/league/v4/entries/by-summoner/{encryptedSummonerId}", params, LeagueEntryDto.class);
     }
 
     /**

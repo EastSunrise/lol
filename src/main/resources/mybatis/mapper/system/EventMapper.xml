@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wsg.lol.dao.mybatis.mapper.system.EventMapper">
     <insert id="insertEventsOfType" useGeneratedKeys="true">
-        insert into lol.t_event(type, context, status)
+        insert ignore into lol.t_event(type, context, status)
         values
         <foreach collection="contexts" item="item" separator=",">
             (#{type},
@@ -11,10 +11,26 @@
         </foreach>
     </insert>
 
+    <update id="updateStatus">
+        update lol.t_event
+        set status=#{to}
+        where type = #{type}
+          and context = #{context}
+          and status = #{from}
+    </update>
+
     <select id="selectEventContext" resultType="java.lang.String">
         select context
         from lol.t_event
         where type = #{type}
           and status = #{status}
+    </select>
+
+    <select id="selectEventContextByPage" resultType="java.lang.String">
+        select context
+        from lol.t_event
+        where type = #{type}
+          and status = #{status}
+        limit 1000
     </select>
 </mapper>

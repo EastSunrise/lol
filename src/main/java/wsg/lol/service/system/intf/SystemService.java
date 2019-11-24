@@ -1,6 +1,7 @@
 package wsg.lol.service.system.intf;
 
 import wsg.lol.common.base.GenericResult;
+import wsg.lol.common.base.Page;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.result.version.VersionResult;
@@ -46,4 +47,14 @@ public interface SystemService {
      * Handle events of the specified type.
      */
     Result handle(EventTypeEnum eventType);
+
+    /**
+     * Handle events of the specified type by page.
+     */
+    Result handle(EventTypeEnum eventType, Page page);
+
+    /**
+     * Update the initialization config.
+     */
+    Result initialized();
 }

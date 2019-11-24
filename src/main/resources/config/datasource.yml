@@ -1,0 +1,19 @@
+datasource:
+  lol:
+    name: lol
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lol?characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: 2787
+  na:
+    name: na
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/na?characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: 2787
+  kr:
+    name: kr
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/kr?characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: 2787

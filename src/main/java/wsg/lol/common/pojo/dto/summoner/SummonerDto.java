@@ -49,7 +49,7 @@ public class SummonerDto extends BaseDto {
     /**
      * Summoner level associated with the summoner.
      */
-    private Long summonerLevel;
+    private Integer summonerLevel;
 
     private Integer score;
 

@@ -2,8 +2,8 @@ package wsg.lol.dao.dragon.config;
 
 import org.apache.commons.lang3.LocaleUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
@@ -12,7 +12,7 @@ import java.util.Locale;
  *
  * @author Kingen
  */
-@Component
+@Configuration
 @PropertySource(value = {"classpath:config/data-config.properties"})
 public class StaticConfig {
 

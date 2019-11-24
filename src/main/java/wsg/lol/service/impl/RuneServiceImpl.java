@@ -11,7 +11,7 @@ import wsg.lol.common.pojo.dto.rune.RuneExtDto;
 import wsg.lol.common.pojo.dto.rune.RuneTreeDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.dragon.intf.DragonDao;
-import wsg.lol.dao.mybatis.common.StaticExecutor;
+import wsg.lol.dao.mybatis.config.StaticExecutor;
 import wsg.lol.dao.mybatis.mapper.rune.RuneMapper;
 import wsg.lol.dao.mybatis.mapper.rune.RuneTreeMapper;
 import wsg.lol.service.intf.RuneService;

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import wsg.lol.common.enums.rank.PositionEnum;
 import wsg.lol.common.enums.rank.RankQueueEnum;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
-import wsg.lol.dao.mybatis.common.BaseMapper;
+import wsg.lol.dao.mybatis.config.BaseMapper;
 
 /**
  * // TODO: (Kingen, 2019/11/18)

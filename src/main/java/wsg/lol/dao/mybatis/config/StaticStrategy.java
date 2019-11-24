@@ -1,4 +1,4 @@
-package wsg.lol.dao.mybatis.common;
+package wsg.lol.dao.mybatis.config;
 
 import java.util.List;
 

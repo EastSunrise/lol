@@ -5,11 +5,13 @@
         select value
         from lol.t_config
         where name = #{name}
+          and region = #{region}
     </select>
 
     <update id="updateConfigValue">
         update lol.t_config
         set value = #{value}
         where name = #{name}
+          and region = #{region}
     </update>
 </mapper>

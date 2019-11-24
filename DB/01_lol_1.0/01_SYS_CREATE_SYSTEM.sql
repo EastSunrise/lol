@@ -5,7 +5,8 @@ create table lol.t_config
     name        varchar(32)   not null comment '配置名',
     value       varchar(1024) not null comment '配置值',
     description varchar(512)  not null comment '描述',
-    primary key (name)
+    region      tinyint       not null default 0 comment '地区',
+    primary key (name, region)
 ) comment ='系统配置表';
 
 -- 图片资源表
@@ -33,7 +34,8 @@ create table lol.t_event
     type    tinyint            not null comment '类型，对应处理方式',
     context varchar(64)        not null comment '上下文',
     status  tinyint            not null comment '状态',
-    primary key (id)
+    primary key (id),
+    unique (type, context)
 ) comment ='事件表';
 
 commit;

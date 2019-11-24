@@ -2,8 +2,8 @@ package wsg.lol.common.pojo.dto.champion;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import wsg.lol.common.pojo.dto.general.ImageDto;
 import wsg.lol.common.pojo.dto.item.RecommendedExtDto;
+import wsg.lol.common.pojo.dto.share.ImageDto;
 
 import java.util.List;
 

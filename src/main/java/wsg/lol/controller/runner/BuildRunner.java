@@ -8,7 +8,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import wsg.lol.common.base.GenericResult;
-import wsg.lol.common.base.Result;
+import wsg.lol.common.util.ResultUtils;
 import wsg.lol.service.intf.LeagueService;
 import wsg.lol.service.system.intf.SystemService;
 
@@ -36,11 +36,8 @@ public class BuildRunner implements ApplicationRunner {
             return;
         }
 
-        Result initial = leagueService.initialByLeagues();
-        if (!initial.isSuccess()) {
-            systemService.sendWarnMessage(initial);
-            return;
-        }
+        ResultUtils.assertSuccess(leagueService.initialByLeagues());
+        ResultUtils.assertSuccess(systemService.initialized());
 
         logger.info("Succeed in initializing the database.");
     }

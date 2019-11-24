@@ -7,6 +7,7 @@ package wsg.lol.common.enums.route;
  * @see <a href="https://developer.riotgames.com/docs/lol#_routing-values">Routing Values</a>
  */
 public enum PlatformRoutingEnum {
+    LOL("api.riotgames.com"),
     BR("br1.api.riotgames.com"),
     EUN("eun1.api.riotgames.com"),
     EUW("euw1.api.riotgames.com"),

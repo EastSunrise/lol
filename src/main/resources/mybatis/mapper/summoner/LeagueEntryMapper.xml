@@ -18,9 +18,10 @@
             #{item.inactive},
             #{item.freshBlood},
             #{item.leaguePoints},
-            #{item.seriesTarget},
-            #{item.seriesWins},
-            #{item.seriesLosses})
+            #{item.miniSeries.target},
+            #{item.miniSeries.wins},
+            #{item.miniSeries.losses},
+            #{item.miniSeries.progress})
         </foreach>
     </insert>
 </mapper>

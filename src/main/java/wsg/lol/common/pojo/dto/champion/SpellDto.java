@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.champion.SpellNumEnum;
 import wsg.lol.common.enums.game.GameModeEnum;
-import wsg.lol.common.pojo.dto.general.ImageDto;
+import wsg.lol.common.pojo.dto.share.ImageDto;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

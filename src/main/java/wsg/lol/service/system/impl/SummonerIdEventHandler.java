@@ -8,6 +8,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
+import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
@@ -16,11 +17,14 @@ import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
 import wsg.lol.dao.api.impl.SummonerV4;
+import wsg.lol.dao.mybatis.config.StaticExecutor;
 import wsg.lol.dao.mybatis.mapper.summoner.ChampionMasteryMapper;
 import wsg.lol.dao.mybatis.mapper.summoner.LeagueEntryMapper;
 import wsg.lol.dao.mybatis.mapper.summoner.SummonerMapper;
+import wsg.lol.dao.mybatis.mapper.system.EventMapper;
 import wsg.lol.service.system.intf.EventHandler;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,49 +51,66 @@ public class SummonerIdEventHandler implements EventHandler {
 
     private LeagueEntryMapper leagueEntryMapper;
 
+    private EventMapper eventMapper;
+
     @Override
-    public Result handle(List<String> contexts) {
-        logger.info("Handling events of summoner id.");
+    public synchronized Result handle(List<String> contexts) {
         for (String summonerId : contexts) {
-            Result execute = transactionTemplate.execute(transactionStatus -> {
-                logger.info("Adding the summoner {}.", summonerId);
-                SummonerDto summoner = summonerV4.getSummonerById(summonerId);
-                int score = championMasteryV4.getScoreBySummonerId(summonerId);
-                summoner.setScore(score);
+            try {
+                transactionTemplate.execute(transactionStatus -> {
+                    logger.info("Handling the event of {}.", summonerId);
 
-                logger.info("Adding champion masteries of {}.", summonerId);
-                List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
-                int count = championMasteryMapper.batchInsert(championMasteries);
-                if (count != championMasteries.size()) {
-                    logger.error("Failed to inert champion masteries of {}.", summonerId);
-                    throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to inert champion masteries of " + summonerId);
-                }
-                logger.info("Inserted {} champion masteries of {}.", count, summonerId);
+                    // if exists.
+                    SummonerDto summonerDto = summonerMapper.selectById(summonerId);
+                    if (summonerDto != null) {
+                        return ResultUtils.success();
+                    }
 
-                logger.info("Adding league entries of {}.", summonerId);
-                List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
-                count = leagueEntryMapper.batchInsert(entries);
-                if (count != entries.size()) {
-                    logger.error("Failed to inert league entries of {}.", summonerId);
-                    throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to inert league entries of " + summonerId);
-                }
-                logger.info("Inserted {} league entries of {}.", count, summonerId);
+                    // get base info.
+                    SummonerDto summoner = summonerV4.getSummonerById(summonerId);
+                    int score = championMasteryV4.getScoreBySummonerId(summonerId);
+                    summoner.setScore(score);
 
-                count = summonerMapper.insert(summoner);
-                if (count != 1) {
-                    logger.error("Failed to inert the summoner {}.", summonerId);
-                    throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to inert the summoner " + summonerId);
-                }
-                logger.info("Succeed adding the summoner {}.", summonerId);
+                    logger.info("Adding champion masteries of {}.", summonerId);
+                    List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
+                    Result result = StaticExecutor.batchInsert(championMasteryMapper, championMasteries);
+                    ResultUtils.assertSuccess(result);
 
-                // TODO: (Kingen, 2019/11/22)  update the event.
+                    logger.info("Adding league entries of {}.", summonerId);
+                    List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
+                    result = StaticExecutor.batchInsert(leagueEntryMapper, entries);
+                    ResultUtils.assertSuccess(result);
 
-                return ResultUtils.success();
-            });
+                    logger.info("Adding the summoner {}.", summonerId);
+                    summoner.setLastUpdate(new Date());
+                    int count = summonerMapper.insert(summoner);
+                    if (count != 1) {
+                        logger.error("Failed to inert the summoner {}.", summonerId);
+                        throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to inert the summoner " + summonerId);
+                    }
+
+                    logger.info("Updating the status of the event {} to {}.", summonerId, EventStatusEnum.Finished);
+                    count = eventMapper.updateStatus(EventTypeEnum.SummonerId, summonerId, EventStatusEnum.Unfinished, EventStatusEnum.Finished);
+                    if (count != 1) {
+                        logger.error("Failed to update the status of the event {} to {}.", summonerId, EventStatusEnum.Finished);
+                        throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to update the status of the event. ");
+                    }
+
+                    logger.info("Succeed handling the event of {}.", summonerId);
+                    return ResultUtils.success();
+                });
+            } catch (AppException e) {
+                e.printStackTrace();
+            }
         }
 
         logger.info("Succeed in handling the events of summoner id.");
         return ResultUtils.success();
+    }
+
+    @Autowired
+    public void setEventMapper(EventMapper eventMapper) {
+        this.eventMapper = eventMapper;
     }
 
     @Autowired

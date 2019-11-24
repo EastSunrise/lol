@@ -2,7 +2,7 @@ package wsg.lol.dao.api.client;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ErrorCodeConst;
@@ -17,8 +17,11 @@ import java.util.Locale;
  *
  * @author Kingen
  */
-@Component
+@Configuration
 public class ApiClient {
+
+    @Value("${dragon.dir.cdn}")
+    private String cdnDir;
 
     @Value("${api.username}")
     private String username;
@@ -29,9 +32,11 @@ public class ApiClient {
     @Value("${api.region}")
     private PlatformRoutingEnum region;
 
+    @Value("${api.token}")
     private String token;
 
-    private Date expiresTime;
+    @Value("${api.expires}")
+    private String expires;
 
     private static Date parseDate(String str) {
         String[] parts = str.split(",");
@@ -48,7 +53,7 @@ public class ApiClient {
      * Get current api token. Regenerate it if invalid.
      */
     String getToken() {
-        if (StringUtils.isEmpty(this.token) || this.expiresTime.compareTo(new Date()) < 0) {
+        if (StringUtils.isEmpty(this.token) || parseDate(this.expires).compareTo(new Date()) < 0) {
             regenerateToken();
         }
         return this.token;
@@ -59,11 +64,13 @@ public class ApiClient {
      */
     void regenerateToken() {
         // TODO: (Kingen, 2019/11/6) regenerate token
-        this.token = "RGAPI-5186675a-9991-4879-8290-a9491f7585fa";
-        this.expiresTime = parseDate("Fri, Nov 22nd, 2019 @ 6:44pm (PT)");
     }
 
     public PlatformRoutingEnum getRegion() {
         return region;
+    }
+
+    public String getCdnDir() {
+        return cdnDir;
     }
 }

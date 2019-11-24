@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wsg.lol.dao.mybatis.mapper.summoner.SummonerMapper">
-    <insert id="insert" parameterType="wsg.lol.common.Summoner">
+    <insert id="insert" parameterType="wsg.lol.common.pojo.dto.summoner.SummonerDto">
         insert into lol.s_summoner
         values (#{id},
                 #{accountId},
@@ -13,4 +13,17 @@
                 #{score},
                 #{lastUpdate})
     </insert>
+    <select id="selectById" resultType="wsg.lol.common.pojo.dto.summoner.SummonerDto">
+        select id,
+               account_id,
+               puuid,
+               name,
+               profile_icon_id,
+               revision_date,
+               summoner_level,
+               score,
+               last_update
+        from lol.s_summoner
+        where id = #{id}
+    </select>
 </mapper>

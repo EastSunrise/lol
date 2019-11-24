@@ -7,7 +7,7 @@
         where t.`group` = #{group}
     </delete>
 
-    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.general.ImageDto" useGeneratedKeys="true">
+    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.share.ImageDto" useGeneratedKeys="true">
         insert into lol.t_image(related_id, full, sprite, `group`, x, y, w, h)
         values
         <foreach collection="list" item="item" separator=",">

@@ -1,4 +1,4 @@
-package wsg.lol.dao.mybatis.common;
+package wsg.lol.dao.mybatis.config;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -28,6 +28,20 @@ public class StaticExecutor {
         int count = strategy.clear();
         logger.info(count + " Cleared.");
         count = strategy.batchInsert(data);
+        if (count != data.size()) {
+            logger.error("Failed to insert the data");
+            throw new AppException(ErrorCodeConst.DATABASE_ERROR);
+        }
+        logger.info(count + " Inserted.");
+        return ResultUtils.success();
+    }
+
+    public static <T> Result batchInsert(StaticStrategy<T> strategy, List<T> data) {
+        if (CollectionUtils.isEmpty(data)) {
+            logger.info("Collection is empty. Nothing inserted.");
+            return ResultUtils.success();
+        }
+        int count = strategy.batchInsert(data);
         if (count != data.size()) {
             logger.error("Failed to insert the data");
             throw new AppException(ErrorCodeConst.DATABASE_ERROR);

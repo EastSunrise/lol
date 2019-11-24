@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,7 @@ public class BaseApi {
      * @param queryParams query params after the '?', joined with '&'.
      * @param clazz       the type of object parsed from the return.
      */
-    protected <Q extends QueryDto, T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams, Class<T> clazz) {
+    protected <T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams, Class<T> clazz) {
         String jsonStr = getJSONString(apiRef, pathParams, queryParams);
         return JSON.parseObject(jsonStr, clazz, new RecordExtraProcessor(BaseApi.class));
     }
@@ -83,7 +84,7 @@ public class BaseApi {
      * @param queryParams query params after the '?', joined with '&'.
      * @param clazz       the type of the single object parsed from the return.
      */
-    protected <Q extends QueryDto, T extends Serializable> List<T> getArray(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams, Class<T> clazz) {
+    protected <T extends Serializable> List<T> getArray(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams, Class<T> clazz) {
         String jsonStr = getJSONString(apiRef, pathParams, queryParams);
         return JSON.parseArray(jsonStr, clazz);
     }
@@ -92,28 +93,32 @@ public class BaseApi {
         return getArray(apiRef, pathParams, new HashMap<>(), clazz);
     }
 
-    private <Q> String getJSONString(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams) {
+    private String getJSONString(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams) {
         if (MapUtils.isNotEmpty(pathParams)) {
             for (Map.Entry<String, Object> entry : pathParams.entrySet()) {
                 apiRef = apiRef.replace("{" + entry.getKey() + "}", HttpHelper.encode(entry.getValue()));
             }
         }
 
-        String urlStr = HTTPS + (apiClient.getRegion().getHost() + apiRef + "?" + HttpHelper.encodeMap2UrlParams(queryParams)).replace("+", "%20");
+        String urlParams = HttpHelper.encodeMap2UrlParams(queryParams);
+        if (StringUtils.isNotEmpty(urlParams)) {
+            urlParams = "?" + urlParams;
+        }
+        String urlStr = (apiClient.getRegion().getHost() + apiRef + urlParams).replace("+", "%20");
 
         // TODO: (Kingen, 2019/11/21) to delete
-        String filename = "api/" + urlStr.substring(HTTPS.length()).replace("?", "#") + ".json";
+        String filepath = StringUtils.joinWith(File.separator, apiClient.getCdnDir(), "api", urlStr.replace("?", File.separator).replace("&", File.separator) + ".json");
         try {
-            logger.info("Read from {}.", filename);
-            return FileUtils.readFileToString(new File(filename), StandardCharsets.UTF_8);
+            logger.info("Read from {}.", filepath);
+            return FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            logger.info("Can't read from {}.", filename);
+            logger.info("Can't read from {}.", filepath);
         }
 
-        String jsonStr = doHttpGet(urlStr);
+        String jsonStr = doHttpGet(HTTPS + urlStr);
         try {
-            logger.info("Write to {}.", filename);
-            FileUtils.writeStringToFile(new File(filename), jsonStr, StandardCharsets.UTF_8);
+            logger.info("Write to {}.", filepath);
+            FileUtils.writeStringToFile(new File(filepath), jsonStr, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }

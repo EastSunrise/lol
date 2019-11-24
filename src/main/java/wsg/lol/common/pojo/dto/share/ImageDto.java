@@ -1,4 +1,4 @@
-package wsg.lol.common.pojo.dto.general;
+package wsg.lol.common.pojo.dto.share;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
