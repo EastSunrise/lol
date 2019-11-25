@@ -5,26 +5,4 @@
         delete
         from lol.ct_recommended
     </delete>
-    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.item.RecommendedDto">
-        insert into lol.ct_recommended
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.id},
-            #{item.champion},
-            #{item.title},
-            #{item.map},
-            #{item.mode},
-            #{item.type},
-            #{item.priority},
-            #{item.customTag},
-            #{item.sortrank},
-            #{item.extensionPage},
-            #{item.useObviousCheckmark},
-            #{item.extenOrnnPage},
-            #{item.requiredPerk},
-            #{item.customPanel},
-            #{item.customPanelBuffCurrencyName},
-            #{item.customPanelCurrencyType})
-        </foreach>
-    </insert>
 </mapper>

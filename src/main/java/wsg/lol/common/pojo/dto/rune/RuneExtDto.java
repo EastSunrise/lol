@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * // TODO: (Kingen, 2019/11/18)
+ * Bean for extension of rune trees.
+ *
+ * @author Kingen
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -15,6 +17,5 @@ public class RuneExtDto extends RuneTreeDto {
 
     public static final String RUNES = "runes";
 
-    //    @JSONField(deserialize = false)
     private List<Map<String, List<RuneDto>>> slots;
 }

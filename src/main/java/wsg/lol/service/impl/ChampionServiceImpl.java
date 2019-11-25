@@ -2,15 +2,12 @@ package wsg.lol.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
-import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.champion.ChampionTipEnum;
 import wsg.lol.common.enums.champion.ImageGroupEnum;
 import wsg.lol.common.enums.champion.SpellNumEnum;
@@ -21,10 +18,10 @@ import wsg.lol.common.pojo.dto.item.RecommendedExtDto;
 import wsg.lol.common.pojo.dto.share.ImageDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.dragon.intf.DragonDao;
-import wsg.lol.dao.mybatis.config.StaticExecutor;
 import wsg.lol.dao.mybatis.mapper.champion.*;
 import wsg.lol.dao.mybatis.mapper.item.BlockMapper;
 import wsg.lol.dao.mybatis.mapper.item.RecommendedMapper;
+import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.ChampionService;
 import wsg.lol.service.intf.SharedService;
 
@@ -65,7 +62,7 @@ public class ChampionServiceImpl implements ChampionService {
 
         logger.info("Updating the champions.");
         List<ChampionDto> championDtoList = new ArrayList<>(championExtDtoList);
-        ResultUtils.assertSuccess(StaticExecutor.updateStatic(championMapper, championDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championMapper, championDtoList));
 
         logger.info("Updating the images of champions.");
         List<ImageDto> imageDtoList = new ArrayList<>();
@@ -86,7 +83,7 @@ public class ChampionServiceImpl implements ChampionService {
             }
             skinDtoList.addAll(skins);
         }
-        ResultUtils.assertSuccess(StaticExecutor.updateStatic(skinMapper, skinDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(skinMapper, skinDtoList));
 
         logger.info("Updating the tips of champions.");
         List<ChampionTipDto> championTipDtoList = new ArrayList<>();
@@ -107,7 +104,7 @@ public class ChampionServiceImpl implements ChampionService {
                 championTipDtoList.add(championTipDto);
             }
         }
-        ResultUtils.assertSuccess(StaticExecutor.updateStatic(championTipMapper, championTipDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championTipMapper, championTipDtoList));
 
         logger.info("Updating the stats of champions.");
         List<ChampionStatsDto> statsDtoList = new ArrayList<>();
@@ -116,7 +113,7 @@ public class ChampionServiceImpl implements ChampionService {
             stats.setChampionId(championExtDto.getId());
             statsDtoList.add(stats);
         }
-        ResultUtils.assertSuccess(StaticExecutor.updateStatic(championStatsMapper, statsDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championStatsMapper, statsDtoList));
 
         logger.info("Updating the spells of champions.");
         List<SpellDto> spellDtoList = new ArrayList<>();
@@ -131,10 +128,10 @@ public class ChampionServiceImpl implements ChampionService {
                 SpellDto spell = spells.get(i);
                 spell.setChampionId(id);
                 spell.setNum(enums[i]);
-                spell.setKey(SpellDto.calcKey(id, enums[i]));
+                spell.setId(SpellDto.generateId(id, enums[i]));
 
                 ImageDto image = spell.getImage();
-                image.setRelatedId(spell.getKey());
+                image.setRelatedId(spell.getId());
                 imageDtoList.add(image);
             }
             spellDtoList.addAll(spells);
@@ -142,17 +139,12 @@ public class ChampionServiceImpl implements ChampionService {
             SpellDto passive = championExtDto.getPassive();
             passive.setChampionId(id);
             passive.setNum(SpellNumEnum.P);
-            passive.setId(championExtDto.getKey() + SpellNumEnum.P.name());
-            passive.setKey(SpellDto.calcKey(id, SpellNumEnum.P));
+            passive.setId(SpellDto.generateId(id, SpellNumEnum.P));
+            passive.setKey(championExtDto.getKey() + SpellNumEnum.P.name());
             spellDtoList.add(passive);
             ImageDto image = passive.getImage();
-            image.setRelatedId(passive.getKey());
+            image.setRelatedId(passive.getId());
             imageDtoList.add(image);
-        }
-        for (SpellDto spellDto : spellDtoList) {
-            if (spellDto.getKey() == null) {
-                logger.error(spellDto.getId());
-            }
         }
         ResultUtils.assertSuccess(this.updateSpells(spellDtoList,
                 SpellNumEnum.P, SpellNumEnum.Q, SpellNumEnum.W, SpellNumEnum.E, SpellNumEnum.R
@@ -182,8 +174,8 @@ public class ChampionServiceImpl implements ChampionService {
                 }
             }
         }
-        ResultUtils.assertSuccess(StaticExecutor.updateStatic(recommendedMapper, recommendedDtoList));
-        ResultUtils.assertSuccess(StaticExecutor.updateStatic(blockMapper, blockDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(recommendedMapper, recommendedDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(blockMapper, blockDtoList));
 
         logger.info("Succeed in updating the data of champions.");
         return ResultUtils.success();
@@ -198,7 +190,7 @@ public class ChampionServiceImpl implements ChampionService {
         for (SpellDto spellDto : spellDtoList) {
             spellDto.setNum(SpellNumEnum.S);
             ImageDto image = spellDto.getImage();
-            image.setRelatedId(spellDto.getKey());
+            image.setRelatedId(spellDto.getId());
             image.setGroup(ImageGroupEnum.SummonerSpell);
             imageDtoList.add(image);
         }
@@ -223,12 +215,7 @@ public class ChampionServiceImpl implements ChampionService {
             logger.info("Deleted " + count + " spells of " + num);
         }
 
-        count = spellMapper.batchInsert(spells);
-        if (count != spells.size()) {
-            logger.error("Failed to insert spells of " + StringUtils.join(nums, ", "));
-            throw new AppException(ErrorCodeConst.DATABASE_ERROR);
-        }
-        logger.info("Inserted " + count + " spells of " + StringUtils.join(nums, ", "));
+        ResultUtils.assertSuccess(MapperExecutor.insertList(spellMapper, spells));
         return ResultUtils.success();
     }
 

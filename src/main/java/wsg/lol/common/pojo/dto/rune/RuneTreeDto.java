@@ -1,50 +1,29 @@
 package wsg.lol.common.pojo.dto.rune;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
-import wsg.lol.common.base.IJson;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
- * todo
+ * Bean for rune trees.
  *
- * @author EastSunrise
+ * @author Kingen
  */
-public class RuneTreeDto extends BaseDto implements IJson {
+@EqualsAndHashCode(callSuper = true)
+@Data
+@Table(schema = "lol", name = "r_tree")
+public class RuneTreeDto extends BaseDto {
 
+    @Id
     private Integer id;
+    @Column(name = "`key`")
     private String key;
+    @Column
     private String icon;
+    @Column
     private String name;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 }

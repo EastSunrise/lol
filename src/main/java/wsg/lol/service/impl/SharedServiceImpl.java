@@ -2,13 +2,11 @@ package wsg.lol.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ConfigConst;
 import wsg.lol.common.constant.ErrorCodeConst;
@@ -23,6 +21,7 @@ import wsg.lol.dao.api.impl.LOLStatusV3;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.mybatis.mapper.system.ConfigMapper;
 import wsg.lol.dao.mybatis.mapper.system.ImageMapper;
+import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.SharedService;
 
 import java.util.ArrayList;
@@ -62,12 +61,7 @@ public class SharedServiceImpl implements SharedService {
             logger.info("Deleted " + count + " images of " + group);
         }
 
-        count = imageMapper.batchInsert(imageDtoList);
-        if (count != imageDtoList.size()) {
-            logger.error("Failed to insert images of " + StringUtils.join(groups, ", "));
-            throw new AppException(ErrorCodeConst.DATABASE_ERROR);
-        }
-        logger.info("Inserted " + count + " images of " + StringUtils.join(groups, ", "));
+        ResultUtils.assertSuccess(MapperExecutor.insertList(imageMapper, imageDtoList));
         return ResultUtils.success();
     }
 

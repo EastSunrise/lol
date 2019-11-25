@@ -3,7 +3,7 @@ package wsg.lol.common.pojo.dto.item;
 import wsg.lol.common.pojo.dto.share.ImageDto;
 
 /**
- * todo
+ * Bean for extension of items.
  *
  * @author EastSunrise
  */

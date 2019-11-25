@@ -5,24 +5,4 @@
         delete
         from lol.i_stats
     </delete>
-
-    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.item.ItemStatsDto">
-        insert into lol.i_stats
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.itemId},
-            #{item.FlatHPPoolMod},
-            #{item.FlatMPPoolMod},
-            #{item.FlatHPRegenMod},
-            #{item.FlatArmorMod},
-            #{item.FlatPhysicalDamageMod},
-            #{item.FlatMagicDamageMod},
-            #{item.FlatMovementSpeedMod},
-            #{item.PercentMovementSpeedMod},
-            #{item.PercentAttackSpeedMod},
-            #{item.FlatCritChanceMod},
-            #{item.FlatSpellBlockMod},
-            #{item.PercentLifeStealMod})
-        </foreach>
-    </insert>
 </mapper>

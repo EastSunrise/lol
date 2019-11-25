@@ -1,27 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wsg.lol.dao.mybatis.mapper.summoner.LeagueEntryMapper">
-    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.summoner.LeagueEntryDto">
-        insert into lol.s_league
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.summonerId},
-            #{item.queueType},
-            #{item.leagueId},
-            #{item.tier},
-            #{item.rank},
-            #{item.summonerName},
-            #{item.hotStreak},
-            #{item.wins},
-            #{item.veteran},
-            #{item.losses},
-            #{item.inactive},
-            #{item.freshBlood},
-            #{item.leaguePoints},
-            #{item.miniSeries.target},
-            #{item.miniSeries.wins},
-            #{item.miniSeries.losses},
-            #{item.miniSeries.progress})
-        </foreach>
-    </insert>
 </mapper>

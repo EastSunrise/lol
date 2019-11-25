@@ -17,11 +17,11 @@ import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
 import wsg.lol.dao.api.impl.SummonerV4;
-import wsg.lol.dao.mybatis.config.StaticExecutor;
 import wsg.lol.dao.mybatis.mapper.summoner.ChampionMasteryMapper;
 import wsg.lol.dao.mybatis.mapper.summoner.LeagueEntryMapper;
 import wsg.lol.dao.mybatis.mapper.summoner.SummonerMapper;
 import wsg.lol.dao.mybatis.mapper.system.EventMapper;
+import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.system.intf.EventHandler;
 
 import java.util.Date;
@@ -61,7 +61,7 @@ public class SummonerIdEventHandler implements EventHandler {
                     logger.info("Handling the event of {}.", summonerId);
 
                     // if exists.
-                    SummonerDto summonerDto = summonerMapper.selectById(summonerId);
+                    SummonerDto summonerDto = summonerMapper.selectByPrimaryKey(summonerId);
                     if (summonerDto != null) {
                         return ResultUtils.success();
                     }
@@ -73,12 +73,12 @@ public class SummonerIdEventHandler implements EventHandler {
 
                     logger.info("Adding champion masteries of {}.", summonerId);
                     List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
-                    Result result = StaticExecutor.batchInsert(championMasteryMapper, championMasteries);
+                    Result result = MapperExecutor.insertList(championMasteryMapper, championMasteries);
                     ResultUtils.assertSuccess(result);
 
                     logger.info("Adding league entries of {}.", summonerId);
                     List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
-                    result = StaticExecutor.batchInsert(leagueEntryMapper, entries);
+                    result = MapperExecutor.insertList(leagueEntryMapper, entries);
                     ResultUtils.assertSuccess(result);
 
                     logger.info("Adding the summoner {}.", summonerId);

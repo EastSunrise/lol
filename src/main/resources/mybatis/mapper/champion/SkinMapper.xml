@@ -5,16 +5,4 @@
         delete
         from lol.c_skin
     </delete>
-
-    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.champion.SkinDto">
-        insert into lol.c_skin
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.id},
-            #{item.championId},
-            #{item.num},
-            #{item.name},
-            #{item.chromas})
-        </foreach>
-    </insert>
 </mapper>

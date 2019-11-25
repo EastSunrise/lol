@@ -3,7 +3,7 @@ package wsg.lol.dao.mybatis.mapper.item;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import wsg.lol.common.pojo.dto.item.ItemDto;
-import wsg.lol.dao.mybatis.config.StaticStrategy;
+import wsg.lol.dao.mybatis.config.StaticMapper;
 
 /**
  * Mapper interface for base information of items.
@@ -12,5 +12,5 @@ import wsg.lol.dao.mybatis.config.StaticStrategy;
  */
 @Repository
 @Mapper
-public interface ItemMapper extends StaticStrategy<ItemDto> {
+public interface ItemMapper extends StaticMapper<ItemDto> {
 }

@@ -5,33 +5,4 @@
         delete
         from lol.c_stats
     </delete>
-
-    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.champion.ChampionStatsDto">
-        insert into lol.c_stats
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.championId},
-            #{item.hp},
-            #{item.hpperlevel},
-            #{item.hpregen},
-            #{item.hpregenperlevel},
-            #{item.mp},
-            #{item.mpperlevel},
-            #{item.mpregen},
-            #{item.mpregenperlevel},
-            #{item.attackdamage},
-            #{item.attackdamageperlevel},
-            #{item.armor},
-            #{item.armorperlevel},
-            #{item.spellblock},
-            #{item.spellblockperlevel},
-            #{item.attackspeed},
-            #{item.attackspeedperlevel},
-            #{item.attackrange},
-            #{item.movespeed},
-            #{item.crit},
-            #{item.critperlevel})
-        </foreach>
-    </insert>
-
 </mapper>

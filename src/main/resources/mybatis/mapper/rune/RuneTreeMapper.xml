@@ -5,14 +5,4 @@
         delete
         from lol.r_tree
     </delete>
-    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.rune.RuneTreeDto">
-        insert into lol.r_tree
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.id},
-            #{item.key},
-            #{item.name},
-            #{item.icon})
-        </foreach>
-    </insert>
 </mapper>

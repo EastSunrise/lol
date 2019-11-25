@@ -11,9 +11,9 @@ import wsg.lol.common.pojo.dto.rune.RuneExtDto;
 import wsg.lol.common.pojo.dto.rune.RuneTreeDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.dragon.intf.DragonDao;
-import wsg.lol.dao.mybatis.config.StaticExecutor;
 import wsg.lol.dao.mybatis.mapper.rune.RuneMapper;
 import wsg.lol.dao.mybatis.mapper.rune.RuneTreeMapper;
+import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.RuneService;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class RuneServiceImpl implements RuneService {
 
         logger.info("Updating the rune trees.");
         List<RuneTreeDto> runeTreeDtoList = new ArrayList<>(runeExtDtoList);
-        ResultUtils.assertSuccess(StaticExecutor.updateStatic(runeTreeMapper, runeTreeDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(runeTreeMapper, runeTreeDtoList));
 
         logger.info("Updating the runes.");
         List<RuneDto> runeDtoList = new ArrayList<>();
@@ -61,7 +61,7 @@ public class RuneServiceImpl implements RuneService {
                 }
             }
         }
-        ResultUtils.assertSuccess(StaticExecutor.updateStatic(runeMapper, runeDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(runeMapper, runeDtoList));
 
         logger.info("Succeed in updating the data of runes.");
         return ResultUtils.success();

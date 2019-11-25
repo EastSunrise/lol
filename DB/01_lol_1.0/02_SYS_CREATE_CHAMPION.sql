@@ -62,9 +62,9 @@ create table lol.c_stats
 drop table if exists lol.c_spell;
 create table lol.c_spell
 (
-    id              varchar(32)   not null comment '主键',
+    id              int           not null comment '主键，若是英雄技能，设为英雄ID*100+NUM',
     champion_id     int           null comment '英雄ID',
-    `key`           int           not null comment '序号，若是英雄技能，设为英雄KEY*100+NUM',
+    `key`           varchar(32)   not null comment '名称',
     name            varchar(32)   not null comment '技能名',
     num             tinyint       not null comment '技能类型枚举',
     description     varchar(512)  not null comment '描述',

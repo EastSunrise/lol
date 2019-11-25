@@ -5,15 +5,4 @@
         delete
         from lol.c_tip
     </delete>
-
-    <insert id="batchInsert" useGeneratedKeys="true" parameterType="wsg.lol.common.pojo.dto.champion.ChampionTipDto">
-        insert into lol.c_tip
-        values
-        <foreach collection="list" separator="," item="item">
-            (#{item.id},
-            #{item.championId},
-            #{item.tip},
-            #{item.type})
-        </foreach>
-    </insert>
 </mapper>

@@ -2,10 +2,9 @@ package wsg.lol.dao.mybatis.mapper.champion;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.additional.insert.InsertListMapper;
 import wsg.lol.common.enums.champion.SpellNumEnum;
 import wsg.lol.common.pojo.dto.champion.SpellDto;
-
-import java.util.List;
 
 /**
  * Mapper interface for spells of champions.
@@ -14,8 +13,6 @@ import java.util.List;
  */
 @Repository
 @Mapper
-public interface SpellMapper {
+public interface SpellMapper extends InsertListMapper<SpellDto> {
     int deleteByNum(SpellNumEnum num);
-
-    int batchInsert(List<SpellDto> list);
 }

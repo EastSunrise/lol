@@ -5,20 +5,4 @@
         delete
         from lol.r_rune
     </delete>
-
-    <insert id="batchInsert">
-        insert into lol.r_rune(id, `key`, tree_id, name, icon, short_desc, long_desc, num_y, num_x)
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.id},
-            #{item.key},
-            #{item.treeId},
-            #{item.name},
-            #{item.icon},
-            #{item.shortDesc},
-            #{item.longDesc},
-            #{item.numY},
-            #{item.numX})
-        </foreach>
-    </insert>
 </mapper>

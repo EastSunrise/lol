@@ -2,8 +2,8 @@ package wsg.lol.dao.mybatis.mapper.summoner;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.additional.insert.InsertListMapper;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
-import wsg.lol.dao.mybatis.config.StaticStrategy;
 
 /**
  * Mapper for entries of the league.
@@ -12,5 +12,5 @@ import wsg.lol.dao.mybatis.config.StaticStrategy;
  */
 @Mapper
 @Repository
-public interface LeagueEntryMapper extends StaticStrategy<LeagueEntryDto> {
+public interface LeagueEntryMapper extends InsertListMapper<LeagueEntryDto> {
 }

@@ -6,36 +6,4 @@
         from lol.c_spell
         where num = #{num}
     </delete>
-
-    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.champion.SpellDto">
-        insert into lol.c_spell
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.id},
-            #{item.championId},
-            #{item.key},
-            #{item.name},
-            #{item.num},
-            #{item.description},
-            #{item.maxrank},
-            #{item.tooltip},
-            #{item.leveltipLabel},
-            #{item.leveltipEffect},
-            #{item.cooldown},
-            #{item.cooldownBurn},
-            #{item.cost},
-            #{item.costBurn},
-            #{item.range},
-            #{item.rangeBurn},
-            #{item.datavalues},
-            #{item.effect},
-            #{item.effectBurn},
-            #{item.vars},
-            #{item.costType},
-            #{item.maxammo},
-            #{item.resource},
-            #{item.summonerLevel},
-            #{item.modes})
-        </foreach>
-    </insert>
 </mapper>

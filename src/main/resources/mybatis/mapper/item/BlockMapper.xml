@@ -5,24 +5,4 @@
         delete
         from lol.ct_block
     </delete>
-    <insert id="batchInsert" useGeneratedKeys="true" parameterType="wsg.lol.common.pojo.dto.item.BlockDto">
-        insert into lol.ct_block
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.id},
-            #{item.recommendedId},
-            #{item.type},
-            #{item.recMath},
-            #{item.recSteps},
-            #{item.minSummonerLevel},
-            #{item.maxSummonerLevel},
-            #{item.showIfSummonerSpell},
-            #{item.hideIfSummonerSpell},
-            #{item.appendAfterSection},
-            #{item.visibleWithAllOf},
-            #{item.hiddenWithAnyOf},
-            #{item.items})
-        </foreach>
-
-    </insert>
 </mapper>

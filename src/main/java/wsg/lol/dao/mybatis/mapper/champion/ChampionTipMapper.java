@@ -3,7 +3,7 @@ package wsg.lol.dao.mybatis.mapper.champion;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import wsg.lol.common.pojo.dto.champion.ChampionTipDto;
-import wsg.lol.dao.mybatis.config.StaticStrategy;
+import wsg.lol.dao.mybatis.config.StaticMapper;
 
 /**
  * Mapper interface for tips of champions.
@@ -12,5 +12,5 @@ import wsg.lol.dao.mybatis.config.StaticStrategy;
  */
 @Repository
 @Mapper
-public interface ChampionTipMapper extends StaticStrategy<ChampionTipDto> {
+public interface ChampionTipMapper extends StaticMapper<ChampionTipDto> {
 }

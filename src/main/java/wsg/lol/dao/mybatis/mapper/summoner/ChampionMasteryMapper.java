@@ -2,8 +2,8 @@ package wsg.lol.dao.mybatis.mapper.summoner;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.additional.insert.InsertListMapper;
 import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
-import wsg.lol.dao.mybatis.config.StaticStrategy;
 
 /**
  * Mapper for champion masteries.
@@ -12,5 +12,5 @@ import wsg.lol.dao.mybatis.config.StaticStrategy;
  */
 @Mapper
 @Repository
-public interface ChampionMasteryMapper extends StaticStrategy<ChampionMasteryDto> {
+public interface ChampionMasteryMapper extends InsertListMapper<ChampionMasteryDto> {
 }

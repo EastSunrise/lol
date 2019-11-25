@@ -1,92 +1,40 @@
 package wsg.lol.common.pojo.dto.rune;
 
-/**
- * todo
- *
- * @author EastSunrise
- */
-public class RuneDto {
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import wsg.lol.common.base.BaseDto;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+/**
+ * Bean for runes.
+ *
+ * @author Kingen
+ */
+@EqualsAndHashCode(callSuper = true)
+@Data
+@Table(schema = "lol", name = "r_rune")
+public class RuneDto extends BaseDto {
+
+    @Column
     private Integer treeId;
+    @Column
     private Integer numX;
+    @Column
     private Integer numY;
 
+    @Id
     private Integer id;
+    @Column(name = "`key`")
     private String key;
+    @Column
     private String icon;
+    @Column
     private String name;
+    @Column
     private String shortDesc;
+    @Column
     private String longDesc;
-
-    public Integer getTreeId() {
-        return treeId;
-    }
-
-    public void setTreeId(Integer treeId) {
-        this.treeId = treeId;
-    }
-
-    public Integer getNumX() {
-        return numX;
-    }
-
-    public void setNumX(Integer numX) {
-        this.numX = numX;
-    }
-
-    public Integer getNumY() {
-        return numY;
-    }
-
-    public void setNumY(Integer numY) {
-        this.numY = numY;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getShortDesc() {
-        return shortDesc;
-    }
-
-    public void setShortDesc(String shortDesc) {
-        this.shortDesc = shortDesc;
-    }
-
-    public String getLongDesc() {
-        return longDesc;
-    }
-
-    public void setLongDesc(String longDesc) {
-        this.longDesc = longDesc;
-    }
 }

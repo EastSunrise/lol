@@ -13,9 +13,9 @@ import wsg.lol.common.pojo.dto.item.ItemStatsDto;
 import wsg.lol.common.pojo.dto.share.ImageDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.dragon.intf.DragonDao;
-import wsg.lol.dao.mybatis.config.StaticExecutor;
 import wsg.lol.dao.mybatis.mapper.item.ItemMapper;
 import wsg.lol.dao.mybatis.mapper.item.ItemStatsMapper;
+import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.ItemService;
 import wsg.lol.service.intf.SharedService;
 
@@ -46,7 +46,7 @@ public class ItemServiceImpl implements ItemService {
 
         logger.info("Updating the items.");
         List<ItemDto> itemDtoList = new ArrayList<>(itemExtDtoList);
-        ResultUtils.assertSuccess(StaticExecutor.updateStatic(itemMapper, itemDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(itemMapper, itemDtoList));
 
         logger.info("Updating the stats of items.");
         List<ItemStatsDto> itemStatsDtoList = new ArrayList<>();
@@ -55,7 +55,7 @@ public class ItemServiceImpl implements ItemService {
             stats.setItemId(itemExtDto.getId());
             itemStatsDtoList.add(stats);
         }
-        ResultUtils.assertSuccess(StaticExecutor.updateStatic(itemStatsMapper, itemStatsDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(itemStatsMapper, itemStatsDtoList));
 
         logger.info("Updating the images of items.");
         List<ImageDto> imageDtoList = new ArrayList<>();

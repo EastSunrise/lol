@@ -5,22 +5,4 @@
         delete
         from lol.c_champion
     </delete>
-
-    <insert id="batchInsert" parameterType="wsg.lol.common.pojo.dto.champion.ChampionDto">
-        insert into lol.c_champion values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.id},
-            #{item.key},
-            #{item.name},
-            #{item.title},
-            #{item.lore},
-            #{item.blurb},
-            #{item.tags},
-            #{item.partype},
-            #{item.infoAttack},
-            #{item.infoDefense},
-            #{item.infoMagic},
-            #{item.infoDifficulty})
-        </foreach>
-    </insert>
 </mapper>
