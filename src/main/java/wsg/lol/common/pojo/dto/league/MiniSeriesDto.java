@@ -1,4 +1,4 @@
-package wsg.lol.common.pojo.dto.summoner;
+package wsg.lol.common.pojo.dto.league;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,7 +11,7 @@ import wsg.lol.common.base.BaseDto;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class MiniSeriesDto extends BaseDto {
+class MiniSeriesDto extends BaseDto {
 
     private String progress;
     private Integer target;

@@ -1,6 +1,7 @@
 package wsg.lol.service.system.intf;
 
 import wsg.lol.common.base.Result;
+import wsg.lol.common.pojo.dto.system.EventDto;
 
 import java.util.List;
 
@@ -12,9 +13,7 @@ import java.util.List;
 public interface EventHandler {
 
     /**
-     * handle of events
-     *
-     * @param contexts contexts of events
+     * Handle events.
      */
-    Result handle(List<String> contexts);
+    Result handle(List<EventDto> events);
 }

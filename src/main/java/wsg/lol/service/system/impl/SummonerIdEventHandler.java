@@ -13,6 +13,7 @@ import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
+import wsg.lol.common.pojo.dto.system.EventDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
@@ -54,8 +55,9 @@ public class SummonerIdEventHandler implements EventHandler {
     private EventMapper eventMapper;
 
     @Override
-    public synchronized Result handle(List<String> contexts) {
-        for (String summonerId : contexts) {
+    public synchronized Result handle(List<EventDto> events) {
+        for (EventDto event : events) {
+            String summonerId = event.getContext();
             try {
                 transactionTemplate.execute(transactionStatus -> {
                     logger.info("Handling the event of {}.", summonerId);
@@ -96,7 +98,7 @@ public class SummonerIdEventHandler implements EventHandler {
                         throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to update the status of the event. ");
                     }
 
-                    logger.info("Succeed handling the event of {}.", summonerId);
+                    logger.info("Succeed in handling the event of {}.", summonerId);
                     return ResultUtils.success();
                 });
             } catch (AppException e) {

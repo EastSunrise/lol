@@ -1,19 +1,25 @@
-package wsg.lol.common.pojo.dto.match;
+package wsg.lol.common.pojo.query;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.time.DateUtils;
 import wsg.lol.common.annotation.Optional;
 import wsg.lol.common.base.QueryDto;
 
 import java.util.List;
 
 /**
- * // TODO: (Kingen, 2019/11/18)
- * @author EastSunrise
+ * Condition to query matched.
+ *
+ * @author Kingen
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class QueryMatchListDto extends QueryDto {
 
     public static final int MAX_INDEX_RANGE = 100;
 
-    public static final long MAX_TIME_RANGE = 7 * 24 * 60 * 60 * 1000L;
+    public static final long MAX_TIME_RANGE = DateUtils.MILLIS_PER_DAY * 7;
 
     /**
      * Set of champion IDs for filtering the matchlist.
@@ -26,12 +32,6 @@ public class QueryMatchListDto extends QueryDto {
      */
     @Optional
     private List<Integer> queue;
-
-    /**
-     * Set of season IDs for filtering the matchlist.
-     */
-    @Optional
-    private List<Integer> season;
 
     /**
      * The end and begin time to use for filtering matchlist specified as epoch milliseconds. If beginTime is specified,
@@ -56,60 +56,4 @@ public class QueryMatchListDto extends QueryDto {
     private Long endIndex;
     @Optional
     private Long beginIndex;
-
-    public List<Integer> getChampion() {
-        return champion;
-    }
-
-    public void setChampion(List<Integer> champion) {
-        this.champion = champion;
-    }
-
-    public List<Integer> getQueue() {
-        return queue;
-    }
-
-    public void setQueue(List<Integer> queue) {
-        this.queue = queue;
-    }
-
-    public List<Integer> getSeason() {
-        return season;
-    }
-
-    public void setSeason(List<Integer> season) {
-        this.season = season;
-    }
-
-    public Long getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Long endTime) {
-        this.endTime = endTime;
-    }
-
-    public Long getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(Long beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public Long getEndIndex() {
-        return endIndex;
-    }
-
-    public void setEndIndex(Long endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public Long getBeginIndex() {
-        return beginIndex;
-    }
-
-    public void setBeginIndex(Long beginIndex) {
-        this.beginIndex = beginIndex;
-    }
 }

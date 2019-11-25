@@ -1,4 +1,4 @@
-package wsg.lol.dao.mybatis.config;
+package wsg.lol.dao.mybatis.common;
 
 import tk.mybatis.mapper.additional.insert.InsertListMapper;
 

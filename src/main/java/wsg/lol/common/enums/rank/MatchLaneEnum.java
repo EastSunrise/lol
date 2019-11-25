@@ -1,27 +1,21 @@
 package wsg.lol.common.enums.rank;
 
-import wsg.lol.common.base.BaseEnum;
+import wsg.lol.common.pojo.parser.JsonSerializable;
 
 /**
- * todo
+ * Enum for lanes in the match.
  *
- * @author EastSunrise
+ * @author Kingen
  */
-public enum MatchLaneEnum implements BaseEnum<Integer> {
-    NONE(0),
-    TOP(1),
-    JUNGLE(2),
-    MID(3),
-    BOTTOM(4);
-
-    private int value;
-
-    MatchLaneEnum(int value) {
-        this.value = value;
-    }
+public enum MatchLaneEnum implements JsonSerializable {
+    NONE,
+    TOP,
+    JUNGLE,
+    MID,
+    BOTTOM;
 
     @Override
-    public Integer getValue() {
-        return value;
+    public String serialize() {
+        return name();
     }
 }

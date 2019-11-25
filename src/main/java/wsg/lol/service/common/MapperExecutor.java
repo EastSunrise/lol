@@ -4,12 +4,13 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tk.mybatis.mapper.additional.insert.InsertListMapper;
+import tk.mybatis.mapper.common.base.update.UpdateByPrimaryKeyMapper;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.dao.mybatis.config.ClearMapper;
-import wsg.lol.dao.mybatis.config.StaticMapper;
+import wsg.lol.dao.mybatis.common.ClearMapper;
+import wsg.lol.dao.mybatis.common.StaticMapper;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class MapperExecutor {
             return ResultUtils.success();
         }
 
-        clear(mapper);
+        ResultUtils.assertSuccess(clear(mapper));
         int count = mapper.insertList(data);
         if (count != data.size()) {
             logger.error("Failed to insert the data");
@@ -38,7 +39,7 @@ public class MapperExecutor {
         return ResultUtils.success();
     }
 
-    public static <T> Result clear(ClearMapper<T> strategy) {
+    private static <T> Result clear(ClearMapper<T> strategy) {
         int count = strategy.clear();
         logger.info(count + " Cleared.");
         return ResultUtils.success();
@@ -55,6 +56,17 @@ public class MapperExecutor {
             throw new AppException(ErrorCodeConst.DATABASE_ERROR);
         }
         logger.info("{} inserted.", count);
+        return ResultUtils.success();
+    }
+
+    public static <T> Result updateList(UpdateByPrimaryKeyMapper<T> mapper, List<T> data) {
+        for (T t : data) {
+            int count = mapper.updateByPrimaryKey(t);
+            if (count != 1) {
+                logger.error("Failed to update {}", t);
+                throw new AppException(ErrorCodeConst.DATABASE_ERROR);
+            }
+        }
         return ResultUtils.success();
     }
 }

@@ -12,7 +12,7 @@ spring:
   datasource:
     name: mysql.na
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/lol?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false
+    url: jdbc:mysql://localhost:3306/lol?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false&rewriteBatchedStatements=true
     username: root
     password: 2787
   resources:
@@ -27,6 +27,5 @@ server:
 logging:
   config: classpath:config/logback.xml
 mapper:
-  mappers: wsg.lol.dao.mybatis.config.BaseMapper
   identity: MYSQL
 

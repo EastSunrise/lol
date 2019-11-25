@@ -19,6 +19,11 @@ public enum DivisionEnum {
                     I
             };
         }
+
+        if (TierEnum.UNRANKED.equals(tier)) {
+            return new DivisionEnum[0];
+        }
+
         return values();
     }
 

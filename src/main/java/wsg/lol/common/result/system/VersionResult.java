@@ -1,11 +1,11 @@
-package wsg.lol.common.result.version;
+package wsg.lol.common.result.system;
 
 import wsg.lol.common.base.Result;
 
 /**
- * todo
+ * Result of querying the version.
  *
- * @author EastSunrise
+ * @author Kingen
  */
 public class VersionResult extends Result {
 

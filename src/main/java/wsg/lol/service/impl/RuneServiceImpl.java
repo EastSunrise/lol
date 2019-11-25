@@ -18,7 +18,6 @@ import wsg.lol.service.intf.RuneService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Kingen
@@ -47,19 +46,7 @@ public class RuneServiceImpl implements RuneService {
         logger.info("Updating the runes.");
         List<RuneDto> runeDtoList = new ArrayList<>();
         for (RuneExtDto runeExtDto : runeExtDtoList) {
-            List<Map<String, List<RuneDto>>> slots = runeExtDto.getSlots();
-            int id = runeExtDto.getId();
-            for (int i = 0; i < slots.size(); i++) {
-                Map<String, List<RuneDto>> slot = slots.get(i);
-                List<RuneDto> runes = slot.get(RuneExtDto.RUNES);
-                for (int j = 0; j < runes.size(); j++) {
-                    RuneDto runeDto = runes.get(j);
-                    runeDto.setTreeId(id);
-                    runeDto.setNumX(i);
-                    runeDto.setNumY(j);
-                    runeDtoList.add(runeDto);
-                }
-            }
+            runeDtoList.addAll(runeExtDto.getRunes());
         }
         ResultUtils.assertSuccess(MapperExecutor.updateStatic(runeMapper, runeDtoList));
 

@@ -1,33 +1,24 @@
 package wsg.lol.common.pojo.dto.match;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import wsg.lol.common.base.BaseDto;
+
 /**
- * // TODO: (Kingen, 2019/11/18)
- * @author EastSunrise
+ * Bean for reference of bans of the team.
+ *
+ * @author Kingen
  */
-public class TeamBansDto {
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class TeamBansDto extends BaseDto {
     /**
      * Turn during which the champion was banned.
      */
-    private int pickTurn;
+    private Integer pickTurn;
 
     /**
      * Banned championId.
      */
-    private int championId;
-
-    public int getPickTurn() {
-        return pickTurn;
-    }
-
-    public void setPickTurn(int pickTurn) {
-        this.pickTurn = pickTurn;
-    }
-
-    public int getChampionId() {
-        return championId;
-    }
-
-    public void setChampionId(int championId) {
-        this.championId = championId;
-    }
+    private Integer championId;
 }

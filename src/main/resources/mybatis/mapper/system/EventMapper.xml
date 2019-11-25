@@ -18,19 +18,4 @@
           and context = #{context}
           and status = #{from}
     </update>
-
-    <select id="selectEventContext" resultType="java.lang.String">
-        select context
-        from lol.t_event
-        where type = #{type}
-          and status = #{status}
-    </select>
-
-    <select id="selectEventContextByPage" resultType="java.lang.String">
-        select context
-        from lol.t_event
-        where type = #{type}
-          and status = #{status}
-        limit 1000
-    </select>
 </mapper>

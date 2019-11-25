@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.GenericResult;
-import wsg.lol.common.result.version.VersionResult;
+import wsg.lol.common.result.system.VersionResult;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.service.intf.ChampionService;
 import wsg.lol.service.intf.ItemService;

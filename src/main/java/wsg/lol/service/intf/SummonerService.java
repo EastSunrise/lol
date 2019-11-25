@@ -1,5 +1,8 @@
 package wsg.lol.service.intf;
 
+import org.apache.ibatis.session.RowBounds;
+import wsg.lol.common.base.Result;
+
 /**
  * Service for summoners.
  *
@@ -7,4 +10,8 @@ package wsg.lol.service.intf;
  */
 public interface SummonerService {
 
+    /**
+     * Update the older summoners.
+     */
+    Result updateSummoners(RowBounds rowBounds);
 }

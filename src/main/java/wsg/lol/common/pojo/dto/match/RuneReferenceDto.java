@@ -5,14 +5,14 @@ import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 
 /**
- * Bean for reference of masteries of the participant.
+ * Bean for reference of runes.
  *
  * @author Kingen
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class MasteryDto extends BaseDto {
+public class RuneReferenceDto extends BaseDto {
 
-    private Integer masteryId;
-    private Integer rank;
+    private int runeId;
+    private int rank;
 }

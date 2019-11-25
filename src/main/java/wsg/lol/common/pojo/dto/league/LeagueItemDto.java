@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.rank.DivisionEnum;
-import wsg.lol.common.pojo.dto.summoner.MiniSeriesDto;
 
 /**
  * Bean for items in the league.

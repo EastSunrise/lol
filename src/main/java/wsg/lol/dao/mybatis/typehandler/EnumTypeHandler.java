@@ -10,6 +10,8 @@ import wsg.lol.common.enums.rank.DivisionEnum;
 import wsg.lol.common.enums.rank.RankQueueEnum;
 import wsg.lol.common.enums.rank.TierEnum;
 import wsg.lol.common.enums.route.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.EventStatusEnum;
+import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.util.EnumUtils;
 
 import java.sql.CallableStatement;
@@ -27,7 +29,8 @@ import java.sql.SQLException;
         ImageGroupEnum.class,
         MapEnum.class, GameModeEnum.class, RecommendedTypeEnum.class, BlockTypeEnum.class,
         PlatformRoutingEnum.class,
-        RankQueueEnum.class, TierEnum.class, DivisionEnum.class
+        RankQueueEnum.class, TierEnum.class, DivisionEnum.class,
+        EventTypeEnum.class, EventStatusEnum.class
 })
 public class EnumTypeHandler<T extends Enum<T>> extends BaseTypeHandler<T> {
 

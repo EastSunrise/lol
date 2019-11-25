@@ -1,24 +1,31 @@
 package wsg.lol.common.pojo.dto.match;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
+import wsg.lol.common.enums.match.TeamIdEnum;
+import wsg.lol.common.enums.match.TeamResultEnum;
 
 import java.util.List;
 
 /**
- * // TODO: (Kingen, 2019/11/18)
- * @author EastSunrise
+ * Bean for stats of a team.
+ *
+ * @author Kingen
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class TeamStatsDto extends BaseDto {
 
     /**
      * Flag indicating whether or not the team scored the first Dragon kill.
      */
-    private boolean firstDragon;
+    private Boolean firstDragon;
 
     /**
      * Flag indicating whether or not the team destroyed the first inhibitor.
      */
-    private boolean firstInhibitor;
+    private Boolean firstInhibitor;
 
     /**
      * If match queueId has a draft, contains banned champion data, otherwise empty.
@@ -28,195 +35,67 @@ public class TeamStatsDto extends BaseDto {
     /**
      * Number of times the team killed Baron.
      */
-    private int baronKills;
+    private Integer baronKills;
 
     /**
      * Flag indicating whether or not the team scored the first Rift Herald kill.
      */
-    private boolean firstRiftHerald;
+    private Boolean firstRiftHerald;
 
     /**
      * Flag indicating whether or not the team scored the first Baron kill.
      */
-    private boolean firstBaron;
+    private Boolean firstBaron;
 
     /**
      * Number of times the team killed Rift Herald.
      */
-    private int riftHeraldKills;
+    private Integer riftHeraldKills;
 
     /**
      * Flag indicating whether or not the team scored the first blood.
      */
-    private boolean firstBlood;
+    private Boolean firstBlood;
 
     /**
      * 100 for blue side. 200 for red side.
      */
-    private int teamId;
+    private TeamIdEnum teamId;
 
     /**
      * Flag indicating whether or not the team destroyed the first tower.
      */
-    private boolean firstTower;
+    private Boolean firstTower;
 
     /**
      * Number of times the team killed Vilemaw.
      */
-    private int vilemawKills;
+    private Integer vilemawKills;
 
     /**
      * Number of inhibitors the team destroyed.
      */
-    private int inhibitorKills;
+    private Integer inhibitorKills;
 
     /**
      * Number of towers the team destroyed.
      */
-    private int towerKills;
+    private Integer towerKills;
 
     /**
      * For Dominion match, specifies the points the team had at game end.
      */
-    private int dominionVictoryScore;
+    private Integer dominionVictoryScore;
 
     /**
      * String indicating whether or not the team won. There are only two values visibile in public match history.
      * (Legal
      * values: Fail, Win)
      */
-    private String win;
+    private TeamResultEnum win;
 
     /**
      * Number of times the team killed Dragon.
      */
-    private int dragonKills;
-
-    public boolean isFirstDragon() {
-        return firstDragon;
-    }
-
-    public void setFirstDragon(boolean firstDragon) {
-        this.firstDragon = firstDragon;
-    }
-
-    public boolean isFirstInhibitor() {
-        return firstInhibitor;
-    }
-
-    public void setFirstInhibitor(boolean firstInhibitor) {
-        this.firstInhibitor = firstInhibitor;
-    }
-
-    public List<TeamBansDto> getBans() {
-        return bans;
-    }
-
-    public void setBans(List<TeamBansDto> bans) {
-        this.bans = bans;
-    }
-
-    public int getBaronKills() {
-        return baronKills;
-    }
-
-    public void setBaronKills(int baronKills) {
-        this.baronKills = baronKills;
-    }
-
-    public boolean isFirstRiftHerald() {
-        return firstRiftHerald;
-    }
-
-    public void setFirstRiftHerald(boolean firstRiftHerald) {
-        this.firstRiftHerald = firstRiftHerald;
-    }
-
-    public boolean isFirstBaron() {
-        return firstBaron;
-    }
-
-    public void setFirstBaron(boolean firstBaron) {
-        this.firstBaron = firstBaron;
-    }
-
-    public int getRiftHeraldKills() {
-        return riftHeraldKills;
-    }
-
-    public void setRiftHeraldKills(int riftHeraldKills) {
-        this.riftHeraldKills = riftHeraldKills;
-    }
-
-    public boolean isFirstBlood() {
-        return firstBlood;
-    }
-
-    public void setFirstBlood(boolean firstBlood) {
-        this.firstBlood = firstBlood;
-    }
-
-    public int getTeamId() {
-        return teamId;
-    }
-
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
-    }
-
-    public boolean isFirstTower() {
-        return firstTower;
-    }
-
-    public void setFirstTower(boolean firstTower) {
-        this.firstTower = firstTower;
-    }
-
-    public int getVilemawKills() {
-        return vilemawKills;
-    }
-
-    public void setVilemawKills(int vilemawKills) {
-        this.vilemawKills = vilemawKills;
-    }
-
-    public int getInhibitorKills() {
-        return inhibitorKills;
-    }
-
-    public void setInhibitorKills(int inhibitorKills) {
-        this.inhibitorKills = inhibitorKills;
-    }
-
-    public int getTowerKills() {
-        return towerKills;
-    }
-
-    public void setTowerKills(int towerKills) {
-        this.towerKills = towerKills;
-    }
-
-    public int getDominionVictoryScore() {
-        return dominionVictoryScore;
-    }
-
-    public void setDominionVictoryScore(int dominionVictoryScore) {
-        this.dominionVictoryScore = dominionVictoryScore;
-    }
-
-    public String getWin() {
-        return win;
-    }
-
-    public void setWin(String win) {
-        this.win = win;
-    }
-
-    public int getDragonKills() {
-        return dragonKills;
-    }
-
-    public void setDragonKills(int dragonKills) {
-        this.dragonKills = dragonKills;
-    }
+    private Integer dragonKills;
 }

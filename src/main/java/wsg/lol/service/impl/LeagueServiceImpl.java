@@ -39,7 +39,7 @@ public class LeagueServiceImpl implements LeagueService {
         logger.info("Initializing the database by leagues.");
         List<String> ids = new ArrayList<>();
         for (RankQueueEnum queue : RankQueueEnum.values()) {
-            for (TierEnum tier : TierEnum.values()) {
+            for (TierEnum tier : TierEnum.RANKED_TIERS) {
                 for (DivisionEnum division : DivisionEnum.validDivisions(tier)) {
                     for (int page = 1; ; page++) {
                         List<LeagueEntryDto> leagueEntryDtoList = leagueV4.getLeagueEntriesExp(queue, tier, division, page);

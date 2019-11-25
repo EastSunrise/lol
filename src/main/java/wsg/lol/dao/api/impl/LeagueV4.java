@@ -1,5 +1,6 @@
 package wsg.lol.dao.api.impl;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -42,7 +43,7 @@ public class LeagueV4 extends BaseApi {
      * @see <a href="https://developer.riotgames.com/apis#league-exp-v4/GET_getLeagueEntries"/>
      */
     public List<LeagueEntryDto> getLeagueEntriesExp(RankQueueEnum queue, TierEnum tier, DivisionEnum division, int page) {
-        if (!division.isValidDivision(tier)) {
+        if (!ArrayUtils.contains(TierEnum.RANKED_TIERS, tier) || !division.isValidDivision(tier)) {
             logger.error("Unmatched tier {} and division {}.", tier, division);
             throw new AppException(ErrorCodeConst.ILLEGAL_ARGS, "Unmatched tier and division.");
         }

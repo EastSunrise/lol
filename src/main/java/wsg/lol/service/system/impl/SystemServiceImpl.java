@@ -1,6 +1,7 @@
 package wsg.lol.service.system.impl;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +10,14 @@ import org.springframework.stereotype.Service;
 import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.GenericResult;
-import wsg.lol.common.base.Page;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ConfigConst;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.route.PlatformRoutingEnum;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
-import wsg.lol.common.result.version.VersionResult;
+import wsg.lol.common.pojo.dto.system.EventDto;
+import wsg.lol.common.result.system.VersionResult;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.client.ApiClient;
 import wsg.lol.dao.dragon.intf.DragonDao;
@@ -104,22 +105,15 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     @Performance
-    public Result handle(EventTypeEnum eventType) {
-        List<String> contexts = eventMapper.selectEventContext(eventType, EventStatusEnum.Unfinished);
-        if (CollectionUtils.isEmpty(contexts)) {
+    public Result handle(EventTypeEnum eventType, RowBounds rowBounds) {
+        EventDto cond = new EventDto();
+        cond.setStatus(EventStatusEnum.Unfinished);
+        cond.setType(eventType);
+        List<EventDto> events = eventMapper.selectByRowBounds(cond, rowBounds);
+        if (CollectionUtils.isEmpty(events)) {
             return ResultUtils.success();
         }
-        return getEventHandler(eventType).handle(contexts);
-    }
-
-    @Override
-    @Performance
-    public Result handle(EventTypeEnum eventType, Page page) {
-        List<String> contexts = eventMapper.selectEventContextByPage(eventType, EventStatusEnum.Unfinished, page);
-        if (CollectionUtils.isEmpty(contexts)) {
-            return ResultUtils.success();
-        }
-        return getEventHandler(eventType).handle(contexts);
+        return getEventHandler(eventType).handle(events);
     }
 
     @Override

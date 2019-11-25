@@ -14,9 +14,15 @@ public enum TierEnum {
     GOLD,
     SILVER,
     BRONZE,
-    IRON;
+    IRON,
+    UNRANKED;
 
     public static final TierEnum[] APEX_TIERS = new TierEnum[]{
             CHALLENGER, GRANDMASTER, MASTER
+    };
+
+    public static final TierEnum[] RANKED_TIERS = new TierEnum[]{
+            CHALLENGER, GRANDMASTER, MASTER,
+            DIAMOND, PLATINUM, GOLD, SILVER, BRONZE, IRON
     };
 }

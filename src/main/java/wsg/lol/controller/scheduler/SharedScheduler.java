@@ -1,13 +1,11 @@
 package wsg.lol.controller.scheduler;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import wsg.lol.common.base.Result;
-import wsg.lol.common.result.version.VersionResult;
+import wsg.lol.common.result.system.VersionResult;
 import wsg.lol.service.intf.SharedService;
 import wsg.lol.service.system.intf.SystemService;
 
@@ -25,7 +23,7 @@ public class SharedScheduler {
 
     private SharedService sharedService;
 
-    @Scheduled(fixedRate = DateUtils.MILLIS_PER_DAY)
+    //    @Scheduled(fixedRate = DateUtils.MILLIS_PER_DAY)
     public void checkVersion() {
         logger.info("Checking the version...");
         VersionResult versionResult = systemService.getVersion();
@@ -39,7 +37,7 @@ public class SharedScheduler {
         systemService.sendMessage(message);
     }
 
-    @Scheduled(fixedRate = DateUtils.MILLIS_PER_HOUR)
+    //    @Scheduled(fixedRate = DateUtils.MILLIS_PER_HOUR)
     public void updateGSharedData() {
         logger.info("Updating the shared data.");
         Result result = sharedService.updateSharedStatus();

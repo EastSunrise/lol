@@ -1,27 +1,21 @@
 package wsg.lol.common.enums.rank;
 
-import wsg.lol.common.base.BaseEnum;
+import wsg.lol.common.pojo.parser.JsonSerializable;
 
 /**
- * todo
+ * Enum for roles of summoners in the match.
  *
- * @author EastSunrise
+ * @author Kingen
  */
-public enum MatchRoleEnum implements BaseEnum<Integer> {
-    NONE(0),
-    SOLO(1),
-    DUO(2),
-    DUO_CARRY(3),
-    DUO_SUPPORT(4);
-
-    private int value;
-
-    MatchRoleEnum(int value) {
-        this.value = value;
-    }
+public enum MatchRoleEnum implements JsonSerializable {
+    NONE,
+    SOLO,
+    DUO,
+    DUO_CARRY,
+    DUO_SUPPORT;
 
     @Override
-    public Integer getValue() {
-        return value;
+    public String serialize() {
+        return name();
     }
 }

@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * Mark if the field of the condition is optional.
  *
  * @author Kingen
- * @see wsg.lol.common.pojo.dto.query
+ * @see wsg.lol.common.pojo.query
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

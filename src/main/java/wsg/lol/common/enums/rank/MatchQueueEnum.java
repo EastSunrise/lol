@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.rank;
 
-import wsg.lol.common.base.BaseEnum;
+import wsg.lol.common.pojo.parser.IntegerSerializable;
 
 /**
- * todo
+ * Enum for queues of matches.
  *
- * @author EastSunrise
+ * @author Kingen
  */
-public enum MatchQueueEnum implements BaseEnum<Integer> {
+public enum MatchQueueEnum implements IntegerSerializable {
     DeprecatedBlindPickGames_5v5(2),
     DeprecatedRankedSoloGames_5v5(4),
     DeprecatedRankedPreMadeGames_5v5(6),
@@ -90,7 +90,7 @@ public enum MatchQueueEnum implements BaseEnum<Integer> {
     }
 
     @Override
-    public Integer getValue() {
+    public Integer serialize() {
         return value;
     }
 }

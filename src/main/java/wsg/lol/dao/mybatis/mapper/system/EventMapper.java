@@ -2,9 +2,10 @@ package wsg.lol.dao.mybatis.mapper.system;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-import wsg.lol.common.base.Page;
+import tk.mybatis.mapper.common.rowbounds.SelectRowBoundsMapper;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
+import wsg.lol.common.pojo.dto.system.EventDto;
 
 import java.util.List;
 
@@ -15,13 +16,9 @@ import java.util.List;
  */
 @Repository
 @Mapper
-public interface EventMapper {
-
-    List<String> selectEventContext(EventTypeEnum type, EventStatusEnum status);
+public interface EventMapper extends SelectRowBoundsMapper<EventDto> {
 
     int insertEventsOfType(EventTypeEnum type, EventStatusEnum status, List<String> contexts);
-
-    List<String> selectEventContextByPage(EventTypeEnum type, EventStatusEnum status, Page page);
 
     int updateStatus(EventTypeEnum type, String context, EventStatusEnum from, EventStatusEnum to);
 }

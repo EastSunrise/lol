@@ -3,7 +3,7 @@ package wsg.lol.dao.mybatis.mapper.item;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import wsg.lol.common.pojo.dto.item.ItemStatsDto;
-import wsg.lol.dao.mybatis.config.StaticMapper;
+import wsg.lol.dao.mybatis.common.StaticMapper;
 
 /**
  * Mapper interface for stats of items.

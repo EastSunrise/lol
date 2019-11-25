@@ -1,10 +1,10 @@
 package wsg.lol.service.system.intf;
 
+import org.apache.ibatis.session.RowBounds;
 import wsg.lol.common.base.GenericResult;
-import wsg.lol.common.base.Page;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.system.EventTypeEnum;
-import wsg.lol.common.result.version.VersionResult;
+import wsg.lol.common.result.system.VersionResult;
 
 /**
  * Service for system.
@@ -44,14 +44,9 @@ public interface SystemService {
     GenericResult<Boolean> isDatabaseInitialized();
 
     /**
-     * Handle events of the specified type.
-     */
-    Result handle(EventTypeEnum eventType);
-
-    /**
      * Handle events of the specified type by page.
      */
-    Result handle(EventTypeEnum eventType, Page page);
+    Result handle(EventTypeEnum eventType, RowBounds rowBounds);
 
     /**
      * Update the initialization config.
