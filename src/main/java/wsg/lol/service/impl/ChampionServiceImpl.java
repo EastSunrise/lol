@@ -16,11 +16,14 @@ import wsg.lol.common.pojo.dto.item.BlockDto;
 import wsg.lol.common.pojo.dto.item.RecommendedDto;
 import wsg.lol.common.pojo.dto.item.RecommendedExtDto;
 import wsg.lol.common.pojo.dto.share.ImageDto;
+import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
 import wsg.lol.common.util.ResultUtils;
+import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.mybatis.mapper.champion.*;
 import wsg.lol.dao.mybatis.mapper.item.BlockMapper;
 import wsg.lol.dao.mybatis.mapper.item.RecommendedMapper;
+import wsg.lol.dao.mybatis.mapper.summoner.ChampionMasteryMapper;
 import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.ChampionService;
 import wsg.lol.service.intf.SharedService;
@@ -53,6 +56,10 @@ public class ChampionServiceImpl implements ChampionService {
     private SpellMapper spellMapper;
 
     private SharedService sharedService;
+
+    private ChampionMasteryV4 championMasteryV4;
+
+    private ChampionMasteryMapper championMasteryMapper;
 
     @Override
     @Transactional
@@ -202,6 +209,15 @@ public class ChampionServiceImpl implements ChampionService {
         return ResultUtils.success();
     }
 
+    @Override
+    @Transactional
+    public Result updateChampionMasteries(String summonerId) {
+        logger.info("Updating champion masteries of {}.", summonerId);
+        List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
+        ResultUtils.assertSuccess(MapperExecutor.updateList(championMasteryMapper, championMasteries));
+        return ResultUtils.success();
+    }
+
     // TODO: (Kingen, 2019/11/21) 事务嵌套
     private Result updateSpells(List<SpellDto> spells, SpellNumEnum... nums) {
         if (CollectionUtils.isEmpty(spells)) {
@@ -217,6 +233,16 @@ public class ChampionServiceImpl implements ChampionService {
 
         ResultUtils.assertSuccess(MapperExecutor.insertList(spellMapper, spells));
         return ResultUtils.success();
+    }
+
+    @Autowired
+    public void setChampionMasteryV4(ChampionMasteryV4 championMasteryV4) {
+        this.championMasteryV4 = championMasteryV4;
+    }
+
+    @Autowired
+    public void setChampionMasteryMapper(ChampionMasteryMapper championMasteryMapper) {
+        this.championMasteryMapper = championMasteryMapper;
     }
 
     @Autowired

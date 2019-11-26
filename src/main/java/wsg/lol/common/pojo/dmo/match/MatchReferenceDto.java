@@ -4,9 +4,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.game.SeasonEnum;
-import wsg.lol.common.enums.rank.MatchLaneEnum;
-import wsg.lol.common.enums.rank.MatchQueueEnum;
-import wsg.lol.common.enums.rank.MatchRoleEnum;
+import wsg.lol.common.enums.match.MatchLaneEnum;
+import wsg.lol.common.enums.match.MatchQueueEnum;
+import wsg.lol.common.enums.match.MatchRoleEnum;
 import wsg.lol.common.enums.route.PlatformEnum;
 
 import java.util.Date;

@@ -13,4 +13,9 @@ public interface LeagueService {
      * Initialize the database by query the data of leagues each rank queue, tier and division.
      */
     Result initialByLeagues();
+
+    /**
+     * Update the league entries of the specified summoner.
+     */
+    Result updateLeagueEntry(String summonerId);
 }

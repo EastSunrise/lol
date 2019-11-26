@@ -164,6 +164,11 @@ public class BaseApi {
                     apiClient.regenerateToken();
                     continue;
                 }
+                if (ResponseCodeEnum.ServiceUnavailable.getCode() == responseCode) {
+                    logger.info(ResponseCodeEnum.ServiceUnavailable.getMessage());
+                    threadSleep(DateUtils.MILLIS_PER_SECOND);
+                    continue;
+                }
                 if (ResponseCodeEnum.BadRequest.getCode() == responseCode) {
                     logger.error("Bas request: {}.", urlStr);
                 }

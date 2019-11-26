@@ -1,5 +1,6 @@
 package wsg.lol.common.enums.game;
 
+import wsg.lol.common.pojo.parser.IntegerSerializable;
 import wsg.lol.common.pojo.parser.JsonSerializable;
 
 /**
@@ -8,7 +9,7 @@ import wsg.lol.common.pojo.parser.JsonSerializable;
  * @author Kingen
  * @see <a href="http://static.developer.riotgames.com/docs/lol/maps.json">maps.json</a>
  */
-public enum MapEnum implements JsonSerializable {
+public enum MapEnum implements JsonSerializable, IntegerSerializable {
     SummonersRiftOriginalSummer(1, "Summoner's Rift", "Original Summer variant", "原始夏季峡谷"),
     SummonersRiftOriginalAutumn(2, "Summoner's Rift", "Original Autumn variant", "原始秋季峡谷"),
     ProvingGrounds(3, "The Proving Grounds", "Tutorial Map", "练习地图"),
@@ -84,5 +85,11 @@ public enum MapEnum implements JsonSerializable {
             return "3";
         }
         return name();
+    }
+
+
+    @Override
+    public Integer serializeInteger() {
+        return mapId;
     }
 }

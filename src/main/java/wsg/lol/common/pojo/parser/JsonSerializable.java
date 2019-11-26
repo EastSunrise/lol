@@ -1,7 +1,7 @@
 package wsg.lol.common.pojo.parser;
 
 /**
- * Can serialize to json.
+ * Can serializeInteger to json.
  *
  * @author Kingen
  */

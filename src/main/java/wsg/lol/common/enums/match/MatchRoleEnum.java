@@ -1,4 +1,4 @@
-package wsg.lol.common.enums.rank;
+package wsg.lol.common.enums.match;
 
 import wsg.lol.common.pojo.parser.JsonSerializable;
 

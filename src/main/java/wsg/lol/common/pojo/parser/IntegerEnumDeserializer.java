@@ -25,7 +25,7 @@ public class IntegerEnumDeserializer implements ObjectDeserializer {
                 Class<? extends Enum> enumClass = (Class<? extends Enum>) type;
                 for (Enum enumConstant : enumClass.getEnumConstants()) {
                     IntegerSerializable serializable = (IntegerSerializable) enumConstant;
-                    if (integer.equals(serializable.serialize())) {
+                    if (integer.equals(serializable.serializeInteger())) {
                         return (T) enumConstant;
                     }
                 }

@@ -1,27 +1,18 @@
 package wsg.lol.common.pojo.dto.match;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import wsg.lol.common.base.BaseDto;
+
 /**
- * // TODO: (Kingen, 2019/11/18)
- * @author EastSunrise
+ * Bean for the position of the participant in the timeline.
+ *
+ * @author Kingen
  */
-public class MatchPositionDto {
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class MatchPositionDto extends BaseDto {
 
-    private int y;
-    private int x;
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
+    private Integer y;
+    private Integer x;
 }

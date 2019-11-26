@@ -55,6 +55,20 @@ public class MatchV4 extends BaseApi {
     }
 
     /**
+     * Get match timeline by match ID.
+     * <p>
+     * IMPLEMENTATION NOTES
+     * Not all matches have timeline data.
+     *
+     * @see <a href="https://developer.riotgames.com/apis#match-v4/GET_getMatchTimeline"/>
+     */
+    public MatchTimelineDto getTimelineByMatchId(long matchId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("matchId", matchId);
+        return this.getObject("/lol/match/v4/timelines/by-match/{matchId}", params, MatchTimelineDto.class);
+    }
+
+    /**
      * Get match IDs by tournament code.
      *
      * @see <a href="https://developer.riotgames.com/apis#match-v4/GET_getMatchIdsByTournamentCode"/>
@@ -76,19 +90,4 @@ public class MatchV4 extends BaseApi {
         params.put("matchId", matchId);
         return this.getObject("/lol/match/v4/match/{matchId}/by-tournament-code/{tournamentCode}", params, MatchDto.class);
     }
-
-    /**
-     * Get match timeline by match ID.
-     * <p>
-     * IMPLEMENTATION NOTES
-     * Not all matches have timeline data.
-     *
-     * @see <a href="https://developer.riotgames.com/apis#match-v4/GET_getMatchTimeline"/>
-     */
-    public MatchTimelineDto getTimelineByMatchId(long matchId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("matchId", matchId);
-        return this.getObject("/lol/match/v4/timelines/by-match/{matchId}", params, MatchTimelineDto.class);
-    }
-
 }

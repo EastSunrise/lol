@@ -14,5 +14,9 @@ import wsg.lol.common.base.BaseDto;
 public class ParticipantIdentityDto extends BaseDto {
 
     private PlayerDto player;
+
+    /**
+     * From 1 to 10.
+     */
     private int participantId;
 }

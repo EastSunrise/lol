@@ -1,9 +1,12 @@
 package wsg.lol.common.pojo.dto.match;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
-import wsg.lol.common.enums.rank.MatchLaneEnum;
+import wsg.lol.common.enums.match.MatchLaneEnum;
+import wsg.lol.common.enums.match.MatchRoleEnum;
+import wsg.lol.common.pojo.parser.CustomEnumDeserializer;
 
 import java.util.Map;
 
@@ -16,27 +19,7 @@ import java.util.Map;
 @Data
 public class ParticipantTimelineDto extends BaseDto {
 
-    /**
-     * Participant's calculated lane. MID and BOT are legacy values. (Legal values: MID, MIDDLE, TOP, JUNGLE, BOT,
-     * BOTTOM)
-     */
-    private MatchLaneEnum lane;
     private Integer participantId;
-
-    /**
-     * Creep score difference versus the calculated lane opponent(s) for a specified period.
-     */
-    private Map<String, Double> csDiffPerMinDeltas;
-
-    /**
-     * Gold for a specified period.
-     */
-    private Map<String, Double> goldPerMinDeltas;
-
-    /**
-     * Experience difference versus the calculated lane opponent(s) for a specified period.
-     */
-    private Map<String, Double> xpDiffPerMinDeltas;
 
     /**
      * Creeps for a specified period.
@@ -49,9 +32,24 @@ public class ParticipantTimelineDto extends BaseDto {
     private Map<String, Double> xpPerMinDeltas;
 
     /**
-     * Participant's calculated role. (Legal values: DUO, NONE, SOLO, DUO_CARRY, DUO_SUPPORT)
+     * Gold for a specified period.
      */
-    private String role;
+    private Map<String, Double> goldPerMinDeltas;
+
+    /**
+     * Creep score difference versus the calculated lane opponent(s) for a specified period.
+     */
+    private Map<String, Double> csDiffPerMinDeltas;
+
+    /**
+     * Experience difference versus the calculated lane opponent(s) for a specified period.
+     */
+    private Map<String, Double> xpDiffPerMinDeltas;
+
+    /**
+     * Damage taken for a specified period.
+     */
+    private Map<String, Double> damageTakenPerMinDeltas;
 
     /**
      * Damage taken difference versus the calculated lane opponent(s) for a specified period.
@@ -59,7 +57,15 @@ public class ParticipantTimelineDto extends BaseDto {
     private Map<String, Double> damageTakenDiffPerMinDeltas;
 
     /**
-     * Damage taken for a specified period.
+     * Participant's calculated role. (Legal values: DUO, NONE, SOLO, DUO_CARRY, DUO_SUPPORT)
      */
-    private Map<String, Double> damageTakenPerMinDeltas;
+    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
+    private MatchRoleEnum role;
+
+    /**
+     * Participant's calculated lane. MID and BOT are legacy values. (Legal values: MID, MIDDLE, TOP, JUNGLE, BOT,
+     * BOTTOM)
+     */
+    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
+    private MatchLaneEnum lane;
 }

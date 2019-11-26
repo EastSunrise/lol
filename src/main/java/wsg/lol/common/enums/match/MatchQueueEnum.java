@@ -1,4 +1,4 @@
-package wsg.lol.common.enums.rank;
+package wsg.lol.common.enums.match;
 
 import wsg.lol.common.pojo.parser.IntegerSerializable;
 
@@ -90,7 +90,7 @@ public enum MatchQueueEnum implements IntegerSerializable {
     }
 
     @Override
-    public Integer serialize() {
+    public Integer serializeInteger() {
         return value;
     }
 }
