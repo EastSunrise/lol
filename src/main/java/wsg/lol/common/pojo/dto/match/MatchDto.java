@@ -39,6 +39,7 @@ public class MatchDto extends BaseDto {
     @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private GameModeEnum gameMode;
     private GameTypeEnum gameType;
+
     private List<ParticipantIdentityDto> participantIdentities;
     private List<TeamStatsDto> teams;
     private List<ParticipantDto> participants;

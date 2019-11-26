@@ -8,14 +8,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.base.AppException;
-import wsg.lol.common.pojo.dto.match.MatchDto;
-import wsg.lol.common.pojo.dto.match.MatchListDto;
-import wsg.lol.common.pojo.dto.match.MatchTimelineDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
-import wsg.lol.common.pojo.query.QueryMatchListDto;
 import wsg.lol.common.util.PageUtils;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.dao.api.impl.MatchV4;
 import wsg.lol.service.intf.ChampionService;
 import wsg.lol.service.intf.LeagueService;
 import wsg.lol.service.intf.SummonerService;
@@ -37,8 +32,6 @@ public class SummonerScheduler {
 
     private SystemService systemService;
 
-    private MatchV4 matchV4;
-
     private TransactionTemplate transactionTemplate;
 
     private ChampionService championService;
@@ -54,9 +47,9 @@ public class SummonerScheduler {
             try {
                 transactionTemplate.execute(transactionStatus -> {
                     logger.info("Update summoner {}.", summonerId);
-                    championService.updateChampionMasteries(summonerId);
-                    leagueService.updateLeagueEntry(summonerId);
-                    summonerService.updateSummoner(summonerId);
+                    ResultUtils.assertSuccess(championService.updateChampionMasteries(summonerId));
+                    ResultUtils.assertSuccess(leagueService.updateLeagueEntry(summonerId));
+                    ResultUtils.assertSuccess(summonerService.updateSummoner(summonerId));
                     logger.info("Succeed in updating the summoner {}.", summonerId);
                     return ResultUtils.success();
                 });
@@ -70,11 +63,6 @@ public class SummonerScheduler {
 
     @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
     public void addMatches() {
-        MatchListDto matchListDto = matchV4.getMatchListByAccount("QAewsqwOvAq6hPd82G2EFXDgchdy6ODcdpDvMtvYh422", new QueryMatchListDto());
-        Long gameId = matchListDto.getMatches().get(0).getGameId();
-        MatchDto match = matchV4.getMatchById(gameId);
-        MatchTimelineDto timeline = matchV4.getTimelineByMatchId(gameId);
-        System.out.println();
     }
 
     @Autowired
@@ -90,11 +78,6 @@ public class SummonerScheduler {
     @Autowired
     public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
         this.transactionTemplate = transactionTemplate;
-    }
-
-    @Autowired
-    public void setMatchV4(MatchV4 matchV4) {
-        this.matchV4 = matchV4;
     }
 
     @Autowired

@@ -2,10 +2,7 @@ package wsg.lol.common.pojo.dto.match;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.lang3.StringUtils;
 import wsg.lol.common.base.BaseDto;
-
-import java.lang.reflect.Field;
 
 /**
  * Bean for stats of participants in the match.
@@ -138,26 +135,4 @@ public class ParticipantStatsDto extends BaseDto {
     private Integer statPerk0;
     private Integer statPerk1;
     private Integer statPerk2;
-
-
-    // TODO: (Kingen, 2019/11/26)
-    public static void main(String[] args) {
-        ParticipantStatsDto teamStatsDto = new ParticipantStatsDto();
-        Field[] fields = teamStatsDto.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            String name = field.getName();
-            Class<?> type = field.getType();
-            String[] strings = StringUtils.splitByCharacterTypeCamelCase(name);
-            for (int i = 0; i < strings.length; i++) {
-                strings[i] = strings[i].toUpperCase();
-            }
-            String join = StringUtils.join(strings, "_");
-            if (Integer.class.equals(type)) {
-                join += "\tINT";
-            } else if (Long.class.equals(type)) {
-                join += "\tBIGINT";
-            }
-            System.out.println(join);
-        }
-    }
 }

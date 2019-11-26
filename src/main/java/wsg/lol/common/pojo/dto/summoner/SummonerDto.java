@@ -67,4 +67,7 @@ public class SummonerDto extends BaseDto {
 
     @Column
     private Date lastUpdate;
+
+    @Column
+    private Date lastMatch;
 }

@@ -1,6 +1,5 @@
 package wsg.lol.service.impl;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +9,14 @@ import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.game.DivisionEnum;
 import wsg.lol.common.enums.game.RankQueueEnum;
 import wsg.lol.common.enums.game.TierEnum;
-import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.LeagueV4;
 import wsg.lol.dao.mybatis.mapper.summoner.LeagueEntryMapper;
-import wsg.lol.dao.mybatis.mapper.system.EventMapper;
 import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.LeagueService;
+import wsg.lol.service.system.intf.EventService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +33,9 @@ public class LeagueServiceImpl implements LeagueService {
 
     private LeagueV4 leagueV4;
 
-    private EventMapper eventMapper;
-
     private LeagueEntryMapper leagueEntryMapper;
+
+    private EventService eventService;
 
     @Override
     public Result initialByLeagues() {
@@ -47,11 +45,6 @@ public class LeagueServiceImpl implements LeagueService {
             for (TierEnum tier : TierEnum.RANKED_TIERS) {
                 for (DivisionEnum division : DivisionEnum.validDivisions(tier)) {
                     for (int page = 1; ; page++) {
-                        // TODO: (Kingen, 2019/11/26)
-                        if (tier.compareTo(TierEnum.PLATINUM) < 0
-                                || (tier.equals(TierEnum.PLATINUM) && division.compareTo(DivisionEnum.III) < 0)) {
-                            break;
-                        }
                         List<LeagueEntryDto> leagueEntryDtoList = leagueV4.getLeagueEntriesExp(queue, tier, division, page);
                         if (leagueEntryDtoList == null || leagueEntryDtoList.isEmpty())
                             break;
@@ -59,7 +52,7 @@ public class LeagueServiceImpl implements LeagueService {
                             ids.add(leagueEntryDto.getSummonerId());
                         }
                         if (ids.size() > MAX_SIZE) {
-                            addSummonerEvents(ids);
+                            eventService.insertEvents(EventTypeEnum.SummonerId, ids);
                             ids = new ArrayList<>();
                         }
                     }
@@ -67,7 +60,7 @@ public class LeagueServiceImpl implements LeagueService {
             }
         }
 
-        addSummonerEvents(ids);
+        eventService.insertEvents(EventTypeEnum.SummonerId, ids);
         return ResultUtils.success();
     }
 
@@ -80,26 +73,14 @@ public class LeagueServiceImpl implements LeagueService {
         return ResultUtils.success();
     }
 
-    private Result addSummonerEvents(List<String> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            logger.info("Not summoner ids to add as events.");
-            return ResultUtils.success();
-        }
-
-        int count = eventMapper.insertEventsOfType(EventTypeEnum.SummonerId, EventStatusEnum.Unfinished, ids);
-        logger.info("Inserted {} events of {}", count, ids.size());
-
-        return ResultUtils.success();
+    @Autowired
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
     }
 
     @Autowired
     public void setLeagueEntryMapper(LeagueEntryMapper leagueEntryMapper) {
         this.leagueEntryMapper = leagueEntryMapper;
-    }
-
-    @Autowired
-    public void setEventMapper(EventMapper eventMapper) {
-        this.eventMapper = eventMapper;
     }
 
     @Autowired

@@ -1,9 +1,7 @@
 package wsg.lol.service.system.intf;
 
-import org.apache.ibatis.session.RowBounds;
 import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
-import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.result.system.VersionResult;
 
 /**
@@ -42,11 +40,6 @@ public interface SystemService {
      * Check if the database has been initialized.
      */
     GenericResult<Boolean> isDatabaseInitialized();
-
-    /**
-     * Handle events of the specified type by page.
-     */
-    Result handle(EventTypeEnum eventType, RowBounds rowBounds);
 
     /**
      * Update the initialization config.

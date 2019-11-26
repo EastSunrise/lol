@@ -8,23 +8,27 @@ import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
-import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
+import wsg.lol.common.pojo.dto.match.MatchListDto;
+import wsg.lol.common.pojo.dto.match.MatchReferenceDto;
 import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 import wsg.lol.common.pojo.dto.system.EventDto;
+import wsg.lol.common.pojo.query.QueryMatchListDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
+import wsg.lol.dao.api.impl.MatchV4;
 import wsg.lol.dao.api.impl.SummonerV4;
 import wsg.lol.dao.mybatis.mapper.summoner.ChampionMasteryMapper;
 import wsg.lol.dao.mybatis.mapper.summoner.LeagueEntryMapper;
 import wsg.lol.dao.mybatis.mapper.summoner.SummonerMapper;
-import wsg.lol.dao.mybatis.mapper.system.EventMapper;
 import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.system.intf.EventHandler;
+import wsg.lol.service.system.intf.EventService;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +56,9 @@ public class SummonerIdEventHandler implements EventHandler {
 
     private LeagueEntryMapper leagueEntryMapper;
 
-    private EventMapper eventMapper;
+    private EventService eventService;
+
+    private MatchV4 matchV4;
 
     @Override
     public synchronized Result handle(List<EventDto> events) {
@@ -83,19 +89,27 @@ public class SummonerIdEventHandler implements EventHandler {
                     result = MapperExecutor.insertList(leagueEntryMapper, entries);
                     ResultUtils.assertSuccess(result);
 
+                    logger.info("Adding events of matches of {}.", summonerId);
+                    MatchListDto matchListDto = matchV4.getMatchListByAccount(summoner.getAccountId(), QueryMatchListDto.getInitialCond());
+                    List<Long> gameIds = new ArrayList<>();
+                    Date lastMatch = QueryMatchListDto.getInitialBegin();
+                    for (MatchReferenceDto match : matchListDto.getMatches()) {
+                        gameIds.add(match.getGameId());
+                        Date timestamp = match.getTimestamp();
+                        if (timestamp.after(lastMatch)) {
+                            lastMatch = timestamp;
+                        }
+                    }
+                    result = eventService.insertEvents(EventTypeEnum.GameId, gameIds);
+                    ResultUtils.assertSuccess(result);
+
                     logger.info("Adding the summoner {}.", summonerId);
                     summoner.setLastUpdate(new Date());
+                    summoner.setLastMatch(lastMatch);
                     int count = summonerMapper.insert(summoner);
                     if (count != 1) {
                         logger.error("Failed to inert the summoner {}.", summonerId);
                         throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to inert the summoner " + summonerId);
-                    }
-
-                    logger.info("Updating the status of the event {} to {}.", summonerId, EventStatusEnum.Finished);
-                    count = eventMapper.updateStatus(EventTypeEnum.SummonerId, summonerId, EventStatusEnum.Unfinished, EventStatusEnum.Finished);
-                    if (count != 1) {
-                        logger.error("Failed to update the status of the event {} to {}.", summonerId, EventStatusEnum.Finished);
-                        throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to update the status of the event. ");
                     }
 
                     logger.info("Succeed in handling the event of {}.", summonerId);
@@ -111,8 +125,13 @@ public class SummonerIdEventHandler implements EventHandler {
     }
 
     @Autowired
-    public void setEventMapper(EventMapper eventMapper) {
-        this.eventMapper = eventMapper;
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
+    }
+
+    @Autowired
+    public void setMatchV4(MatchV4 matchV4) {
+        this.matchV4 = matchV4;
     }
 
     @Autowired

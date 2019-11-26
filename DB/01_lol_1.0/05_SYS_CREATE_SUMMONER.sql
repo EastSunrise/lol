@@ -11,6 +11,7 @@ create table lol.s_summoner
     summoner_level  int         null comment '召唤师等级',
     score           int         null comment '总成就点数',
     last_update     timestamp   not null comment '最近更新时间',
+    last_match      timestamp   not null comment '最后游戏时间',
     primary key (id)
 ) comment ='召唤师信息表';
 

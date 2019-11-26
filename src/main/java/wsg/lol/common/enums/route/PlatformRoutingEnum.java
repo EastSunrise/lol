@@ -10,17 +10,17 @@ import wsg.lol.common.pojo.parser.JsonSerializable;
  */
 public enum PlatformRoutingEnum implements JsonSerializable {
     LOL("api.riotgames.com"),
-    BR("br1.api.riotgames.com"),
-    EUN("eun1.api.riotgames.com"),
-    EUW("euw1.api.riotgames.com"),
-    JP("jp1.api.riotgames.com"),
+    BR("br1.api.riotgames.com", "BR1"),
+    EUN("eun1.api.riotgames.com", "EUN1"),
+    EUW("euw1.api.riotgames.com", "EUW1"),
+    JP("jp1.api.riotgames.com", "JP1"),
     KR("kr.api.riotgames.com", "KR"),
-    LA1("la1.api.riotgames.com"),
-    LA2("la2.api.riotgames.com"),
+    LA1("la1.api.riotgames.com", "LA1"),
+    LA2("la2.api.riotgames.com", "LA2"),
     NA("na1.api.riotgames.com", "NA1"),
-    OC("oc1.api.riotgames.com"),
-    TR("tr1.api.riotgames.com"),
-    RU("ru.api.riotgames.com"),
+    OC("oc1.api.riotgames.com", "OC1"),
+    TR("tr1.api.riotgames.com", "TR1"),
+    RU("ru.api.riotgames.com", "RU"),
     ;
 
     private String host;

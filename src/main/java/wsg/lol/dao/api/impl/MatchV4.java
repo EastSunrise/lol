@@ -1,6 +1,8 @@
 package wsg.lol.dao.api.impl;
 
 import org.springframework.stereotype.Component;
+import wsg.lol.common.base.AppException;
+import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.pojo.dto.match.MatchDto;
 import wsg.lol.common.pojo.dto.match.MatchListDto;
 import wsg.lol.common.pojo.dto.match.MatchTimelineDto;
@@ -38,6 +40,10 @@ public class MatchV4 extends BaseApi {
      * @see <a href="https://developer.riotgames.com/apis#match-v4/GET_getMatchlist"/>
      */
     public MatchListDto getMatchListByAccount(String accountId, QueryMatchListDto queryMatchListDto) {
+        if (!queryMatchListDto.isValid()) {
+            throw new AppException(ErrorCodeConst.ILLEGAL_ARGS);
+        }
+
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedAccountId", accountId);
         return this.getObject("/lol/match/v4/matchlists/by-account/{encryptedAccountId}", params, queryMatchListDto, MatchListDto.class);

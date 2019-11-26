@@ -1,34 +1,24 @@
 package wsg.lol.service.system.impl;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ConfigConst;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.route.PlatformRoutingEnum;
-import wsg.lol.common.enums.system.EventStatusEnum;
-import wsg.lol.common.enums.system.EventTypeEnum;
-import wsg.lol.common.pojo.dto.system.EventDto;
 import wsg.lol.common.result.system.VersionResult;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.client.ApiClient;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.dragon.intf.GeneralDao;
 import wsg.lol.dao.mybatis.mapper.system.ConfigMapper;
-import wsg.lol.dao.mybatis.mapper.system.EventMapper;
-import wsg.lol.service.system.intf.EventHandler;
 import wsg.lol.service.system.intf.SystemService;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * @author Kingen
@@ -43,10 +33,6 @@ public class SystemServiceImpl implements SystemService {
     private GeneralDao generalDao;
 
     private DragonDao dragonDao;
-
-    private EventMapper eventMapper;
-
-    private ApplicationContext applicationContext;
 
     private ApiClient apiClient;
 
@@ -104,19 +90,6 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    @Performance
-    public Result handle(EventTypeEnum eventType, RowBounds rowBounds) {
-        EventDto cond = new EventDto();
-        cond.setStatus(EventStatusEnum.Unfinished);
-        cond.setType(eventType);
-        List<EventDto> events = eventMapper.selectByRowBounds(cond, rowBounds);
-        if (CollectionUtils.isEmpty(events)) {
-            return ResultUtils.success();
-        }
-        return getEventHandler(eventType).handle(events);
-    }
-
-    @Override
     public Result initialized() {
         int count = configMapper.updateConfigValue(apiClient.getRegion(), ConfigConst.IS_DATABASE_INITIALIZED, String.valueOf(true));
         if (1 != count) {
@@ -126,23 +99,9 @@ public class SystemServiceImpl implements SystemService {
         return ResultUtils.success();
     }
 
-    private EventHandler getEventHandler(EventTypeEnum eventType) {
-        return (EventHandler) applicationContext.getBean(eventType.getEventBeanName());
-    }
-
     @Autowired
     public void setApiClient(ApiClient apiClient) {
         this.apiClient = apiClient;
-    }
-
-    @Autowired
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-
-    @Autowired
-    public void setEventMapper(EventMapper eventMapper) {
-        this.eventMapper = eventMapper;
     }
 
     @Autowired
