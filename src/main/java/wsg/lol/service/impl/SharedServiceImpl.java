@@ -13,9 +13,11 @@ import wsg.lol.common.constant.ConfigConst;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.champion.ImageGroupEnum;
 import wsg.lol.common.enums.route.PlatformRoutingEnum;
+import wsg.lol.common.pojo.domain.share.ImageDo;
 import wsg.lol.common.pojo.dto.champion.ChampionRotationDto;
 import wsg.lol.common.pojo.dto.share.ImageDto;
 import wsg.lol.common.pojo.dto.share.ShardStatus;
+import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionV3;
 import wsg.lol.dao.api.impl.LOLStatusV3;
@@ -50,8 +52,8 @@ public class SharedServiceImpl implements SharedService {
     // TODO: (Kingen, 2019/11/21) 事务嵌套失效
     @Override
     @Transactional
-    public Result updateImages(List<ImageDto> imageDtoList, ImageGroupEnum... groups) {
-        if (CollectionUtils.isEmpty(imageDtoList)) {
+    public Result updateImages(List<ImageDto> images, ImageGroupEnum... groups) {
+        if (CollectionUtils.isEmpty(images)) {
             logger.info("Images is empty. Nothing updated.");
             return ResultUtils.success();
         }
@@ -62,7 +64,7 @@ public class SharedServiceImpl implements SharedService {
             logger.info("Deleted " + count + " images of " + group);
         }
 
-        ResultUtils.assertSuccess(MapperExecutor.insertList(imageMapper, imageDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.insertList(imageMapper, ObjectTransfer.transferList(images, ImageDo.class)));
         return ResultUtils.success();
     }
 
@@ -78,7 +80,6 @@ public class SharedServiceImpl implements SharedService {
             images.add(image);
         }
         ResultUtils.assertSuccess(updateImages(images, ImageGroupEnum.Map));
-
         logger.info("Succeed in updating the data of maps.");
         return ResultUtils.success();
     }

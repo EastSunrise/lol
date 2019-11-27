@@ -1,8 +1,10 @@
 package wsg.lol.controller.scheduler;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.base.AppException;
@@ -37,7 +39,7 @@ public class RealScheduler {
 
     private MatchService matchService;
 
-    //    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
+    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_SECOND)
     public void updateSummoners() {
         logger.info("Schedule to update summoners.");
         List<SummonerDto> summoners = summonerService.getSummonersForUpdate(PageUtils.getRowBounds()).getList();
@@ -60,7 +62,7 @@ public class RealScheduler {
         }
     }
 
-    //    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
+    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_SECOND)
     public void updateMatches() throws AppException {
         logger.info("Schedule to update matches.");
         List<SummonerDto> summoners = summonerService.getSummonersForMatch(PageUtils.getRowBounds()).getList();

@@ -2,9 +2,9 @@ package wsg.lol.dao.dragon.intf;
 
 import wsg.lol.common.pojo.dto.champion.ChampionExtDto;
 import wsg.lol.common.pojo.dto.champion.SpellDto;
-import wsg.lol.common.pojo.dto.item.ItemExtDto;
-import wsg.lol.common.pojo.dto.rune.RuneExtDto;
 import wsg.lol.common.pojo.dto.share.ImageDto;
+import wsg.lol.common.pojo.dto.share.ItemExtDto;
+import wsg.lol.common.pojo.dto.share.RuneExtDto;
 
 import java.util.List;
 import java.util.Map;

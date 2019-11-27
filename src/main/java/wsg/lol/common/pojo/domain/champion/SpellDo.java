@@ -2,12 +2,17 @@ package wsg.lol.common.pojo.domain.champion;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import wsg.lol.common.annotation.Flatten;
 import wsg.lol.common.base.BaseDo;
 import wsg.lol.common.enums.champion.SpellNumEnum;
+import wsg.lol.common.enums.game.GameModeEnum;
+import wsg.lol.common.pojo.dto.champion.SpellDto;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * DO for the spells of champions or summoners.
@@ -43,25 +48,27 @@ public class SpellDo extends BaseDo {
     private String tooltip;
 
     @Column
-    private String[] leveltipLabel;
+    @Flatten
+    private List<String> leveltipLabel;
 
     @Column
-    private String[] leveltipEffect;
+    @Flatten
+    private List<String> leveltipEffect;
 
     @Column
-    private Double[] cooldown;
+    private List<Double> cooldown;
 
     @Column
     private String cooldownBurn;
 
     @Column
-    private Integer[] cost;
+    private List<Integer> cost;
 
     @Column
     private String costBurn;
 
     @Column(name = "`range`")
-    private Integer[] range;
+    private List<Integer> range;
 
     @Column
     private String rangeBurn;
@@ -70,19 +77,19 @@ public class SpellDo extends BaseDo {
     private String datavalues;
 
     @Column
-    private Integer[][] effect;
+    private List<List<Integer>> effect;
 
     @Column
-    private String[] effectBurn;
+    private List<String> effectBurn;
 
     @Column
-    private String vars;
+    private List<SpellDto.SpellVarDto> vars;
 
     @Column
     private String costType;
 
     @Column
-    private String maxammo;
+    private Integer maxammo;
 
     @Column
     private String resource;
@@ -91,5 +98,15 @@ public class SpellDo extends BaseDo {
     private Integer summonerLevel;
 
     @Column
-    private String modes;
+    private GameModeEnum[] modes;
+
+    /**
+     * set to <expression>{@link #championId} * 100 + {@link #num}</expression> if this is a spell of champion.
+     */
+    public static int generateId(int championId, @NotNull SpellNumEnum spellNum) {
+        if (!spellNum.isChampionSpell()) {
+            throw new IllegalArgumentException("Can't calculate the key if it isn't a champion spell.");
+        }
+        return championId * 100 + spellNum.ordinal();
+    }
 }

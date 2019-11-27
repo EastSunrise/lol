@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wsg.lol.common.LeagueEntryDo;
 import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.game.DivisionEnum;
@@ -12,6 +13,7 @@ import wsg.lol.common.enums.game.RankQueueEnum;
 import wsg.lol.common.enums.game.TierEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
+import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.LeagueV4;
 import wsg.lol.dao.mybatis.mapper.summoner.LeagueEntryMapper;
@@ -44,9 +46,6 @@ public class LeagueServiceImpl implements LeagueService {
         logger.info("Initializing the database by leagues.");
         List<String> ids = new ArrayList<>();
         for (RankQueueEnum queue : RankQueueEnum.values()) {
-            if (queue.compareTo(RankQueueEnum.RANKED_FLEX_SR) < 0) {
-                continue;
-            }
             for (TierEnum tier : TierEnum.RANKED_TIERS) {
                 for (DivisionEnum division : DivisionEnum.validDivisions(tier)) {
                     for (int page = 1; ; page++) {
@@ -75,7 +74,7 @@ public class LeagueServiceImpl implements LeagueService {
     public Result updateLeagueEntry(String summonerId) {
         logger.info("Updating league entries of {}.", summonerId);
         List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
-        ResultUtils.assertSuccess(MapperExecutor.updateList(leagueEntryMapper, entries));
+        ResultUtils.assertSuccess(MapperExecutor.updateList(leagueEntryMapper, ObjectTransfer.transferList(entries, LeagueEntryDo.class)));
         return ResultUtils.success();
     }
 

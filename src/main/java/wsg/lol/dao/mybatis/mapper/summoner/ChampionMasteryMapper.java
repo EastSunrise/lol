@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.additional.insert.InsertListMapper;
 import tk.mybatis.mapper.common.base.update.UpdateByPrimaryKeyMapper;
-import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
+import wsg.lol.common.ChampionMasteryDo;
 
 /**
  * Mapper for champion masteries.
@@ -13,5 +13,5 @@ import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
  */
 @Mapper
 @Repository
-public interface ChampionMasteryMapper extends InsertListMapper<ChampionMasteryDto>, UpdateByPrimaryKeyMapper<ChampionMasteryDto> {
+public interface ChampionMasteryMapper extends InsertListMapper<ChampionMasteryDo>, UpdateByPrimaryKeyMapper<ChampionMasteryDo> {
 }

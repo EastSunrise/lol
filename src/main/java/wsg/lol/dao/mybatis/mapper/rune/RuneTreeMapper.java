@@ -2,7 +2,7 @@ package wsg.lol.dao.mybatis.mapper.rune;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-import wsg.lol.common.pojo.dto.rune.RuneTreeDto;
+import wsg.lol.common.pojo.domain.share.RuneTreeDo;
 import wsg.lol.dao.mybatis.common.StaticMapper;
 
 /**
@@ -12,5 +12,5 @@ import wsg.lol.dao.mybatis.common.StaticMapper;
  */
 @Repository
 @Mapper
-public interface RuneTreeMapper extends StaticMapper<RuneTreeDto> {
+public interface RuneTreeMapper extends StaticMapper<RuneTreeDo> {
 }

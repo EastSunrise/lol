@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+import wsg.lol.common.ChampionMasteryDo;
+import wsg.lol.common.SummonerDo;
 import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.ListResult;
@@ -14,6 +16,7 @@ import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
+import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.SummonerV4;
@@ -68,10 +71,11 @@ public class SummonerServiceImpl implements SummonerService {
     public Result updateSummonerInfo(String summonerId) {
         logger.info("Updating the summoner {}.", summonerId);
         SummonerDto summoner = summonerV4.getSummonerById(summonerId);
+        SummonerDo summonerDo = ObjectTransfer.transfer(summoner, SummonerDo.class);
         int score = championMasteryV4.getScoreBySummonerId(summonerId);
-        summoner.setScore(score);
-        summoner.setLastUpdate(new Date());
-        int count = summonerMapper.updateByPrimaryKey(summoner);
+        summonerDo.setScore(score);
+        summonerDo.setLastUpdate(new Date());
+        int count = summonerMapper.updateByPrimaryKey(summonerDo);
         if (count != 1) {
             logger.error("Failed to update the summoner {}.", summonerId);
             throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to update the summoner " + summonerId);
@@ -97,7 +101,7 @@ public class SummonerServiceImpl implements SummonerService {
     public Result updateChampionMasteries(String summonerId) {
         logger.info("Updating champion masteries of {}.", summonerId);
         List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
-        ResultUtils.assertSuccess(MapperExecutor.updateList(championMasteryMapper, championMasteries));
+        ResultUtils.assertSuccess(MapperExecutor.updateList(championMasteryMapper, ObjectTransfer.transferList(championMasteries, ChampionMasteryDo.class)));
         return ResultUtils.success();
     }
 

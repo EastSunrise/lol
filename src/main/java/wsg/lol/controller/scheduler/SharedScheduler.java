@@ -25,7 +25,7 @@ public class SharedScheduler {
 
     private SharedService sharedService;
 
-    @Scheduled(fixedRate = DateUtils.MILLIS_PER_DAY)
+    @Scheduled(fixedRate = DateUtils.MILLIS_PER_HOUR)
     public void checkVersion() {
         logger.info("Checking the version...");
         VersionResult versionResult = systemService.getVersion();

@@ -11,21 +11,29 @@ import wsg.lol.common.base.BaseDto;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ChampionStatsDto extends BaseDto {
+class ChampionStatsDto extends BaseDto {
 
-    private Integer championId;
+    private Double hp;
 
-    private Integer hp;
+    private Double hpperlevel;
 
-    private Integer hpperlevel;
+    private Double hpregen;
 
-    private Integer mp;
+    private Double hpregenperlevel;
 
-    private Integer mpperlevel;
+    private Double mp;
 
-    private Integer movespeed;
+    private Double mpperlevel;
 
-    private Integer armor;
+    private Double mpregen;
+
+    private Double mpregenperlevel;
+
+    private Double attackdamage;
+
+    private Double attackdamageperlevel;
+
+    private Double armor;
 
     private Double armorperlevel;
 
@@ -33,25 +41,15 @@ public class ChampionStatsDto extends BaseDto {
 
     private Double spellblockperlevel;
 
+    private Double attackspeed;
+
+    private Double attackspeedperlevel;
+
     private Integer attackrange;
 
-    private Integer hpregen;
-
-    private Double hpregenperlevel;
-
-    private Integer mpregen;
-
-    private Integer mpregenperlevel;
+    private Integer movespeed;
 
     private Integer crit;
 
     private Integer critperlevel;
-
-    private Integer attackdamage;
-
-    private Integer attackdamageperlevel;
-
-    private Double attackspeedperlevel;
-
-    private Double attackspeed;
 }

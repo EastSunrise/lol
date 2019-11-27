@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import tk.mybatis.mapper.additional.insert.InsertListMapper;
 import tk.mybatis.mapper.common.base.update.UpdateByPrimaryKeyMapper;
 import wsg.lol.common.base.AppException;
+import wsg.lol.common.base.BaseDo;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.util.ResultUtils;
@@ -23,7 +24,7 @@ public class MapperExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(MapperExecutor.class);
 
-    public static <T> Result updateStatic(StaticMapper<T> mapper, List<T> data) {
+    public static <T extends BaseDo> Result updateStatic(StaticMapper<T> mapper, List<T> data) {
         if (CollectionUtils.isEmpty(data)) {
             logger.info("Collection is empty. Nothing updated.");
             return ResultUtils.success();
@@ -39,13 +40,13 @@ public class MapperExecutor {
         return ResultUtils.success();
     }
 
-    private static <T> Result clear(ClearMapper<T> strategy) {
+    private static Result clear(ClearMapper<? extends BaseDo> strategy) {
         int count = strategy.clear();
         logger.info(count + " Cleared.");
         return ResultUtils.success();
     }
 
-    public static <T> Result insertList(InsertListMapper<T> mapper, List<T> data) {
+    public static <T extends BaseDo> Result insertList(InsertListMapper<T> mapper, List<T> data) {
         if (CollectionUtils.isEmpty(data)) {
             logger.info("Collection is empty. Nothing inserted.");
             return ResultUtils.success();
@@ -59,7 +60,7 @@ public class MapperExecutor {
         return ResultUtils.success();
     }
 
-    public static <T> Result updateList(UpdateByPrimaryKeyMapper<T> mapper, List<T> data) {
+    public static <T extends BaseDo> Result updateList(UpdateByPrimaryKeyMapper<T> mapper, List<T> data) {
         for (T t : data) {
             int count = mapper.updateByPrimaryKey(t);
             if (count != 1) {

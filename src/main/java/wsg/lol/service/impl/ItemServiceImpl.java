@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.champion.ImageGroupEnum;
-import wsg.lol.common.pojo.dto.item.ItemDto;
-import wsg.lol.common.pojo.dto.item.ItemExtDto;
-import wsg.lol.common.pojo.dto.item.ItemStatsDto;
+import wsg.lol.common.pojo.domain.share.ItemDo;
+import wsg.lol.common.pojo.domain.share.ItemStatsDo;
 import wsg.lol.common.pojo.dto.share.ImageDto;
+import wsg.lol.common.pojo.dto.share.ItemDto;
+import wsg.lol.common.pojo.dto.share.ItemExtDto;
+import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.mybatis.mapper.item.ItemMapper;
@@ -45,17 +47,17 @@ public class ItemServiceImpl implements ItemService {
         List<ItemExtDto> itemExtDtoList = dragonDao.readItems(version);
 
         logger.info("Updating the items.");
-        List<ItemDto> itemDtoList = new ArrayList<>(itemExtDtoList);
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(itemMapper, itemDtoList));
+        List<ItemDo> items = ObjectTransfer.transferList(new ArrayList<>(itemExtDtoList), ItemDto.class, ItemDo.class);
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(itemMapper, items));
 
         logger.info("Updating the stats of items.");
-        List<ItemStatsDto> itemStatsDtoList = new ArrayList<>();
+        List<ItemStatsDo> itemStatsDoList = new ArrayList<>();
         for (ItemExtDto itemExtDto : itemExtDtoList) {
-            ItemStatsDto stats = itemExtDto.getStats();
-            stats.setItemId(itemExtDto.getId());
-            itemStatsDtoList.add(stats);
+            ItemStatsDo statsDo = ObjectTransfer.transfer(itemExtDto.getStats(), ItemStatsDo.class);
+            statsDo.setItemId(itemExtDto.getId());
+            itemStatsDoList.add(statsDo);
         }
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(itemStatsMapper, itemStatsDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(itemStatsMapper, itemStatsDoList));
 
         logger.info("Updating the images of items.");
         List<ImageDto> imageDtoList = new ArrayList<>();

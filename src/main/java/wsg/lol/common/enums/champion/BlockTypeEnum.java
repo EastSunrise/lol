@@ -71,6 +71,10 @@ public enum BlockTypeEnum implements JsonSerializable {
     starting("起始装备"),
     startingjungle,
     support,
+
+    UNKNOWN,
+    agressive,
+    UNKNOWN2,
     ;
 
     private String title;
@@ -89,6 +93,12 @@ public enum BlockTypeEnum implements JsonSerializable {
 
     @Override
     public String serialize() {
+        if (UNKNOWN.equals(this)) {
+            return "1)buystarteritems";
+        }
+        if (UNKNOWN2.equals(this)) {
+            return "";
+        }
         return name();
     }
 }

@@ -1,4 +1,4 @@
-package wsg.lol.common.pojo.dto.item;
+package wsg.lol.common.pojo.dto.share;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import java.util.List;
 
 /**
- * Bean for recommended data.
+ * DTO for recommended data.
  *
  * @author Kingen
  */

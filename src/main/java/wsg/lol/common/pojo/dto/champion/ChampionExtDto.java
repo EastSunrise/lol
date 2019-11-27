@@ -2,13 +2,13 @@ package wsg.lol.common.pojo.dto.champion;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import wsg.lol.common.pojo.dto.item.RecommendedExtDto;
 import wsg.lol.common.pojo.dto.share.ImageDto;
+import wsg.lol.common.pojo.dto.share.RecommendedExtDto;
 
 import java.util.List;
 
 /**
- * Bean for all of info of champion.
+ * DTO for all of info of champion.
  *
  * @author Kingen
  */

@@ -1,8 +1,15 @@
 package wsg.lol.common;
 
+import wsg.lol.common.base.BaseDo;
+
 import java.util.Date;
 
-public class ChampionMasteryDo extends ChampionMasteryDoKey {
+public class ChampionMasteryDo extends BaseDo {
+
+    private String summonerId;
+
+    private Integer championId;
+
     private Byte chestGranted;
 
     private Integer championLevel;
@@ -16,60 +23,4 @@ public class ChampionMasteryDo extends ChampionMasteryDoKey {
     private Integer tokensEarned;
 
     private Date lastPlayTime;
-
-    public Byte getChestGranted() {
-        return chestGranted;
-    }
-
-    public void setChestGranted(Byte chestGranted) {
-        this.chestGranted = chestGranted;
-    }
-
-    public Integer getChampionLevel() {
-        return championLevel;
-    }
-
-    public void setChampionLevel(Integer championLevel) {
-        this.championLevel = championLevel;
-    }
-
-    public Integer getChampionPoints() {
-        return championPoints;
-    }
-
-    public void setChampionPoints(Integer championPoints) {
-        this.championPoints = championPoints;
-    }
-
-    public Integer getChampionPointsUntilNextLevel() {
-        return championPointsUntilNextLevel;
-    }
-
-    public void setChampionPointsUntilNextLevel(Integer championPointsUntilNextLevel) {
-        this.championPointsUntilNextLevel = championPointsUntilNextLevel;
-    }
-
-    public Integer getChampionPointsSinceLastLevel() {
-        return championPointsSinceLastLevel;
-    }
-
-    public void setChampionPointsSinceLastLevel(Integer championPointsSinceLastLevel) {
-        this.championPointsSinceLastLevel = championPointsSinceLastLevel;
-    }
-
-    public Integer getTokensEarned() {
-        return tokensEarned;
-    }
-
-    public void setTokensEarned(Integer tokensEarned) {
-        this.tokensEarned = tokensEarned;
-    }
-
-    public Date getLastPlayTime() {
-        return lastPlayTime;
-    }
-
-    public void setLastPlayTime(Date lastPlayTime) {
-        this.lastPlayTime = lastPlayTime;
-    }
 }

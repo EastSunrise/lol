@@ -1,20 +1,27 @@
-package wsg.lol.common.pojo.dto.champion;
+package wsg.lol.common.pojo.dto.share;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 
 /**
- * DTO for the skin.
+ * DTO for runes.
  *
  * @author Kingen
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-class SkinDto extends BaseDto {
+class RuneDto extends BaseDto {
 
     private Integer id;
-    private Integer num;
+
+    private String key;
+
+    private String icon;
+
     private String name;
-    private Boolean chromas;
+
+    private String shortDesc;
+
+    private String longDesc;
 }

@@ -2,6 +2,7 @@ package wsg.lol.common.pojo.domain.champion;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import wsg.lol.common.annotation.Flatten;
 import wsg.lol.common.base.BaseDo;
 import wsg.lol.common.enums.champion.ChampionTagEnum;
 
@@ -44,14 +45,18 @@ public class ChampionDo extends BaseDo {
     private String partype;
 
     @Column
+    @Flatten
     private Integer infoAttack;
 
     @Column
+    @Flatten
     private Integer infoDefense;
 
     @Column
+    @Flatten
     private Integer infoMagic;
 
     @Column
+    @Flatten
     private Integer infoDifficulty;
 }

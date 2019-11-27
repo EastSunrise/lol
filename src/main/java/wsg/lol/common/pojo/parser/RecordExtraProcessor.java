@@ -18,7 +18,7 @@ public class RecordExtraProcessor implements ExtraProcessor {
     private static String[] excludedFields = new String[]{
             "wsg.lol.common.pojo.dto.champion.ChampionExtDto@info",// todo: to solve
             "wsg.lol.common.pojo.dto.champion.SpellDto@leveltip",
-            "wsg.lol.common.pojo.dto.item.ItemExtDto@gold",
+            "wsg.lol.common.pojo.dto.share.ItemExtDto@gold",
 
             "wsg.lol.dao.dragon.impl.DragonDaoImpl$FileDto@keys", // keys of champions.
             "wsg.lol.dao.dragon.impl.DragonDaoImpl$FileDto@basic", // basic for items

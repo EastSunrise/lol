@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
+import wsg.lol.common.ChampionMasteryDo;
+import wsg.lol.common.LeagueEntryDo;
+import wsg.lol.common.SummonerDo;
 import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
@@ -15,6 +18,7 @@ import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 import wsg.lol.common.pojo.dto.system.EventDto;
 import wsg.lol.common.pojo.query.QueryMatchListDto;
+import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
@@ -66,25 +70,24 @@ public class SummonerEventHandler implements EventHandler {
                         return ResultUtils.success();
                     }
 
-                    // get base info.
-                    SummonerDto summoner = summonerV4.getSummonerById(summonerId);
-                    int score = championMasteryV4.getScoreBySummonerId(summonerId);
-                    summoner.setScore(score);
-
                     logger.info("Adding champion masteries of {}.", summonerId);
                     List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
-                    Result result = MapperExecutor.insertList(championMasteryMapper, championMasteries);
+                    Result result = MapperExecutor.insertList(championMasteryMapper, ObjectTransfer.transferList(championMasteries, ChampionMasteryDo.class));
                     ResultUtils.assertSuccess(result);
 
                     logger.info("Adding league entries of {}.", summonerId);
                     List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
-                    result = MapperExecutor.insertList(leagueEntryMapper, entries);
+                    result = MapperExecutor.insertList(leagueEntryMapper, ObjectTransfer.transferList(entries, LeagueEntryDo.class));
                     ResultUtils.assertSuccess(result);
 
                     logger.info("Adding the summoner {}.", summonerId);
-                    summoner.setLastUpdate(new Date());
-                    summoner.setLastMatch(QueryMatchListDto.getInitialBegin());
-                    int count = summonerMapper.insert(summoner);
+                    SummonerDto summoner = summonerV4.getSummonerById(summonerId);
+                    SummonerDo summonerDo = ObjectTransfer.transfer(summoner, SummonerDo.class);
+                    int score = championMasteryV4.getScoreBySummonerId(summonerId);
+                    summonerDo.setScore(score);
+                    summonerDo.setLastUpdate(new Date());
+                    summonerDo.setLastMatch(QueryMatchListDto.getInitialBegin());
+                    int count = summonerMapper.insert(summonerDo);
                     if (count != 1) {
                         logger.error("Failed to inert the summoner {}.", summonerId);
                         throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to inert the summoner " + summonerId);

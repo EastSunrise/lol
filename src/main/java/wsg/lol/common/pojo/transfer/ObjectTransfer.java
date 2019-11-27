@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * // TODO: (Kingen, 2019/11/27) *
+ * Transfer DTO to DO with the same name of field.
  *
  * @author Kingen
  */
@@ -23,25 +23,36 @@ public class ObjectTransfer {
 
     };
 
-    public static <T extends BaseDo> List<T> transferList(List<? extends BaseDto> fs, Class<T> clazz) {
+    public static <T extends BaseDo, F extends BaseDto> List<T> transferList(List<F> fs, Class<T> tClass) {
+        return transferList(fs, null, tClass);
+    }
+
+    public static <T extends BaseDo, F extends BaseDto> List<T> transferList(List<F> fs, Class<F> fClass, Class<T> tClass) {
         if (CollectionUtils.isEmpty(fs)) {
-            return null;
+            return new ArrayList<>();
         }
 
         List<T> ts = new ArrayList<>();
-        for (BaseDto f : fs) {
-            T t = ObjectTransfer.transfer(f, clazz);
+        for (F f : fs) {
+            T t = ObjectTransfer.transfer(f, fClass, tClass);
             ts.add(t);
         }
         return ts;
     }
 
+    public static <T extends BaseDo, F extends BaseDto> T transfer(F f, Class<T> tClass) {
+        return transfer(f, null, tClass);
+    }
+
     @SuppressWarnings("unchecked")
-    public static <T extends BaseDo> T transfer(BaseDto f, Class<T> clazz) {
+    public static <T extends BaseDo, F extends BaseDto> T transfer(F f, Class<F> fClass, Class<T> tClass) {
         if (f == null) {
             return null;
         }
-        Class<? extends BaseDto> fClass = f.getClass();
+        if (fClass == null) {
+            fClass = (Class<F>) f.getClass();
+        }
+        // TODO: (Kingen, 2019/11/28)  fields of super class.
         Field[] fFields = fClass.getDeclaredFields();
         Map<String, Object> fMap = new HashMap<>();
         T t = null;
@@ -51,8 +62,8 @@ public class ObjectTransfer {
                 fMap.put(fField.getName(), fField.get(f));
             }
 
-            t = clazz.newInstance();
-            for (Field tField : clazz.getDeclaredFields()) {
+            t = tClass.newInstance();
+            for (Field tField : tClass.getDeclaredFields()) {
                 tField.setAccessible(true);
                 String name = tField.getName();
                 if (tField.isAnnotationPresent(Flatten.class)) {
@@ -60,7 +71,7 @@ public class ObjectTransfer {
                     Map<String, Object> map = fMap;
                     Class<? extends BaseDto> innerClass;
                     for (int i = 0; i < parts.length; i++) {
-                        Object innerObject = map.get(parts[i]);
+                        Object innerObject = map.get(parts[i].toLowerCase());
                         if (innerObject == null) {
                             break;
                         }

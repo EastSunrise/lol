@@ -1,6 +1,4 @@
-package wsg.lol.common.pojo.dto.item;
-
-import wsg.lol.common.pojo.dto.share.ImageDto;
+package wsg.lol.common.pojo.dto.share;
 
 /**
  * Bean for extension of items.

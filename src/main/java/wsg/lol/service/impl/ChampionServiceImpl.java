@@ -1,6 +1,5 @@
 package wsg.lol.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +11,15 @@ import wsg.lol.common.enums.champion.ChampionTipEnum;
 import wsg.lol.common.enums.champion.ImageGroupEnum;
 import wsg.lol.common.enums.champion.SpellNumEnum;
 import wsg.lol.common.pojo.domain.champion.*;
-import wsg.lol.common.pojo.dto.champion.*;
-import wsg.lol.common.pojo.dto.item.BlockDto;
-import wsg.lol.common.pojo.dto.item.RecommendedDto;
-import wsg.lol.common.pojo.dto.item.RecommendedExtDto;
+import wsg.lol.common.pojo.domain.share.BlockDo;
+import wsg.lol.common.pojo.domain.share.RecommendedDo;
+import wsg.lol.common.pojo.dto.champion.ChampionDto;
+import wsg.lol.common.pojo.dto.champion.ChampionExtDto;
+import wsg.lol.common.pojo.dto.champion.SpellDto;
+import wsg.lol.common.pojo.dto.share.BlockDto;
 import wsg.lol.common.pojo.dto.share.ImageDto;
+import wsg.lol.common.pojo.dto.share.RecommendedDto;
+import wsg.lol.common.pojo.dto.share.RecommendedExtDto;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.dragon.intf.DragonDao;
@@ -64,7 +67,8 @@ public class ChampionServiceImpl implements ChampionService {
 
         logger.info("Updating the champions.");
         List<ChampionDto> championDtoList = new ArrayList<>(championExtDtoList);
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championMapper, ObjectTransfer.transferList(championDtoList, ChampionDo.class)));
+        List<ChampionDo> championDoList = ObjectTransfer.transferList(championDtoList, ChampionDto.class, ChampionDo.class);
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championMapper, championDoList));
 
         logger.info("Updating the images of champions.");
         List<ImageDto> imageDtoList = new ArrayList<>();
@@ -76,49 +80,49 @@ public class ChampionServiceImpl implements ChampionService {
         ResultUtils.assertSuccess(sharedService.updateImages(imageDtoList, ImageGroupEnum.Champion));
 
         logger.info("Updating the skins.");
-        List<SkinDto> skinDtoList = new ArrayList<>();
+        List<SkinDo> skinDoList = new ArrayList<>();
         for (ChampionExtDto championExtDto : championExtDtoList) {
-            List<SkinDto> skins = championExtDto.getSkins();
+            List<SkinDo> skins = ObjectTransfer.transferList(championExtDto.getSkins(), SkinDo.class);
             Integer id = championExtDto.getId();
-            for (SkinDto skin : skins) {
+            for (SkinDo skin : skins) {
                 skin.setChampionId(id);
             }
-            skinDtoList.addAll(skins);
+            skinDoList.addAll(skins);
         }
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(skinMapper, ObjectTransfer.transferList(skinDtoList, SkinDo.class)));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(skinMapper, skinDoList));
 
         logger.info("Updating the tips of champions.");
-        List<ChampionTipDto> championTipDtoList = new ArrayList<>();
+        List<ChampionTipDo> championTipDoList = new ArrayList<>();
         for (ChampionExtDto championExtDto : championExtDtoList) {
             Integer id = championExtDto.getId();
             for (String tip : championExtDto.getAllytips()) {
-                ChampionTipDto championTipDto = new ChampionTipDto();
-                championTipDto.setChampionId(id);
-                championTipDto.setTip(tip);
-                championTipDto.setType(ChampionTipEnum.Ally);
-                championTipDtoList.add(championTipDto);
+                ChampionTipDo championTipDo = new ChampionTipDo();
+                championTipDo.setChampionId(id);
+                championTipDo.setTip(tip);
+                championTipDo.setType(ChampionTipEnum.Ally);
+                championTipDoList.add(championTipDo);
             }
             for (String tip : championExtDto.getEnemytips()) {
-                ChampionTipDto championTipDto = new ChampionTipDto();
-                championTipDto.setChampionId(id);
-                championTipDto.setTip(tip);
-                championTipDto.setType(ChampionTipEnum.Enemy);
-                championTipDtoList.add(championTipDto);
+                ChampionTipDo championTipDo = new ChampionTipDo();
+                championTipDo.setChampionId(id);
+                championTipDo.setTip(tip);
+                championTipDo.setType(ChampionTipEnum.Enemy);
+                championTipDoList.add(championTipDo);
             }
         }
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championTipMapper, ObjectTransfer.transferList(championTipDtoList, ChampionTipDo.class)));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championTipMapper, championTipDoList));
 
         logger.info("Updating the stats of champions.");
-        List<ChampionStatsDto> statsDtoList = new ArrayList<>();
+        List<ChampionStatsDo> statsDoList = new ArrayList<>();
         for (ChampionExtDto championExtDto : championExtDtoList) {
-            ChampionStatsDto stats = championExtDto.getStats();
+            ChampionStatsDo stats = ObjectTransfer.transfer(championExtDto.getStats(), ChampionStatsDo.class);
             stats.setChampionId(championExtDto.getId());
-            statsDtoList.add(stats);
+            statsDoList.add(stats);
         }
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championStatsMapper, ObjectTransfer.transferList(statsDtoList, ChampionStatsDo.class)));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championStatsMapper, statsDoList));
 
         logger.info("Updating the spells of champions.");
-        List<SpellDto> spellDtoList = new ArrayList<>();
+        List<SpellDo> spellDoList = new ArrayList<>();
         imageDtoList = new ArrayList<>();
         SpellNumEnum[] enums = new SpellNumEnum[]{
                 SpellNumEnum.Q, SpellNumEnum.W, SpellNumEnum.E, SpellNumEnum.R
@@ -127,57 +131,54 @@ public class ChampionServiceImpl implements ChampionService {
             List<SpellDto> spells = championExtDto.getSpells();
             Integer id = championExtDto.getId();
             for (int i = 0; i < spells.size(); i++) {
-                SpellDto spell = spells.get(i);
-                spell.setChampionId(id);
-                spell.setNum(enums[i]);
-                spell.setId(SpellDto.generateId(id, enums[i]));
+                SpellDto spellDto = spells.get(i);
+                SpellDo spellDo = ObjectTransfer.transfer(spellDto, SpellDo.class);
+                spellDo.setChampionId(id);
+                spellDo.setNum(enums[i]);
+                spellDo.setId(SpellDo.generateId(id, enums[i]));
+                spellDoList.add(spellDo);
 
-                ImageDto image = spell.getImage();
-                image.setRelatedId(spell.getId());
+                ImageDto image = spellDto.getImage();
+                image.setRelatedId(spellDo.getId());
                 imageDtoList.add(image);
             }
-            spellDtoList.addAll(spells);
 
-            SpellDto passive = championExtDto.getPassive();
+            SpellDto passiveDto = championExtDto.getPassive();
+            SpellDo passive = ObjectTransfer.transfer(passiveDto, SpellDo.class);
             passive.setChampionId(id);
             passive.setNum(SpellNumEnum.P);
-            passive.setId(SpellDto.generateId(id, SpellNumEnum.P));
+            passive.setId(SpellDo.generateId(id, SpellNumEnum.P));
             passive.setKey(championExtDto.getKey() + SpellNumEnum.P.name());
-            spellDtoList.add(passive);
-            ImageDto image = passive.getImage();
+            spellDoList.add(passive);
+            ImageDto image = passiveDto.getImage();
             image.setRelatedId(passive.getId());
             imageDtoList.add(image);
         }
-        ResultUtils.assertSuccess(this.updateSpells(spellDtoList,
-                SpellNumEnum.P, SpellNumEnum.Q, SpellNumEnum.W, SpellNumEnum.E, SpellNumEnum.R
-        ));
+        ResultUtils.assertSuccess(this.updateSpells(spellDoList, SpellNumEnum.P, SpellNumEnum.Q, SpellNumEnum.W, SpellNumEnum.E, SpellNumEnum.R));
         logger.info("Updating the images of champion spells.");
         ResultUtils.assertSuccess(sharedService.updateImages(imageDtoList, ImageGroupEnum.Spell, ImageGroupEnum.Passive));
 
         logger.info("Updating the recommended items of champions.");
-        List<RecommendedDto> recommendedDtoList = new ArrayList<>();
-        List<BlockDto> blockDtoList = new ArrayList<>();
-        int max = 0;
+        List<RecommendedDo> recommendedDoList = new ArrayList<>();
+        List<BlockDo> blockDoList = new ArrayList<>();
         for (ChampionExtDto championExtDto : championExtDtoList) {
             List<RecommendedExtDto> recommendedExtDtoList = championExtDto.getRecommended();
             for (int i = 0; i < recommendedExtDtoList.size(); i++) {
                 RecommendedExtDto recommendedExtDto = recommendedExtDtoList.get(i);
-                Integer generateId = RecommendedDto.generateId(championExtDto.getId(), i);
-                recommendedExtDto.setId(generateId);
-                recommendedDtoList.add(recommendedExtDto);
+                RecommendedDo recommendedDo = ObjectTransfer.transfer(recommendedExtDto, RecommendedDto.class, RecommendedDo.class);
+                Integer generateId = RecommendedDo.generateId(championExtDto.getId(), i);
+                recommendedDo.setId(generateId);
+                recommendedDoList.add(recommendedDo);
 
                 for (BlockDto block : recommendedExtDto.getBlocks()) {
-                    block.setRecommendedId(generateId);
-                    blockDtoList.add(block);
-                    int length = JSONArray.toJSONString(block.getItems()).length();
-                    if (length > max) {
-                        max = length;
-                    }
+                    BlockDo blockDo = ObjectTransfer.transfer(block, BlockDo.class);
+                    blockDo.setRecommendedId(generateId);
+                    blockDoList.add(blockDo);
                 }
             }
         }
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(recommendedMapper, recommendedDtoList));
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(blockMapper, blockDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(recommendedMapper, recommendedDoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(blockMapper, blockDoList));
 
         logger.info("Succeed in updating the data of champions.");
         return ResultUtils.success();
@@ -188,24 +189,28 @@ public class ChampionServiceImpl implements ChampionService {
     public Result updateSummonerSpells(String version) {
         logger.info("Updating the summoner spells.");
         List<SpellDto> spellDtoList = dragonDao.readSummonerSpells(version);
-        List<ImageDto> imageDtoList = new ArrayList<>();
+        List<ImageDto> images = new ArrayList<>();
+        List<SpellDo> spellDoList = new ArrayList<>();
         for (SpellDto spellDto : spellDtoList) {
-            spellDto.setNum(SpellNumEnum.S);
+            SpellDo spellDo = ObjectTransfer.transfer(spellDto, SpellDo.class);
+            spellDo.setNum(SpellNumEnum.S);
+            spellDoList.add(spellDo);
+
             ImageDto image = spellDto.getImage();
             image.setRelatedId(spellDto.getId());
             image.setGroup(ImageGroupEnum.SummonerSpell);
-            imageDtoList.add(image);
+            images.add(image);
         }
-        ResultUtils.assertSuccess(this.updateSpells(spellDtoList, SpellNumEnum.S));
+        ResultUtils.assertSuccess(this.updateSpells(spellDoList, SpellNumEnum.S));
         logger.info("Updating the images of summoner spells.");
-        ResultUtils.assertSuccess(sharedService.updateImages(imageDtoList, ImageGroupEnum.SummonerSpell));
+        ResultUtils.assertSuccess(sharedService.updateImages(images, ImageGroupEnum.SummonerSpell));
 
         logger.info("Succeed in updating the data of summoner spells.");
         return ResultUtils.success();
     }
 
     // TODO: (Kingen, 2019/11/21) 事务嵌套
-    private Result updateSpells(List<SpellDto> spells, SpellNumEnum... nums) {
+    private Result updateSpells(List<SpellDo> spells, SpellNumEnum... nums) {
         if (CollectionUtils.isEmpty(spells)) {
             logger.info("Spells is empty. Nothing updated.");
             return ResultUtils.success();
@@ -217,7 +222,7 @@ public class ChampionServiceImpl implements ChampionService {
             logger.info("Deleted " + count + " spells of " + num);
         }
 
-        ResultUtils.assertSuccess(MapperExecutor.insertList(spellMapper, ObjectTransfer.transferList(spells, SpellDo.class)));
+        ResultUtils.assertSuccess(MapperExecutor.insertList(spellMapper, spells));
         return ResultUtils.success();
     }
 

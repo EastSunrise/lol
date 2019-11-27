@@ -1,8 +1,21 @@
 package wsg.lol.common;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import wsg.lol.common.base.BaseDo;
+
+import javax.persistence.Table;
 import java.util.Date;
 
-public class SummonerDo {
+/**
+ * Bean for summoners.
+ *
+ * @author Kingen
+ */
+@EqualsAndHashCode(callSuper = true)
+@Data
+@Table(schema = "lol", name = "s_summoner")
+public class SummonerDo extends BaseDo {
     private String id;
 
     private String accountId;

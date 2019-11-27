@@ -81,6 +81,8 @@ public enum MatchQueueEnum implements IntegerSerializable {
     OdysseyExtractionCaptainGames(1060),
     OdysseyExtractionOnslaughtGames(1070),
     NexusBlitzGames(1200),
+    UNKNOWN2000(2000),
+    UNKNOWN2010(2010),
     ;
 
     private int value;
