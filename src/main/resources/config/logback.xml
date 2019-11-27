@@ -3,6 +3,7 @@
 <configuration scan="true" scanPeriod="60 seconds">
     <property name="LOG_HOME" value="./logs"/>
 
+    <!--info-->
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
@@ -72,7 +73,72 @@
         </encoder>
     </appender>
 
-    <!--log file-->
+    <!--error-->
+    <appender name="springboot_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/springboot_error.log</FileNamePattern>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="controller_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/controller_error.log</FileNamePattern>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="service_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/service_error.log</FileNamePattern>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="api_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/api_error.log</FileNamePattern>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="dragon_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/dragon_error.log</FileNamePattern>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="mybatis_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/mybatis_error.log</FileNamePattern>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="root_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/root_error.log</FileNamePattern>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--debug log file-->
     <logger name="org.springframework.boot" level="debug" additivity="false">
         <appender-ref ref="springboot"/>
     </logger>
@@ -97,6 +163,29 @@
     </logger>
     <root level="info">
         <appender-ref ref="root"/>
+    </root>
+
+    <!--error log file-->
+    <logger name="org.springframework.boot" level="error" additivity="false">
+        <appender-ref ref="springboot_error"/>
+    </logger>
+    <logger name="wsg.lol.controller" level="error" additivity="false">
+        <appender-ref ref="controller_error"/>
+    </logger>
+    <logger name="wsg.lol.service" level="error" additivity="false">
+        <appender-ref ref="service_error"/>
+    </logger>
+    <logger name="wsg.lol.dao.api" level="error" additivity="false">
+        <appender-ref ref="api_error"/>
+    </logger>
+    <logger name="wsg.lol.dao.dragon" level="error" additivity="false">
+        <appender-ref ref="dragon_error"/>
+    </logger>
+    <logger name="wsg.lol.dao.mybatis" level="error" additivity="false">
+        <appender-ref ref="mybatis_error"/>
+    </logger>
+    <root level="error">
+        <appender-ref ref="root_error"/>
     </root>
 
     <!--console-->

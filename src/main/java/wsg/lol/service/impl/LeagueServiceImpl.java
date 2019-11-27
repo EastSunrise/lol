@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.game.DivisionEnum;
 import wsg.lol.common.enums.game.RankQueueEnum;
@@ -15,8 +16,8 @@ import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.LeagueV4;
 import wsg.lol.dao.mybatis.mapper.summoner.LeagueEntryMapper;
 import wsg.lol.service.common.MapperExecutor;
+import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.LeagueService;
-import wsg.lol.service.system.intf.EventService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +39,14 @@ public class LeagueServiceImpl implements LeagueService {
     private EventService eventService;
 
     @Override
+    @Performance
     public Result initialByLeagues() {
         logger.info("Initializing the database by leagues.");
         List<String> ids = new ArrayList<>();
         for (RankQueueEnum queue : RankQueueEnum.values()) {
+            if (queue.compareTo(RankQueueEnum.RANKED_FLEX_SR) < 0) {
+                continue;
+            }
             for (TierEnum tier : TierEnum.RANKED_TIERS) {
                 for (DivisionEnum division : DivisionEnum.validDivisions(tier)) {
                     for (int page = 1; ; page++) {
@@ -52,7 +57,7 @@ public class LeagueServiceImpl implements LeagueService {
                             ids.add(leagueEntryDto.getSummonerId());
                         }
                         if (ids.size() > MAX_SIZE) {
-                            eventService.insertEvents(EventTypeEnum.SummonerId, ids);
+                            eventService.insertEvents(EventTypeEnum.Summoner, ids);
                             ids = new ArrayList<>();
                         }
                     }
@@ -60,12 +65,13 @@ public class LeagueServiceImpl implements LeagueService {
             }
         }
 
-        eventService.insertEvents(EventTypeEnum.SummonerId, ids);
+        eventService.insertEvents(EventTypeEnum.Summoner, ids);
         return ResultUtils.success();
     }
 
     @Override
     @Transactional
+    @Performance
     public Result updateLeagueEntry(String summonerId) {
         logger.info("Updating league entries of {}.", summonerId);
         List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);

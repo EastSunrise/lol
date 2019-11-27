@@ -3,9 +3,10 @@ package wsg.lol.common.base;
 import java.io.Serializable;
 
 /**
- * Base class of beans.
+ * Base of data transferred object.
  *
  * @author Kingen
  */
 public class BaseDto implements Serializable {
+
 }

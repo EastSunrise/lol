@@ -6,8 +6,8 @@ package wsg.lol.common.enums.system;
  * @author Kingen
  */
 public enum EventTypeEnum {
-    SummonerId,
-    GameId;
+    Summoner,
+    Match;
 
     public final String getEventBeanName() {
         return name() + "EventHandler";

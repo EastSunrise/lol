@@ -18,9 +18,4 @@ public interface ChampionService {
      * Update the data of summoner spells once the version changes.
      */
     Result updateSummonerSpells(String version);
-
-    /**
-     * Update the champion masteries of the specified summoner.
-     */
-    Result updateChampionMasteries(String summonerId);
 }

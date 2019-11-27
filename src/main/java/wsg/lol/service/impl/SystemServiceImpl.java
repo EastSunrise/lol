@@ -1,4 +1,4 @@
-package wsg.lol.service.system.impl;
+package wsg.lol.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import wsg.lol.dao.api.client.ApiClient;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.dragon.intf.GeneralDao;
 import wsg.lol.dao.mybatis.mapper.system.ConfigMapper;
-import wsg.lol.service.system.intf.SystemService;
+import wsg.lol.service.intf.SystemService;
 
 import java.io.File;
 
@@ -90,7 +90,7 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public Result initialized() {
+    public Result initialize() {
         int count = configMapper.updateConfigValue(apiClient.getRegion(), ConfigConst.IS_DATABASE_INITIALIZED, String.valueOf(true));
         if (1 != count) {
             logger.error("Failed to update the initialization config.");

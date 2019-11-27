@@ -1,16 +1,15 @@
-package wsg.lol.service.system.impl;
+package wsg.lol.service.event;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
+import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.system.EventTypeEnum;
-import wsg.lol.common.pojo.dto.match.MatchListDto;
-import wsg.lol.common.pojo.dto.match.MatchReferenceDto;
 import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
@@ -19,28 +18,24 @@ import wsg.lol.common.pojo.query.QueryMatchListDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
-import wsg.lol.dao.api.impl.MatchV4;
 import wsg.lol.dao.api.impl.SummonerV4;
 import wsg.lol.dao.mybatis.mapper.summoner.ChampionMasteryMapper;
 import wsg.lol.dao.mybatis.mapper.summoner.LeagueEntryMapper;
 import wsg.lol.dao.mybatis.mapper.summoner.SummonerMapper;
 import wsg.lol.service.common.MapperExecutor;
-import wsg.lol.service.system.intf.EventHandler;
-import wsg.lol.service.system.intf.EventService;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Handler for events of {@link EventTypeEnum#SummonerId}
+ * Handler for events of type {@link EventTypeEnum#Summoner}
  *
  * @author Kingen
  */
-@Service(value = "SummonerIdEventHandler")
-public class SummonerIdEventHandler implements EventHandler {
+@Service(value = "SummonerEventHandler")
+public class SummonerEventHandler implements EventHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(SummonerIdEventHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(SummonerEventHandler.class);
 
     private SummonerV4 summonerV4;
 
@@ -56,11 +51,8 @@ public class SummonerIdEventHandler implements EventHandler {
 
     private LeagueEntryMapper leagueEntryMapper;
 
-    private EventService eventService;
-
-    private MatchV4 matchV4;
-
     @Override
+    @Performance
     public synchronized Result handle(List<EventDto> events) {
         for (EventDto event : events) {
             String summonerId = event.getContext();
@@ -89,23 +81,9 @@ public class SummonerIdEventHandler implements EventHandler {
                     result = MapperExecutor.insertList(leagueEntryMapper, entries);
                     ResultUtils.assertSuccess(result);
 
-                    logger.info("Adding events of matches of {}.", summonerId);
-                    MatchListDto matchListDto = matchV4.getMatchListByAccount(summoner.getAccountId(), QueryMatchListDto.getInitialCond());
-                    List<Long> gameIds = new ArrayList<>();
-                    Date lastMatch = QueryMatchListDto.getInitialBegin();
-                    for (MatchReferenceDto match : matchListDto.getMatches()) {
-                        gameIds.add(match.getGameId());
-                        Date timestamp = match.getTimestamp();
-                        if (timestamp.after(lastMatch)) {
-                            lastMatch = timestamp;
-                        }
-                    }
-                    result = eventService.insertEvents(EventTypeEnum.GameId, gameIds);
-                    ResultUtils.assertSuccess(result);
-
                     logger.info("Adding the summoner {}.", summonerId);
                     summoner.setLastUpdate(new Date());
-                    summoner.setLastMatch(lastMatch);
+                    summoner.setLastMatch(QueryMatchListDto.getInitialBegin());
                     int count = summonerMapper.insert(summoner);
                     if (count != 1) {
                         logger.error("Failed to inert the summoner {}.", summonerId);
@@ -120,18 +98,8 @@ public class SummonerIdEventHandler implements EventHandler {
             }
         }
 
-        logger.info("Succeed in handling the events of summoner id.");
+        logger.info("Succeed in handling events of summoners.");
         return ResultUtils.success();
-    }
-
-    @Autowired
-    public void setEventService(EventService eventService) {
-        this.eventService = eventService;
-    }
-
-    @Autowired
-    public void setMatchV4(MatchV4 matchV4) {
-        this.matchV4 = matchV4;
     }
 
     @Autowired

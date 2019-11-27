@@ -1,20 +1,19 @@
 package wsg.lol.controller.scheduler;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.base.AppException;
+import wsg.lol.common.base.Result;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 import wsg.lol.common.util.PageUtils;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.service.intf.ChampionService;
 import wsg.lol.service.intf.LeagueService;
+import wsg.lol.service.intf.MatchService;
 import wsg.lol.service.intf.SummonerService;
-import wsg.lol.service.system.intf.SystemService;
+import wsg.lol.service.intf.SystemService;
 
 import java.util.List;
 
@@ -24,9 +23,9 @@ import java.util.List;
  * @author Kingen
  */
 @Service
-public class SummonerScheduler {
+public class RealScheduler {
 
-    private static final Logger logger = LoggerFactory.getLogger(SummonerScheduler.class);
+    private static final Logger logger = LoggerFactory.getLogger(RealScheduler.class);
 
     private SummonerService summonerService;
 
@@ -34,9 +33,9 @@ public class SummonerScheduler {
 
     private TransactionTemplate transactionTemplate;
 
-    private ChampionService championService;
-
     private LeagueService leagueService;
+
+    private MatchService matchService;
 
     //    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
     public void updateSummoners() {
@@ -47,9 +46,9 @@ public class SummonerScheduler {
             try {
                 transactionTemplate.execute(transactionStatus -> {
                     logger.info("Update summoner {}.", summonerId);
-                    ResultUtils.assertSuccess(championService.updateChampionMasteries(summonerId));
+                    ResultUtils.assertSuccess(summonerService.updateChampionMasteries(summonerId));
                     ResultUtils.assertSuccess(leagueService.updateLeagueEntry(summonerId));
-                    ResultUtils.assertSuccess(summonerService.updateSummoner(summonerId));
+                    ResultUtils.assertSuccess(summonerService.updateSummonerInfo(summonerId));
                     logger.info("Succeed in updating the summoner {}.", summonerId);
                     return ResultUtils.success();
                 });
@@ -61,13 +60,25 @@ public class SummonerScheduler {
         }
     }
 
-    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
-    public void addMatches() {
+    //    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
+    public void updateMatches() throws AppException {
+        logger.info("Schedule to update matches.");
+        List<SummonerDto> summoners = summonerService.getSummonersForMatch(PageUtils.getRowBounds()).getList();
+        for (SummonerDto summoner : summoners) {
+            Result result;
+            try {
+                result = matchService.updateMatches(summoner.getAccountId(), summoner.getLastMatch());
+            } catch (AppException e) {
+                result = ResultUtils.fail(e);
+                e.printStackTrace();
+            }
+            systemService.sendWarnMessage(result);
+        }
     }
 
     @Autowired
-    public void setChampionService(ChampionService championService) {
-        this.championService = championService;
+    public void setMatchService(MatchService matchService) {
+        this.matchService = matchService;
     }
 
     @Autowired

@@ -23,7 +23,7 @@ public class ConfigConst {
     public static final String CHAMPION_ROTATION = "CHAMPION_ROTATION";
 
     /**
-     * Flag marked if the database has been initialized.
+     * Flag marked if the database has been initialize.
      */
     public static final String IS_DATABASE_INITIALIZED = "IS_DATABASE_INITIALIZED";
 }

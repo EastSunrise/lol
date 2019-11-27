@@ -1,4 +1,4 @@
-package wsg.lol.service.system.intf;
+package wsg.lol.service.intf;
 
 import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
@@ -37,12 +37,12 @@ public interface SystemService {
     void sendWarnMessage(Result result);
 
     /**
-     * Check if the database has been initialized.
+     * Check if the database has been initialize.
      */
     GenericResult<Boolean> isDatabaseInitialized();
 
     /**
      * Update the initialization config.
      */
-    Result initialized();
+    Result initialize();
 }

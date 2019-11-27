@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.result.system.VersionResult;
 import wsg.lol.service.intf.SharedService;
-import wsg.lol.service.system.intf.SystemService;
+import wsg.lol.service.intf.SystemService;
 
 /**
  * Scheduler for shared data.

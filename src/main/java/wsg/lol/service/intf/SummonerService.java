@@ -5,6 +5,8 @@ import wsg.lol.common.base.ListResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 
+import java.util.Date;
+
 /**
  * Service for summoners.
  *
@@ -25,5 +27,15 @@ public interface SummonerService {
     /**
      * Update the base information of the specified summoner.
      */
-    Result updateSummoner(String summonerId);
+    Result updateSummonerInfo(String summonerId);
+
+    /**
+     * Update the last time updating the matches of the summoner specified by accountId.
+     */
+    Result updateSummonerLastMatch(String accountId, Date lastMatch);
+
+    /**
+     * Update the champion masteries of the specified summoner.
+     */
+    Result updateChampionMasteries(String summonerId);
 }

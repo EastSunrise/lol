@@ -11,19 +11,18 @@ import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.champion.ChampionTipEnum;
 import wsg.lol.common.enums.champion.ImageGroupEnum;
 import wsg.lol.common.enums.champion.SpellNumEnum;
+import wsg.lol.common.pojo.domain.champion.*;
 import wsg.lol.common.pojo.dto.champion.*;
 import wsg.lol.common.pojo.dto.item.BlockDto;
 import wsg.lol.common.pojo.dto.item.RecommendedDto;
 import wsg.lol.common.pojo.dto.item.RecommendedExtDto;
 import wsg.lol.common.pojo.dto.share.ImageDto;
-import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
+import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.mybatis.mapper.champion.*;
 import wsg.lol.dao.mybatis.mapper.item.BlockMapper;
 import wsg.lol.dao.mybatis.mapper.item.RecommendedMapper;
-import wsg.lol.dao.mybatis.mapper.summoner.ChampionMasteryMapper;
 import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.ChampionService;
 import wsg.lol.service.intf.SharedService;
@@ -57,10 +56,6 @@ public class ChampionServiceImpl implements ChampionService {
 
     private SharedService sharedService;
 
-    private ChampionMasteryV4 championMasteryV4;
-
-    private ChampionMasteryMapper championMasteryMapper;
-
     @Override
     @Transactional
     public Result updateChampions(String version) {
@@ -69,7 +64,7 @@ public class ChampionServiceImpl implements ChampionService {
 
         logger.info("Updating the champions.");
         List<ChampionDto> championDtoList = new ArrayList<>(championExtDtoList);
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championMapper, championDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championMapper, ObjectTransfer.transferList(championDtoList, ChampionDo.class)));
 
         logger.info("Updating the images of champions.");
         List<ImageDto> imageDtoList = new ArrayList<>();
@@ -90,7 +85,7 @@ public class ChampionServiceImpl implements ChampionService {
             }
             skinDtoList.addAll(skins);
         }
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(skinMapper, skinDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(skinMapper, ObjectTransfer.transferList(skinDtoList, SkinDo.class)));
 
         logger.info("Updating the tips of champions.");
         List<ChampionTipDto> championTipDtoList = new ArrayList<>();
@@ -111,7 +106,7 @@ public class ChampionServiceImpl implements ChampionService {
                 championTipDtoList.add(championTipDto);
             }
         }
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championTipMapper, championTipDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championTipMapper, ObjectTransfer.transferList(championTipDtoList, ChampionTipDo.class)));
 
         logger.info("Updating the stats of champions.");
         List<ChampionStatsDto> statsDtoList = new ArrayList<>();
@@ -120,7 +115,7 @@ public class ChampionServiceImpl implements ChampionService {
             stats.setChampionId(championExtDto.getId());
             statsDtoList.add(stats);
         }
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championStatsMapper, statsDtoList));
+        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championStatsMapper, ObjectTransfer.transferList(statsDtoList, ChampionStatsDo.class)));
 
         logger.info("Updating the spells of champions.");
         List<SpellDto> spellDtoList = new ArrayList<>();
@@ -209,15 +204,6 @@ public class ChampionServiceImpl implements ChampionService {
         return ResultUtils.success();
     }
 
-    @Override
-    @Transactional
-    public Result updateChampionMasteries(String summonerId) {
-        logger.info("Updating champion masteries of {}.", summonerId);
-        List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
-        ResultUtils.assertSuccess(MapperExecutor.updateList(championMasteryMapper, championMasteries));
-        return ResultUtils.success();
-    }
-
     // TODO: (Kingen, 2019/11/21) 事务嵌套
     private Result updateSpells(List<SpellDto> spells, SpellNumEnum... nums) {
         if (CollectionUtils.isEmpty(spells)) {
@@ -231,18 +217,8 @@ public class ChampionServiceImpl implements ChampionService {
             logger.info("Deleted " + count + " spells of " + num);
         }
 
-        ResultUtils.assertSuccess(MapperExecutor.insertList(spellMapper, spells));
+        ResultUtils.assertSuccess(MapperExecutor.insertList(spellMapper, ObjectTransfer.transferList(spells, SpellDo.class)));
         return ResultUtils.success();
-    }
-
-    @Autowired
-    public void setChampionMasteryV4(ChampionMasteryV4 championMasteryV4) {
-        this.championMasteryV4 = championMasteryV4;
-    }
-
-    @Autowired
-    public void setChampionMasteryMapper(ChampionMasteryMapper championMasteryMapper) {
-        this.championMasteryMapper = championMasteryMapper;
     }
 
     @Autowired

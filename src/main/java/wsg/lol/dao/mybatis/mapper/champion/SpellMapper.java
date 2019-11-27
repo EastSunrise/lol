@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.additional.insert.InsertListMapper;
 import wsg.lol.common.enums.champion.SpellNumEnum;
-import wsg.lol.common.pojo.dto.champion.SpellDto;
+import wsg.lol.common.pojo.domain.champion.SpellDo;
 
 /**
  * Mapper interface for spells of champions.
@@ -13,6 +13,6 @@ import wsg.lol.common.pojo.dto.champion.SpellDto;
  */
 @Repository
 @Mapper
-public interface SpellMapper extends InsertListMapper<SpellDto> {
+public interface SpellMapper extends InsertListMapper<SpellDo> {
     int deleteByNum(SpellNumEnum num);
 }

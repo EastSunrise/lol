@@ -8,6 +8,8 @@ import tk.mybatis.mapper.common.base.update.UpdateByPrimaryKeyMapper;
 import tk.mybatis.mapper.common.rowbounds.SelectByExampleRowBoundsMapper;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 
+import java.util.Date;
+
 /**
  * Mapper for basic data of summoners.
  *
@@ -16,4 +18,6 @@ import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 @Repository
 @Mapper
 public interface SummonerMapper extends SelectByPrimaryKeyMapper<SummonerDto>, InsertMapper<SummonerDto>, SelectByExampleRowBoundsMapper<SummonerDto>, UpdateByPrimaryKeyMapper<SummonerDto> {
+
+    int updateLastMatch(String accountId, Date lastMatch);
 }

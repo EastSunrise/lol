@@ -1,4 +1,4 @@
-package wsg.lol.service.system.impl;
+package wsg.lol.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.session.RowBounds;
@@ -16,8 +16,8 @@ import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.pojo.dto.system.EventDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.mybatis.mapper.system.EventMapper;
-import wsg.lol.service.system.intf.EventHandler;
-import wsg.lol.service.system.intf.EventService;
+import wsg.lol.service.event.EventHandler;
+import wsg.lol.service.intf.EventService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,19 +37,23 @@ public class EventServiceImpl implements EventService {
     @Override
     @Performance
     public Result handle(EventTypeEnum eventType, RowBounds rowBounds) {
+        logger.info("Getting {} events of {}.", rowBounds.getLimit(), eventType);
         EventDto cond = new EventDto();
         cond.setStatus(EventStatusEnum.Unfinished);
         cond.setType(eventType);
         List<EventDto> events = eventMapper.selectByRowBounds(cond, rowBounds);
         if (CollectionUtils.isEmpty(events)) {
+            logger.info("No events got.");
             return ResultUtils.success();
         }
 
+        logger.info("Handling events of {}", eventType);
         EventHandler eventHandler = (EventHandler) applicationContext.getBean(eventType.getEventBeanName());
         return eventHandler.handle(events);
     }
 
     @Override
+    @Performance
     public Result insertEvents(EventTypeEnum eventType, List<?> contexts) {
         if (CollectionUtils.isEmpty(contexts)) {
             logger.info("Contexts are empty.");
@@ -68,6 +72,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Performance
     public Result updateStatus(EventTypeEnum type, Object context, EventStatusEnum from, EventStatusEnum to) {
         if (context == null) {
             logger.info("Context is null, nothing updated.");

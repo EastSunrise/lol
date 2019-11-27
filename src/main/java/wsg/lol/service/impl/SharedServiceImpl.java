@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ConfigConst;
 import wsg.lol.common.constant.ErrorCodeConst;
@@ -100,6 +101,7 @@ public class SharedServiceImpl implements SharedService {
     }
 
     @Override
+    @Performance
     public Result updateSharedStatus() {
         logger.info("Updating the shared status.");
         ShardStatus sharedData = lolStatusV3.getSharedData();
@@ -115,6 +117,7 @@ public class SharedServiceImpl implements SharedService {
     }
 
     @Override
+    @Performance
     public Result updateChampionRotation() {
         logger.info("Updating the rotation of champions.");
         ChampionRotationDto rotation = championV3.getChampionRotation();

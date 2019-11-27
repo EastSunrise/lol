@@ -1,4 +1,4 @@
-package wsg.lol.service.system.intf;
+package wsg.lol.service.event;
 
 import wsg.lol.common.base.Result;
 import wsg.lol.common.pojo.dto.system.EventDto;

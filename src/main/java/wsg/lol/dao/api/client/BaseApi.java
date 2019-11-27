@@ -20,6 +20,7 @@ import javax.xml.ws.http.HTTPException;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class BaseApi {
 
     private static final String HTTPS = "https://";
 
-    private static final long TIME_OUT = DateUtils.MILLIS_PER_SECOND * 5;
+    private static final long TIME_OUT = DateUtils.MILLIS_PER_SECOND;
 
     private static final Logger logger = LoggerFactory.getLogger(BaseApi.class);
     private static long retryCount = 0L;
@@ -125,7 +126,7 @@ public class BaseApi {
         return jsonStr;
     }
 
-    private String doHttpGet(String urlStr) {
+    private synchronized String doHttpGet(String urlStr) {
         logger.info("Getting from " + urlStr);
         while (true) {
             try {
@@ -156,7 +157,7 @@ public class BaseApi {
                     long retryAfter = Long.parseLong(urlConnection.getHeaderField("Retry-After")) * DateUtils.MILLIS_PER_SECOND;
                     retryCount += 1;
                     retrySum += retryAfter;
-                    logger.info("Rate limit exceeded. Wait for {} ms.", retryAfter);
+                    logger.error("Rate limit exceeded. Wait for {} ms.", retryAfter);
                     threadSleep(retryAfter);
                     continue;
                 }
@@ -165,7 +166,7 @@ public class BaseApi {
                     continue;
                 }
                 if (ResponseCodeEnum.ServiceUnavailable.getCode() == responseCode) {
-                    logger.info(ResponseCodeEnum.ServiceUnavailable.getMessage());
+                    logger.error(ResponseCodeEnum.ServiceUnavailable.getMessage());
                     threadSleep(DateUtils.MILLIS_PER_SECOND);
                     continue;
                 }
@@ -173,10 +174,12 @@ public class BaseApi {
                     logger.error("Bas request: {}.", urlStr);
                 }
                 throw new HTTPException(responseCode);
+            } catch (SocketTimeoutException e) {
+                logger.error("Socket connects time out.");
             } catch (IOException e) {
                 e.printStackTrace();
-                threadSleep(TIME_OUT);
             }
+            threadSleep(TIME_OUT);
         }
     }
 

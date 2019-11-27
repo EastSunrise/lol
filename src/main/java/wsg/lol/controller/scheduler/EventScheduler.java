@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.util.PageUtils;
-import wsg.lol.service.system.intf.EventHandler;
-import wsg.lol.service.system.intf.EventService;
-import wsg.lol.service.system.intf.SystemService;
+import wsg.lol.service.event.EventHandler;
+import wsg.lol.service.intf.EventService;
+import wsg.lol.service.intf.SystemService;
 
 /**
  * Scheduler for events.
@@ -27,11 +27,26 @@ public class EventScheduler {
 
     private EventService eventService;
 
-    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
+    /**
+     * Add summoners by handling events of type {@link EventTypeEnum#Summoner}.
+     */
+//    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
     public void addSummoners() {
         logger.info("Adding summoners by event.");
-        Result handle = eventService.handle(EventTypeEnum.SummonerId, PageUtils.getRowBounds());
+        Result handle = eventService.handle(EventTypeEnum.Summoner, PageUtils.getRowBounds());
         systemService.sendWarnMessage(handle);
+    }
+
+    /**
+     * Add matches by handling events of type {@link EventTypeEnum#Match}
+     * <p>
+     * Meanwhile, add events of type {@link EventTypeEnum#Summoner} if not exist from the participants of matches.
+     */
+    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
+    public void addMatches() {
+        logger.info("Adding matches by events");
+        Result result = eventService.handle(EventTypeEnum.Match, PageUtils.getRowBounds());
+        systemService.sendWarnMessage(result);
     }
 
     @Autowired

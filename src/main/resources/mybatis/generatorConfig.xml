@@ -69,7 +69,61 @@
                 enableCountByExample: 是否可以通过对象查数量
                 enableUpdateByExample: 是否可以通过对象进行更新
         -->
-        <table schema="lol" tableName="s_summoner" domainObjectName="Summoner" enableCountByExample="false"
+        <table schema="lol" tableName="c_champion" domainObjectName="ChampionDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="c_skin" domainObjectName="SkinDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="c_spell" domainObjectName="SpellDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="c_stats" domainObjectName="ChampionStatsDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="c_tip" domainObjectName="ChampionTipDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="ct_block" domainObjectName="BlockDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="ct_recommended" domainObjectName="RecommendedDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="i_item" domainObjectName="ItemDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="i_stats" domainObjectName="ItemStatsDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="m_match" domainObjectName="MatchDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="m_participant" domainObjectName="ParticipantDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="r_rune" domainObjectName="RuneDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="r_tree" domainObjectName="RuneTreeDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="s_league" domainObjectName="LeagueEntryDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="s_mastery" domainObjectName="ChampionMasteryDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="s_summoner" domainObjectName="SummonerDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="t_config" domainObjectName="ConfigDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="t_event" domainObjectName="EventDo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table schema="lol" tableName="t_image" domainObjectName="ImageDo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>
     </context>

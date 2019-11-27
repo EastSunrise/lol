@@ -12,7 +12,10 @@ create table lol.s_summoner
     score           int         null comment '总成就点数',
     last_update     timestamp   not null comment '最近更新时间',
     last_match      timestamp   not null comment '最后游戏时间',
-    primary key (id)
+    primary key (id),
+    unique (account_id),
+    unique (puuid),
+    index (name)
 ) comment ='召唤师信息表';
 
 -- 英雄成就表

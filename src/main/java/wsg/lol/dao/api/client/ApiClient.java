@@ -64,6 +64,11 @@ public class ApiClient {
      */
     void regenerateToken() {
         // TODO: (Kingen, 2019/11/6) regenerate token
+        try {
+            Thread.sleep(DateUtils.MILLIS_PER_HOUR);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public PlatformRoutingEnum getRegion() {

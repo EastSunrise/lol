@@ -35,7 +35,8 @@ create table lol.t_event
     context varchar(64)        not null comment '上下文',
     status  tinyint            not null comment '状态',
     primary key (id),
-    unique (type, context)
+    unique (type, context),
+    index (status)
 ) comment ='事件表';
 
 commit;

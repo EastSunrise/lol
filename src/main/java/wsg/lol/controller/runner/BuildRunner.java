@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.service.intf.LeagueService;
-import wsg.lol.service.system.intf.SystemService;
+import wsg.lol.service.intf.SystemService;
 
 /**
  * Runner to build the base data. Run only when initializing the database.
@@ -27,17 +27,20 @@ public class BuildRunner implements ApplicationRunner {
 
     private LeagueService leagueService;
 
+    /**
+     * Initial events of summoners by querying the league entries of all queues, tiers and divisions.
+     */
     @Override
     public void run(ApplicationArguments args) {
         logger.info("Initializing the database.");
         GenericResult<Boolean> result = systemService.isDatabaseInitialized();
         if (result.getObject()) {
-            logger.info("The database has been initialized.");
+            logger.info("The database has been initialize.");
             return;
         }
 
         ResultUtils.assertSuccess(leagueService.initialByLeagues());
-        ResultUtils.assertSuccess(systemService.initialized());
+        ResultUtils.assertSuccess(systemService.initialize());
 
         logger.info("Succeed in initializing the database.");
     }

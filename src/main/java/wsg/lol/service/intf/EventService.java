@@ -1,4 +1,4 @@
-package wsg.lol.service.system.intf;
+package wsg.lol.service.intf;
 
 import org.apache.ibatis.session.RowBounds;
 import wsg.lol.common.base.Result;

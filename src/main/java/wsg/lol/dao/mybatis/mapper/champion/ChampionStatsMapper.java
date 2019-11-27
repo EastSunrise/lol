@@ -2,7 +2,7 @@ package wsg.lol.dao.mybatis.mapper.champion;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-import wsg.lol.common.pojo.dto.champion.ChampionStatsDto;
+import wsg.lol.common.pojo.domain.champion.ChampionStatsDo;
 import wsg.lol.dao.mybatis.common.StaticMapper;
 
 /**
@@ -12,5 +12,5 @@ import wsg.lol.dao.mybatis.common.StaticMapper;
  */
 @Repository
 @Mapper
-public interface ChampionStatsMapper extends StaticMapper<ChampionStatsDto> {
+public interface ChampionStatsMapper extends StaticMapper<ChampionStatsDo> {
 }

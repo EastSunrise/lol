@@ -12,11 +12,7 @@ import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.result.system.VersionResult;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.service.intf.ChampionService;
-import wsg.lol.service.intf.ItemService;
-import wsg.lol.service.intf.RuneService;
-import wsg.lol.service.intf.SharedService;
-import wsg.lol.service.system.intf.SystemService;
+import wsg.lol.service.intf.*;
 
 /**
  * Runner to update the version to the latest.
@@ -41,6 +37,9 @@ public class VersionRunner implements ApplicationRunner {
 
     private SharedService sharedService;
 
+    /**
+     * Update the static data from the dragon if it's not the latest version.
+     */
     @Override
     public void run(ApplicationArguments args) {
         logger.info("Checking the version...");
