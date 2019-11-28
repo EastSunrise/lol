@@ -9,6 +9,7 @@ import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
+import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.pojo.domain.summoner.ChampionMasteryDo;
 import wsg.lol.common.pojo.domain.summoner.LeagueEntryDo;
@@ -27,6 +28,7 @@ import wsg.lol.dao.mybatis.mapper.summoner.ChampionMasteryMapper;
 import wsg.lol.dao.mybatis.mapper.summoner.LeagueEntryMapper;
 import wsg.lol.dao.mybatis.mapper.summoner.SummonerMapper;
 import wsg.lol.service.common.MapperExecutor;
+import wsg.lol.service.intf.EventService;
 
 import java.util.Date;
 import java.util.List;
@@ -54,6 +56,8 @@ public class SummonerEventHandler implements EventHandler {
     private LeagueV4 leagueV4;
 
     private LeagueEntryMapper leagueEntryMapper;
+
+    private EventService eventService;
 
     @Override
     @Performance
@@ -94,6 +98,9 @@ public class SummonerEventHandler implements EventHandler {
                         throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to inert the summoner " + summonerId);
                     }
 
+                    result = eventService.updateStatus(EventTypeEnum.Summoner, summonerId, EventStatusEnum.Unfinished, EventStatusEnum.Finished);
+                    ResultUtils.assertSuccess(result);
+
                     logger.info("Succeed in handling the event of {}.", summonerId);
                     return ResultUtils.success();
                 });
@@ -104,6 +111,11 @@ public class SummonerEventHandler implements EventHandler {
 
         logger.info("Succeed in handling events of summoners.");
         return ResultUtils.success();
+    }
+
+    @Autowired
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
     }
 
     @Autowired
