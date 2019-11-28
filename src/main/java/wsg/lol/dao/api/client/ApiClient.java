@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ErrorCodeConst;
-import wsg.lol.common.enums.route.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.PlatformRoutingEnum;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -52,7 +52,7 @@ public class ApiClient {
     /**
      * Get current api token. Regenerate it if invalid.
      */
-    String getToken() {
+    synchronized String getToken() {
         if (StringUtils.isEmpty(this.token) || parseDate(this.expires).compareTo(new Date()) < 0) {
             regenerateToken();
         }

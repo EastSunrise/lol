@@ -4,20 +4,17 @@ import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
-import wsg.lol.common.enums.game.GameModeEnum;
-import wsg.lol.common.enums.game.GameTypeEnum;
-import wsg.lol.common.enums.game.MapEnum;
-import wsg.lol.common.enums.game.SeasonEnum;
-import wsg.lol.common.enums.match.MatchQueueEnum;
-import wsg.lol.common.enums.route.PlatformRoutingEnum;
-import wsg.lol.common.pojo.parser.CustomEnumDeserializer;
-import wsg.lol.common.pojo.parser.IntegerEnumDeserializer;
+import wsg.lol.common.enums.match.GameModeEnum;
+import wsg.lol.common.enums.match.GameTypeEnum;
+import wsg.lol.common.enums.share.MapEnum;
+import wsg.lol.common.enums.share.SeasonEnum;
+import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 import java.util.Date;
-import java.util.List;
 
 /**
- * Bean for a match.
+ * DTO for a match.
  *
  * @author Kingen
  */
@@ -26,21 +23,24 @@ import java.util.List;
 public class MatchDto extends BaseDto {
 
     private Long gameId;
+
     @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private PlatformRoutingEnum platformId;
+
     private Date gameCreation;
-    private Long gameDuration;
-    @JSONField(deserializeUsing = IntegerEnumDeserializer.class)
+
+    private Integer gameDuration;
+
+    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private MapEnum mapId;
+
     private SeasonEnum seasonId;
-    @JSONField(deserializeUsing = IntegerEnumDeserializer.class)
-    private MatchQueueEnum queueId;
+
     private String gameVersion;
+
     @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private GameModeEnum gameMode;
-    private GameTypeEnum gameType;
 
-    private List<ParticipantIdentityDto> participantIdentities;
-    private List<TeamStatsDto> teams;
-    private List<ParticipantDto> participants;
+    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
+    private GameTypeEnum gameType;
 }

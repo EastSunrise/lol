@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.pojo.dto.match.MatchDto;
+import wsg.lol.common.pojo.dto.match.MatchExtDto;
 import wsg.lol.common.pojo.dto.match.MatchListDto;
 import wsg.lol.common.pojo.dto.match.MatchTimelineDto;
 import wsg.lol.common.pojo.query.QueryMatchListDto;
@@ -54,10 +55,10 @@ public class MatchV4 extends BaseApi {
      *
      * @see <a href="https://developer.riotgames.com/apis#match-v4/GET_getMatch"/>
      */
-    public MatchDto getMatchById(long matchId) {
+    public MatchExtDto getMatchById(long matchId) {
         Map<String, Object> params = new HashMap<>();
         params.put("matchId", matchId);
-        return this.getObject("/lol/match/v4/matches/{matchId}", params, MatchDto.class);
+        return this.getObject("/lol/match/v4/matches/{matchId}", params, MatchExtDto.class);
     }
 
     /**

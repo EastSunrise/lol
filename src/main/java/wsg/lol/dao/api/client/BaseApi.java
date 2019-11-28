@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.QueryDto;
 import wsg.lol.common.constant.ErrorCodeConst;
-import wsg.lol.common.pojo.parser.RecordExtraProcessor;
+import wsg.lol.common.pojo.serialize.RecordExtraProcessor;
 import wsg.lol.common.util.HttpHelper;
 
 import javax.xml.ws.http.HTTPException;
@@ -126,7 +126,7 @@ public class BaseApi {
         return jsonStr;
     }
 
-    private synchronized String doHttpGet(String urlStr) {
+    private String doHttpGet(String urlStr) {
         logger.info("Getting from " + urlStr);
         while (true) {
             try {

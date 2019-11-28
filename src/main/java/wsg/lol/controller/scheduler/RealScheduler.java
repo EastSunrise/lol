@@ -39,7 +39,7 @@ public class RealScheduler {
 
     private MatchService matchService;
 
-    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_SECOND)
+    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_HOUR)
     public void updateSummoners() {
         logger.info("Schedule to update summoners.");
         List<SummonerDto> summoners = summonerService.getSummonersForUpdate(PageUtils.getRowBounds()).getList();
@@ -62,7 +62,7 @@ public class RealScheduler {
         }
     }
 
-    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_SECOND)
+    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_HOUR)
     public void updateMatches() throws AppException {
         logger.info("Schedule to update matches.");
         List<SummonerDto> summoners = summonerService.getSummonersForMatch(PageUtils.getRowBounds()).getList();

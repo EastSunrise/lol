@@ -6,14 +6,12 @@ import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.match.TeamIdEnum;
 import wsg.lol.common.enums.match.TeamResultEnum;
-import wsg.lol.common.pojo.parser.BansDeserializer;
-import wsg.lol.common.pojo.parser.CustomEnumDeserializer;
-import wsg.lol.common.pojo.parser.IntegerEnumDeserializer;
+import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
-import java.util.Map;
+import java.util.List;
 
 /**
- * Bean for stats of a team.
+ * DTO for stats of a team.
  *
  * @author Kingen
  */
@@ -24,7 +22,7 @@ public class TeamStatsDto extends BaseDto {
     /**
      * 100 for blue side. 200 for red side.
      */
-    @JSONField(deserializeUsing = IntegerEnumDeserializer.class)
+    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private TeamIdEnum teamId;
 
     /**
@@ -103,6 +101,11 @@ public class TeamStatsDto extends BaseDto {
     /**
      * If match queueId has a draft, contains banned champion data, otherwise empty.
      */
-    @JSONField(deserializeUsing = BansDeserializer.class)
-    private Map<Integer, Integer> bans;
+    private List<TeamBansDto> bans;
+
+    @Data
+    public static class TeamBansDto {
+        private Integer pickTurn;
+        private Integer championId;
+    }
 }

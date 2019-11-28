@@ -7,7 +7,7 @@ import wsg.lol.common.base.BaseDto;
 import java.util.List;
 
 /**
- * Bean for champion rotation.
+ * DTO for champion rotation.
  *
  * @author Kingen
  */

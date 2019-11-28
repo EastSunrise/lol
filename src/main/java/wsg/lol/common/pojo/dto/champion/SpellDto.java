@@ -4,11 +4,10 @@ import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
-import wsg.lol.common.enums.game.GameModeEnum;
+import wsg.lol.common.enums.match.GameModeEnum;
 import wsg.lol.common.pojo.dto.share.ImageDto;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * DTO for the spells of champions or summoners.
@@ -33,7 +32,7 @@ public class SpellDto extends BaseDto {
 
     private String tooltip;
 
-    private Map<String, List<String>> leveltip;
+    private LevelTipDto leveltip;
 
     private List<Double> cooldown;
 
@@ -66,6 +65,13 @@ public class SpellDto extends BaseDto {
     private GameModeEnum[] modes;
 
     private ImageDto image;
+
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    private static class LevelTipDto extends BaseDto {
+        private List<String> label;
+        private List<String> effect;
+    }
 
     @Data
     public static class SpellVarDto {

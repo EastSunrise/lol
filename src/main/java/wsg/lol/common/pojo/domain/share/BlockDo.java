@@ -3,7 +3,7 @@ package wsg.lol.common.pojo.domain.share;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDo;
-import wsg.lol.common.enums.champion.BlockTypeEnum;
+import wsg.lol.common.enums.share.BlockTypeEnum;
 import wsg.lol.common.pojo.dto.share.BlockDto;
 
 import javax.persistence.Column;

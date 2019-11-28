@@ -4,8 +4,8 @@ import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
-import wsg.lol.common.enums.champion.BlockTypeEnum;
-import wsg.lol.common.pojo.parser.CustomEnumDeserializer;
+import wsg.lol.common.enums.share.BlockTypeEnum;
+import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 import java.util.List;
 

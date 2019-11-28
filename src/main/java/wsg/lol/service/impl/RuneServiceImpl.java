@@ -42,7 +42,7 @@ public class RuneServiceImpl implements RuneService {
         List<RuneExtDto> runeExtDtoList = dragonDao.readRunes(version);
 
         logger.info("Updating the rune trees.");
-        List<RuneTreeDo> runeTreeDoList = ObjectTransfer.transferList(new ArrayList<>(runeExtDtoList), RuneTreeDto.class, RuneTreeDo.class);
+        List<RuneTreeDo> runeTreeDoList = ObjectTransfer.transferDtoList(new ArrayList<>(runeExtDtoList), RuneTreeDto.class, RuneTreeDo.class);
         ResultUtils.assertSuccess(MapperExecutor.updateStatic(runeTreeMapper, runeTreeDoList));
 
         logger.info("Updating the runes.");

@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
-import wsg.lol.common.enums.route.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.PlatformRoutingEnum;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;

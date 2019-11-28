@@ -4,17 +4,17 @@ import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
-import wsg.lol.common.enums.route.PlatformRoutingEnum;
-import wsg.lol.common.pojo.parser.CustomEnumDeserializer;
+import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 /**
- * Bean for information of players.
+ * DTO for information of players.
  *
  * @author Kingen
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class PlayerDto extends BaseDto {
+class PlayerDto extends BaseDto {
 
     @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private PlatformRoutingEnum platformId;

@@ -7,7 +7,7 @@ import wsg.lol.common.base.BaseDto;
 import java.util.List;
 
 /**
- * Bean for list of matches of the summoner.
+ * DTO for list of matches of the summoner.
  *
  * @author Kingen
  */

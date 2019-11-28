@@ -6,8 +6,6 @@ import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.champion.ChampionTagEnum;
 
-import java.util.Map;
-
 /**
  * DTO for base info of champion.
  *
@@ -30,5 +28,14 @@ public class ChampionDto extends BaseDto {
     private String partype;
     private ChampionTagEnum[] tags;
 
-    private Map<String, Integer> info;
+    private ChampionInfoDto info;
+
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    private static class ChampionInfoDto extends BaseDto {
+        private Integer attack;
+        private Integer magic;
+        private Integer defense;
+        private Integer difficulty;
+    }
 }

@@ -42,7 +42,7 @@ public class VersionRunner implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) {
-        logger.info("Checking the version...");
+        logger.info("Switching the version...");
         VersionResult versionResult = systemService.getVersion();
         if (versionResult.isLatestVersion()) {
             logger.info("The version is latest.");

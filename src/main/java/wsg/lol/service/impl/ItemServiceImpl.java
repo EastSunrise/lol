@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wsg.lol.common.base.Result;
-import wsg.lol.common.enums.champion.ImageGroupEnum;
+import wsg.lol.common.enums.share.ImageGroupEnum;
 import wsg.lol.common.pojo.domain.share.ItemDo;
 import wsg.lol.common.pojo.domain.share.ItemStatsDo;
 import wsg.lol.common.pojo.dto.share.ImageDto;
@@ -47,13 +47,13 @@ public class ItemServiceImpl implements ItemService {
         List<ItemExtDto> itemExtDtoList = dragonDao.readItems(version);
 
         logger.info("Updating the items.");
-        List<ItemDo> items = ObjectTransfer.transferList(new ArrayList<>(itemExtDtoList), ItemDto.class, ItemDo.class);
+        List<ItemDo> items = ObjectTransfer.transferDtoList(new ArrayList<>(itemExtDtoList), ItemDto.class, ItemDo.class);
         ResultUtils.assertSuccess(MapperExecutor.updateStatic(itemMapper, items));
 
         logger.info("Updating the stats of items.");
         List<ItemStatsDo> itemStatsDoList = new ArrayList<>();
         for (ItemExtDto itemExtDto : itemExtDtoList) {
-            ItemStatsDo statsDo = ObjectTransfer.transfer(itemExtDto.getStats(), ItemStatsDo.class);
+            ItemStatsDo statsDo = ObjectTransfer.transferDto(itemExtDto.getStats(), ItemStatsDo.class);
             statsDo.setItemId(itemExtDto.getId());
             itemStatsDoList.add(statsDo);
         }

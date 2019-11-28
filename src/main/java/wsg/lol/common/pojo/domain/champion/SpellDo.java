@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import wsg.lol.common.annotation.Flatten;
 import wsg.lol.common.base.BaseDo;
 import wsg.lol.common.enums.champion.SpellNumEnum;
-import wsg.lol.common.enums.game.GameModeEnum;
+import wsg.lol.common.enums.match.GameModeEnum;
 import wsg.lol.common.pojo.dto.champion.SpellDto;
 
 import javax.persistence.Column;

@@ -7,7 +7,7 @@ import wsg.lol.common.base.BaseDto;
 import java.util.List;
 
 /**
- * Bean for timelines of matches.
+ * DTO for timelines of matches.
  *
  * @author Kingen
  */
@@ -16,5 +16,5 @@ import java.util.List;
 public class MatchTimelineDto extends BaseDto {
 
     private List<MatchFrameDto> frames;
-    private Long frameInterval;
+    private Integer frameInterval;
 }

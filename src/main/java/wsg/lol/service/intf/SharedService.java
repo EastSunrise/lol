@@ -1,7 +1,7 @@
 package wsg.lol.service.intf;
 
 import wsg.lol.common.base.Result;
-import wsg.lol.common.enums.champion.ImageGroupEnum;
+import wsg.lol.common.enums.share.ImageGroupEnum;
 import wsg.lol.common.pojo.dto.share.ImageDto;
 
 import java.util.List;

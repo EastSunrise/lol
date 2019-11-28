@@ -3,9 +3,9 @@ package wsg.lol.common.pojo.domain.share;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDo;
-import wsg.lol.common.enums.champion.RecommendedTypeEnum;
-import wsg.lol.common.enums.game.GameModeEnum;
-import wsg.lol.common.enums.game.MapEnum;
+import wsg.lol.common.enums.match.GameModeEnum;
+import wsg.lol.common.enums.share.MapEnum;
+import wsg.lol.common.enums.share.RecommendedTypeEnum;
 
 import javax.persistence.Column;
 import javax.persistence.Id;

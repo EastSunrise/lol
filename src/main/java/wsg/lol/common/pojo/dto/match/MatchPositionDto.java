@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 
 /**
- * Bean for the position of the participant in the timeline.
+ * DTO for the position of the participant in the timeline.
  *
  * @author Kingen
  */

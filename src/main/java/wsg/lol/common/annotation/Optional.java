@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Mark if the field of the condition is optional.
+ * Indicates if the field of the condition is optional.
  *
  * @author Kingen
  * @see wsg.lol.common.pojo.query

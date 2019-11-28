@@ -11,8 +11,8 @@ import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ConfigConst;
 import wsg.lol.common.constant.ErrorCodeConst;
-import wsg.lol.common.enums.champion.ImageGroupEnum;
-import wsg.lol.common.enums.route.PlatformRoutingEnum;
+import wsg.lol.common.enums.share.ImageGroupEnum;
+import wsg.lol.common.enums.system.PlatformRoutingEnum;
 import wsg.lol.common.pojo.domain.share.ImageDo;
 import wsg.lol.common.pojo.dto.champion.ChampionRotationDto;
 import wsg.lol.common.pojo.dto.share.ImageDto;
@@ -64,7 +64,7 @@ public class SharedServiceImpl implements SharedService {
             logger.info("Deleted " + count + " images of " + group);
         }
 
-        ResultUtils.assertSuccess(MapperExecutor.insertList(imageMapper, ObjectTransfer.transferList(images, ImageDo.class)));
+        ResultUtils.assertSuccess(MapperExecutor.insertList(imageMapper, ObjectTransfer.transferDtoList(images, ImageDo.class)));
         return ResultUtils.success();
     }
 

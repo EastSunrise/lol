@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.match;
 
-import wsg.lol.common.pojo.parser.JsonSerializable;
+import wsg.lol.common.pojo.serialize.StringSerializable;
 
 /**
  * Enum for lanes in the match.
  *
  * @author Kingen
  */
-public enum MatchLaneEnum implements JsonSerializable {
+public enum MatchLaneEnum implements StringSerializable {
     NONE,
     TOP,
     JUNGLE,

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.champion.ChampionTipEnum;
-import wsg.lol.common.enums.champion.ImageGroupEnum;
 import wsg.lol.common.enums.champion.SpellNumEnum;
+import wsg.lol.common.enums.share.ImageGroupEnum;
 import wsg.lol.common.pojo.domain.champion.*;
 import wsg.lol.common.pojo.domain.share.BlockDo;
 import wsg.lol.common.pojo.domain.share.RecommendedDo;
@@ -67,7 +67,7 @@ public class ChampionServiceImpl implements ChampionService {
 
         logger.info("Updating the champions.");
         List<ChampionDto> championDtoList = new ArrayList<>(championExtDtoList);
-        List<ChampionDo> championDoList = ObjectTransfer.transferList(championDtoList, ChampionDto.class, ChampionDo.class);
+        List<ChampionDo> championDoList = ObjectTransfer.transferDtoList(championDtoList, ChampionDto.class, ChampionDo.class);
         ResultUtils.assertSuccess(MapperExecutor.updateStatic(championMapper, championDoList));
 
         logger.info("Updating the images of champions.");
@@ -82,7 +82,7 @@ public class ChampionServiceImpl implements ChampionService {
         logger.info("Updating the skins.");
         List<SkinDo> skinDoList = new ArrayList<>();
         for (ChampionExtDto championExtDto : championExtDtoList) {
-            List<SkinDo> skins = ObjectTransfer.transferList(championExtDto.getSkins(), SkinDo.class);
+            List<SkinDo> skins = ObjectTransfer.transferDtoList(championExtDto.getSkins(), SkinDo.class);
             Integer id = championExtDto.getId();
             for (SkinDo skin : skins) {
                 skin.setChampionId(id);
@@ -115,7 +115,7 @@ public class ChampionServiceImpl implements ChampionService {
         logger.info("Updating the stats of champions.");
         List<ChampionStatsDo> statsDoList = new ArrayList<>();
         for (ChampionExtDto championExtDto : championExtDtoList) {
-            ChampionStatsDo stats = ObjectTransfer.transfer(championExtDto.getStats(), ChampionStatsDo.class);
+            ChampionStatsDo stats = ObjectTransfer.transferDto(championExtDto.getStats(), ChampionStatsDo.class);
             stats.setChampionId(championExtDto.getId());
             statsDoList.add(stats);
         }
@@ -132,7 +132,7 @@ public class ChampionServiceImpl implements ChampionService {
             Integer id = championExtDto.getId();
             for (int i = 0; i < spells.size(); i++) {
                 SpellDto spellDto = spells.get(i);
-                SpellDo spellDo = ObjectTransfer.transfer(spellDto, SpellDo.class);
+                SpellDo spellDo = ObjectTransfer.transferDto(spellDto, SpellDo.class);
                 spellDo.setChampionId(id);
                 spellDo.setNum(enums[i]);
                 spellDo.setId(SpellDo.generateId(id, enums[i]));
@@ -144,7 +144,7 @@ public class ChampionServiceImpl implements ChampionService {
             }
 
             SpellDto passiveDto = championExtDto.getPassive();
-            SpellDo passive = ObjectTransfer.transfer(passiveDto, SpellDo.class);
+            SpellDo passive = ObjectTransfer.transferDto(passiveDto, SpellDo.class);
             passive.setChampionId(id);
             passive.setNum(SpellNumEnum.P);
             passive.setId(SpellDo.generateId(id, SpellNumEnum.P));
@@ -165,13 +165,13 @@ public class ChampionServiceImpl implements ChampionService {
             List<RecommendedExtDto> recommendedExtDtoList = championExtDto.getRecommended();
             for (int i = 0; i < recommendedExtDtoList.size(); i++) {
                 RecommendedExtDto recommendedExtDto = recommendedExtDtoList.get(i);
-                RecommendedDo recommendedDo = ObjectTransfer.transfer(recommendedExtDto, RecommendedDto.class, RecommendedDo.class);
+                RecommendedDo recommendedDo = ObjectTransfer.transferDto(recommendedExtDto, RecommendedDto.class, RecommendedDo.class);
                 Integer generateId = RecommendedDo.generateId(championExtDto.getId(), i);
                 recommendedDo.setId(generateId);
                 recommendedDoList.add(recommendedDo);
 
                 for (BlockDto block : recommendedExtDto.getBlocks()) {
-                    BlockDo blockDo = ObjectTransfer.transfer(block, BlockDo.class);
+                    BlockDo blockDo = ObjectTransfer.transferDto(block, BlockDo.class);
                     blockDo.setRecommendedId(generateId);
                     blockDoList.add(blockDo);
                 }
@@ -192,7 +192,7 @@ public class ChampionServiceImpl implements ChampionService {
         List<ImageDto> images = new ArrayList<>();
         List<SpellDo> spellDoList = new ArrayList<>();
         for (SpellDto spellDto : spellDtoList) {
-            SpellDo spellDo = ObjectTransfer.transfer(spellDto, SpellDo.class);
+            SpellDo spellDo = ObjectTransfer.transferDto(spellDto, SpellDo.class);
             spellDo.setNum(SpellNumEnum.S);
             spellDoList.add(spellDo);
 

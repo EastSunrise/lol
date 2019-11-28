@@ -1,7 +1,7 @@
 package wsg.lol.common.base;
 
 /**
- * Base of data objects.
+ * Base of domain objects.
  *
  * @author Kingen
  */

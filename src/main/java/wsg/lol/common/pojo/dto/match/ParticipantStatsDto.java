@@ -5,13 +5,13 @@ import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 
 /**
- * Bean for stats of participants in the match.
+ * DTO for stats of participants in the match.
  *
  * @author Kingen
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ParticipantStatsDto extends BaseDto {
+class ParticipantStatsDto extends BaseDto {
 
     private Integer participantId;
 

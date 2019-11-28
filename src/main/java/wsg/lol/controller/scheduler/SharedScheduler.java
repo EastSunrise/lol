@@ -27,7 +27,7 @@ public class SharedScheduler {
 
     @Scheduled(fixedRate = DateUtils.MILLIS_PER_HOUR)
     public void checkVersion() {
-        logger.info("Checking the version...");
+        logger.info("Schedule to check the version...");
         VersionResult versionResult = systemService.getVersion();
         if (versionResult.isLatestVersion()) {
             logger.info("The version is latest.");
@@ -41,7 +41,7 @@ public class SharedScheduler {
 
     @Scheduled(fixedRate = DateUtils.MILLIS_PER_HOUR)
     public void updateGSharedData() {
-        logger.info("Updating the shared data.");
+        logger.info("Schedule to update the shared data.");
         Result result = sharedService.updateSharedStatus();
         systemService.sendWarnMessage(result);
 

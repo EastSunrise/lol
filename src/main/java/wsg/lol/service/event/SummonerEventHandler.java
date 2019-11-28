@@ -5,14 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
-import wsg.lol.common.ChampionMasteryDo;
-import wsg.lol.common.LeagueEntryDo;
-import wsg.lol.common.SummonerDo;
 import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.system.EventTypeEnum;
+import wsg.lol.common.pojo.domain.summoner.ChampionMasteryDo;
+import wsg.lol.common.pojo.domain.summoner.LeagueEntryDo;
+import wsg.lol.common.pojo.domain.summoner.SummonerDo;
 import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
@@ -65,24 +65,24 @@ public class SummonerEventHandler implements EventHandler {
                     logger.info("Handling the event of {}.", summonerId);
 
                     // if exists.
-                    SummonerDto summonerDto = summonerMapper.selectByPrimaryKey(summonerId);
-                    if (summonerDto != null) {
+                    SummonerDo summoner = summonerMapper.selectByPrimaryKey(summonerId);
+                    if (summoner != null) {
                         return ResultUtils.success();
                     }
 
                     logger.info("Adding champion masteries of {}.", summonerId);
                     List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
-                    Result result = MapperExecutor.insertList(championMasteryMapper, ObjectTransfer.transferList(championMasteries, ChampionMasteryDo.class));
+                    Result result = MapperExecutor.insertList(championMasteryMapper, ObjectTransfer.transferDtoList(championMasteries, ChampionMasteryDo.class));
                     ResultUtils.assertSuccess(result);
 
                     logger.info("Adding league entries of {}.", summonerId);
                     List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
-                    result = MapperExecutor.insertList(leagueEntryMapper, ObjectTransfer.transferList(entries, LeagueEntryDo.class));
+                    result = MapperExecutor.insertList(leagueEntryMapper, ObjectTransfer.transferDtoList(entries, LeagueEntryDo.class));
                     ResultUtils.assertSuccess(result);
 
                     logger.info("Adding the summoner {}.", summonerId);
-                    SummonerDto summoner = summonerV4.getSummonerById(summonerId);
-                    SummonerDo summonerDo = ObjectTransfer.transfer(summoner, SummonerDo.class);
+                    SummonerDto summonerDto = summonerV4.getSummonerById(summonerId);
+                    SummonerDo summonerDo = ObjectTransfer.transferDto(summonerDto, SummonerDo.class);
                     int score = championMasteryV4.getScoreBySummonerId(summonerId);
                     summonerDo.setScore(score);
                     summonerDo.setLastUpdate(new Date());

@@ -31,7 +31,7 @@ create table lol.s_mastery
     champion_points_since_last_level int         null comment '当前等级已获取成就点数',
     tokens_earned                    int         null comment '？？？',
     last_play_time                   timestamp   null comment '最近一次使用时间',
-    constraint s_mastery_pk primary key (summoner_id, champion_id)
+    primary key (summoner_id, champion_id)
 ) comment ='英雄成就表';
 
 -- 个人排位信息表
@@ -55,7 +55,7 @@ create table lol.s_league
     series_wins     int         null comment '晋级赛胜场',
     series_losses   int         null comment '晋级赛负场',
     series_progress varchar(32) null comment '？？？',
-    constraint l_entry_pk primary key (summoner_id, queue_type)
+    primary key (summoner_id, queue_type)
 ) comment ='个人排位信息表';
 
 commit;

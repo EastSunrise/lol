@@ -13,7 +13,9 @@ import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
+import wsg.lol.common.pojo.domain.system.EventDo;
 import wsg.lol.common.pojo.dto.system.EventDto;
+import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.mybatis.mapper.system.EventMapper;
 import wsg.lol.service.event.EventHandler;
@@ -37,19 +39,20 @@ public class EventServiceImpl implements EventService {
     @Override
     @Performance
     public Result handle(EventTypeEnum eventType, RowBounds rowBounds) {
-        logger.info("Getting {} events of {}.", rowBounds.getLimit(), eventType);
-        EventDto cond = new EventDto();
+        logger.info("Getting events of {}.", eventType);
+        EventDo cond = new EventDo();
         cond.setStatus(EventStatusEnum.Unfinished);
         cond.setType(eventType);
-        List<EventDto> events = eventMapper.selectByRowBounds(cond, rowBounds);
+        List<EventDo> events = eventMapper.selectByRowBounds(cond, rowBounds);
         if (CollectionUtils.isEmpty(events)) {
             logger.info("No events got.");
             return ResultUtils.success();
         }
 
-        logger.info("Handling events of {}", eventType);
+        logger.info("Handling {} events of {}", events.size(), eventType);
+        List<EventDto> eventDtoList = ObjectTransfer.transferDoList(events, EventDto.class);
         EventHandler eventHandler = (EventHandler) applicationContext.getBean(eventType.getEventBeanName());
-        return eventHandler.handle(events);
+        return eventHandler.handle(eventDtoList);
     }
 
     @Override

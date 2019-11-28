@@ -5,13 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wsg.lol.common.LeagueEntryDo;
 import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.Result;
-import wsg.lol.common.enums.game.DivisionEnum;
-import wsg.lol.common.enums.game.RankQueueEnum;
-import wsg.lol.common.enums.game.TierEnum;
+import wsg.lol.common.enums.share.RankQueueEnum;
+import wsg.lol.common.enums.summoner.DivisionEnum;
+import wsg.lol.common.enums.summoner.TierEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
+import wsg.lol.common.pojo.domain.summoner.LeagueEntryDo;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
@@ -74,7 +74,7 @@ public class LeagueServiceImpl implements LeagueService {
     public Result updateLeagueEntry(String summonerId) {
         logger.info("Updating league entries of {}.", summonerId);
         List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
-        ResultUtils.assertSuccess(MapperExecutor.updateList(leagueEntryMapper, ObjectTransfer.transferList(entries, LeagueEntryDo.class)));
+        ResultUtils.assertSuccess(MapperExecutor.updateList(leagueEntryMapper, ObjectTransfer.transferDtoList(entries, LeagueEntryDo.class)));
         return ResultUtils.success();
     }
 

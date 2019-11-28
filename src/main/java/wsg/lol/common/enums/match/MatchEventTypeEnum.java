@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.match;
 
-import wsg.lol.common.pojo.parser.JsonSerializable;
+import wsg.lol.common.pojo.serialize.StringSerializable;
 
 /**
  * Enum for types of events in the match.
  *
  * @author Kingen
  */
-public enum MatchEventTypeEnum implements JsonSerializable {
+public enum MatchEventTypeEnum implements StringSerializable {
     CHAMPION_KILL,
     WARD_PLACED,
     WARD_KILL,

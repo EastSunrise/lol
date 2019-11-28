@@ -1,6 +1,6 @@
 package wsg.lol.dao.mybatis.config;
 
-import wsg.lol.common.enums.route.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.PlatformRoutingEnum;
 
 /**
  * Identifier for different databases.

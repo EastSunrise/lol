@@ -5,17 +5,17 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.constant.JSONConst;
-import wsg.lol.common.enums.shared.MessageSeverityEnum;
-import wsg.lol.common.enums.shared.ServiceEnum;
-import wsg.lol.common.enums.shared.ServiceStatusEnum;
-import wsg.lol.common.pojo.parser.CustomEnumDeserializer;
+import wsg.lol.common.enums.share.MessageSeverityEnum;
+import wsg.lol.common.enums.share.ServiceEnum;
+import wsg.lol.common.enums.share.ServiceStatusEnum;
+import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 /**
- * Bean for shared status.
+ * DTO for shared status.
  *
  * @author Kingen
  */

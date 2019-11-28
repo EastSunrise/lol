@@ -7,6 +7,8 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation indicates it's a flatten field while transferring.
+ * <p>
+ * Supports two levels instead of multi levels currently.
  *
  * @author Kingen
  */

@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.match;
 
-import wsg.lol.common.pojo.parser.IntegerSerializable;
+import wsg.lol.common.pojo.serialize.IntSerializable;
 
 /**
  * Enum for id of teams in the match.
  *
  * @author Kingen
  */
-public enum TeamIdEnum implements IntegerSerializable {
+public enum TeamIdEnum implements IntSerializable {
     Blue(100),
     Red(200);
 
@@ -18,7 +18,7 @@ public enum TeamIdEnum implements IntegerSerializable {
     }
 
     @Override
-    public Integer serializeInteger() {
+    public int serializeInt() {
         return value;
     }
 }

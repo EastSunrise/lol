@@ -4,10 +4,10 @@ import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
-import wsg.lol.common.enums.champion.RecommendedTypeEnum;
-import wsg.lol.common.enums.game.GameModeEnum;
-import wsg.lol.common.enums.game.MapEnum;
-import wsg.lol.common.pojo.parser.CustomEnumDeserializer;
+import wsg.lol.common.enums.match.GameModeEnum;
+import wsg.lol.common.enums.share.MapEnum;
+import wsg.lol.common.enums.share.RecommendedTypeEnum;
+import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 /**
  * DTO for recommended items.

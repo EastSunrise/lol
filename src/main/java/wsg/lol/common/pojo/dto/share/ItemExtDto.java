@@ -1,7 +1,7 @@
 package wsg.lol.common.pojo.dto.share;
 
 /**
- * Bean for extension of items.
+ * DTO for extension of items.
  *
  * @author EastSunrise
  */

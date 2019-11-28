@@ -9,7 +9,7 @@ import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ConfigConst;
 import wsg.lol.common.constant.ErrorCodeConst;
-import wsg.lol.common.enums.route.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.PlatformRoutingEnum;
 import wsg.lol.common.result.system.VersionResult;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.client.ApiClient;

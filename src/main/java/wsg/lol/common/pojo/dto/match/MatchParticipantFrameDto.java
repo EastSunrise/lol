@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 
 /**
- * // TODO: (Kingen, 2019/11/18)
+ * DTO for timelines of each participant in the match.
  *
  * @author Kingen
  */

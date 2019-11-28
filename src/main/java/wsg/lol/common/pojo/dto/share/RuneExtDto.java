@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Bean for extension of rune trees.
+ * DTO for extension of rune trees.
  *
  * @author Kingen
  */
@@ -28,7 +28,7 @@ public class RuneExtDto extends RuneTreeDto {
             Map<String, List<RuneDto>> slot = slots.get(i);
             List<RuneDto> runes = slot.get(RuneExtDto.RUNES);
             for (int j = 0; j < runes.size(); j++) {
-                RuneDo runeDo = ObjectTransfer.transfer(runes.get(j), RuneDo.class);
+                RuneDo runeDo = ObjectTransfer.transferDto(runes.get(j), RuneDo.class);
                 runeDo.setTreeId(getId());
                 runeDo.setNumX(i);
                 runeDo.setNumY(j);

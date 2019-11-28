@@ -3,11 +3,15 @@ package wsg.lol.dao.mybatis.typehandler;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
-import wsg.lol.common.enums.champion.*;
-import wsg.lol.common.enums.game.*;
-import wsg.lol.common.enums.route.PlatformRoutingEnum;
+import wsg.lol.common.enums.champion.ChampionTipEnum;
+import wsg.lol.common.enums.champion.SpellNumEnum;
+import wsg.lol.common.enums.match.GameModeEnum;
+import wsg.lol.common.enums.share.*;
+import wsg.lol.common.enums.summoner.DivisionEnum;
+import wsg.lol.common.enums.summoner.TierEnum;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
+import wsg.lol.common.enums.system.PlatformRoutingEnum;
 import wsg.lol.common.util.EnumUtils;
 
 import java.sql.CallableStatement;

@@ -6,8 +6,7 @@ import tk.mybatis.mapper.common.base.insert.InsertMapper;
 import tk.mybatis.mapper.common.base.select.SelectByPrimaryKeyMapper;
 import tk.mybatis.mapper.common.base.update.UpdateByPrimaryKeyMapper;
 import tk.mybatis.mapper.common.rowbounds.SelectByExampleRowBoundsMapper;
-import wsg.lol.common.SummonerDo;
-import wsg.lol.common.pojo.dto.summoner.SummonerDto;
+import wsg.lol.common.pojo.domain.summoner.SummonerDo;
 
 import java.util.Date;
 
@@ -18,7 +17,7 @@ import java.util.Date;
  */
 @Repository
 @Mapper
-public interface SummonerMapper extends SelectByPrimaryKeyMapper<SummonerDto>, InsertMapper<SummonerDo>, SelectByExampleRowBoundsMapper<SummonerDto>, UpdateByPrimaryKeyMapper<SummonerDo> {
+public interface SummonerMapper extends SelectByPrimaryKeyMapper<SummonerDo>, InsertMapper<SummonerDo>, SelectByExampleRowBoundsMapper<SummonerDo>, UpdateByPrimaryKeyMapper<SummonerDo> {
 
     int updateLastMatch(String accountId, Date lastMatch);
 }

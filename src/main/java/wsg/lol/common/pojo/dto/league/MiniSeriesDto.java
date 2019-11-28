@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 
 /**
- * Bean for miniSeries.
+ * DTO for miniSeries.
  *
  * @author Kingen
  */

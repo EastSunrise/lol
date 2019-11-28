@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
-import wsg.lol.common.ChampionMasteryDo;
-import wsg.lol.common.SummonerDo;
 import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.ListResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
+import wsg.lol.common.pojo.domain.summoner.ChampionMasteryDo;
+import wsg.lol.common.pojo.domain.summoner.SummonerDo;
 import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
@@ -47,22 +47,24 @@ public class SummonerServiceImpl implements SummonerService {
     @Override
     @Performance
     public ListResult<SummonerDto> getSummonersForUpdate(RowBounds rowBounds) {
-        Example example = new Example(SummonerDto.class);
+        Example example = new Example(SummonerDo.class);
         example.orderBy("lastUpdate");
-        List<SummonerDto> summoners = summonerMapper.selectByExampleAndRowBounds(example, rowBounds);
+        List<SummonerDo> summoners = summonerMapper.selectByExampleAndRowBounds(example, rowBounds);
+        List<SummonerDto> summonerDtoList = ObjectTransfer.transferDoList(summoners, SummonerDto.class);
         ListResult<SummonerDto> result = new ListResult<>();
-        result.setList(summoners);
+        result.setList(summonerDtoList);
         return result;
     }
 
     @Override
     @Performance
     public ListResult<SummonerDto> getSummonersForMatch(RowBounds rowBounds) {
-        Example example = new Example(SummonerDto.class);
+        Example example = new Example(SummonerDo.class);
         example.orderBy("lastMatch");
-        List<SummonerDto> summoners = summonerMapper.selectByExampleAndRowBounds(example, rowBounds);
+        List<SummonerDo> summoners = summonerMapper.selectByExampleAndRowBounds(example, rowBounds);
+        List<SummonerDto> summonerDtoList = ObjectTransfer.transferDoList(summoners, SummonerDto.class);
         ListResult<SummonerDto> result = new ListResult<>();
-        result.setList(summoners);
+        result.setList(summonerDtoList);
         return result;
     }
 
@@ -71,7 +73,7 @@ public class SummonerServiceImpl implements SummonerService {
     public Result updateSummonerInfo(String summonerId) {
         logger.info("Updating the summoner {}.", summonerId);
         SummonerDto summoner = summonerV4.getSummonerById(summonerId);
-        SummonerDo summonerDo = ObjectTransfer.transfer(summoner, SummonerDo.class);
+        SummonerDo summonerDo = ObjectTransfer.transferDto(summoner, SummonerDo.class);
         int score = championMasteryV4.getScoreBySummonerId(summonerId);
         summonerDo.setScore(score);
         summonerDo.setLastUpdate(new Date());
@@ -101,7 +103,7 @@ public class SummonerServiceImpl implements SummonerService {
     public Result updateChampionMasteries(String summonerId) {
         logger.info("Updating champion masteries of {}.", summonerId);
         List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
-        ResultUtils.assertSuccess(MapperExecutor.updateList(championMasteryMapper, ObjectTransfer.transferList(championMasteries, ChampionMasteryDo.class)));
+        ResultUtils.assertSuccess(MapperExecutor.updateList(championMasteryMapper, ObjectTransfer.transferDtoList(championMasteries, ChampionMasteryDo.class)));
         return ResultUtils.success();
     }
 

@@ -1,7 +1,7 @@
 package wsg.lol.common.base;
 
 /**
- * Base class of query condition.
+ * Base of query condition.
  *
  * @author Kingen
  */

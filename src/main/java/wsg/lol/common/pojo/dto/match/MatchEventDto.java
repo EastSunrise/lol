@@ -5,13 +5,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.match.*;
-import wsg.lol.common.pojo.parser.CustomEnumDeserializer;
-import wsg.lol.common.pojo.parser.IntegerEnumDeserializer;
+import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
+import java.util.Date;
 import java.util.List;
 
 /**
- * Bean for events in the match.
+ * DTO for events in the match.
  *
  * @author Kingen
  */
@@ -21,7 +21,7 @@ public class MatchEventDto extends BaseDto {
 
     @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private MatchEventTypeEnum type;
-    private Long timestamp;
+    private Date timestamp;
     private Integer participantId;
 
     private Integer skillSlot;
@@ -49,7 +49,7 @@ public class MatchEventDto extends BaseDto {
     @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private MonsterSubTypeEnum monsterSubType;
 
-    @JSONField(deserializeUsing = IntegerEnumDeserializer.class)
+    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private TeamIdEnum teamId;
 
     @JSONField(deserializeUsing = CustomEnumDeserializer.class)

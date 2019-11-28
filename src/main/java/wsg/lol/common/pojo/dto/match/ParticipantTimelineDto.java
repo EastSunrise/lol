@@ -6,12 +6,12 @@ import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.match.MatchLaneEnum;
 import wsg.lol.common.enums.match.MatchRoleEnum;
-import wsg.lol.common.pojo.parser.CustomEnumDeserializer;
+import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 import java.util.Map;
 
 /**
- * Bean for timeline of the participant.
+ * DTO for timeline of the participant.
  *
  * @author Kingen
  */

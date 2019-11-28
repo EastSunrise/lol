@@ -7,7 +7,7 @@ import wsg.lol.common.base.BaseDto;
 import java.util.Date;
 
 /**
- * Bean for summoners.
+ * DTO for summoners.
  *
  * @author Kingen
  */

@@ -4,10 +4,10 @@ package wsg.lol.common.pojo.dto.league;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
-import wsg.lol.common.enums.game.DivisionEnum;
+import wsg.lol.common.enums.summoner.DivisionEnum;
 
 /**
- * Bean for items in the league.
+ * DTO for items in the league.
  *
  * @author Kingen
  */

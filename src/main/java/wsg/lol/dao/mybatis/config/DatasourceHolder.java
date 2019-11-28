@@ -2,7 +2,7 @@ package wsg.lol.dao.mybatis.config;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.tomcat.jdbc.pool.DataSource;
-import wsg.lol.common.enums.route.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.PlatformRoutingEnum;
 
 import java.util.HashMap;
 import java.util.Map;

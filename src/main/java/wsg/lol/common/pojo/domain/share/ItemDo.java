@@ -4,8 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.annotation.Flatten;
 import wsg.lol.common.base.BaseDo;
-import wsg.lol.common.enums.champion.ItemTagEnum;
-import wsg.lol.common.enums.game.MapEnum;
+import wsg.lol.common.enums.share.ItemTagEnum;
+import wsg.lol.common.enums.share.MapEnum;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -67,7 +67,7 @@ public class ItemDo extends BaseDo {
     private MapEnum[] maps;
 
     @Column
-    private Map<String, Double> effect;
+    private Map<String, Object> effect;
 
     @Column
     private Integer depth;

@@ -17,7 +17,7 @@ import wsg.lol.common.pojo.dto.champion.SpellDto;
 import wsg.lol.common.pojo.dto.share.ImageDto;
 import wsg.lol.common.pojo.dto.share.ItemExtDto;
 import wsg.lol.common.pojo.dto.share.RuneExtDto;
-import wsg.lol.common.pojo.parser.RecordExtraProcessor;
+import wsg.lol.common.pojo.serialize.RecordExtraProcessor;
 import wsg.lol.dao.dragon.config.StaticConfig;
 import wsg.lol.dao.dragon.intf.DragonDao;
 
@@ -161,7 +161,7 @@ public class DragonDaoImpl implements DragonDao {
     }
 
     /**
-     * Bean for the whole json file with "data".
+     * DTO for the whole json file with "data".
      */
     @Data
     private static class FileDto<T> {
@@ -169,7 +169,7 @@ public class DragonDaoImpl implements DragonDao {
     }
 
     /**
-     * Bean for extended images.
+     * DTO for extended images.
      */
     @Data
     private static class ImageExtDto {

@@ -7,7 +7,7 @@ import wsg.lol.common.base.BaseDto;
 import java.util.List;
 
 /**
- * Bean for information of current game.
+ * DTO for information of current game.
  *
  * @author Kingen
  */

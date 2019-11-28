@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.rowbounds.SelectRowBoundsMapper;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
-import wsg.lol.common.pojo.dto.system.EventDto;
+import wsg.lol.common.pojo.domain.system.EventDo;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Repository
 @Mapper
-public interface EventMapper extends SelectRowBoundsMapper<EventDto> {
+public interface EventMapper extends SelectRowBoundsMapper<EventDo> {
 
     int insertEventsOfType(EventTypeEnum type, EventStatusEnum status, List<String> contexts);
 

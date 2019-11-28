@@ -5,10 +5,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.match.TeamIdEnum;
-import wsg.lol.common.pojo.parser.IntegerEnumDeserializer;
+import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 /**
- * Bean for each participant in the match.
+ * DTO for each participant in the match.
  *
  * @author Kingen
  */
@@ -21,7 +21,7 @@ public class ParticipantDto extends BaseDto {
     /**
      * 100 for blue side. 200 for red side.
      */
-    @JSONField(deserializeUsing = IntegerEnumDeserializer.class)
+    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private TeamIdEnum teamId;
 
     private Integer championId;

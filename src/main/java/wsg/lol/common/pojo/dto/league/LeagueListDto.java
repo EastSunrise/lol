@@ -4,13 +4,13 @@ package wsg.lol.common.pojo.dto.league;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
-import wsg.lol.common.enums.game.RankQueueEnum;
-import wsg.lol.common.enums.game.TierEnum;
+import wsg.lol.common.enums.share.RankQueueEnum;
+import wsg.lol.common.enums.summoner.TierEnum;
 
 import java.util.List;
 
 /**
- * Bean for list of leagues.
+ * DTO for list of leagues.
  *
  * @author Kingen
  */

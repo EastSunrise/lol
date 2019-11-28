@@ -4,9 +4,9 @@ import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
-import wsg.lol.common.enums.champion.ItemTagEnum;
-import wsg.lol.common.enums.game.MapEnum;
-import wsg.lol.common.pojo.parser.MapsDeserializer;
+import wsg.lol.common.enums.share.ItemTagEnum;
+import wsg.lol.common.enums.share.MapEnum;
+import wsg.lol.common.pojo.serialize.MapsDeserializer;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +34,7 @@ public class ItemDto extends BaseDto {
 
     private List<Integer> into;
 
-    private Map<String, Object> gold;
+    private ItemGoldDto gold;
 
     private ItemTagEnum[] tags;
 
@@ -43,7 +43,7 @@ public class ItemDto extends BaseDto {
 
     private Integer depth;
 
-    private Map<String, Double> effect;
+    private Map<String, Object> effect;
 
     private Boolean consumed;
 
@@ -60,4 +60,13 @@ public class ItemDto extends BaseDto {
     private Integer specialRecipe;
 
     private String requiredAlly; // specified for Ornn.
+
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    private static class ItemGoldDto extends BaseDto {
+        private Integer base;
+        private Boolean purchasable;
+        private Integer total;
+        private Integer sell;
+    }
 }

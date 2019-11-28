@@ -6,9 +6,9 @@ import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
 import wsg.lol.common.enums.champion.ChampionTagEnum;
-import wsg.lol.common.enums.champion.ItemTagEnum;
-import wsg.lol.common.enums.game.GameModeEnum;
-import wsg.lol.common.enums.game.MapEnum;
+import wsg.lol.common.enums.match.GameModeEnum;
+import wsg.lol.common.enums.share.ItemTagEnum;
+import wsg.lol.common.enums.share.MapEnum;
 import wsg.lol.common.util.EnumUtils;
 
 import java.lang.reflect.Array;

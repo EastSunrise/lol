@@ -3,7 +3,7 @@ package wsg.lol.common.pojo.domain.share;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDo;
-import wsg.lol.common.enums.champion.ImageGroupEnum;
+import wsg.lol.common.enums.share.ImageGroupEnum;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;

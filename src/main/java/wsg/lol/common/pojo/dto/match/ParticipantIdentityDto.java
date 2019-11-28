@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 
 /**
- * Bean for reference of players and id.
+ * DTO for reference of players and id.
  *
  * @author Kingen
  */
