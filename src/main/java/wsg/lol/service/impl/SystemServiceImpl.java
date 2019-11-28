@@ -70,7 +70,7 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public void sendMessage(String message) {
-        // TODO: (Kingen, 2019/11/21)  send a message.
+        // todo send a message.
         ResultUtils.success();
     }
 

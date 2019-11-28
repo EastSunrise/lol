@@ -3,7 +3,7 @@ package wsg.lol.common.pojo.dto.share;
 /**
  * DTO for extension of items.
  *
- * @author EastSunrise
+ * @author Kingen
  */
 public class ItemExtDto extends ItemDto {
 

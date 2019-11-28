@@ -5,7 +5,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -15,16 +18,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * // TODO: (Kingen, 2019/11/18)
+ * Util for http connection.
  *
- * @author EastSunrise
+ * @author Kingen
  */
 public class HttpHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpHelper.class);
 
     /**
-     * 从指定的URL获取json字符串
+     * Get data from the url.
      */
     public static String getString(String urlStr) {
         StringBuilder builder = new StringBuilder();
@@ -44,40 +47,6 @@ public class HttpHelper {
             e.printStackTrace();
         }
         return builder.toString();
-    }
-
-    public static void downloadData(String urlStr, String savePath) {
-        logger.info("Downloading from: " + urlStr + "  to: " + savePath);
-        File saveFile = new File(savePath);
-        File dir = saveFile.getParentFile();
-        if (!dir.exists()) {
-            if (!dir.mkdirs()) {
-                try {
-                    throw new Exception("创建目录失败：" + dir.getPath());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        URL url;
-        try {
-            url = new URL(urlStr);
-            DataInputStream dataInputStream = new DataInputStream(url.openStream());
-            FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = dataInputStream.read(buffer)) > 0) {
-                output.write(buffer, 0, length);
-            }
-            fileOutputStream.write(output.toByteArray());
-
-            dataInputStream.close();
-            fileOutputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**

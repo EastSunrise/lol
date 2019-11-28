@@ -107,7 +107,7 @@ public class BaseApi {
         }
         String urlStr = (apiClient.getRegion().getHost() + apiRef + urlParams).replace("+", "%20");
 
-        // TODO: (Kingen, 2019/11/21) to delete
+        // todo get from the api directly
         String filepath = StringUtils.joinWith(File.separator, apiClient.getCdnDir(), "api", urlStr.replace("?", File.separator).replace("&", File.separator) + ".json");
         try {
             logger.info("Read from {}.", filepath);

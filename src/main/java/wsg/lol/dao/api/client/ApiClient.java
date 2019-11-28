@@ -63,7 +63,7 @@ public class ApiClient {
      * Simulate logging in the account and regenerate the api token.
      */
     void regenerateToken() {
-        // TODO: (Kingen, 2019/11/6) regenerate token
+        // todo regenerate token
         try {
             Thread.sleep(DateUtils.MILLIS_PER_HOUR);
         } catch (InterruptedException e) {

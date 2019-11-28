@@ -209,7 +209,7 @@ public class ChampionServiceImpl implements ChampionService {
         return ResultUtils.success();
     }
 
-    // TODO: (Kingen, 2019/11/21) 事务嵌套
+    // todo embedded transactions
     private Result updateSpells(List<SpellDo> spells, SpellNumEnum... nums) {
         if (CollectionUtils.isEmpty(spells)) {
             logger.info("Spells is empty. Nothing updated.");

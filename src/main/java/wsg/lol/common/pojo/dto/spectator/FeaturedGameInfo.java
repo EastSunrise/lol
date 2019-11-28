@@ -3,8 +3,9 @@ package wsg.lol.common.pojo.dto.spectator;
 import java.util.List;
 
 /**
- * // TODO: (Kingen, 2019/11/18)
- * @author EastSunrise
+ * todo
+ *
+ * @author Kingen
  */
 public class FeaturedGameInfo {
 

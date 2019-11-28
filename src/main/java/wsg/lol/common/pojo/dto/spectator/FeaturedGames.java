@@ -1,15 +1,15 @@
 package wsg.lol.common.pojo.dto.spectator;
 
 import wsg.lol.common.base.BaseDto;
-import wsg.lol.common.base.IJson;
 
 import java.util.List;
 
 /**
- * // TODO: (Kingen, 2019/11/18)
- * @author EastSunrise
+ * todo
+ *
+ * @author Kingen
  */
-public class FeaturedGames extends BaseDto implements IJson {
+public class FeaturedGames extends BaseDto {
 
     /**
      * The suggested interval to wait before requesting FeaturedGames again

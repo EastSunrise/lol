@@ -120,7 +120,7 @@ public class MatchEventHandler implements EventHandler {
                         participants.add(participantDo);
                     }
                     ResultUtils.assertSuccess(MapperExecutor.insertList(participantMapper, participants));
-                    // TODO: (Kingen, 2019/11/28) Generate id
+                    // todo test generating id
                     Map<Integer, Long> idMap = new HashMap<>();
                     for (ParticipantDo participant : participants) {
                         idMap.put(participant.getParticipantId(), participant.getId());

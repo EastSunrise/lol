@@ -31,7 +31,7 @@
         <property name="xmlFormatter"
                   value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>        <!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
         <property name="beginningDelimiter" value="`"/>
-        <property name="endingDelimiter" value="`"/>        <!-- 必须要有的，使用这个配置链接数据库        @TODO:是否可以扩展     -->
+        <property name="endingDelimiter" value="`"/>        <!-- 必须要有的，使用这个配置链接数据库    -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql:///pss" userId="root"
                         password="admin">        <!-- 这里面可以设置property属性，每一个property属性都设置到配置的Driver上 -->    </jdbcConnection>        <!-- java类型处理器        用于处理DB中的类型到Java中的类型，默认使用JavaTypeResolverDefaultImpl；        注意一点，默认会先尝试使用Integer，Long，Short等来对应DECIMAL和 NUMERIC数据类型；    -->
         <javaTypeResolver

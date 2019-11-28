@@ -5,11 +5,9 @@ import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
 
 /**
- * // TODO: (Kingen, 2019/11/8)
+ * Util for result of the service.
  *
  * @author Kingen
- * @date 2019/11/8
- * @since 2.4.9.3
  */
 public class ResultUtils {
 

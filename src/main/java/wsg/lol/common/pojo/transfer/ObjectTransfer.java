@@ -55,7 +55,7 @@ public class ObjectTransfer {
         if (fClass == null) {
             fClass = (Class<F>) f.getClass();
         }
-        // TODO: (Kingen, 2019/11/28)  fields of super class.
+        // todo fields of super class.
         Field[] fFields = fClass.getDeclaredFields();
         Map<String, Object> fMap = new HashMap<>();
         T t = null;

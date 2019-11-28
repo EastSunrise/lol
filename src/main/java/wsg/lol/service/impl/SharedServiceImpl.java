@@ -49,7 +49,7 @@ public class SharedServiceImpl implements SharedService {
 
     private DragonDao dragonDao;
 
-    // TODO: (Kingen, 2019/11/21) 事务嵌套失效
+    // todo embedde transactions
     @Override
     @Transactional
     public Result updateImages(List<ImageDto> images, ImageGroupEnum... groups) {
