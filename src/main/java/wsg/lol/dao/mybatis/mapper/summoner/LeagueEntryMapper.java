@@ -3,7 +3,7 @@ package wsg.lol.dao.mybatis.mapper.summoner;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.additional.insert.InsertListMapper;
-import tk.mybatis.mapper.common.base.update.UpdateByPrimaryKeyMapper;
+import tk.mybatis.mapper.common.base.update.UpdateByPrimaryKeySelectiveMapper;
 import wsg.lol.common.pojo.domain.summoner.LeagueEntryDo;
 
 /**
@@ -13,5 +13,5 @@ import wsg.lol.common.pojo.domain.summoner.LeagueEntryDo;
  */
 @Mapper
 @Repository
-public interface LeagueEntryMapper extends InsertListMapper<LeagueEntryDo>, UpdateByPrimaryKeyMapper<LeagueEntryDo> {
+public interface LeagueEntryMapper extends InsertListMapper<LeagueEntryDo>, UpdateByPrimaryKeySelectiveMapper<LeagueEntryDo> {
 }

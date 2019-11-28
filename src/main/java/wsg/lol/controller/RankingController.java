@@ -1,4 +1,4 @@
-package wsg.lol.controller.main;
+package wsg.lol.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author EastSunrise
  */
 @Controller
-@RequestMapping("/lol")
-public class HomeController extends BaseController {
+@RequestMapping("/lol/ranking")
+public class RankingController extends BaseController {
 
     @RequestMapping("/index")
-    public String homePage() {
-        return redirect();
+    public String apexSummoners() {
+        return "ranking/apexSummoners";
     }
 
     @Override
     String templatePath(String fileName) {
-        return fileName;
+        return "ranking/" + fileName;
     }
 }

@@ -25,7 +25,6 @@ create table lol.t_image
     primary key (id)
 ) comment ='图片资源表';
 
-
 -- 事件表
 drop table if exists lol.t_event;
 create table lol.t_event

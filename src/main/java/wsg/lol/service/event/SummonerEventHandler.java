@@ -67,6 +67,7 @@ public class SummonerEventHandler implements EventHandler {
                     // if exists.
                     SummonerDo summoner = summonerMapper.selectByPrimaryKey(summonerId);
                     if (summoner != null) {
+                        logger.info("Summoner {} exists.", summonerId);
                         return ResultUtils.success();
                     }
 

@@ -12,7 +12,7 @@ import java.util.Date;
 public interface MatchService {
 
     /**
-     * Update the matches of the summoner specified by {@param summonerId}
+     * Add events of the matches of the summoner specified by {@param summonerId}
      */
     Result updateMatches(String accountId, Date beginTime);
 }

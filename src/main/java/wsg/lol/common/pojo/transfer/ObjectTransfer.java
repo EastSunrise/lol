@@ -74,7 +74,7 @@ public class ObjectTransfer {
                     Map<String, Object> map = fMap;
                     Class<? extends BaseDto> innerClass;
                     for (int i = 0; i < parts.length; i++) {
-                        Object innerObject = map.get(parts[i]);
+                        Object innerObject = map.get(parts[i].toLowerCase());
                         if (innerObject == null) {
                             break;
                         }

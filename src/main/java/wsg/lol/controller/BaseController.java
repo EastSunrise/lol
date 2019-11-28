@@ -1,4 +1,4 @@
-package wsg.lol.controller.main;
+package wsg.lol.controller;
 
 /**
  * todo

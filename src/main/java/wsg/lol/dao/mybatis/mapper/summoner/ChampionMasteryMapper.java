@@ -3,7 +3,7 @@ package wsg.lol.dao.mybatis.mapper.summoner;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.additional.insert.InsertListMapper;
-import tk.mybatis.mapper.common.base.update.UpdateByPrimaryKeyMapper;
+import tk.mybatis.mapper.common.base.update.UpdateByPrimaryKeySelectiveMapper;
 import wsg.lol.common.pojo.domain.summoner.ChampionMasteryDo;
 
 /**
@@ -13,5 +13,5 @@ import wsg.lol.common.pojo.domain.summoner.ChampionMasteryDo;
  */
 @Mapper
 @Repository
-public interface ChampionMasteryMapper extends InsertListMapper<ChampionMasteryDo>, UpdateByPrimaryKeyMapper<ChampionMasteryDo> {
+public interface ChampionMasteryMapper extends InsertListMapper<ChampionMasteryDo>, UpdateByPrimaryKeySelectiveMapper<ChampionMasteryDo> {
 }

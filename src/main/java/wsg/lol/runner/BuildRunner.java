@@ -1,4 +1,4 @@
-package wsg.lol.controller.runner;
+package wsg.lol.runner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

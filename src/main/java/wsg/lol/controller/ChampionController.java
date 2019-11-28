@@ -1,4 +1,4 @@
-package wsg.lol.controller.main;
+package wsg.lol.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

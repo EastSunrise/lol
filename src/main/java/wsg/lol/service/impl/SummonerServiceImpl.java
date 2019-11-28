@@ -77,7 +77,7 @@ public class SummonerServiceImpl implements SummonerService {
         int score = championMasteryV4.getScoreBySummonerId(summonerId);
         summonerDo.setScore(score);
         summonerDo.setLastUpdate(new Date());
-        int count = summonerMapper.updateByPrimaryKey(summonerDo);
+        int count = summonerMapper.updateByPrimaryKeySelective(summonerDo);
         if (count != 1) {
             logger.error("Failed to update the summoner {}.", summonerId);
             throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to update the summoner " + summonerId);

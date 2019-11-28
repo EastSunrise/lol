@@ -51,18 +51,20 @@ public class MatchServiceImpl implements MatchService {
             queryMatchListDto.setBeginIndex(endIndex - QueryMatchListDto.MAX_INDEX_RANGE);
             lastMatch = new Date();
             MatchListDto matchListDto = matchV4.getMatchListByAccount(accountId, queryMatchListDto);
+            // todo event with platform
             for (MatchReferenceDto match : matchListDto.getMatches()) {
                 gameIds.add(match.getGameId());
             }
             total = matchListDto.getTotalGames();
         } while (endIndex < total);
 
-        Result result = summonerService.updateSummonerLastMatch(accountId, lastMatch);
+        Result result = eventService.insertEvents(EventTypeEnum.Match, gameIds);
         ResultUtils.assertSuccess(result);
 
-        result = eventService.insertEvents(EventTypeEnum.Match, gameIds);
+        result = summonerService.updateSummonerLastMatch(accountId, lastMatch);
         ResultUtils.assertSuccess(result);
-        logger.info("Succeed in updating matches of the summoner {}.", accountId);
+
+        logger.info("Succeed in adding events of matches of the account {}.", accountId);
         return ResultUtils.success();
     }
 

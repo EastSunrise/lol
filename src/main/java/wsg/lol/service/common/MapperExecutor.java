@@ -4,7 +4,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tk.mybatis.mapper.additional.insert.InsertListMapper;
-import tk.mybatis.mapper.common.base.update.UpdateByPrimaryKeyMapper;
+import tk.mybatis.mapper.common.base.update.UpdateByPrimaryKeySelectiveMapper;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.BaseDo;
 import wsg.lol.common.base.Result;
@@ -60,9 +60,9 @@ public class MapperExecutor {
         return ResultUtils.success();
     }
 
-    public static <T extends BaseDo> Result updateList(UpdateByPrimaryKeyMapper<T> mapper, List<T> data) {
+    public static <T extends BaseDo> Result updateList(UpdateByPrimaryKeySelectiveMapper<T> mapper, List<T> data) {
         for (T t : data) {
-            int count = mapper.updateByPrimaryKey(t);
+            int count = mapper.updateByPrimaryKeySelective(t);
             if (count != 1) {
                 logger.error("Failed to update {}", t);
                 throw new AppException(ErrorCodeConst.DATABASE_ERROR);

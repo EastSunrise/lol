@@ -1,11 +1,12 @@
-package wsg.lol.controller.scheduler;
+package wsg.lol.scheduler;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.result.system.VersionResult;
 import wsg.lol.service.intf.SharedService;
@@ -16,7 +17,8 @@ import wsg.lol.service.intf.SystemService;
  *
  * @author Kingen
  */
-@Service
+@Component
+@Async
 public class SharedScheduler {
 
     private static final Logger logger = LoggerFactory.getLogger(SharedScheduler.class);
