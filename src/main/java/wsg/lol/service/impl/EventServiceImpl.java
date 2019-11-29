@@ -23,6 +23,7 @@ import wsg.lol.service.intf.EventService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Kingen
@@ -57,7 +58,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Performance
-    public Result insertEvents(EventTypeEnum eventType, List<?> contexts) {
+    public Result insertEvents(EventTypeEnum eventType, Set<?> contexts) {
         if (CollectionUtils.isEmpty(contexts)) {
             logger.info("Contexts are empty.");
             return ResultUtils.success();

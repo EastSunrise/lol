@@ -49,7 +49,6 @@ public class SharedServiceImpl implements SharedService {
 
     private DragonDao dragonDao;
 
-    // todo embedde transactions
     @Override
     @Transactional
     public Result updateImages(List<ImageDto> images, ImageGroupEnum... groups) {

@@ -33,7 +33,7 @@ public class EventScheduler {
      * Add summoners by handling events of type {@link EventTypeEnum#Summoner}.
      */
     @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
-    public void addSummoners() {
+    public void handleSummoners() {
         logger.info("Adding summoners by event.");
         Result handle = eventService.handle(EventTypeEnum.Summoner, PageUtils.getRowBounds());
         systemService.sendWarnMessage(handle);
@@ -44,8 +44,8 @@ public class EventScheduler {
      * <p>
      * Meanwhile, add events of type {@link EventTypeEnum#Summoner} if not exist from the participants of matches.
      */
-    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
-    public void addMatches() {
+//    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
+    public void handleMatches() {
         logger.info("Adding matches by events");
         Result result = eventService.handle(EventTypeEnum.Match, PageUtils.getRowBounds());
         systemService.sendWarnMessage(result);

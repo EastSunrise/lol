@@ -20,8 +20,8 @@ import java.util.Locale;
 @Configuration
 public class ApiClient {
 
-    @Value("${dragon.dir.cdn}")
-    private String cdnDir;
+    @Value("${api.timeout}")
+    private int timeout;
 
     @Value("${api.username}")
     private String username;
@@ -51,31 +51,26 @@ public class ApiClient {
 
     /**
      * Get current api token. Regenerate it if invalid.
+     *
+     * @return null if there isn't a valid token.
      */
     synchronized String getToken() {
-        if (StringUtils.isEmpty(this.token) || parseDate(this.expires).compareTo(new Date()) < 0) {
-            regenerateToken();
-        }
-        return this.token;
+        return (StringUtils.isEmpty(this.token) || parseDate(this.expires).compareTo(new Date()) < 0) && !regenerateToken() ? null : this.token;
     }
 
     /**
      * Simulate logging in the account and regenerate the api token.
      */
-    void regenerateToken() {
+    boolean regenerateToken() {
         // todo regenerate token
-        try {
-            Thread.sleep(DateUtils.MILLIS_PER_HOUR);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        return false;
     }
 
     public PlatformRoutingEnum getRegion() {
         return region;
     }
 
-    public String getCdnDir() {
-        return cdnDir;
+    public int getTimeout() {
+        return timeout;
     }
 }

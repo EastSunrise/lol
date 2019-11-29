@@ -5,7 +5,7 @@ import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Service for events.
@@ -20,9 +20,9 @@ public interface EventService {
     Result handle(EventTypeEnum eventType, RowBounds rowBounds);
 
     /**
-     * Insert list of events of specified type.
+     * Insert events of specified type. Contexts are distinct.
      */
-    Result insertEvents(EventTypeEnum eventType, List<?> contexts);
+    Result insertEvents(EventTypeEnum eventType, Set<?> contexts);
 
     /**
      * Update the status of events.

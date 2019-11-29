@@ -21,8 +21,9 @@ import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.LeagueService;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Kingen
@@ -42,9 +43,9 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Override
     @Performance
-    public Result initialByLeagues() {
+    public Result initializeByLeagues() {
         logger.info("Initializing the database by leagues.");
-        List<String> ids = new ArrayList<>();
+        Set<String> ids = new HashSet<>();
         for (RankQueueEnum queue : RankQueueEnum.values()) {
             for (TierEnum tier : TierEnum.RANKED_TIERS) {
                 for (DivisionEnum division : DivisionEnum.validDivisions(tier)) {
@@ -57,7 +58,7 @@ public class LeagueServiceImpl implements LeagueService {
                         }
                         if (ids.size() > MAX_SIZE) {
                             eventService.insertEvents(EventTypeEnum.Summoner, ids);
-                            ids = new ArrayList<>();
+                            ids = new HashSet<>();
                         }
                     }
                 }

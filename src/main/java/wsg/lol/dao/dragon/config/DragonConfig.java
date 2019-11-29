@@ -14,7 +14,7 @@ import java.util.Locale;
  */
 @Configuration
 @PropertySource(value = {"classpath:config/data-config.properties"})
-public class StaticConfig {
+public class DragonConfig {
 
     @Value("${dragon.dir.cdn}")
     private String cdnDir;
@@ -22,7 +22,7 @@ public class StaticConfig {
     @Value("${dragon.language}")
     private String language;
 
-    @Value("${state.url.cdn}")
+    @Value("${dragon.url.cdn}")
     private String cdnUrl;
 
     public String getCdnDir() {

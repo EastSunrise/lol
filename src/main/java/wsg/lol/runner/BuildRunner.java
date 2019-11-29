@@ -33,13 +33,13 @@ public class BuildRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         logger.info("Initializing the database.");
-        GenericResult<Boolean> result = systemService.isDatabaseInitialized();
+        GenericResult<Boolean> result = systemService.initialized();
         if (result.getObject()) {
             logger.info("The database has been initialized.");
             return;
         }
 
-        ResultUtils.assertSuccess(leagueService.initialByLeagues());
+        ResultUtils.assertSuccess(leagueService.initializeByLeagues());
         ResultUtils.assertSuccess(systemService.initialize());
 
         logger.info("Succeed in initializing the database.");

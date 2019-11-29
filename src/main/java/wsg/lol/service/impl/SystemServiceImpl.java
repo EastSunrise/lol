@@ -82,7 +82,7 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public GenericResult<Boolean> isDatabaseInitialized() {
+    public GenericResult<Boolean> initialized() {
         String value = configMapper.getConfigValue(ConfigConst.IS_DATABASE_INITIALIZED, apiClient.getRegion());
         GenericResult<Boolean> result = new GenericResult<>();
         result.setObject(Boolean.parseBoolean(value));

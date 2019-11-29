@@ -27,7 +27,7 @@ class DatasourceHolder {
             public void run() {
                 DatasourceHolder.instance().clearIdleDatasource();
             }
-        }, DateUtils.MILLIS_PER_SECOND * 5, DateUtils.MILLIS_PER_MINUTE);
+        }, 10000L, DateUtils.MILLIS_PER_MINUTE);
     }
 
     private Map<PlatformRoutingEnum, DatasourceTimer> platformTimerMap = new HashMap<>();

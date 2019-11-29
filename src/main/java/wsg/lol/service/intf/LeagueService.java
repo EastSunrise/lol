@@ -12,7 +12,7 @@ public interface LeagueService {
     /**
      * Initialize the database by query the data of leagues each rank queue, tier and division.
      */
-    Result initialByLeagues();
+    Result initializeByLeagues();
 
     /**
      * Update the league entries of the specified summoner.

@@ -17,9 +17,9 @@ import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.MatchService;
 import wsg.lol.service.intf.SummonerService;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Kingen
@@ -40,7 +40,7 @@ public class MatchServiceImpl implements MatchService {
     @Performance
     public Result updateMatches(String accountId, Date beginTime) {
         logger.info("Adding events of matches of the account {}.", accountId);
-        List<Long> gameIds = new ArrayList<>();
+        Set<Long> gameIds = new HashSet<>();
         QueryMatchListDto queryMatchListDto = new QueryMatchListDto();
         queryMatchListDto.setBeginTime(beginTime.getTime());
         long endIndex = 0L, total;

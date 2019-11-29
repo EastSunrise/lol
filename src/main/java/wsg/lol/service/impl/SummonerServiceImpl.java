@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.ListResult;
@@ -23,6 +22,7 @@ import wsg.lol.dao.api.impl.SummonerV4;
 import wsg.lol.dao.mybatis.mapper.summoner.ChampionMasteryMapper;
 import wsg.lol.dao.mybatis.mapper.summoner.SummonerMapper;
 import wsg.lol.service.common.MapperExecutor;
+import wsg.lol.service.common.PriorityUtils;
 import wsg.lol.service.intf.SummonerService;
 
 import java.util.Date;
@@ -47,9 +47,7 @@ public class SummonerServiceImpl implements SummonerService {
     @Override
     @Performance
     public ListResult<SummonerDto> getSummonersForUpdate(RowBounds rowBounds) {
-        Example example = new Example(SummonerDo.class);
-        example.orderBy("lastUpdate");
-        List<SummonerDo> summoners = summonerMapper.selectByExampleAndRowBounds(example, rowBounds);
+        List<SummonerDo> summoners = summonerMapper.selectByExampleAndRowBounds(PriorityUtils.updateSummoners(), rowBounds);
         List<SummonerDto> summonerDtoList = ObjectTransfer.transferDoList(summoners, SummonerDto.class);
         ListResult<SummonerDto> result = new ListResult<>();
         result.setList(summonerDtoList);
@@ -59,9 +57,7 @@ public class SummonerServiceImpl implements SummonerService {
     @Override
     @Performance
     public ListResult<SummonerDto> getSummonersForMatch(RowBounds rowBounds) {
-        Example example = new Example(SummonerDo.class);
-        example.orderBy("lastMatch");
-        List<SummonerDo> summoners = summonerMapper.selectByExampleAndRowBounds(example, rowBounds);
+        List<SummonerDo> summoners = summonerMapper.selectByExampleAndRowBounds(PriorityUtils.updateMatches(), rowBounds);
         List<SummonerDto> summonerDtoList = ObjectTransfer.transferDoList(summoners, SummonerDto.class);
         ListResult<SummonerDto> result = new ListResult<>();
         result.setList(summonerDtoList);

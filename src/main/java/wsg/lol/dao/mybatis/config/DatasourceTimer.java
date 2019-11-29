@@ -1,6 +1,5 @@
 package wsg.lol.dao.mybatis.config;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.tomcat.jdbc.pool.DataSource;
 
 /**
@@ -13,7 +12,7 @@ class DatasourceTimer {
     /**
      * Max time for database to be free.
      */
-    private static final long FREE_TIME = 10 * DateUtils.MILLIS_PER_MINUTE;
+    private static final long FREE_TIME = 600000L;
 
     /**
      * Dynamic datasource.

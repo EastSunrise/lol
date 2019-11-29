@@ -1,11 +1,9 @@
 package wsg.lol.scheduler;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.base.AppException;
@@ -45,7 +43,7 @@ public class RealScheduler {
      * todo 进程调度算法选择summoners
      * Update the summoners with the most early update time.
      */
-    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
+//    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
     public void updateSummoners() {
         logger.info("Schedule to update summoners.");
         List<SummonerDto> summoners = summonerService.getSummonersForUpdate(PageUtils.getRowBounds()).getList();
@@ -71,7 +69,7 @@ public class RealScheduler {
     /**
      * Add events of the matches after the last time updating the matches.
      */
-    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
+//    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
     public void updateMatches() throws AppException {
         logger.info("Schedule to update matches.");
         List<SummonerDto> summoners = summonerService.getSummonersForMatch(PageUtils.getRowBounds()).getList();

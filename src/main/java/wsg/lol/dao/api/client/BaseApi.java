@@ -14,13 +14,14 @@ import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.QueryDto;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.pojo.serialize.RecordExtraProcessor;
+import wsg.lol.common.util.EnumUtils;
 import wsg.lol.common.util.HttpHelper;
+import wsg.lol.dao.dragon.config.DragonConfig;
 
 import javax.xml.ws.http.HTTPException;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -37,13 +38,13 @@ public class BaseApi {
 
     private static final String HTTPS = "https://";
 
-    private static final long TIME_OUT = DateUtils.MILLIS_PER_SECOND;
+    private static final long RETRY_INTERVAL = 10000L;
 
     private static final Logger logger = LoggerFactory.getLogger(BaseApi.class);
-    private static long retryCount = 0L;
-    private static long retrySum = 0L;
 
     private ApiClient apiClient;
+
+    private DragonConfig dragonConfig;
 
     /**
      * Get single object.
@@ -108,7 +109,7 @@ public class BaseApi {
         String urlStr = (apiClient.getRegion().getHost() + apiRef + urlParams).replace("+", "%20");
 
         // todo get from the api directly
-        String filepath = StringUtils.joinWith(File.separator, apiClient.getCdnDir(), "api", urlStr.replace("?", File.separator).replace("&", File.separator) + ".json");
+        String filepath = StringUtils.joinWith(File.separator, dragonConfig.getCdnDir(), "api", urlStr.replace("?", File.separator).replace("&", File.separator) + ".json");
         try {
             logger.info("Read from {}.", filepath);
             return FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);
@@ -128,12 +129,13 @@ public class BaseApi {
 
     private String doHttpGet(String urlStr) {
         logger.info("Getting from " + urlStr);
+        int retryCount = 0;
         while (true) {
             try {
                 URL url = new URL(urlStr);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setConnectTimeout((int) TIME_OUT);
-                urlConnection.setReadTimeout((int) TIME_OUT);
+                urlConnection.setConnectTimeout(apiClient.getTimeout());
+                urlConnection.setReadTimeout(apiClient.getTimeout());
                 urlConnection.setRequestProperty("X-Riot-Token", apiClient.getToken());
                 urlConnection.setRequestProperty("Origin", "https://developer.riotgames.com");
                 urlConnection.setRequestProperty("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
@@ -152,34 +154,43 @@ public class BaseApi {
                     return builder.toString();
                 }
 
-                logger.info(urlConnection.getResponseMessage());
-                if (ResponseCodeEnum.RateLimitExceeded.getCode() == responseCode) {
-                    long retryAfter = Long.parseLong(urlConnection.getHeaderField("Retry-After")) * DateUtils.MILLIS_PER_SECOND;
-                    retryCount += 1;
-                    retrySum += retryAfter;
-                    logger.error("Rate limit exceeded. Wait for {} ms.", retryAfter);
-                    threadSleep(retryAfter);
-                    continue;
+                if (ResponseCodeEnum.BadRequest.getCode() == responseCode
+                        || ResponseCodeEnum.Forbidden.getCode() == responseCode
+                        || ResponseCodeEnum.NotFound.getCode() == responseCode
+                        || ResponseCodeEnum.UnsupportedMediaType.getCode() == responseCode) {
+                    ResponseCodeEnum responseCodeEnum = EnumUtils.parseFromInt(responseCode, ResponseCodeEnum.class);
+                    logger.error("{}: {}.", responseCodeEnum.getMessage(), urlStr);
+                    throw new HTTPException(responseCode);
                 }
                 if (ResponseCodeEnum.Unauthorized.getCode() == responseCode) {
-                    apiClient.regenerateToken();
+                    if (apiClient.regenerateToken()) {
+                        continue;
+                    }
+                    throw new HTTPException(responseCode);
+                }
+                if (ResponseCodeEnum.RateLimitExceeded.getCode() == responseCode) {
+                    long retryAfter = Long.parseLong(urlConnection.getHeaderField("Retry-After"));
+                    logger.error("Rate limit exceeded. Wait for {} s.", retryAfter);
+                    threadSleep(retryAfter * DateUtils.MILLIS_PER_SECOND);
                     continue;
                 }
-                if (ResponseCodeEnum.ServiceUnavailable.getCode() == responseCode) {
-                    logger.error(ResponseCodeEnum.ServiceUnavailable.getMessage());
-                    threadSleep(DateUtils.MILLIS_PER_SECOND);
+                if (ResponseCodeEnum.InternalServerError.getCode() == responseCode
+                        || ResponseCodeEnum.ServiceUnavailable.getCode() == responseCode) {
+                    ResponseCodeEnum responseCodeEnum = EnumUtils.parseFromInt(responseCode, ResponseCodeEnum.class);
+                    logger.error(responseCodeEnum.getMessage());
+                    threadSleep(RETRY_INTERVAL);
                     continue;
                 }
-                if (ResponseCodeEnum.BadRequest.getCode() == responseCode) {
-                    logger.error("Bas request: {}.", urlStr);
-                }
+                logger.error(urlConnection.getResponseMessage());
                 throw new HTTPException(responseCode);
-            } catch (SocketTimeoutException e) {
-                logger.error("Socket connects time out.");
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
+                retryCount++;
+                if (retryCount > 1) {
+                    throw new AppException(ErrorCodeConst.SYSTEM_ERROR, e);
+                }
+                threadSleep(RETRY_INTERVAL);
             }
-            threadSleep(TIME_OUT);
         }
     }
 
@@ -190,6 +201,11 @@ public class BaseApi {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Autowired
+    public void setDragonConfig(DragonConfig dragonConfig) {
+        this.dragonConfig = dragonConfig;
     }
 
     @Autowired

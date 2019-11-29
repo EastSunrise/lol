@@ -209,7 +209,6 @@ public class ChampionServiceImpl implements ChampionService {
         return ResultUtils.success();
     }
 
-    // todo embedded transactions
     private Result updateSpells(List<SpellDo> spells, SpellNumEnum... nums) {
         if (CollectionUtils.isEmpty(spells)) {
             logger.info("Spells is empty. Nothing updated.");

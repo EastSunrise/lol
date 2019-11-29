@@ -14,4 +14,6 @@ public class ErrorCodeConst {
     public static final String DATABASE_ERROR = "DATABASE_ERROR";
 
     public static final String ILLEGAL_ARGS = "ILLEGAL_ARGS";
+
+    public static final String HTTPS_ERROR = "HTTPS_ERROR";
 }

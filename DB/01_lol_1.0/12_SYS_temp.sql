@@ -15,3 +15,8 @@ where name = 'IS_DATABASE_INITIALIZED'
 update lol.t_event
 set status = 0
 where type = 0;
+
+select *
+from lol.t_event
+into dumpfile 'data/kr/event.txt';
+

@@ -39,7 +39,7 @@ public interface SystemService {
     /**
      * Check if the database has been initialize.
      */
-    GenericResult<Boolean> isDatabaseInitialized();
+    GenericResult<Boolean> initialized();
 
     /**
      * Update the initialization config.
