@@ -9,15 +9,17 @@ import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
+import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.pojo.domain.match.*;
+import wsg.lol.common.pojo.domain.system.EventDo;
 import wsg.lol.common.pojo.dto.match.*;
-import wsg.lol.common.pojo.dto.system.EventDto;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.MatchV4;
 import wsg.lol.dao.mybatis.mapper.match.*;
 import wsg.lol.service.common.MapperExecutor;
+import wsg.lol.service.intf.EventService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,26 +52,20 @@ public class MatchEventHandler implements EventHandler {
 
     private ParticipantFrameMapper participantFrameMapper;
 
+    private EventService eventService;
+
     @Override
     @Performance
-    public synchronized Result handle(List<EventDto> events) {
-        for (EventDto event : events) {
-            long gameId = Long.parseLong(event.getContext());
+    public synchronized Result handle(List<? extends EventDo> events) {
+        final int[] success = {0};
+        for (EventDo event : events) {
+            long gameId = Long.parseLong(event.getId());
             try {
                 transactionTemplate.execute(transactionStatus -> {
-                    logger.info("Handling the event of {}.", gameId);
-
                     MatchExtDto matchExtDto = matchV4.getMatchById(gameId);
                     MatchTimelineDto timelineDto = matchV4.getTimelineByMatchId(gameId);
 
-                    MatchDo matchDo = ObjectTransfer.transferDto(matchExtDto, MatchDto.class, MatchDo.class);
-                    matchDo.setFrameInterval(timelineDto.getFrameInterval());
-                    int count = matchMapper.insert(matchDo);
-                    if (count != 1) {
-                        logger.error("Failed to insert match {}.", matchDo);
-                        throw new AppException(ErrorCodeConst.DATABASE_ERROR);
-                    }
-
+                    logger.info("Adding frames of the match {}...", gameId);
                     List<MatchFrameDo> frameDoList = new ArrayList<>();
                     List<MatchFrameDto> frames = timelineDto.getFrames();
                     for (MatchFrameDto frame : frames) {
@@ -83,6 +79,7 @@ public class MatchEventHandler implements EventHandler {
                     }
                     ResultUtils.assertSuccess(MapperExecutor.insertList(matchFrameMapper, frameDoList));
 
+                    logger.info("Adding stats of teams in the match {}...", gameId);
                     List<TeamStatsDo> teams = new ArrayList<>();
                     List<TeamStatsDto> teamStatsDtoList = matchExtDto.getTeams();
                     for (TeamStatsDto teamStatsDto : teamStatsDtoList) {
@@ -92,6 +89,7 @@ public class MatchEventHandler implements EventHandler {
                     }
                     ResultUtils.assertSuccess(MapperExecutor.insertList(teamStatsMapper, teams));
 
+                    logger.info("Adding participants of the match {}...", gameId);
                     List<ParticipantDo> participants = new ArrayList<>();
                     List<ParticipantDto> participantDtoList = matchExtDto.getParticipants();
                     Map<Integer, ParticipantDto> map = new HashMap<>();
@@ -120,7 +118,9 @@ public class MatchEventHandler implements EventHandler {
                         participants.add(participantDo);
                     }
                     ResultUtils.assertSuccess(MapperExecutor.insertList(participantMapper, participants));
+
                     // todo test generating id
+                    logger.info("Adding stats of participants in the match {}...", gameId);
                     Map<Integer, Long> idMap = new HashMap<>();
                     for (ParticipantDo participant : participants) {
                         idMap.put(participant.getParticipantId(), participant.getId());
@@ -130,6 +130,7 @@ public class MatchEventHandler implements EventHandler {
                     }
                     ResultUtils.assertSuccess(MapperExecutor.insertList(participantStatsMapper, new ArrayList<>(statsMap.values())));
 
+                    logger.info("Adding frames of participants in the match {}...", gameId);
                     List<ParticipantFrameDo> participantFrames = new ArrayList<>();
                     for (MatchFrameDto frame : frames) {
                         for (Map.Entry<String, MatchParticipantFrameDto> entry : frame.getParticipantFrames().entrySet()) {
@@ -144,16 +145,34 @@ public class MatchEventHandler implements EventHandler {
                     }
                     ResultUtils.assertSuccess(MapperExecutor.insertList(participantFrameMapper, participantFrames));
 
+                    MatchDo matchDo = ObjectTransfer.transferDto(matchExtDto, MatchDto.class, MatchDo.class);
+                    matchDo.setFrameInterval(timelineDto.getFrameInterval());
+                    int count = matchMapper.insert(matchDo);
+                    if (count != 1) {
+                        logger.error("Failed to insert match {}.", matchDo);
+                        throw new AppException(ErrorCodeConst.DATABASE_ERROR);
+                    }
+                    logger.info("Added the match {}.", gameId);
+
+                    Result result = eventService.updateStatus(EventTypeEnum.Match, gameId, EventStatusEnum.Unfinished, EventStatusEnum.Finished);
+                    ResultUtils.assertSuccess(result);
                     logger.info("Succeed in handling the event of {}.", gameId);
+                    success[0]++;
                     return ResultUtils.success();
                 });
             } catch (AppException e) {
+                logger.error("Failed to handle the event of the match {}", gameId);
                 e.printStackTrace();
             }
         }
 
-        logger.info("Succeed in handling the events of summoner id.");
+        logger.info("Events of matches done, {} succeeded, {} failed.", success[0], events.size() - success[0]);
         return ResultUtils.success();
+    }
+
+    @Autowired
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
     }
 
     @Autowired

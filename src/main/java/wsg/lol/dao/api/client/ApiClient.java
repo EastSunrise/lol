@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ErrorCodeConst;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -28,9 +27,6 @@ public class ApiClient {
 
     @Value("${api.password}")
     private String password;
-
-    @Value("${api.region}")
-    private PlatformRoutingEnum region;
 
     @Value("${api.token}")
     private String token;
@@ -64,10 +60,6 @@ public class ApiClient {
     boolean regenerateToken() {
         // todo regenerate token
         return false;
-    }
-
-    public PlatformRoutingEnum getRegion() {
-        return region;
     }
 
     public int getTimeout() {

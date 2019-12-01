@@ -12,7 +12,7 @@ import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.system.PlatformRoutingEnum;
 import wsg.lol.common.result.system.VersionResult;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.dao.api.client.ApiClient;
+import wsg.lol.dao.GlobalConfig;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.dragon.intf.GeneralDao;
 import wsg.lol.dao.mybatis.mapper.system.ConfigMapper;
@@ -34,7 +34,7 @@ public class SystemServiceImpl implements SystemService {
 
     private DragonDao dragonDao;
 
-    private ApiClient apiClient;
+    private GlobalConfig globalConfig;
 
     @Override
     public GenericResult<Boolean> checkCdn(String version) {
@@ -83,7 +83,7 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public GenericResult<Boolean> initialized() {
-        String value = configMapper.getConfigValue(ConfigConst.IS_DATABASE_INITIALIZED, apiClient.getRegion());
+        String value = configMapper.getConfigValue(ConfigConst.IS_DATABASE_INITIALIZED, globalConfig.getRegion());
         GenericResult<Boolean> result = new GenericResult<>();
         result.setObject(Boolean.parseBoolean(value));
         return result;
@@ -91,7 +91,7 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public Result initialize() {
-        int count = configMapper.updateConfigValue(apiClient.getRegion(), ConfigConst.IS_DATABASE_INITIALIZED, String.valueOf(true));
+        int count = configMapper.updateConfigValue(globalConfig.getRegion(), ConfigConst.IS_DATABASE_INITIALIZED, String.valueOf(true));
         if (1 != count) {
             logger.error("Failed to update the initialization config.");
             throw new AppException(ErrorCodeConst.DATABASE_ERROR);
@@ -100,8 +100,8 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Autowired
-    public void setApiClient(ApiClient apiClient) {
-        this.apiClient = apiClient;
+    public void setGlobalConfig(GlobalConfig globalConfig) {
+        this.globalConfig = globalConfig;
     }
 
     @Autowired

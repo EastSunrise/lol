@@ -3,13 +3,13 @@
 <mapper namespace="wsg.lol.dao.mybatis.mapper.system.ConfigMapper">
     <select id="getConfigValue" resultType="java.lang.String">
         select value
-        from lol.t_config
+        from t_config
         where name = #{name}
           and region = #{region}
     </select>
 
     <update id="updateConfigValue">
-        update lol.t_config
+        update t_config
         set value = #{value}
         where name = #{name}
           and region = #{region}

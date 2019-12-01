@@ -18,7 +18,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "m_participant_frame")
+@Table(name = "m_participant_frame")
 public class ParticipantFrameDo extends BaseDo {
 
     @Id

@@ -14,10 +14,10 @@ import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.pojo.domain.summoner.ChampionMasteryDo;
 import wsg.lol.common.pojo.domain.summoner.LeagueEntryDo;
 import wsg.lol.common.pojo.domain.summoner.SummonerDo;
+import wsg.lol.common.pojo.domain.system.EventDo;
 import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
-import wsg.lol.common.pojo.dto.system.EventDto;
 import wsg.lol.common.pojo.query.QueryMatchListDto;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
@@ -61,31 +61,22 @@ public class SummonerEventHandler implements EventHandler {
 
     @Override
     @Performance
-    public synchronized Result handle(List<EventDto> events) {
-        for (EventDto event : events) {
-            String summonerId = event.getContext();
+    public synchronized Result handle(List<? extends EventDo> events) {
+        final int[] success = {0};
+        for (EventDo event : events) {
+            String summonerId = event.getId();
             try {
                 transactionTemplate.execute(transactionStatus -> {
-                    logger.info("Handling the event of {}.", summonerId);
-
-                    // if exists.
-                    SummonerDo summoner = summonerMapper.selectByPrimaryKey(summonerId);
-                    if (summoner != null) {
-                        logger.info("Summoner {} exists.", summonerId);
-                        return ResultUtils.success();
-                    }
-
-                    logger.info("Adding champion masteries of {}.", summonerId);
+                    logger.info("Adding champion masteries of {}...", summonerId);
                     List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
                     Result result = MapperExecutor.insertList(championMasteryMapper, ObjectTransfer.transferDtoList(championMasteries, ChampionMasteryDo.class));
                     ResultUtils.assertSuccess(result);
 
-                    logger.info("Adding league entries of {}.", summonerId);
+                    logger.info("Adding league entries of {}...", summonerId);
                     List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
                     result = MapperExecutor.insertList(leagueEntryMapper, ObjectTransfer.transferDtoList(entries, LeagueEntryDo.class));
                     ResultUtils.assertSuccess(result);
 
-                    logger.info("Adding the summoner {}.", summonerId);
                     SummonerDto summonerDto = summonerV4.getSummonerById(summonerId);
                     SummonerDo summonerDo = ObjectTransfer.transferDto(summonerDto, SummonerDo.class);
                     int score = championMasteryV4.getScoreBySummonerId(summonerId);
@@ -97,19 +88,21 @@ public class SummonerEventHandler implements EventHandler {
                         logger.error("Failed to inert the summoner {}.", summonerId);
                         throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to inert the summoner " + summonerId);
                     }
+                    logger.info("Added the summoner {}.", summonerId);
 
                     result = eventService.updateStatus(EventTypeEnum.Summoner, summonerId, EventStatusEnum.Unfinished, EventStatusEnum.Finished);
                     ResultUtils.assertSuccess(result);
-
                     logger.info("Succeed in handling the event of {}.", summonerId);
+                    success[0]++;
                     return ResultUtils.success();
                 });
             } catch (AppException e) {
+                logger.error("Failed to handle the event of the summoner {}", summonerId);
                 e.printStackTrace();
             }
         }
 
-        logger.info("Succeed in handling events of summoners.");
+        logger.info("Events of summoners done, {} succeeded, {} failed.", success[0], events.size() - success[0]);
         return ResultUtils.success();
     }
 

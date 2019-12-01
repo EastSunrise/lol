@@ -1,5 +1,6 @@
 package wsg.lol.scheduler;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,9 @@ public class AsyncConfig {
 
     @Value("${task.keepAliveSeconds}")
     private int keepAliveSeconds;
+
+    static final long FIXED_DELAY = DateUtils.MILLIS_PER_DAY;
+    static final long INITIAL_DELAY = DateUtils.MILLIS_PER_SECOND;
 
     @Bean
     public Executor schedulerExecutor() {

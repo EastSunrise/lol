@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
@@ -14,10 +15,8 @@ import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.pojo.domain.system.EventDo;
-import wsg.lol.common.pojo.dto.system.EventDto;
-import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.dao.mybatis.mapper.system.EventMapper;
+import wsg.lol.dao.mybatis.common.EventMapper;
 import wsg.lol.service.event.EventHandler;
 import wsg.lol.service.intf.EventService;
 
@@ -33,27 +32,26 @@ public class EventServiceImpl implements EventService {
 
     private static final Logger logger = LoggerFactory.getLogger(EventService.class);
 
-    private EventMapper eventMapper;
-
     private ApplicationContext applicationContext;
 
     @Override
     @Performance
     public Result handle(EventTypeEnum eventType, RowBounds rowBounds) {
-        logger.info("Getting events of {}.", eventType);
-        EventDo cond = new EventDo();
-        cond.setStatus(EventStatusEnum.Unfinished);
-        cond.setType(eventType);
-        List<EventDo> events = eventMapper.selectByRowBounds(cond, rowBounds);
+        logger.info("Getting events of {}...", eventType);
+        Example example = new Example(eventType.getDoClass());
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("status", EventStatusEnum.Unfinished);
+
+        EventMapper<? extends EventDo> mapper = applicationContext.getBean(eventType.getMapperClass());
+        List<? extends EventDo> events = mapper.selectByExampleAndRowBounds(example, rowBounds);
         if (CollectionUtils.isEmpty(events)) {
             logger.info("No events got.");
             return ResultUtils.success();
         }
+        logger.info("Got {} events of {}. Handling...", events.size(), eventType);
 
-        logger.info("Handling {} events of {}", events.size(), eventType);
-        List<EventDto> eventDtoList = ObjectTransfer.transferDoList(events, EventDto.class);
-        EventHandler eventHandler = (EventHandler) applicationContext.getBean(eventType.getEventBeanName());
-        return eventHandler.handle(eventDtoList);
+        EventHandler eventHandler = applicationContext.getBean(eventType.getHandlerClass());
+        return eventHandler.handle(events);
     }
 
     @Override
@@ -70,30 +68,28 @@ public class EventServiceImpl implements EventService {
                 values.add(context.toString());
             }
         }
-        int count = eventMapper.insertEventsOfType(eventType, EventStatusEnum.Unfinished, values);
+
+        EventMapper<? extends EventDo> mapper = applicationContext.getBean(eventType.getMapperClass());
+        int count = mapper.insertIgnoreList(values, EventStatusEnum.Unfinished);
         logger.info("{} events inserted.", count);
         return ResultUtils.success();
     }
 
     @Override
     @Performance
-    public Result updateStatus(EventTypeEnum type, Object context, EventStatusEnum from, EventStatusEnum to) {
+    public Result updateStatus(EventTypeEnum eventType, Object context, EventStatusEnum from, EventStatusEnum to) {
         if (context == null) {
             logger.info("Context is null, nothing updated.");
             return ResultUtils.success();
         }
         logger.info("Updating the status of the event {} to {}.", context, to);
-        int count = eventMapper.updateStatus(type, context.toString(), from, to);
+        EventMapper<? extends EventDo> mapper = applicationContext.getBean(eventType.getMapperClass());
+        int count = mapper.updateStatus(context.toString(), EventStatusEnum.Unfinished, EventStatusEnum.Finished);
         if (count != 1) {
             logger.error("Failed to update the status of the event {} to {}.", context, to);
             throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to update the status of the event.");
         }
         return ResultUtils.success();
-    }
-
-    @Autowired
-    public void setEventMapper(EventMapper eventMapper) {
-        this.eventMapper = eventMapper;
     }
 
     @Autowired

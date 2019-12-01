@@ -25,7 +25,7 @@ class DatasourceHolder {
         clearIdleTask.schedule(new TimerTask() {
             @Override
             public void run() {
-                DatasourceHolder.instance().clearIdleDatasource();
+                DatasourceHolder.getInstance().clearIdleDatasource();
             }
         }, 10000L, DateUtils.MILLIS_PER_MINUTE);
     }
@@ -39,7 +39,7 @@ class DatasourceHolder {
     /*
      * Get an instance.
      */
-    static DatasourceHolder instance() {
+    static DatasourceHolder getInstance() {
         return DatasourceHolderBuilder.instance;
     }
 
@@ -75,5 +75,55 @@ class DatasourceHolder {
      */
     private static class DatasourceHolderBuilder {
         private static DatasourceHolder instance = new DatasourceHolder();
+    }
+
+    /**
+     * Timer for the datasource.
+     */
+    private static class DatasourceTimer {
+
+        /**
+         * Max time for database to be free.
+         */
+        private static final long FREE_TIME = 600000L;
+
+        /**
+         * Dynamic datasource.
+         */
+        private DataSource datasource;
+
+        /**
+         * Last time accessing the database.
+         */
+        private long lastAccess;
+
+        DatasourceTimer(DataSource datasource) {
+            this.datasource = datasource;
+            this.lastAccess = System.currentTimeMillis();
+        }
+
+        /**
+         * Refresh the last time.
+         */
+        void refreshTime() {
+            lastAccess = System.currentTimeMillis();
+        }
+
+        /**
+         * Close if it's time out.
+         *
+         * @return True if closed.
+         */
+        boolean checkAndClose() {
+            if (System.currentTimeMillis() - lastAccess > FREE_TIME) {
+                datasource.close();
+                return true;
+            }
+            return false;
+        }
+
+        DataSource getDatasource() {
+            return datasource;
+        }
     }
 }

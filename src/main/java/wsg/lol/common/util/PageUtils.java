@@ -10,7 +10,6 @@ import org.apache.ibatis.session.RowBounds;
 public class PageUtils {
 
     public static RowBounds getRowBounds() {
-        // todo limit
-        return new RowBounds(0, 10);
+        return new RowBounds(0, 2);
     }
 }

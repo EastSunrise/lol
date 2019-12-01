@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.base.AppException;
-import wsg.lol.common.base.Result;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 import wsg.lol.common.util.PageUtils;
 import wsg.lol.common.util.ResultUtils;
@@ -43,46 +43,51 @@ public class RealScheduler {
      * todo 进程调度算法选择summoners
      * Update the summoners with the most early update time.
      */
-//    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
+    @Scheduled(initialDelay = AsyncConfig.INITIAL_DELAY, fixedDelay = AsyncConfig.FIXED_DELAY)
     public void updateSummoners() {
-        logger.info("Schedule to update summoners.");
+        logger.info("Getting summoners for update...");
         List<SummonerDto> summoners = summonerService.getSummonersForUpdate(PageUtils.getRowBounds()).getList();
+        logger.info("Got {} summoners for update. Handling...", summoners.size());
+        final int[] success = {0};
         for (SummonerDto summoner : summoners) {
             String summonerId = summoner.getId();
             try {
                 transactionTemplate.execute(transactionStatus -> {
-                    logger.info("Update summoner {}.", summonerId);
                     ResultUtils.assertSuccess(summonerService.updateChampionMasteries(summonerId));
                     ResultUtils.assertSuccess(leagueService.updateLeagueEntry(summonerId));
                     ResultUtils.assertSuccess(summonerService.updateSummonerInfo(summonerId));
                     logger.info("Succeed in updating the summoner {}.", summonerId);
+                    success[0]++;
                     return ResultUtils.success();
                 });
             } catch (AppException e) {
                 logger.error("Failed to update summoner {}", summonerId);
-                systemService.sendWarnMessage(ResultUtils.fail(e));
                 e.printStackTrace();
             }
         }
+
+        logger.info("Summoners updated, {} succeeded, {} failed.", success[0], summoners.size() - success[0]);
     }
 
     /**
      * Add events of the matches after the last time updating the matches.
      */
-//    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
+    @Scheduled(initialDelay = AsyncConfig.INITIAL_DELAY, fixedDelay = AsyncConfig.FIXED_DELAY)
     public void updateMatches() throws AppException {
-        logger.info("Schedule to update matches.");
+        logger.info("Getting summoners for match...");
         List<SummonerDto> summoners = summonerService.getSummonersForMatch(PageUtils.getRowBounds()).getList();
+        logger.info("Got {} summoners for match. Handling...", summoners.size());
+        int success = 0;
         for (SummonerDto summoner : summoners) {
-            Result result;
             try {
-                result = matchService.updateMatches(summoner.getAccountId(), summoner.getLastMatch());
+                ResultUtils.assertSuccess(matchService.updateMatches(summoner.getAccountId(), summoner.getLastMatch()));
+                success++;
             } catch (AppException e) {
-                result = ResultUtils.fail(e);
+                logger.error("Failed to update matches of the account {}", summoner.getAccountId());
                 e.printStackTrace();
             }
-            systemService.sendWarnMessage(result);
         }
+        logger.info("Matches updated, {} succeeded, {} failed.", success, summoners.size() - success);
     }
 
     @Autowired

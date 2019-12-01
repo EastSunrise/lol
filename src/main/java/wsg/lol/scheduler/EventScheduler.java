@@ -1,6 +1,5 @@
 package wsg.lol.scheduler;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +31,8 @@ public class EventScheduler {
     /**
      * Add summoners by handling events of type {@link EventTypeEnum#Summoner}.
      */
-    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
+    @Scheduled(initialDelay = AsyncConfig.INITIAL_DELAY, fixedDelay = AsyncConfig.FIXED_DELAY)
     public void handleSummoners() {
-        logger.info("Adding summoners by event.");
         Result handle = eventService.handle(EventTypeEnum.Summoner, PageUtils.getRowBounds());
         systemService.sendWarnMessage(handle);
     }
@@ -44,9 +42,8 @@ public class EventScheduler {
      * <p>
      * Meanwhile, add events of type {@link EventTypeEnum#Summoner} if not exist from the participants of matches.
      */
-//    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
+    @Scheduled(initialDelay = AsyncConfig.INITIAL_DELAY, fixedDelay = AsyncConfig.FIXED_DELAY)
     public void handleMatches() {
-        logger.info("Adding matches by events");
         Result result = eventService.handle(EventTypeEnum.Match, PageUtils.getRowBounds());
         systemService.sendWarnMessage(result);
     }

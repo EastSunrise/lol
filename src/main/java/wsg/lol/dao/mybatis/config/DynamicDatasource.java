@@ -1,9 +1,9 @@
 package wsg.lol.dao.mybatis.config;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wsg.lol.common.enums.system.PlatformRoutingEnum;
 
 import java.lang.reflect.Field;
@@ -17,25 +17,21 @@ import java.sql.SQLException;
  */
 public class DynamicDatasource extends DataSource {
 
-    private static Logger logger = LogManager.getLogger(DynamicDatasource.class);
+    private static final Logger logger = LoggerFactory.getLogger(DynamicDatasource.class);
 
     @Override
     public Connection getConnection() {
         PlatformRoutingEnum platform = DatabaseIdentifier.getPlatform();
-
-        DataSource datasource = DatasourceHolder.instance().getDatasource(platform);
-
+        DataSource datasource = DatasourceHolder.getInstance().getDatasource(platform);
         if (datasource == null) {
             try {
-                datasource = initializeDatasource(platform);
-                DatasourceHolder.instance().addDatasource(platform, datasource);
+                datasource = getDatasource(platform);
+                DatasourceHolder.getInstance().addDatasource(platform, datasource);
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 logger.error("Failed to initialize the datasource of {}.", platform);
                 return null;
             }
         }
-
-        datasource = DatasourceHolder.instance().getDatasource(platform);
         try {
             return datasource.getConnection();
         } catch (SQLException e) {
@@ -47,15 +43,13 @@ public class DynamicDatasource extends DataSource {
     /**
      * Get datasource by formatting the url with the name of database.
      */
-    private DataSource initializeDatasource(PlatformRoutingEnum platform) throws IllegalArgumentException, IllegalAccessException {
+    private DataSource getDatasource(PlatformRoutingEnum platform) throws IllegalArgumentException, IllegalAccessException {
         DataSource datasource = new DataSource();
-
         PoolProperties property = new PoolProperties();
         Field[] fields = PoolProperties.class.getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);
             Object value = field.get(this.getPoolProperties());
-
             try {
                 field.set(property, value);
             } catch (Exception e) {
@@ -64,9 +58,15 @@ public class DynamicDatasource extends DataSource {
         }
         datasource.setPoolProperties(property);
 
-        String urlFormat = this.getUrl();
-        String url = String.format(urlFormat, DatabaseManager.instance().getDatabaseName(platform));
+        String url = String.format("jdbc:mysql://localhost:3306/%s?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false&rewriteBatchedStatements=true", getDatabaseName(platform));
         datasource.setUrl(url);
         return datasource;
+    }
+
+    private String getDatabaseName(PlatformRoutingEnum platform) {
+        if (platform == null) {
+            platform = PlatformRoutingEnum.NA;
+        }
+        return platform.name().toLowerCase();
     }
 }

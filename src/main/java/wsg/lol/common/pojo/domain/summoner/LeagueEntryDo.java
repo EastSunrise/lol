@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "s_league")
+@Table(name = "s_league")
 public class LeagueEntryDo extends BaseDo {
 
     @Id

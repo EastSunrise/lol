@@ -25,17 +25,4 @@ create table lol.t_image
     primary key (id)
 ) comment ='图片资源表';
 
--- 事件表
-drop table if exists lol.t_event;
-create table lol.t_event
-(
-    id      int auto_increment not null comment '主键',
-    type    tinyint            not null comment '类型，对应处理方式',
-    context varchar(64)        not null comment '上下文',
-    status  tinyint            not null comment '状态',
-    primary key (id),
-    unique (type, context),
-    index (status)
-) comment ='事件表';
-
 commit;

@@ -19,7 +19,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "m_team_stats")
+@Table(name = "m_team_stats")
 public class TeamStatsDo extends BaseDo {
 
     @Id

@@ -9,17 +9,13 @@ import wsg.lol.common.enums.system.PlatformRoutingEnum;
  */
 public class DatabaseIdentifier {
 
-    private static ThreadLocal<PlatformRoutingEnum> platform = new ThreadLocal<>();
+    private static ThreadLocal<PlatformRoutingEnum> threadLocal = new ThreadLocal<>();
 
     public static PlatformRoutingEnum getPlatform() {
-        return platform.get();
+        return threadLocal.get();
     }
 
-    public static void setPlatform(PlatformRoutingEnum routingEnum) {
-        platform.set(routingEnum);
-    }
-
-    public static String getDatabaseName(PlatformRoutingEnum platform) {
-        return platform.name().toLowerCase();
+    public static void setPlatform(PlatformRoutingEnum platform) {
+        threadLocal.set(platform);
     }
 }

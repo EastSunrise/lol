@@ -20,7 +20,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "m_match_frame")
+@Table(name = "m_match_frame")
 public class MatchFrameDo extends BaseDo {
 
     @Id

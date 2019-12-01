@@ -1,6 +1,6 @@
 -- 召唤师信息表
 drop table if exists lol.s_summoner;
-create table lol.s_summoner
+create table s_summoner
 (
     id              varchar(63) not null comment '主键，Encrypted',
     account_id      varchar(56) not null comment 'Encrypted',
@@ -20,7 +20,7 @@ create table lol.s_summoner
 
 -- 英雄成就表
 drop table if exists lol.s_mastery;
-create table lol.s_mastery
+create table s_mastery
 (
     summoner_id                      varchar(63) not null comment 'Encrypted',
     champion_id                      int         not null comment '英雄ID',
@@ -36,7 +36,7 @@ create table lol.s_mastery
 
 -- 个人排位信息表
 drop table if exists lol.s_league;
-create table lol.s_league
+create table s_league
 (
     summoner_id     varchar(63) not null comment '召唤师ID',
     queue_type      tinyint     not null comment '排位队列',

@@ -20,7 +20,7 @@ import javax.persistence.Table;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "m_participant")
+@Table(name = "m_participant")
 public class ParticipantDo extends BaseDo {
 
     @Id

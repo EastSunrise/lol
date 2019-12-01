@@ -1,6 +1,6 @@
 -- 对局信息表
 drop table if exists lol.m_match;
-create table lol.m_match
+create table m_match
 (
     game_id        bigint      not null comment '主键',
     platform_id    tinyint     null comment '服务器',
@@ -17,7 +17,7 @@ create table lol.m_match
 
 -- 对局时间帧表
 drop table if exists lol.m_match_frame;
-create table lol.m_match_frame
+create table m_match_frame
 (
     id                        bigint auto_increment not null comment '主键',
     game_id                   bigint                not null comment '对局ID',
@@ -48,7 +48,7 @@ create table lol.m_match_frame
 
 -- 对局队伍数据表
 drop table if exists lol.m_team_stats;
-create table lol.m_team_stats
+create table m_team_stats
 (
     game_id                bigint      not null comment '主键',
     team_id                tinyint     not null comment '队伍ID',
@@ -72,7 +72,7 @@ create table lol.m_team_stats
 
 -- 对局玩家表
 drop table if exists lol.m_participant;
-create table lol.m_participant
+create table m_participant
 (
     id                  bigint auto_increment not null comment '主键',
     game_id             bigint                not null comment '对局ID',
@@ -95,7 +95,7 @@ create table lol.m_participant
 
 -- 对局玩家数据表
 drop table if exists lol.m_participant_stats;
-create table lol.m_participant_stats
+create table m_participant_stats
 (
     id                                  bigint  not null comment '主键',
     win                                 tinyint null comment '是否胜利',
@@ -206,7 +206,7 @@ create table lol.m_participant_stats
 
 -- 对局玩家时间帧表
 drop table if exists lol.m_participant_frame;
-create table lol.m_participant_frame
+create table m_participant_frame
 (
     id                    bigint auto_increment not null comment '主键',
     related_id            bigint                not null comment '关联玩家的对局内ID',

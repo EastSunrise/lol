@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "s_mastery")
+@Table(name = "s_mastery")
 public class ChampionMasteryDo extends BaseDo {
 
     @Id

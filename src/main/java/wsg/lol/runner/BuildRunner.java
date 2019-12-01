@@ -1,5 +1,6 @@
 package wsg.lol.runner;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,11 @@ public class BuildRunner implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) {
+        try {
+            Thread.sleep(DateUtils.MILLIS_PER_MINUTE);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         logger.info("Initializing the database.");
         GenericResult<Boolean> result = systemService.initialized();
         if (result.getObject()) {

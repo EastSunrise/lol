@@ -27,5 +27,5 @@ public interface EventService {
     /**
      * Update the status of events.
      */
-    Result updateStatus(EventTypeEnum type, Object context, EventStatusEnum from, EventStatusEnum to);
+    Result updateStatus(EventTypeEnum eventType, Object context, EventStatusEnum from, EventStatusEnum to);
 }

@@ -67,7 +67,6 @@ public class SummonerServiceImpl implements SummonerService {
     @Override
     @Performance
     public Result updateSummonerInfo(String summonerId) {
-        logger.info("Updating the summoner {}.", summonerId);
         SummonerDto summoner = summonerV4.getSummonerById(summonerId);
         SummonerDo summonerDo = ObjectTransfer.transferDto(summoner, SummonerDo.class);
         int score = championMasteryV4.getScoreBySummonerId(summonerId);
@@ -78,6 +77,7 @@ public class SummonerServiceImpl implements SummonerService {
             logger.error("Failed to update the summoner {}.", summonerId);
             throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to update the summoner " + summonerId);
         }
+        logger.info("Updated the summoner {}", summonerId);
         return ResultUtils.success();
     }
 
@@ -97,7 +97,7 @@ public class SummonerServiceImpl implements SummonerService {
     @Transactional
     @Performance
     public Result updateChampionMasteries(String summonerId) {
-        logger.info("Updating champion masteries of {}.", summonerId);
+        logger.info("Updating champion masteries of {}...", summonerId);
         List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
         ResultUtils.assertSuccess(MapperExecutor.updateList(championMasteryMapper, ObjectTransfer.transferDtoList(championMasteries, ChampionMasteryDo.class)));
         return ResultUtils.success();

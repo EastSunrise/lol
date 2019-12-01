@@ -16,6 +16,7 @@ import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.pojo.serialize.RecordExtraProcessor;
 import wsg.lol.common.util.EnumUtils;
 import wsg.lol.common.util.HttpHelper;
+import wsg.lol.dao.GlobalConfig;
 import wsg.lol.dao.dragon.config.DragonConfig;
 
 import javax.xml.ws.http.HTTPException;
@@ -45,6 +46,8 @@ public class BaseApi {
     private ApiClient apiClient;
 
     private DragonConfig dragonConfig;
+
+    private GlobalConfig globalConfig;
 
     /**
      * Get single object.
@@ -106,7 +109,7 @@ public class BaseApi {
         if (StringUtils.isNotEmpty(urlParams)) {
             urlParams = "?" + urlParams;
         }
-        String urlStr = (apiClient.getRegion().getHost() + apiRef + urlParams).replace("+", "%20");
+        String urlStr = (globalConfig.getRegion().getHost() + apiRef + urlParams).replace("+", "%20");
 
         // todo get from the api directly
         String filepath = StringUtils.joinWith(File.separator, dragonConfig.getCdnDir(), "api", urlStr.replace("?", File.separator).replace("&", File.separator) + ".json");
@@ -190,6 +193,8 @@ public class BaseApi {
                     throw new AppException(ErrorCodeConst.SYSTEM_ERROR, e);
                 }
                 threadSleep(RETRY_INTERVAL);
+            } catch (HTTPException e) {
+                throw new AppException(ErrorCodeConst.HTTPS_ERROR, e);
             }
         }
     }
@@ -201,6 +206,11 @@ public class BaseApi {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Autowired
+    public void setGlobalConfig(GlobalConfig globalConfig) {
+        this.globalConfig = globalConfig;
     }
 
     @Autowired

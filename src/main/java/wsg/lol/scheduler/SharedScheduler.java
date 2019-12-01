@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.result.system.VersionResult;
@@ -25,7 +26,7 @@ public class SharedScheduler {
 
     private SharedService sharedService;
 
-    //    @Scheduled(fixedRate = DateUtils.MILLIS_PER_HOUR)
+    @Scheduled(initialDelay = AsyncConfig.INITIAL_DELAY, fixedDelay = AsyncConfig.FIXED_DELAY)
     public void checkVersion() {
         logger.info("Schedule to check the version...");
         VersionResult versionResult = systemService.getVersion();
@@ -39,8 +40,8 @@ public class SharedScheduler {
         systemService.sendMessage(message);
     }
 
-    //    @Scheduled(fixedRate = DateUtils.MILLIS_PER_HOUR)
-    public void updateGSharedData() {
+    @Scheduled(initialDelay = AsyncConfig.INITIAL_DELAY, fixedDelay = AsyncConfig.FIXED_DELAY)
+    public void updateSharedData() {
         logger.info("Schedule to update the shared data.");
         Result result = sharedService.updateSharedStatus();
         systemService.sendWarnMessage(result);

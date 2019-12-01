@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.system.EventStatusEnum;
-import wsg.lol.common.enums.system.EventTypeEnum;
 
 /**
  * DTO for events.
@@ -15,11 +14,7 @@ import wsg.lol.common.enums.system.EventTypeEnum;
 @Data
 public class EventDto extends BaseDto {
 
-    private Integer id;
-
-    private EventTypeEnum type;
-
-    private String context;
+    private String id;
 
     private EventStatusEnum status;
 }

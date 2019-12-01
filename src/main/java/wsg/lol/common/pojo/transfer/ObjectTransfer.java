@@ -108,25 +108,35 @@ public class ObjectTransfer {
     }
 
     public static <F extends BaseDo, T extends BaseDto> List<T> transferDoList(List<F> fs, Class<T> tClass) {
+        return transferDoList(fs, null, tClass);
+    }
+
+    public static <F extends BaseDo, T extends BaseDto> List<T> transferDoList(List<F> fs, Class<F> fClass, Class<T> tClass) {
         if (CollectionUtils.isEmpty(fs)) {
             return new ArrayList<>();
         }
 
         List<T> ts = new ArrayList<>();
         for (F f : fs) {
-            T t = ObjectTransfer.transferDo(f, tClass);
+            T t = ObjectTransfer.transferDo(f, fClass, tClass);
             ts.add(t);
         }
         return ts;
     }
 
-    @SuppressWarnings("unchecked")
     public static <F extends BaseDo, T extends BaseDto> T transferDo(F f, Class<T> tClass) {
+        return transferDo(f, null, tClass);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <F extends BaseDo, T extends BaseDto> T transferDo(F f, Class<F> fClass, Class<T> tClass) {
         if (f == null) {
             return null;
         }
+        if (fClass == null) {
+            fClass = (Class<F>) f.getClass();
+        }
 
-        Class<F> fClass = (Class<F>) f.getClass();
         Field[] fFields = fClass.getDeclaredFields();
         Map<String, Object> fMap = new HashMap<>();
         T t = null;

@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "s_summoner")
+@Table(name = "s_summoner")
 public class SummonerDo extends BaseDo {
 
     @Id

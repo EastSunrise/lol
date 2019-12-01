@@ -21,7 +21,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "m_match")
+@Table(name = "m_match")
 public class MatchDo extends BaseDo {
 
     @Id

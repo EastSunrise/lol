@@ -8,18 +8,18 @@ import org.springframework.transaction.annotation.Transactional;
 import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.system.EventTypeEnum;
+import wsg.lol.common.enums.system.PlatformRoutingEnum;
 import wsg.lol.common.pojo.dto.match.MatchListDto;
 import wsg.lol.common.pojo.dto.match.MatchReferenceDto;
 import wsg.lol.common.pojo.query.QueryMatchListDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.MatchV4;
+import wsg.lol.dao.mybatis.config.DatabaseIdentifier;
 import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.MatchService;
 import wsg.lol.service.intf.SummonerService;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Kingen
@@ -39,8 +39,8 @@ public class MatchServiceImpl implements MatchService {
     @Transactional
     @Performance
     public Result updateMatches(String accountId, Date beginTime) {
-        logger.info("Adding events of matches of the account {}.", accountId);
-        Set<Long> gameIds = new HashSet<>();
+        logger.info("Adding events of matches of the account {}...", accountId);
+        Map<PlatformRoutingEnum, Set<String>> map = new HashMap<>();
         QueryMatchListDto queryMatchListDto = new QueryMatchListDto();
         queryMatchListDto.setBeginTime(beginTime.getTime());
         long endIndex = 0L, total;
@@ -53,15 +53,20 @@ public class MatchServiceImpl implements MatchService {
             MatchListDto matchListDto = matchV4.getMatchListByAccount(accountId, queryMatchListDto);
             // todo event with platform
             for (MatchReferenceDto match : matchListDto.getMatches()) {
-                gameIds.add(match.getGameId());
+                PlatformRoutingEnum platform = match.getPlatformId();
+                map.getOrDefault(platform, new HashSet<>()).add(match.getGameId().toString());
             }
             total = matchListDto.getTotalGames();
         } while (endIndex < total);
 
-        Result result = eventService.insertEvents(EventTypeEnum.Match, gameIds);
-        ResultUtils.assertSuccess(result);
+        for (Map.Entry<PlatformRoutingEnum, Set<String>> entry : map.entrySet()) {
+            DatabaseIdentifier.setPlatform(entry.getKey());
+            Result result = eventService.insertEvents(EventTypeEnum.Match, entry.getValue());
+            ResultUtils.assertSuccess(result);
+        }
 
-        result = summonerService.updateSummonerLastMatch(accountId, lastMatch);
+        DatabaseIdentifier.setPlatform(null);
+        Result result = summonerService.updateSummonerLastMatch(accountId, lastMatch);
         ResultUtils.assertSuccess(result);
 
         logger.info("Succeed in adding events of matches of the account {}.", accountId);
