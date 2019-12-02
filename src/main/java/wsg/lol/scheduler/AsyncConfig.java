@@ -32,7 +32,7 @@ public class AsyncConfig {
     @Value("${task.keepAliveSeconds}")
     private int keepAliveSeconds;
 
-    static final long FIXED_DELAY = DateUtils.MILLIS_PER_DAY;
+    static final long FIXED_DELAY = DateUtils.MILLIS_PER_MINUTE;
     static final long INITIAL_DELAY = DateUtils.MILLIS_PER_SECOND;
 
     @Bean

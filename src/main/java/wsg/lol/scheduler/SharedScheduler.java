@@ -1,5 +1,6 @@
 package wsg.lol.scheduler;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class SharedScheduler {
 
     private SharedService sharedService;
 
-    @Scheduled(initialDelay = AsyncConfig.INITIAL_DELAY, fixedDelay = AsyncConfig.FIXED_DELAY)
+    @Scheduled(initialDelay = AsyncConfig.INITIAL_DELAY, fixedDelay = DateUtils.MILLIS_PER_DAY)
     public void checkVersion() {
         logger.info("Schedule to check the version...");
         VersionResult versionResult = systemService.getVersion();
@@ -40,7 +41,7 @@ public class SharedScheduler {
         systemService.sendMessage(message);
     }
 
-    @Scheduled(initialDelay = AsyncConfig.INITIAL_DELAY, fixedDelay = AsyncConfig.FIXED_DELAY)
+    @Scheduled(initialDelay = AsyncConfig.INITIAL_DELAY, fixedDelay = DateUtils.MILLIS_PER_DAY)
     public void updateSharedData() {
         logger.info("Schedule to update the shared data.");
         Result result = sharedService.updateSharedStatus();

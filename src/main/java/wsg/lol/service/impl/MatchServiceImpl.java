@@ -46,9 +46,7 @@ public class MatchServiceImpl implements MatchService {
         long endIndex = 0L, total;
         Date lastMatch;
         do {
-            endIndex += QueryMatchListDto.MAX_INDEX_RANGE;
-//            queryMatchListDto.setEndIndex(endIndex);
-            queryMatchListDto.setBeginIndex(endIndex - QueryMatchListDto.MAX_INDEX_RANGE);
+            queryMatchListDto.setBeginIndex(endIndex);
             lastMatch = new Date();
             MatchListDto matchListDto = matchV4.getMatchListByAccount(accountId, queryMatchListDto);
             for (MatchReferenceDto match : matchListDto.getMatches()) {
@@ -59,6 +57,7 @@ public class MatchServiceImpl implements MatchService {
                 map.get(platform).add(match.getGameId().toString());
             }
             total = matchListDto.getTotalGames();
+            endIndex = matchListDto.getEndIndex();
         } while (endIndex < total);
 
         for (Map.Entry<PlatformRoutingEnum, Set<String>> entry : map.entrySet()) {
