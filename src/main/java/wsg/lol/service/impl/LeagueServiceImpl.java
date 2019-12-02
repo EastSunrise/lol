@@ -16,7 +16,7 @@ import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.LeagueV4;
-import wsg.lol.dao.mybatis.mapper.summoner.LeagueEntryMapper;
+import wsg.lol.dao.mybatis.mapper.region.summoner.LeagueEntryMapper;
 import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.LeagueService;

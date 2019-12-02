@@ -13,8 +13,8 @@ import wsg.lol.common.pojo.dto.share.RuneTreeDto;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.dragon.intf.DragonDao;
-import wsg.lol.dao.mybatis.mapper.rune.RuneMapper;
-import wsg.lol.dao.mybatis.mapper.rune.RuneTreeMapper;
+import wsg.lol.dao.mybatis.mapper.lol.rune.RuneMapper;
+import wsg.lol.dao.mybatis.mapper.lol.rune.RuneTreeMapper;
 import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.RuneService;
 

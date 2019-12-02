@@ -1,11 +1,11 @@
 package wsg.lol.runner;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import wsg.lol.common.base.GenericResult;
@@ -28,16 +28,13 @@ public class BuildRunner implements ApplicationRunner {
 
     private LeagueService leagueService;
 
+    private ApplicationContext applicationContext;
+
     /**
      * Initial events of summoners by querying the league entries of all queues, tiers and divisions.
      */
     @Override
     public void run(ApplicationArguments args) {
-        try {
-            Thread.sleep(DateUtils.MILLIS_PER_MINUTE);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         logger.info("Initializing the database.");
         GenericResult<Boolean> result = systemService.initialized();
         if (result.getObject()) {
@@ -49,6 +46,11 @@ public class BuildRunner implements ApplicationRunner {
         ResultUtils.assertSuccess(systemService.initialize());
 
         logger.info("Succeed in initializing the database.");
+    }
+
+    @Autowired
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
     @Autowired

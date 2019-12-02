@@ -7,7 +7,6 @@ import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.match.*;
 import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,7 +20,7 @@ public class MatchEventDto extends BaseDto {
 
     @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private MatchEventTypeEnum type;
-    private Date timestamp;
+    private Integer timestamp;
     private Integer participantId;
 
     private Integer skillSlot;

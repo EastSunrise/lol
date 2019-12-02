@@ -1,7 +1,6 @@
 package wsg.lol.dao.api.client;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +20,6 @@ import wsg.lol.dao.dragon.config.DragonConfig;
 
 import javax.xml.ws.http.HTTPException;
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -63,14 +61,7 @@ public class BaseApi {
     }
 
     protected <Q extends QueryDto, T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Q queryDto, Class<T> clazz) {
-        Map<String, Object> queryParams = new HashMap<>();
-        try {
-            BeanUtils.populate(queryDto, queryParams);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            throw new AppException(ErrorCodeConst.SYSTEM_ERROR, e);
-        }
-        return getObject(apiRef, pathParams, queryParams, clazz);
+        return getObject(apiRef, pathParams, queryDto.toMap(), clazz);
     }
 
     protected <T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {

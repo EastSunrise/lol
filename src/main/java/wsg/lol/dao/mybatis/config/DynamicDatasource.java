@@ -11,7 +11,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * To define different database dynamic.
+ * Define different database dynamic.
  *
  * @author Kingen
  */
@@ -58,15 +58,8 @@ public class DynamicDatasource extends DataSource {
         }
         datasource.setPoolProperties(property);
 
-        String url = String.format("jdbc:mysql://localhost:3306/%s?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false&rewriteBatchedStatements=true", getDatabaseName(platform));
+        String url = String.format(datasource.getUrl(), platform.name().toLowerCase());
         datasource.setUrl(url);
         return datasource;
-    }
-
-    private String getDatabaseName(PlatformRoutingEnum platform) {
-        if (platform == null) {
-            platform = PlatformRoutingEnum.NA;
-        }
-        return platform.name().toLowerCase();
     }
 }

@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,10 +30,10 @@ public class MatchFrameDo extends BaseDo {
     private Long gameId;
 
     @Column
-    private Date timeline;
+    private Integer timeline;
 
     @Column
-    private Date timing;
+    private Integer timing;
 
     @Column
     private MatchEventTypeEnum type;

@@ -22,8 +22,8 @@ import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionV3;
 import wsg.lol.dao.api.impl.LOLStatusV3;
 import wsg.lol.dao.dragon.intf.DragonDao;
-import wsg.lol.dao.mybatis.mapper.system.ConfigMapper;
-import wsg.lol.dao.mybatis.mapper.system.ImageMapper;
+import wsg.lol.dao.mybatis.mapper.lol.system.ConfigMapper;
+import wsg.lol.dao.mybatis.mapper.lol.system.ImageMapper;
 import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.SharedService;
 

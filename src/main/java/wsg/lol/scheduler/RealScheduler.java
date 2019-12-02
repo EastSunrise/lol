@@ -14,7 +14,6 @@ import wsg.lol.common.util.ResultUtils;
 import wsg.lol.service.intf.LeagueService;
 import wsg.lol.service.intf.MatchService;
 import wsg.lol.service.intf.SummonerService;
-import wsg.lol.service.intf.SystemService;
 
 import java.util.List;
 
@@ -30,8 +29,6 @@ public class RealScheduler {
     private static final Logger logger = LoggerFactory.getLogger(RealScheduler.class);
 
     private SummonerService summonerService;
-
-    private SystemService systemService;
 
     private TransactionTemplate transactionTemplate;
 
@@ -103,11 +100,6 @@ public class RealScheduler {
     @Autowired
     public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
         this.transactionTemplate = transactionTemplate;
-    }
-
-    @Autowired
-    public void setSystemService(SystemService systemService) {
-        this.systemService = systemService;
     }
 
     @Autowired

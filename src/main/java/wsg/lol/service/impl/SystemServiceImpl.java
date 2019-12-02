@@ -15,7 +15,7 @@ import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.GlobalConfig;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.dragon.intf.GeneralDao;
-import wsg.lol.dao.mybatis.mapper.system.ConfigMapper;
+import wsg.lol.dao.mybatis.mapper.lol.system.ConfigMapper;
 import wsg.lol.service.intf.SystemService;
 
 import java.io.File;

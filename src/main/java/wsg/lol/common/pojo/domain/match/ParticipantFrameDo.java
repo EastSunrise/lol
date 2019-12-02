@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 /**
  * DO for frames of participants in the match
@@ -29,7 +28,7 @@ public class ParticipantFrameDo extends BaseDo {
     private Long relatedId;
 
     @Column
-    private Date timeline;
+    private Integer timeline;
 
     @Column
     @Flatten

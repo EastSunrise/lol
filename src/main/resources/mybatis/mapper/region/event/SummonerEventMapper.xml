@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wsg.lol.dao.mybatis.mapper.region.event.SummonerEventMapper">
+    <insert id="insertIgnoreList">
+        insert ignore into t_event_summoner
+        values
+        <foreach collection="ids" item="item" separator=",">
+            (#{item},
+            #{status})
+        </foreach>
+    </insert>
+
+    <update id="updateStatus">
+        update t_event_summoner
+        set status = #{to}
+        where id = #{id}
+          and status = #{from}
+    </update>
+</mapper>

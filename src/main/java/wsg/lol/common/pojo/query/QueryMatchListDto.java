@@ -10,7 +10,9 @@ import wsg.lol.common.constant.ErrorCodeConst;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Condition to query matched.
@@ -79,5 +81,17 @@ public class QueryMatchListDto extends QueryDto {
     public boolean isValid() {
         return (beginIndex == null || endIndex == null || (beginIndex < endIndex && beginIndex + MAX_INDEX_RANGE >= endIndex))
                 && (beginTime == null || endTime == null || (beginTime < endTime && beginTime + MAX_TIME_RANGE >= endTime));
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("champion", champion);
+        map.put("queue", queue);
+        map.put("endTime", endTime);
+        map.put("beginTime", beginTime);
+        map.put("endIndex", endIndex);
+        map.put("beginIndex", beginIndex);
+        return map;
     }
 }

@@ -5,7 +5,7 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
 import wsg.lol.common.enums.champion.ChampionTipEnum;
 import wsg.lol.common.enums.champion.SpellNumEnum;
-import wsg.lol.common.enums.match.GameModeEnum;
+import wsg.lol.common.enums.match.*;
 import wsg.lol.common.enums.share.*;
 import wsg.lol.common.enums.summoner.DivisionEnum;
 import wsg.lol.common.enums.summoner.TierEnum;
@@ -30,7 +30,10 @@ import java.sql.SQLException;
         MapEnum.class, GameModeEnum.class, RecommendedTypeEnum.class, BlockTypeEnum.class,
         PlatformRoutingEnum.class,
         RankQueueEnum.class, TierEnum.class, DivisionEnum.class,
-        EventTypeEnum.class, EventStatusEnum.class
+        EventTypeEnum.class, EventStatusEnum.class,
+        MatchEventTypeEnum.class,
+        LevelUpTypeEnum.class, WardTypeEnum.class, MonsterTypeEnum.class, MonsterSubTypeEnum.class,
+        TeamIdEnum.class, BuildingTypeEnum.class, LaneTypeEnum.class, TowerTypeEnum.class, TeamResultEnum.class
 })
 public class EnumTypeHandler<T extends Enum<T>> extends BaseTypeHandler<T> {
 

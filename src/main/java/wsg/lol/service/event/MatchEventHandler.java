@@ -17,7 +17,7 @@ import wsg.lol.common.pojo.dto.match.*;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.MatchV4;
-import wsg.lol.dao.mybatis.mapper.match.*;
+import wsg.lol.dao.mybatis.mapper.region.match.*;
 import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.EventService;
 

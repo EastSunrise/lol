@@ -10,22 +10,13 @@ spring:
     request-context-attribute: request
     suffix: .ftl
   datasource:
-    name: mysql.na
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/lol?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false&rewriteBatchedStatements=true
+    url: jdbc:mysql://localhost:3306/%s?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false&rewriteBatchedStatements=true
     username: root
     password: 2787
   resources:
     static-locations: classpath:/static/, classpath:/
-mybatis:
-  mapper-locations: classpath:mybatis/mapper/*/*Mapper.xml
-  configuration:
-    map-underscore-to-camel-case: true
-  type-handlers-package: wsg.lol.dao.mybatis.typehandler
 server:
   port: 8090
 logging:
   config: classpath:config/logback.xml
-mapper:
-  identity: MYSQL
-

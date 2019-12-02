@@ -24,9 +24,9 @@ import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
 import wsg.lol.dao.api.impl.SummonerV4;
-import wsg.lol.dao.mybatis.mapper.summoner.ChampionMasteryMapper;
-import wsg.lol.dao.mybatis.mapper.summoner.LeagueEntryMapper;
-import wsg.lol.dao.mybatis.mapper.summoner.SummonerMapper;
+import wsg.lol.dao.mybatis.mapper.region.summoner.ChampionMasteryMapper;
+import wsg.lol.dao.mybatis.mapper.region.summoner.LeagueEntryMapper;
+import wsg.lol.dao.mybatis.mapper.region.summoner.SummonerMapper;
 import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.EventService;
 

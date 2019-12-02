@@ -47,14 +47,16 @@ public class MatchServiceImpl implements MatchService {
         Date lastMatch;
         do {
             endIndex += QueryMatchListDto.MAX_INDEX_RANGE;
-            queryMatchListDto.setEndIndex(endIndex);
+//            queryMatchListDto.setEndIndex(endIndex);
             queryMatchListDto.setBeginIndex(endIndex - QueryMatchListDto.MAX_INDEX_RANGE);
             lastMatch = new Date();
             MatchListDto matchListDto = matchV4.getMatchListByAccount(accountId, queryMatchListDto);
-            // todo event with platform
             for (MatchReferenceDto match : matchListDto.getMatches()) {
                 PlatformRoutingEnum platform = match.getPlatformId();
-                map.getOrDefault(platform, new HashSet<>()).add(match.getGameId().toString());
+                if (!map.containsKey(platform)) {
+                    map.put(platform, new HashSet<>());
+                }
+                map.get(platform).add(match.getGameId().toString());
             }
             total = matchListDto.getTotalGames();
         } while (endIndex < total);
