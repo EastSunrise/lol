@@ -43,10 +43,10 @@ public class MatchServiceImpl implements MatchService {
         Map<PlatformRoutingEnum, Set<String>> map = new HashMap<>();
         QueryMatchListDto queryMatchListDto = new QueryMatchListDto();
         queryMatchListDto.setBeginTime(beginTime.getTime());
-        long endIndex = 0L, total;
+        long beginIndex = 0L, total;
         Date lastMatch;
         do {
-            queryMatchListDto.setBeginIndex(endIndex);
+            queryMatchListDto.setBeginIndex(beginIndex);
             lastMatch = new Date();
             MatchListDto matchListDto = matchV4.getMatchListByAccount(accountId, queryMatchListDto);
             for (MatchReferenceDto match : matchListDto.getMatches()) {
@@ -57,8 +57,8 @@ public class MatchServiceImpl implements MatchService {
                 map.get(platform).add(match.getGameId().toString());
             }
             total = matchListDto.getTotalGames();
-            endIndex = matchListDto.getEndIndex();
-        } while (endIndex < total);
+            beginIndex = matchListDto.getEndIndex();
+        } while (beginIndex < total);
 
         for (Map.Entry<PlatformRoutingEnum, Set<String>> entry : map.entrySet()) {
             DatabaseIdentifier.setPlatform(entry.getKey());

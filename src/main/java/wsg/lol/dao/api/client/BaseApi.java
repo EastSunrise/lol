@@ -184,8 +184,6 @@ public class BaseApi {
                     throw new AppException(ErrorCodeConst.SYSTEM_ERROR, e);
                 }
                 threadSleep(RETRY_INTERVAL);
-            } catch (HTTPException e) {
-                throw new AppException(ErrorCodeConst.HTTPS_ERROR, e);
             }
         }
     }

@@ -26,6 +26,7 @@ public class TeamStatsDo extends BaseDo {
     private Long gameId;
 
     @Id
+    @Column
     private TeamIdEnum teamId;
 
     @Column

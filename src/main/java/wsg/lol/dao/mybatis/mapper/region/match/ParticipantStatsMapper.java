@@ -1,6 +1,5 @@
 package wsg.lol.dao.mybatis.mapper.region.match;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.additional.insert.InsertListMapper;
 import wsg.lol.common.pojo.domain.match.ParticipantStatsDo;
@@ -11,7 +10,5 @@ import wsg.lol.common.pojo.domain.match.ParticipantStatsDo;
  * @author Kingen
  */
 @Repository
-@Mapper
 public interface ParticipantStatsMapper extends InsertListMapper<ParticipantStatsDo> {
-
 }

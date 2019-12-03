@@ -1,22 +1,20 @@
 package wsg.lol.common.pojo.dto.spectator;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import wsg.lol.common.base.BaseDto;
+
 /**
- * todo
+ * DTO for observers of the game.
  *
  * @author Kingen
  */
-public class Observer {
+@EqualsAndHashCode(callSuper = true)
+@Data
+class Observer extends BaseDto {
 
     /**
      * Key used to decrypt the spectator grid game data for playback
      */
     private String encryptionKey;
-
-    public String getEncryptionKey() {
-        return encryptionKey;
-    }
-
-    public void setEncryptionKey(String encryptionKey) {
-        this.encryptionKey = encryptionKey;
-    }
 }

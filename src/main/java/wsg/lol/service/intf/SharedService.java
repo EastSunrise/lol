@@ -1,8 +1,10 @@
 package wsg.lol.service.intf;
 
+import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.share.ImageGroupEnum;
 import wsg.lol.common.pojo.dto.share.ImageDto;
+import wsg.lol.common.pojo.dto.spectator.FeaturedGames;
 
 import java.util.List;
 
@@ -37,4 +39,14 @@ public interface SharedService {
      * Update the rotation of champions.
      */
     Result updateChampionRotation();
+
+    /**
+     * Update data of the featured games, and put in the cache.
+     */
+    GenericResult<FeaturedGames> updateFeaturedGames();
+
+    /**
+     * Get data of the featured games, from cache first.
+     */
+    GenericResult<FeaturedGames> getFeaturedGames();
 }

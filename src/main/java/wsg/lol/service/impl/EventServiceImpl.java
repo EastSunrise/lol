@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.AppException;
+import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.system.EventStatusEnum;
@@ -56,10 +57,12 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Performance
-    public Result insertEvents(EventTypeEnum eventType, Set<?> contexts) {
+    public GenericResult<Integer> insertEvents(EventTypeEnum eventType, Set<?> contexts) {
+        GenericResult<Integer> result = new GenericResult<>();
         if (CollectionUtils.isEmpty(contexts)) {
             logger.info("Contexts are empty.");
-            return ResultUtils.success();
+            result.setObject(0);
+            return result;
         }
 
         List<String> values = new ArrayList<>();
@@ -72,7 +75,8 @@ public class EventServiceImpl implements EventService {
         EventMapper<? extends EventDo> mapper = applicationContext.getBean(eventType.getMapperClass());
         int count = mapper.insertIgnoreList(values, EventStatusEnum.Unfinished);
         logger.info("{} events inserted.", count);
-        return ResultUtils.success();
+        result.setObject(count);
+        return result;
     }
 
     @Override

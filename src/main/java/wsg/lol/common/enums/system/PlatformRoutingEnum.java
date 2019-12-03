@@ -1,5 +1,6 @@
 package wsg.lol.common.enums.system;
 
+import wsg.lol.common.pojo.serialize.EqualsToSerializable;
 import wsg.lol.common.pojo.serialize.StringSerializable;
 
 /**
@@ -8,7 +9,7 @@ import wsg.lol.common.pojo.serialize.StringSerializable;
  * @author Kingen
  * @see <a href="https://developer.riotgames.com/docs/lol#_routing-values">Routing Values</a>
  */
-public enum PlatformRoutingEnum implements StringSerializable {
+public enum PlatformRoutingEnum implements StringSerializable, EqualsToSerializable {
     LOL("api.riotgames.com"),
     BR("br1.api.riotgames.com", "BR1"),
     EUN("eun1.api.riotgames.com", "EUN1"),
@@ -41,11 +42,16 @@ public enum PlatformRoutingEnum implements StringSerializable {
     }
 
     public String getId() {
-        return id;
+        return id == null ? name() : id;
     }
 
     @Override
     public String serialize() {
         return getId();
+    }
+
+    @Override
+    public boolean equalsToString(String string) {
+        return this.getId().equalsIgnoreCase(string);
     }
 }

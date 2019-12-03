@@ -9,7 +9,10 @@ import wsg.lol.common.pojo.dto.match.MatchListDto;
 import wsg.lol.common.pojo.dto.match.MatchTimelineDto;
 import wsg.lol.common.pojo.query.QueryMatchListDto;
 import wsg.lol.dao.api.client.BaseApi;
+import wsg.lol.dao.api.client.ResponseCodeEnum;
 
+import javax.xml.ws.http.HTTPException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +50,19 @@ public class MatchV4 extends BaseApi {
 
         Map<String, Object> params = new HashMap<>();
         params.put("encryptedAccountId", accountId);
-        return this.getObject("/lol/match/v4/matchlists/by-account/{encryptedAccountId}", params, queryMatchListDto, MatchListDto.class);
+        try {
+            return this.getObject("/lol/match/v4/matchlists/by-account/{encryptedAccountId}", params, queryMatchListDto, MatchListDto.class);
+        } catch (HTTPException e) {
+            if (e.getStatusCode() == ResponseCodeEnum.NotFound.getCode()) {
+                MatchListDto matchListDto = new MatchListDto();
+                matchListDto.setEndIndex(0);
+                matchListDto.setMatches(new ArrayList<>());
+                matchListDto.setStartIndex(0);
+                matchListDto.setTotalGames(0);
+                return matchListDto;
+            }
+            throw e;
+        }
     }
 
     /**

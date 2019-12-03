@@ -1,6 +1,5 @@
 package wsg.lol.dao.mybatis.mapper.region.match;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.base.insert.InsertMapper;
 import wsg.lol.common.pojo.domain.match.MatchDo;
@@ -11,6 +10,5 @@ import wsg.lol.common.pojo.domain.match.MatchDo;
  * @author Kingen
  */
 @Repository
-@Mapper
 public interface MatchMapper extends InsertMapper<MatchDo> {
 }

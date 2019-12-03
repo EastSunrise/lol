@@ -56,7 +56,7 @@ public class MatchEventHandler implements EventHandler {
 
     @Override
     @Performance
-    public synchronized Result handle(List<? extends EventDo> events) {
+    public Result handle(List<? extends EventDo> events) {
         final int[] success = {0};
         for (EventDo event : events) {
             long gameId = Long.parseLong(event.getId());
@@ -107,6 +107,7 @@ public class MatchEventHandler implements EventHandler {
 
                         participantDo.setGameId(gameId);
                         participantDo.setParticipantId(participantId);
+                        participantDo.generateId();
 
                         participantDo.setTeamId(participantDto.getTeamId());
                         participantDo.setChampionId(participantDto.getChampionId());
@@ -119,7 +120,6 @@ public class MatchEventHandler implements EventHandler {
                     }
                     ResultUtils.assertSuccess(MapperExecutor.insertList(participantMapper, participants));
 
-                    // todo test generating id
                     logger.info("Adding stats of participants in the match {}...", gameId);
                     Map<Integer, Long> idMap = new HashMap<>();
                     for (ParticipantDo participant : participants) {

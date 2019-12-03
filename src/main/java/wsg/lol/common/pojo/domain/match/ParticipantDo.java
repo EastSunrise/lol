@@ -2,14 +2,15 @@ package wsg.lol.common.pojo.domain.match;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.BaseDo;
+import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.match.MatchLaneEnum;
 import wsg.lol.common.enums.match.MatchRoleEnum;
 import wsg.lol.common.enums.match.TeamIdEnum;
 import wsg.lol.common.enums.system.PlatformRoutingEnum;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -24,7 +25,6 @@ import javax.persistence.Table;
 public class ParticipantDo extends BaseDo {
 
     @Id
-    @GeneratedValue(generator = "JDBC")
     private Long id;
 
     @Column
@@ -71,4 +71,14 @@ public class ParticipantDo extends BaseDo {
 
     @Column
     private MatchLaneEnum lane;
+
+    /**
+     * Generate the id by <expression>{@link #gameId} * 100 + {@link #participantId}</expression>
+     */
+    public void generateId() {
+        if (participantId == null || gameId == null) {
+            throw new AppException(ErrorCodeConst.ILLEGAL_ARGS, "Not exist does the participantId or the gameId.");
+        }
+        this.setId(gameId * 100 + participantId);
+    }
 }

@@ -1,18 +1,24 @@
 package wsg.lol.common.pojo.dto.spectator;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import wsg.lol.common.base.BaseDto;
+
 import java.util.List;
 
 /**
- * todo
+ * DTO for runes of the featured participant.
  *
  * @author Kingen
  */
-public class Perks {
+@EqualsAndHashCode(callSuper = true)
+@Data
+class Perks extends BaseDto {
 
     /**
      * Primary runes path
      */
-    private long perkStyle;
+    private Long perkStyle;
 
     /**
      * IDs of the perks/runes assigned.
@@ -22,29 +28,5 @@ public class Perks {
     /**
      * Secondary runes path
      */
-    private long perkSubStyle;
-
-    public long getPerkStyle() {
-        return perkStyle;
-    }
-
-    public void setPerkStyle(long perkStyle) {
-        this.perkStyle = perkStyle;
-    }
-
-    public List<Long> getPerkIds() {
-        return perkIds;
-    }
-
-    public void setPerkIds(List<Long> perkIds) {
-        this.perkIds = perkIds;
-    }
-
-    public long getPerkSubStyle() {
-        return perkSubStyle;
-    }
-
-    public void setPerkSubStyle(long perkSubStyle) {
-        this.perkSubStyle = perkSubStyle;
-    }
+    private Long perkSubStyle;
 }

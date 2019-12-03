@@ -4,10 +4,10 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.base.Result;
+import wsg.lol.common.pojo.dto.spectator.FeaturedGames;
 import wsg.lol.common.result.system.VersionResult;
 import wsg.lol.service.intf.SharedService;
 import wsg.lol.service.intf.SystemService;
@@ -18,7 +18,6 @@ import wsg.lol.service.intf.SystemService;
  * @author Kingen
  */
 @Component
-@Async
 public class SharedScheduler {
 
     private static final Logger logger = LoggerFactory.getLogger(SharedScheduler.class);
@@ -27,7 +26,7 @@ public class SharedScheduler {
 
     private SharedService sharedService;
 
-    @Scheduled(initialDelay = AsyncConfig.INITIAL_DELAY, fixedDelay = DateUtils.MILLIS_PER_DAY)
+    @Scheduled(initialDelay = TaskConfig.INITIAL_DELAY, fixedDelay = DateUtils.MILLIS_PER_DAY)
     public void checkVersion() {
         logger.info("Schedule to check the version...");
         VersionResult versionResult = systemService.getVersion();
@@ -41,7 +40,7 @@ public class SharedScheduler {
         systemService.sendMessage(message);
     }
 
-    @Scheduled(initialDelay = AsyncConfig.INITIAL_DELAY, fixedDelay = DateUtils.MILLIS_PER_DAY)
+    @Scheduled(initialDelay = TaskConfig.INITIAL_DELAY, fixedDelay = DateUtils.MILLIS_PER_DAY)
     public void updateSharedData() {
         logger.info("Schedule to update the shared data.");
         Result result = sharedService.updateSharedStatus();
@@ -49,6 +48,17 @@ public class SharedScheduler {
 
         result = sharedService.updateChampionRotation();
         systemService.sendWarnMessage(result);
+    }
+
+    @Scheduled(initialDelay = TaskConfig.INITIAL_DELAY, fixedDelay = 0)
+    public void updateFeaturedGames() {
+        FeaturedGames featuredGames = sharedService.updateFeaturedGames().getObject();
+        Long interval = featuredGames.getClientRefreshInterval();
+        try {
+            Thread.sleep(interval);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Autowired

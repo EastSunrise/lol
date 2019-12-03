@@ -5,9 +5,12 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wsg.lol.common.annotation.Performance;
+import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ConfigConst;
 import wsg.lol.common.constant.ErrorCodeConst;
@@ -17,10 +20,12 @@ import wsg.lol.common.pojo.domain.share.ImageDo;
 import wsg.lol.common.pojo.dto.champion.ChampionRotationDto;
 import wsg.lol.common.pojo.dto.share.ImageDto;
 import wsg.lol.common.pojo.dto.share.ShardStatus;
+import wsg.lol.common.pojo.dto.spectator.FeaturedGames;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionV3;
 import wsg.lol.dao.api.impl.LOLStatusV3;
+import wsg.lol.dao.api.impl.SpectatorV4;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.mybatis.mapper.lol.system.ConfigMapper;
 import wsg.lol.dao.mybatis.mapper.lol.system.ImageMapper;
@@ -48,6 +53,8 @@ public class SharedServiceImpl implements SharedService {
     private ImageMapper imageMapper;
 
     private DragonDao dragonDao;
+
+    private SpectatorV4 spectatorV4;
 
     @Override
     @Transactional
@@ -130,6 +137,25 @@ public class SharedServiceImpl implements SharedService {
 
         logger.info("Succeed in updating the rotation of champions.");
         return ResultUtils.success();
+    }
+
+    @Override
+    @CachePut("featuredGames")
+    public GenericResult<FeaturedGames> updateFeaturedGames() {
+        GenericResult<FeaturedGames> result = new GenericResult<>();
+        result.setObject(spectatorV4.getFeaturedGames());
+        return result;
+    }
+
+    @Override
+    @Cacheable("featuredGames")
+    public GenericResult<FeaturedGames> getFeaturedGames() {
+        return updateFeaturedGames();
+    }
+
+    @Autowired
+    public void setSpectatorV4(SpectatorV4 spectatorV4) {
+        this.spectatorV4 = spectatorV4;
     }
 
     @Autowired

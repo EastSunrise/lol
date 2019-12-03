@@ -10,6 +10,6 @@ import org.apache.ibatis.session.RowBounds;
 public class PageUtils {
 
     public static RowBounds getRowBounds() {
-        return new RowBounds(0, 2);
+        return new RowBounds(0, 100);
     }
 }

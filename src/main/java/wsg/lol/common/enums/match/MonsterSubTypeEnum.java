@@ -10,7 +10,10 @@ import wsg.lol.common.pojo.serialize.StringSerializable;
 public enum MonsterSubTypeEnum implements StringSerializable {
     WATER_DRAGON,
     FIRE_DRAGON,
-    AIR_DRAGON;
+    AIR_DRAGON,
+    EARTH_DRAGON,
+    ELDER_DRAGON,
+    ;
 
     @Override
     public String serialize() {

@@ -1,39 +1,27 @@
 package wsg.lol.common.pojo.dto.spectator;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 
 import java.util.List;
 
 /**
- * todo
+ * DTO for the list of feature games.
  *
  * @author Kingen
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class FeaturedGames extends BaseDto {
 
     /**
      * The suggested interval to wait before requesting FeaturedGames again
      */
-    private long clientRefreshInterval;
+    private Long clientRefreshInterval;
 
     /**
      * The list of featured games.
      */
-    private List<FeaturedGameInfo> gameList;
-
-    public long getClientRefreshInterval() {
-        return clientRefreshInterval;
-    }
-
-    public void setClientRefreshInterval(long clientRefreshInterval) {
-        this.clientRefreshInterval = clientRefreshInterval;
-    }
-
-    public List<FeaturedGameInfo> getGameList() {
-        return gameList;
-    }
-
-    public void setGameList(List<FeaturedGameInfo> gameList) {
-        this.gameList = gameList;
-    }
+    private List<FeaturedGameDto> gameList;
 }

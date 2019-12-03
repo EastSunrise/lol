@@ -33,7 +33,8 @@ import java.sql.SQLException;
         EventTypeEnum.class, EventStatusEnum.class,
         MatchEventTypeEnum.class,
         LevelUpTypeEnum.class, WardTypeEnum.class, MonsterTypeEnum.class, MonsterSubTypeEnum.class,
-        TeamIdEnum.class, BuildingTypeEnum.class, LaneTypeEnum.class, TowerTypeEnum.class, TeamResultEnum.class
+        TeamIdEnum.class, BuildingTypeEnum.class, LaneTypeEnum.class, TowerTypeEnum.class, TeamResultEnum.class,
+        MatchRoleEnum.class, MatchLaneEnum.class, SeasonEnum.class, GameTypeEnum.class
 })
 public class EnumTypeHandler<T extends Enum<T>> extends BaseTypeHandler<T> {
 

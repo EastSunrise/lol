@@ -15,3 +15,7 @@ where name = 'IS_DATABASE_INITIALIZED'
 -- 时区
 SHOW VARIABLES LIKE '%time_zone%';
 SET GLOBAL time_zone = '+8:00';
+
+update kr.t_event_summoner
+set status = 0
+where status = 2;

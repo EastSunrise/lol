@@ -12,6 +12,7 @@ public enum WardTypeEnum implements StringSerializable {
     CONTROL_WARD,
     SIGHT_WARD,
     BLUE_TRINKET,
+    TEEMO_MUSHROOM,
     UNDEFINED;
 
     @Override

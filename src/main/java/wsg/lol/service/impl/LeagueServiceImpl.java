@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wsg.lol.common.annotation.Performance;
+import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.share.RankQueueEnum;
 import wsg.lol.common.enums.summoner.DivisionEnum;
@@ -14,6 +15,8 @@ import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.pojo.domain.summoner.LeagueEntryDo;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
+import wsg.lol.common.task.AbstractBatchTask;
+import wsg.lol.common.task.MinTaskStrategy;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.LeagueV4;
 import wsg.lol.dao.mybatis.mapper.region.summoner.LeagueEntryMapper;
@@ -21,9 +24,10 @@ import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.LeagueService;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.concurrent.ForkJoinPool;
 
 /**
  * @author Kingen
@@ -32,8 +36,6 @@ import java.util.Set;
 public class LeagueServiceImpl implements LeagueService {
 
     private static final Logger logger = LoggerFactory.getLogger(LeagueService.class);
-
-    private static final int MAX_SIZE = 1000;
 
     private LeagueV4 leagueV4;
 
@@ -45,7 +47,11 @@ public class LeagueServiceImpl implements LeagueService {
     @Performance
     public Result initializeByLeagues() {
         logger.info("Initializing the database by leagues.");
-        Set<String> ids = new HashSet<>();
+
+        List<String> ids = new ArrayList<>();
+        ForkJoinPool forkJoinPool = new ForkJoinPool();
+        int count = 0;
+
         for (RankQueueEnum queue : RankQueueEnum.values()) {
             for (TierEnum tier : TierEnum.RANKED_TIERS) {
                 for (DivisionEnum division : DivisionEnum.validDivisions(tier)) {
@@ -56,17 +62,36 @@ public class LeagueServiceImpl implements LeagueService {
                         for (LeagueEntryDto leagueEntryDto : leagueEntryDtoList) {
                             ids.add(leagueEntryDto.getSummonerId());
                         }
-                        if (ids.size() > MAX_SIZE) {
-                            eventService.insertEvents(EventTypeEnum.Summoner, ids);
-                            ids = new HashSet<>();
+                        if (ids.size() > AbstractBatchTask.MAX_SIZE) {
+                            count += batchInsertEvents(forkJoinPool, ids);
+                            ids = new ArrayList<>();
                         }
                     }
                 }
             }
         }
 
-        eventService.insertEvents(EventTypeEnum.Summoner, ids);
+        count += batchInsertEvents(forkJoinPool, ids);
+        logger.info("{} events of summoners inserted totally.", count);
         return ResultUtils.success();
+    }
+
+    private int batchInsertEvents(ForkJoinPool forkJoinPool, List<String> ids) {
+        AbstractBatchTask<String, GenericResult<Integer>> task = new AbstractBatchTask<>(ids, new MinTaskStrategy<String, GenericResult<Integer>>() {
+            @Override
+            public GenericResult<Integer> doMinTask(List<String> strings) {
+                return eventService.insertEvents(EventTypeEnum.Summoner, new HashSet<>(strings));
+            }
+
+            @Override
+            public GenericResult<Integer> joinResult(GenericResult<Integer> r1, GenericResult<Integer> r2) {
+                GenericResult<Integer> result = new GenericResult<>();
+                result.setObject(r1.getObject() + r2.getObject());
+                return result;
+            }
+        });
+        forkJoinPool.execute(task);
+        return task.join().getObject();
     }
 
     @Override

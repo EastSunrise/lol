@@ -1,6 +1,7 @@
 package wsg.lol.service.intf;
 
 import org.apache.ibatis.session.RowBounds;
+import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
@@ -21,8 +22,10 @@ public interface EventService {
 
     /**
      * Insert events of specified type. Contexts are distinct.
+     *
+     * @return successful count
      */
-    Result insertEvents(EventTypeEnum eventType, Set<?> contexts);
+    GenericResult<Integer> insertEvents(EventTypeEnum eventType, Set<?> contexts);
 
     /**
      * Update the status of events.

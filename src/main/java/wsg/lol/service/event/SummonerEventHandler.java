@@ -61,7 +61,7 @@ public class SummonerEventHandler implements EventHandler {
 
     @Override
     @Performance
-    public synchronized Result handle(List<? extends EventDo> events) {
+    public Result handle(List<? extends EventDo> events) {
         final int[] success = {0};
         for (EventDo event : events) {
             String summonerId = event.getId();

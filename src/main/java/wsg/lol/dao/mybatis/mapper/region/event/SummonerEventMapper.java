@@ -1,6 +1,5 @@
 package wsg.lol.dao.mybatis.mapper.region.event;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import wsg.lol.common.pojo.domain.system.SummonerEventDo;
 import wsg.lol.dao.mybatis.common.EventMapper;
@@ -11,6 +10,5 @@ import wsg.lol.dao.mybatis.common.EventMapper;
  * @author Kingen
  */
 @Repository("EventSummonerMapper")
-@Mapper
 public interface SummonerEventMapper extends EventMapper<SummonerEventDo> {
 }

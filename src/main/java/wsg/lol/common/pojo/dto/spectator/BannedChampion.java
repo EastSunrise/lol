@@ -1,48 +1,34 @@
 package wsg.lol.common.pojo.dto.spectator;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import wsg.lol.common.base.BaseDto;
+import wsg.lol.common.enums.match.TeamIdEnum;
+import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
+
 /**
- * todo
+ * DTO for banned champions of the team.
  *
  * @author Kingen
  */
-public class BannedChampion {
+@EqualsAndHashCode(callSuper = true)
+@Data
+class BannedChampion extends BaseDto {
 
     /**
      * The turn during which the champion was banned
      */
-    private int pickTurn;
+    private Integer pickTurn;
 
     /**
      * The ID of the banned champion
      */
-    private long championId;
+    private Integer championId;
 
     /**
      * The ID of the team that banned the champion
      */
-    private long teamId;
-
-    public int getPickTurn() {
-        return pickTurn;
-    }
-
-    public void setPickTurn(int pickTurn) {
-        this.pickTurn = pickTurn;
-    }
-
-    public long getChampionId() {
-        return championId;
-    }
-
-    public void setChampionId(long championId) {
-        this.championId = championId;
-    }
-
-    public long getTeamId() {
-        return teamId;
-    }
-
-    public void setTeamId(long teamId) {
-        this.teamId = teamId;
-    }
+    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
+    private TeamIdEnum teamId;
 }
