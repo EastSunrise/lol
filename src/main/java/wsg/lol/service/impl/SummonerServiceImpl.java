@@ -103,6 +103,14 @@ public class SummonerServiceImpl implements SummonerService {
         return ResultUtils.success();
     }
 
+    @Override
+    public SummonerDto getSummonersByName(String summonerName) {
+        SummonerDo cond = new SummonerDo();
+        cond.setName(summonerName);
+        SummonerDo summonerDo = summonerMapper.selectOne(cond);
+        return ObjectTransfer.transferDo(summonerDo, SummonerDto.class);
+    }
+
     @Autowired
     public void setChampionMasteryMapper(ChampionMasteryMapper championMasteryMapper) {
         this.championMasteryMapper = championMasteryMapper;

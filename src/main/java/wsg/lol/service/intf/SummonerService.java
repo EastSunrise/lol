@@ -38,4 +38,9 @@ public interface SummonerService {
      * Update the champion masteries of the specified summoner.
      */
     Result updateChampionMasteries(String summonerId);
+
+    /**
+     * Get base info for the summoner of the specified name.
+     */
+    SummonerDto getSummonersByName(String summonerName);
 }
