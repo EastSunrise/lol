@@ -19,8 +19,11 @@ import java.util.List;
 public class LeagueListDto extends BaseDto {
 
     private String leagueId;
+
     private String name;
+
     private TierEnum tier;
+
     private RankQueueEnum queue;
 
     private List<LeagueItemDto> entries;

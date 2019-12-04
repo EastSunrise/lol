@@ -1,7 +1,7 @@
 package wsg.lol.common.enums.system;
 
-import wsg.lol.common.pojo.serialize.EqualsToSerializable;
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.EqualsToSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enums for routes of platforms.
@@ -9,19 +9,20 @@ import wsg.lol.common.pojo.serialize.StringSerializable;
  * @author Kingen
  * @see <a href="https://developer.riotgames.com/docs/lol#_routing-values">Routing Values</a>
  */
-public enum PlatformRoutingEnum implements StringSerializable, EqualsToSerializable {
-    LOL("api.riotgames.com"),
+public enum PlatformRoutingEnum implements JSONSerializable<String>, EqualsToSerializable<String> {
+    LOL("api.riotgames.com", "LOL"),
     BR("br1.api.riotgames.com", "BR1"),
     EUN("eun1.api.riotgames.com", "EUN1"),
     EUW("euw1.api.riotgames.com", "EUW1"),
     JP("jp1.api.riotgames.com", "JP1"),
     KR("kr.api.riotgames.com", "KR"),
-    LA1("la1.api.riotgames.com", "LA1"),
-    LA2("la2.api.riotgames.com", "LA2"),
+    LAN("la1.api.riotgames.com", "LA1"),
+    LAS("la2.api.riotgames.com", "LA2"),
     NA("na1.api.riotgames.com", "NA1"),
     OC("oc1.api.riotgames.com", "OC1"),
     TR("tr1.api.riotgames.com", "TR1"),
     RU("ru.api.riotgames.com", "RU"),
+    NULL("", ""),
     ;
 
     private String host;
@@ -33,16 +34,12 @@ public enum PlatformRoutingEnum implements StringSerializable, EqualsToSerializa
         this.id = id;
     }
 
-    PlatformRoutingEnum(String host) {
-        this.host = host;
-    }
-
     public String getHost() {
         return host;
     }
 
     public String getId() {
-        return id == null ? name() : id;
+        return id;
     }
 
     @Override
@@ -51,7 +48,7 @@ public enum PlatformRoutingEnum implements StringSerializable, EqualsToSerializa
     }
 
     @Override
-    public boolean equalsToString(String string) {
-        return this.getId().equalsIgnoreCase(string);
+    public boolean equalsToObject(String string) {
+        return this.getId().equalsIgnoreCase(string) || name().equalsIgnoreCase(string);
     }
 }

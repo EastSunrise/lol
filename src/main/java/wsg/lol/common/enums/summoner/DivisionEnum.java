@@ -1,13 +1,14 @@
 package wsg.lol.common.enums.summoner;
 
 import org.apache.commons.lang3.ArrayUtils;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enum for divisions.
  *
  * @author Kingen
  */
-public enum DivisionEnum {
+public enum DivisionEnum implements JSONSerializable<String> {
     I,
     II,
     III,
@@ -29,5 +30,10 @@ public enum DivisionEnum {
 
     public boolean isValidDivision(TierEnum tier) {
         return ArrayUtils.contains(validDivisions(tier), this);
+    }
+
+    @Override
+    public String serialize() {
+        return name();
     }
 }

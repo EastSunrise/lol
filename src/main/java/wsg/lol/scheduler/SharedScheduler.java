@@ -26,7 +26,7 @@ public class SharedScheduler {
 
     private SharedService sharedService;
 
-    @Scheduled(initialDelay = TaskConfig.INITIAL_DELAY, fixedDelay = DateUtils.MILLIS_PER_DAY)
+    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_DAY)
     public void checkVersion() {
         logger.info("Schedule to check the version...");
         VersionResult versionResult = systemService.getVersion();
@@ -40,7 +40,7 @@ public class SharedScheduler {
         systemService.sendMessage(message);
     }
 
-    @Scheduled(initialDelay = TaskConfig.INITIAL_DELAY, fixedDelay = DateUtils.MILLIS_PER_DAY)
+    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_DAY)
     public void updateSharedData() {
         logger.info("Schedule to update the shared data.");
         Result result = sharedService.updateSharedStatus();
@@ -50,8 +50,9 @@ public class SharedScheduler {
         systemService.sendWarnMessage(result);
     }
 
-    @Scheduled(initialDelay = TaskConfig.INITIAL_DELAY, fixedDelay = 0)
+    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_SECOND)
     public void updateFeaturedGames() {
+        logger.info("Schedule to update the featured games.");
         FeaturedGames featuredGames = sharedService.updateFeaturedGames().getObject();
         Long interval = featuredGames.getClientRefreshInterval();
         try {

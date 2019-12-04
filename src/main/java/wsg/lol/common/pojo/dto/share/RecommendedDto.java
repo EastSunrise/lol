@@ -1,13 +1,11 @@
 package wsg.lol.common.pojo.dto.share;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.match.GameModeEnum;
 import wsg.lol.common.enums.share.MapEnum;
 import wsg.lol.common.enums.share.RecommendedTypeEnum;
-import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 /**
  * DTO for recommended items.
@@ -22,13 +20,10 @@ public class RecommendedDto extends BaseDto {
 
     private String title;
 
-    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private MapEnum map;
 
-    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private GameModeEnum mode;
 
-    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private RecommendedTypeEnum type;
 
     private Boolean priority;

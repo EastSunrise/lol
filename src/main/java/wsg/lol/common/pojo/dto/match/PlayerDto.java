@@ -1,11 +1,9 @@
 package wsg.lol.common.pojo.dto.match;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.system.PlatformRoutingEnum;
-import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 /**
  * DTO for information of players.
@@ -16,7 +14,6 @@ import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 @Data
 class PlayerDto extends BaseDto {
 
-    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private PlatformRoutingEnum platformId;
 
     private String accountId;
@@ -25,7 +22,6 @@ class PlayerDto extends BaseDto {
 
     private String summonerId;
 
-    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private PlatformRoutingEnum currentPlatformId;
 
     private String currentAccountId;

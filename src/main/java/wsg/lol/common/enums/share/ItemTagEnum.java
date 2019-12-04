@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.share;
 
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enums for tags of the item.
  *
  * @author Kingen
  */
-public enum ItemTagEnum implements StringSerializable {
+public enum ItemTagEnum implements JSONSerializable<String> {
     Bilgewater,
     Mana,
     Slow,

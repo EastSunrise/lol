@@ -32,7 +32,7 @@ public class BuildRunner implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) {
-        logger.info("Initializing the database.");
+        logger.info("Initializing the database...");
         GenericResult<Boolean> result = systemService.initialized();
         if (result.getObject()) {
             logger.info("The database has been initialized.");

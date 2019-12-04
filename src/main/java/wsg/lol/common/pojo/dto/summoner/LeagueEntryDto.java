@@ -7,7 +7,6 @@ import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.share.RankQueueEnum;
 import wsg.lol.common.enums.summoner.DivisionEnum;
 import wsg.lol.common.enums.summoner.TierEnum;
-import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 /**
  * DTO for entries of leagues.
@@ -20,7 +19,6 @@ public class LeagueEntryDto extends BaseDto {
 
     private String summonerId;
 
-    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private RankQueueEnum queueType;
 
     private String leagueId;

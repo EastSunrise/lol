@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.QueryDto;
 import wsg.lol.common.constant.ErrorCodeConst;
-import wsg.lol.common.pojo.serialize.RecordExtraProcessor;
 import wsg.lol.common.util.EnumUtils;
 import wsg.lol.common.util.HttpHelper;
 import wsg.lol.dao.GlobalConfig;
+import wsg.lol.dao.common.serialize.RecordExtraProcessor;
 import wsg.lol.dao.dragon.config.DragonConfig;
 
 import javax.xml.ws.http.HTTPException;
@@ -152,8 +152,8 @@ public class BaseApi {
                         || ResponseCodeEnum.Forbidden.getCode() == responseCode
                         || ResponseCodeEnum.NotFound.getCode() == responseCode
                         || ResponseCodeEnum.UnsupportedMediaType.getCode() == responseCode) {
-                    ResponseCodeEnum responseCodeEnum = EnumUtils.parseFromInt(responseCode, ResponseCodeEnum.class);
-                    logger.error("{}: {}.", responseCodeEnum.getMessage(), urlStr);
+                    ResponseCodeEnum responseCodeEnum = EnumUtils.parseFromObject(responseCode, ResponseCodeEnum.class);
+                    logger.info("{}: {}.", responseCodeEnum.getMessage(), urlStr);
                     throw new HTTPException(responseCode);
                 }
                 if (ResponseCodeEnum.Unauthorized.getCode() == responseCode) {
@@ -170,7 +170,7 @@ public class BaseApi {
                 }
                 if (ResponseCodeEnum.InternalServerError.getCode() == responseCode
                         || ResponseCodeEnum.ServiceUnavailable.getCode() == responseCode) {
-                    ResponseCodeEnum responseCodeEnum = EnumUtils.parseFromInt(responseCode, ResponseCodeEnum.class);
+                    ResponseCodeEnum responseCodeEnum = EnumUtils.parseFromObject(responseCode, ResponseCodeEnum.class);
                     logger.error(responseCodeEnum.getMessage());
                     threadSleep(RETRY_INTERVAL);
                     continue;

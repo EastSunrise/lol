@@ -1,12 +1,10 @@
 package wsg.lol.common.pojo.dto.match;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.match.TeamIdEnum;
 import wsg.lol.common.enums.match.TeamResultEnum;
-import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 import java.util.List;
 
@@ -22,7 +20,6 @@ public class TeamStatsDto extends BaseDto {
     /**
      * 100 for blue side. 200 for red side.
      */
-    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private TeamIdEnum teamId;
 
     /**
@@ -30,7 +27,6 @@ public class TeamStatsDto extends BaseDto {
      * (Legal
      * values: Fail, Win)
      */
-    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private TeamResultEnum win;
 
     /**

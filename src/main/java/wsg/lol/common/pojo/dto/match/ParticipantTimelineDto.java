@@ -1,12 +1,10 @@
 package wsg.lol.common.pojo.dto.match;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.match.MatchLaneEnum;
 import wsg.lol.common.enums.match.MatchRoleEnum;
-import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 import java.util.Map;
 
@@ -59,13 +57,11 @@ public class ParticipantTimelineDto extends BaseDto {
     /**
      * Participant's calculated role. (Legal values: DUO, NONE, SOLO, DUO_CARRY, DUO_SUPPORT)
      */
-    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private MatchRoleEnum role;
 
     /**
      * Participant's calculated lane. MID and BOT are legacy values. (Legal values: MID, MIDDLE, TOP, JUNGLE, BOT,
      * BOTTOM)
      */
-    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private MatchLaneEnum lane;
 }

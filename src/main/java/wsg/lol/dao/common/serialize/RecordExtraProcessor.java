@@ -1,4 +1,4 @@
-package wsg.lol.common.pojo.serialize;
+package wsg.lol.dao.common.serialize;
 
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import org.apache.commons.lang3.ArrayUtils;
@@ -33,10 +33,6 @@ public class RecordExtraProcessor implements ExtraProcessor {
 
     public RecordExtraProcessor(Class<?> clazz) {
         this.logger = LoggerFactory.getLogger(clazz);
-    }
-
-    public static Map<String, Set<Object>> getExtraMap() {
-        return extraMap;
     }
 
     @Override

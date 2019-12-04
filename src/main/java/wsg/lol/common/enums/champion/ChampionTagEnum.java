@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.champion;
 
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enums for tags of the champion.
  *
  * @author Kingen
  */
-public enum ChampionTagEnum implements StringSerializable {
+public enum ChampionTagEnum implements JSONSerializable<String> {
     Fighter("战士"),
     Tank("坦克"),
     Assassin("刺客"),

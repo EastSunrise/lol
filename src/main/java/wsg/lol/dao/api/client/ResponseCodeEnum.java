@@ -1,6 +1,6 @@
 package wsg.lol.dao.api.client;
 
-import wsg.lol.common.pojo.serialize.IntSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Table of response codes of the api.
@@ -8,7 +8,7 @@ import wsg.lol.common.pojo.serialize.IntSerializable;
  * @author Kingen
  * @see <a href="https://developer.riotgames.com/docs/portal#web-apis_response-codes">Response Codes</a>
  */
-public enum ResponseCodeEnum implements IntSerializable {
+public enum ResponseCodeEnum implements JSONSerializable<Integer> {
     Success(200, "Success"),
     BadRequest(400, "Bad Request"),
     Unauthorized(401, "Unauthorized"),
@@ -37,7 +37,7 @@ public enum ResponseCodeEnum implements IntSerializable {
     }
 
     @Override
-    public int serializeInt() {
+    public Integer serialize() {
         return code;
     }
 }

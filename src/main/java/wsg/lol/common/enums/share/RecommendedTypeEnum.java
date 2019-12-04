@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.share;
 
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enum for types of the recommended.
  *
  * @author Kingen
  */
-public enum RecommendedTypeEnum implements StringSerializable {
+public enum RecommendedTypeEnum implements JSONSerializable<String> {
     Riot("riot"),
     RiotSupport("riot-support"),
     RiotMid("riot-mid"),

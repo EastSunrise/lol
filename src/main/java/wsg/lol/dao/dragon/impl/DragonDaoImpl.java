@@ -17,7 +17,7 @@ import wsg.lol.common.pojo.dto.champion.SpellDto;
 import wsg.lol.common.pojo.dto.share.ImageDto;
 import wsg.lol.common.pojo.dto.share.ItemExtDto;
 import wsg.lol.common.pojo.dto.share.RuneExtDto;
-import wsg.lol.common.pojo.serialize.RecordExtraProcessor;
+import wsg.lol.dao.common.serialize.RecordExtraProcessor;
 import wsg.lol.dao.dragon.config.DragonConfig;
 import wsg.lol.dao.dragon.intf.DragonDao;
 

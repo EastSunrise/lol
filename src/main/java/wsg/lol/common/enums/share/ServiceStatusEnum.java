@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.share;
 
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enum for status of the service in the shared data.
  *
  * @author Kingen
  */
-public enum ServiceStatusEnum implements StringSerializable {
+public enum ServiceStatusEnum implements JSONSerializable<String> {
     Online("online");
 
     private String description;

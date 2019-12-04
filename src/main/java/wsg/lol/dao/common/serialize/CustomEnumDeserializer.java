@@ -1,4 +1,4 @@
-package wsg.lol.common.pojo.serialize;
+package wsg.lol.dao.common.serialize;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.parser.DefaultJSONParser;
@@ -14,36 +14,28 @@ import java.lang.reflect.Type;
  */
 public class CustomEnumDeserializer implements ObjectDeserializer {
 
+    final static CustomEnumDeserializer instance = new CustomEnumDeserializer();
+
     @Override
     @SuppressWarnings("unchecked")
     public <T> T deserialze(DefaultJSONParser parser, Type type, Object fieldName) {
         Object object = parser.parse(fieldName);
         if (type instanceof Class<?>) {
             Class<?> clazz = (Class<?>) type;
-            if (ClassUtils.isAssignable(clazz, Enum.class)) {
+            if (clazz.isEnum()) {
                 Class<? extends Enum> enumClass = (Class<? extends Enum>) type;
-                if (ClassUtils.isAssignable(clazz, StringSerializable.class) && object instanceof String) {
-                    String str = (String) object;
+                if (ClassUtils.isAssignable(clazz, JSONSerializable.class)) {
                     for (Enum enumConstant : enumClass.getEnumConstants()) {
-                        StringSerializable serializable = (StringSerializable) enumConstant;
-                        if (str.equals(serializable.serialize())) {
+                        JSONSerializable<?> serializable = (JSONSerializable<?>) enumConstant;
+                        if (serializable.serialize().equals(object)) {
                             return (T) enumConstant;
                         }
                     }
-                    if (ClassUtils.isAssignable(clazz, EqualsToSerializable.class)) {
-                        for (Enum enumConstant : enumClass.getEnumConstants()) {
-                            EqualsToSerializable equalsToSerializable = (EqualsToSerializable) enumConstant;
-                            if (equalsToSerializable.equalsToString(str)) {
-                                return (T) enumConstant;
-                            }
-                        }
-                    }
                 }
-                if (ClassUtils.isAssignable(clazz, IntSerializable.class) && object instanceof Integer) {
-                    Integer integer = (Integer) object;
+                if (ClassUtils.isAssignable(clazz, EqualsToSerializable.class)) {
                     for (Enum enumConstant : enumClass.getEnumConstants()) {
-                        IntSerializable serializable = (IntSerializable) enumConstant;
-                        if (integer.equals(serializable.serializeInt())) {
+                        EqualsToSerializable equalsToSerializable = (EqualsToSerializable) enumConstant;
+                        if (equalsToSerializable.equalsToObject(object)) {
                             return (T) enumConstant;
                         }
                     }

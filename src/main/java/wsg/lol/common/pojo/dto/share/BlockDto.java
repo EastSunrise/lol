@@ -1,11 +1,9 @@
 package wsg.lol.common.pojo.dto.share;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.share.BlockTypeEnum;
-import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 import java.util.List;
 
@@ -18,7 +16,6 @@ import java.util.List;
 @Data
 public class BlockDto extends BaseDto {
 
-    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private BlockTypeEnum type;
 
     private Boolean recMath;

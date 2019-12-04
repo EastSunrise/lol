@@ -8,7 +8,6 @@ import wsg.lol.common.constant.JSONConst;
 import wsg.lol.common.enums.share.MessageSeverityEnum;
 import wsg.lol.common.enums.share.ServiceEnum;
 import wsg.lol.common.enums.share.ServiceStatusEnum;
-import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 import java.util.Date;
 import java.util.List;
@@ -33,13 +32,12 @@ public class ShardStatus extends BaseDto {
     @Data
     private static class Service {
 
-        @JSONField(deserializeUsing = CustomEnumDeserializer.class)
         private ServiceEnum name;
 
-        @JSONField(deserializeUsing = CustomEnumDeserializer.class)
         private ServiceStatusEnum status;
 
         private List<Incident> incidents;
+
         private String slug;
 
         @Data
@@ -60,13 +58,13 @@ public class ShardStatus extends BaseDto {
                 private String content;
                 private String heading;
 
-                @JSONField(deserializeUsing = CustomEnumDeserializer.class)
                 private MessageSeverityEnum severity;
 
                 private List<Translation> translations;
 
                 @JSONField(format = JSONConst.DATE_FORMAT)
                 private Date createdAt;
+
                 @JSONField(format = JSONConst.DATE_FORMAT)
                 private Date updatedAt;
 

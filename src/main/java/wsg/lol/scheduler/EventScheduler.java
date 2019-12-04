@@ -29,7 +29,7 @@ public class EventScheduler {
     /**
      * Add summoners by handling events of type {@link EventTypeEnum#Summoner}.
      */
-    @Scheduled(initialDelay = TaskConfig.INITIAL_DELAY, fixedDelay = TaskConfig.FIXED_DELAY)
+    @Scheduled(fixedDelay = TaskConfig.FIXED_DELAY)
     public void handleSummoners() {
         Result handle = eventService.handle(EventTypeEnum.Summoner, PageUtils.getRowBounds());
         systemService.sendWarnMessage(handle);
@@ -40,7 +40,7 @@ public class EventScheduler {
      * <p>
      * Meanwhile, add events of type {@link EventTypeEnum#Summoner} if not exist from the participants of matches.
      */
-    @Scheduled(initialDelay = TaskConfig.INITIAL_DELAY, fixedDelay = TaskConfig.FIXED_DELAY)
+    @Scheduled(fixedDelay = TaskConfig.FIXED_DELAY)
     public void handleMatches() {
         Result result = eventService.handle(EventTypeEnum.Match, PageUtils.getRowBounds());
         systemService.sendWarnMessage(result);

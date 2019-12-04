@@ -1,4 +1,4 @@
-package wsg.lol.common.pojo.transfer;
+package wsg.lol.dao.common.transfer;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ClassUtils;

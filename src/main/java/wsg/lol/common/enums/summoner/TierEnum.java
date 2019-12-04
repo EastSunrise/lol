@@ -1,11 +1,13 @@
 package wsg.lol.common.enums.summoner;
 
+import wsg.lol.dao.common.serialize.JSONSerializable;
+
 /**
  * Enum for tiers.
  *
  * @author Kingen
  */
-public enum TierEnum {
+public enum TierEnum implements JSONSerializable<String> {
     CHALLENGER,
     GRANDMASTER,
     MASTER,
@@ -25,4 +27,9 @@ public enum TierEnum {
             CHALLENGER, GRANDMASTER, MASTER,
             DIAMOND, PLATINUM, GOLD, SILVER, BRONZE, IRON
     };
+
+    @Override
+    public String serialize() {
+        return name();
+    }
 }

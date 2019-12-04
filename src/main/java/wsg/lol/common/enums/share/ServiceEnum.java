@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.share;
 
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enum for service.
  *
  * @author Kingen
  */
-public enum ServiceEnum implements StringSerializable {
+public enum ServiceEnum implements JSONSerializable<String> {
     Game,
     Store,
     Website,

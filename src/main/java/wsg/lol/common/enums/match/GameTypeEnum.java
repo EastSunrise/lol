@@ -1,6 +1,6 @@
 package wsg.lol.common.enums.match;
 
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enums for the type of the game.
@@ -8,7 +8,7 @@ import wsg.lol.common.pojo.serialize.StringSerializable;
  * @author Kingen
  * @see <a href="http://static.developer.riotgames.com/docs/lol/gameTypes.json>gameTypes.jspn</a>
  */
-public enum GameTypeEnum implements StringSerializable {
+public enum GameTypeEnum implements JSONSerializable<String> {
     CUSTOM_GAME("Custom games"),
     MATCHED_GAME("");
 

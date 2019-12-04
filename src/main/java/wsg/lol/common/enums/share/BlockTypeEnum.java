@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.share;
 
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enums for types of blocks in recommendations of items.
  *
  * @author Kingen
  */
-public enum BlockTypeEnum implements StringSerializable {
+public enum BlockTypeEnum implements JSONSerializable<String> {
     KingPoroSnax,
     ability_scaling,
     aggressive,

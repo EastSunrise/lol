@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.share;
 
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enums for the group of the image.
  *
  * @author Kingen
  */
-public enum ImageGroupEnum implements StringSerializable {
+public enum ImageGroupEnum implements JSONSerializable<String> {
     Champion("champion"),
     Item("item"),
     Map("map"),

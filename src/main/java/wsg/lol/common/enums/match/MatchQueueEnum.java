@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.match;
 
-import wsg.lol.common.pojo.serialize.IntSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enum for queues of matches.
  *
  * @author Kingen
  */
-public enum MatchQueueEnum implements IntSerializable {
+public enum MatchQueueEnum implements JSONSerializable<Integer> {
     DeprecatedBlindPickGames_5v5(2),
     DeprecatedRankedSoloGames_5v5(4),
     DeprecatedRankedPreMadeGames_5v5(6),
@@ -92,7 +92,7 @@ public enum MatchQueueEnum implements IntSerializable {
     }
 
     @Override
-    public int serializeInt() {
+    public Integer serialize() {
         return value;
     }
 }

@@ -1,7 +1,7 @@
 package wsg.lol.common.enums.share;
 
-import wsg.lol.common.pojo.serialize.IntSerializable;
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.EqualsToSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enums for maps.
@@ -9,7 +9,7 @@ import wsg.lol.common.pojo.serialize.StringSerializable;
  * @author Kingen
  * @see <a href="http://static.developer.riotgames.com/docs/lol/maps.json">maps.json</a>
  */
-public enum MapEnum implements StringSerializable, IntSerializable {
+public enum MapEnum implements JSONSerializable<String>, EqualsToSerializable<Integer> {
     SummonersRiftOriginalSummer(1, "Summoner's Rift", "Original Summer variant", "原始夏季峡谷"),
     SummonersRiftOriginalAutumn(2, "Summoner's Rift", "Original Autumn variant", "原始秋季峡谷"),
     ProvingGrounds(3, "The Proving Grounds", "Tutorial MapEnum", "练习地图"),
@@ -87,9 +87,8 @@ public enum MapEnum implements StringSerializable, IntSerializable {
         return name();
     }
 
-
     @Override
-    public int serializeInt() {
-        return mapId;
+    public boolean equalsToObject(Integer integer) {
+        return mapId == integer;
     }
 }

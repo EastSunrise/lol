@@ -1,7 +1,6 @@
 package wsg.lol.common.util;
 
-import wsg.lol.common.pojo.serialize.IntSerializable;
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Util for enums.
@@ -11,23 +10,9 @@ import wsg.lol.common.pojo.serialize.StringSerializable;
 public class EnumUtils {
 
     /**
-     * Parse enum from {@link IntSerializable#serializeInt()}
+     * Parse enum from {@link JSONSerializable#serialize()}
      */
-    public static <E extends Enum & IntSerializable> E parseFromInt(int value, Class<E> type) {
-        E[] enums = type.getEnumConstants();
-        for (E e : enums) {
-            if (e.serializeInt() == value) {
-                return e;
-            }
-        }
-
-        throw new IllegalArgumentException("Unknown type: " + type + " with value: " + value);
-    }
-
-    /**
-     * Parse enum from {@link StringSerializable#serialize()}
-     */
-    public static <E extends Enum & StringSerializable> E parseFromString(String value, Class<E> type) {
+    public static <T, E extends Enum & JSONSerializable<T>> E parseFromObject(T value, Class<E> type) {
         E[] enums = type.getEnumConstants();
         for (E e : enums) {
             if (e.serialize().equals(value)) {

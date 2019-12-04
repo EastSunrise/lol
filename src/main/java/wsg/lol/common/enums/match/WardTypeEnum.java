@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.match;
 
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enum for types of warding.
  *
  * @author Kingen
  */
-public enum WardTypeEnum implements StringSerializable {
+public enum WardTypeEnum implements JSONSerializable<String> {
     YELLOW_TRINKET,
     CONTROL_WARD,
     SIGHT_WARD,

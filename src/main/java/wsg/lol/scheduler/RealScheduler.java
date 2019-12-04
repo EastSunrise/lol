@@ -38,7 +38,7 @@ public class RealScheduler {
      * todo choose summoners by a certain algorithm.
      * Update the summoners with the most early update time.
      */
-    @Scheduled(initialDelay = TaskConfig.INITIAL_DELAY, fixedDelay = TaskConfig.FIXED_DELAY)
+    @Scheduled(fixedDelay = TaskConfig.FIXED_DELAY)
     public void updateSummoners() {
         logger.info("Getting summoners for update...");
         List<SummonerDto> summoners = summonerService.getSummonersForUpdate(PageUtils.getRowBounds()).getList();
@@ -67,7 +67,7 @@ public class RealScheduler {
     /**
      * Add events of the matches after the last time updating the matches.
      */
-    @Scheduled(initialDelay = TaskConfig.INITIAL_DELAY, fixedDelay = TaskConfig.FIXED_DELAY)
+    @Scheduled(fixedDelay = TaskConfig.FIXED_DELAY)
     public void updateMatches() throws AppException {
         logger.info("Getting summoners for match...");
         List<SummonerDto> summoners = summonerService.getSummonersForMatch(PageUtils.getRowBounds()).getList();

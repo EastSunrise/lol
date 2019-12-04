@@ -16,6 +16,6 @@ where name = 'IS_DATABASE_INITIALIZED'
 SHOW VARIABLES LIKE '%time_zone%';
 SET GLOBAL time_zone = '+8:00';
 
-update kr.t_event_summoner
-set status = 0
-where status = 2;
+select status, count(id)
+FROM jp.t_event_summoner
+group by status;

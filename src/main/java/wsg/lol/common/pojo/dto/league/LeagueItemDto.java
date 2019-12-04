@@ -18,16 +18,26 @@ class LeagueItemDto extends BaseDto {
     private Integer id;
 
     private String leagueId;
+
     private DivisionEnum rank;
 
     private String summonerName;
+
     private Boolean hotStreak;
+
     private MiniSeriesDto miniSeries;
+
     private Integer wins;
+
     private Boolean veteran;
+
     private Integer losses;
+
     private Boolean freshBlood;
+
     private Boolean inactive;
+
     private String summonerId;
+
     private Integer leaguePoints;
 }

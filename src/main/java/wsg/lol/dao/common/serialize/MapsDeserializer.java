@@ -1,4 +1,4 @@
-package wsg.lol.common.pojo.serialize;
+package wsg.lol.dao.common.serialize;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.DefaultJSONParser;

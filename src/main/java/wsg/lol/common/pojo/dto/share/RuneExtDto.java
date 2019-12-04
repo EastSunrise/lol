@@ -3,7 +3,7 @@ package wsg.lol.common.pojo.dto.share;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.pojo.domain.share.RuneDo;
-import wsg.lol.common.pojo.transfer.ObjectTransfer;
+import wsg.lol.dao.common.transfer.ObjectTransfer;
 
 import java.util.ArrayList;
 import java.util.List;

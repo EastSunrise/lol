@@ -1,12 +1,14 @@
 package wsg.lol.common.enums.share;
 
+import wsg.lol.dao.common.serialize.JSONSerializable;
+
 /**
  * Enums for seasons.
  *
  * @author Kingen
  * @see <a href="http://static.developer.riotgames.com/docs/lol/seasons.json">seasons.json</a>
  */
-public enum SeasonEnum {
+public enum SeasonEnum implements JSONSerializable<Integer> {
     PRESEASON3("PRESEASON 3"),
     SEASON3("SEASON 3"),
     PRESEASON2014("PRESEASON 2014"),
@@ -30,5 +32,10 @@ public enum SeasonEnum {
 
     public String getSeason() {
         return season;
+    }
+
+    @Override
+    public Integer serialize() {
+        return ordinal();
     }
 }

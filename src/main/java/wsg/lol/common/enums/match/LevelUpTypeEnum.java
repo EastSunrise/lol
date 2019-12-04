@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.match;
 
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enum for types of leveling up.
  *
  * @author Kingen
  */
-public enum LevelUpTypeEnum implements StringSerializable {
+public enum LevelUpTypeEnum implements JSONSerializable<String> {
     NORMAL,
     EVOLVE,
     ;

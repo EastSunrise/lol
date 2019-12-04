@@ -1,11 +1,9 @@
 package wsg.lol.common.pojo.dto.match;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.match.TeamIdEnum;
-import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 /**
  * DTO for each participant in the match.
@@ -21,7 +19,6 @@ public class ParticipantDto extends BaseDto {
     /**
      * 100 for blue side. 200 for red side.
      */
-    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private TeamIdEnum teamId;
 
     private Integer championId;

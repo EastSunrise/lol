@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.match;
 
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enum for sub types of the monster.
  *
  * @author Kingen
  */
-public enum MonsterSubTypeEnum implements StringSerializable {
+public enum MonsterSubTypeEnum implements JSONSerializable<String> {
     WATER_DRAGON,
     FIRE_DRAGON,
     AIR_DRAGON,

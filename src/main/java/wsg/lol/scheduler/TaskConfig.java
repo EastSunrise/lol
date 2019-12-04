@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class TaskConfig {
 
     static final long FIXED_DELAY = DateUtils.MILLIS_PER_MINUTE;
-    static final long INITIAL_DELAY = DateUtils.MILLIS_PER_SECOND;
+
     @Value("${task.corePoolSize}")
     private int corePoolSize;
     @Value("${task.maxPoolSize}")

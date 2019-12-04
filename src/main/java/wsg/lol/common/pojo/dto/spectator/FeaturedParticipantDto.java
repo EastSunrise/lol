@@ -64,4 +64,6 @@ class FeaturedParticipantDto extends BaseDto {
      * The encrypted summoner ID of this participant
      */
     private String summonerId;
+
+    private Integer skinIndex;
 }

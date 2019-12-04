@@ -1,13 +1,13 @@
 package wsg.lol.common.enums.match;
 
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enum for types of lane.
  *
  * @author Kingen
  */
-public enum LaneTypeEnum implements StringSerializable {
+public enum LaneTypeEnum implements JSONSerializable<String> {
     TOP_LANE,
     MID_LANE,
     BOT_LANE;

@@ -1,11 +1,9 @@
 package wsg.lol.common.pojo.dto.share;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.share.ImageGroupEnum;
-import wsg.lol.common.pojo.serialize.CustomEnumDeserializer;
 
 /**
  * DTO for the image.
@@ -22,7 +20,6 @@ public class ImageDto extends BaseDto {
 
     private String sprite;
 
-    @JSONField(deserializeUsing = CustomEnumDeserializer.class)
     private ImageGroupEnum group;
 
     private Integer x;

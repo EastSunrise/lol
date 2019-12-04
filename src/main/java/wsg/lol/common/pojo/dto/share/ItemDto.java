@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.share.ItemTagEnum;
 import wsg.lol.common.enums.share.MapEnum;
-import wsg.lol.common.pojo.serialize.MapsDeserializer;
+import wsg.lol.dao.common.serialize.MapsDeserializer;
 
 import java.util.List;
 import java.util.Map;

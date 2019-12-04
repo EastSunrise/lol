@@ -1,6 +1,6 @@
 package wsg.lol.common.enums.match;
 
-import wsg.lol.common.pojo.serialize.StringSerializable;
+import wsg.lol.dao.common.serialize.JSONSerializable;
 
 /**
  * Enums for the mode of the game.
@@ -8,7 +8,7 @@ import wsg.lol.common.pojo.serialize.StringSerializable;
  * @author Kingen
  * @see <a href="http://static.developer.riotgames.com/docs/lol/gameModes.json">gameModes.json</a>
  */
-public enum GameModeEnum implements StringSerializable {
+public enum GameModeEnum implements JSONSerializable<String> {
     CLASSIC("Classic Summoner's Rift and Twisted Treeline games", "经典模式"),
     ODIN("Dominion/Crystal Scar games", "这货不是统治战场"),
     ARAM("ARAM games", "极地大乱斗"),
@@ -32,6 +32,9 @@ public enum GameModeEnum implements StringSerializable {
     TUTORIAL_MODULE_2(""),
     TUTORIAL_MODULE_3(""),
     any(""),
+    PRACTICETOOL(""),
+    SNOWURF(""),
+    TUTORIAL_MODULE_1(""),
     ;
 
     private String description;
