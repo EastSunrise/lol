@@ -26,7 +26,7 @@ public class SharedScheduler {
 
     private SharedService sharedService;
 
-    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_DAY)
+    @Scheduled(cron = "${corn.share.version}")
     public void checkVersion() {
         logger.info("Schedule to check the version...");
         VersionResult versionResult = systemService.getVersion();
@@ -40,7 +40,7 @@ public class SharedScheduler {
         systemService.sendMessage(message);
     }
 
-    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_DAY)
+    @Scheduled(cron = "${corn.share.shared}")
     public void updateSharedData() {
         logger.info("Schedule to update the shared data.");
         Result result = sharedService.updateSharedStatus();

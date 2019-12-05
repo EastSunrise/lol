@@ -22,6 +22,7 @@ public class PriorityUtils {
         return example;
     }
 
+    // todo: tier
     public static Example updateMatches() {
         Example example = new Example(SummonerDo.class);
         example.setOrderByClause("TIMESTAMPDIFF( SECOND, SYSDATE( ), last_match ) * " + LAST_MATCH_WEIGHT + "+ TIMESTAMPDIFF( SECOND, SYSDATE( ), revision_date ) * " + REVISION_WEIGHT);
