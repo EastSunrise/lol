@@ -35,10 +35,10 @@ public class RealScheduler {
     private MatchService matchService;
 
     /**
-     * todo choose summoners by a certain algorithm.
      * Update the summoners with the most early update time.
+     * Request 4.
      */
-    @Scheduled(cron = "${corn.update.summoner}")
+    @Scheduled(cron = "${cron.update.summoner}")
     public void updateSummoners() {
         logger.info("Getting summoners for update...");
         List<SummonerDto> summoners = summonerService.getSummonersForUpdate(PageUtils.getRowBounds()).getList();
@@ -66,8 +66,9 @@ public class RealScheduler {
 
     /**
      * Add events of the matches after the last time updating the matches.
+     * Request 1.
      */
-    @Scheduled(cron = "${corn.update.match}")
+    @Scheduled(cron = "${cron.update.match}")
     public void updateMatches() throws AppException {
         logger.info("Getting summoners for match...");
         List<SummonerDto> summoners = summonerService.getSummonersForMatch(PageUtils.getRowBounds()).getList();

@@ -1,5 +1,6 @@
 package wsg.lol.common.pojo.dto.match;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
@@ -9,7 +10,9 @@ import wsg.lol.common.enums.match.MatchQueueEnum;
 import wsg.lol.common.enums.share.MapEnum;
 import wsg.lol.common.enums.share.SeasonEnum;
 import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.dao.common.serialize.SecondDurationDeserializer;
 
+import java.time.Duration;
 import java.util.Date;
 
 /**
@@ -27,7 +30,8 @@ public class MatchDto extends BaseDto {
 
     private Date gameCreation;
 
-    private Integer gameDuration;
+    @JSONField(deserializeUsing = SecondDurationDeserializer.class)
+    private Duration gameDuration;
 
     private MapEnum mapId;
 

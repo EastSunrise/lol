@@ -6,13 +6,16 @@
         values
         <foreach collection="ids" item="item" separator=",">
             (#{item},
-            #{status})
+            #{status},
+            sysdate(),
+            null)
         </foreach>
     </insert>
 
     <update id="updateStatus">
         update t_event_summoner
-        set status = #{to}
+        set status      = #{to},
+            update_time = sysdate()
         where id = #{id}
           and status = #{from}
     </update>

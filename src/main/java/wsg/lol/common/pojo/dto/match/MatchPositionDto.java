@@ -11,7 +11,7 @@ import wsg.lol.common.base.BaseDto;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class MatchPositionDto extends BaseDto {
+class MatchPositionDto extends BaseDto {
 
     private Integer y;
     private Integer x;

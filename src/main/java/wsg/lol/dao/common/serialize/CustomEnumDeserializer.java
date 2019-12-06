@@ -16,6 +16,9 @@ public class CustomEnumDeserializer implements ObjectDeserializer {
 
     final static CustomEnumDeserializer instance = new CustomEnumDeserializer();
 
+    private CustomEnumDeserializer() {
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public <T> T deserialze(DefaultJSONParser parser, Type type, Object fieldName) {

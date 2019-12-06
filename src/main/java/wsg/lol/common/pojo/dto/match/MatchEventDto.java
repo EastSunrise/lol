@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.match.*;
 
+import java.sql.Time;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
 public class MatchEventDto extends BaseDto {
 
     private MatchEventTypeEnum type;
-    private Integer timestamp;
+    private Time timestamp;
     private Integer participantId;
 
     private Integer skillSlot;

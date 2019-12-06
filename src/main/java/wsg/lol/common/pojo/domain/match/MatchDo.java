@@ -12,6 +12,7 @@ import wsg.lol.common.enums.system.PlatformRoutingEnum;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.Duration;
 import java.util.Date;
 
 /**
@@ -34,7 +35,7 @@ public class MatchDo extends BaseDo {
     private Date gameCreation;
 
     @Column
-    private Integer gameDuration;
+    private Duration gameDuration;
 
     @Column
     private MapEnum mapId;
@@ -52,5 +53,5 @@ public class MatchDo extends BaseDo {
     private GameTypeEnum gameType;
 
     @Column
-    private Integer frameInterval;
+    private Duration frameInterval;
 }

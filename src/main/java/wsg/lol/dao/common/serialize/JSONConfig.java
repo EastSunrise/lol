@@ -15,7 +15,7 @@ import wsg.lol.common.enums.system.PlatformRoutingEnum;
 import wsg.lol.common.enums.system.RegionalRoutingEnum;
 
 /**
- * Config for JSON.
+ * Global config for JSON.
  *
  * @author Kingen
  */
@@ -64,8 +64,6 @@ public class JSONConfig {
             for (Class<?> clazz : classes) {
                 instance.putDeserializer(clazz, CustomEnumDeserializer.instance);
             }
-
-
         }
     }
 }

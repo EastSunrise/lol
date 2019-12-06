@@ -1,9 +1,12 @@
 package wsg.lol.common.pojo.dto.match;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
+import wsg.lol.dao.common.serialize.DurationDeserializer;
 
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -16,5 +19,7 @@ import java.util.List;
 public class MatchTimelineDto extends BaseDto {
 
     private List<MatchFrameDto> frames;
-    private Integer frameInterval;
+
+    @JSONField(deserializeUsing = DurationDeserializer.class)
+    private Duration frameInterval;
 }

@@ -10,7 +10,8 @@
 
     <update id="updateConfigValue">
         update lol.t_config
-        set value = #{value}
+        set value       = #{value},
+            update_time = sysdate()
         where name = #{name}
           and region = #{region}
     </update>

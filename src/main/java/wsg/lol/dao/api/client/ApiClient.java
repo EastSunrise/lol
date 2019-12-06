@@ -1,5 +1,6 @@
 package wsg.lol.dao.api.client;
 
+import com.google.common.util.concurrent.RateLimiter;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,8 @@ import java.util.Locale;
  */
 @Configuration
 public class ApiClient {
+
+    private static final RateLimiter limiter = RateLimiter.create(0.8333);
 
     @Value("${api.timeout}")
     private int timeout;
@@ -51,6 +54,7 @@ public class ApiClient {
      * @return null if there isn't a valid token.
      */
     synchronized String getToken() {
+        limiter.acquire();
         return (StringUtils.isEmpty(this.token) || parseDate(this.expires).compareTo(new Date()) < 0) && !regenerateToken() ? null : this.token;
     }
 

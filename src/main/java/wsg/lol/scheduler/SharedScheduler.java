@@ -26,7 +26,10 @@ public class SharedScheduler {
 
     private SharedService sharedService;
 
-    @Scheduled(cron = "${corn.share.version}")
+    /**
+     * Check the version.
+     */
+    @Scheduled(cron = "${cron.share.version}")
     public void checkVersion() {
         logger.info("Schedule to check the version...");
         VersionResult versionResult = systemService.getVersion();
@@ -40,7 +43,11 @@ public class SharedScheduler {
         systemService.sendMessage(message);
     }
 
-    @Scheduled(cron = "${corn.share.shared}")
+    /**
+     * Update the shard status and the rotation of champions.
+     * Request 2.
+     */
+    @Scheduled(cron = "${cron.share.shared}")
     public void updateSharedData() {
         logger.info("Schedule to update the shared data.");
         Result result = sharedService.updateSharedStatus();
@@ -50,6 +57,10 @@ public class SharedScheduler {
         systemService.sendWarnMessage(result);
     }
 
+    /**
+     * Update the featured games.
+     * Request 1.
+     */
     @Scheduled(fixedDelay = DateUtils.MILLIS_PER_SECOND)
     public void updateFeaturedGames() {
         logger.info("Schedule to update the featured games.");

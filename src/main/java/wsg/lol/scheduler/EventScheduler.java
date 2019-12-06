@@ -28,8 +28,9 @@ public class EventScheduler {
 
     /**
      * Add summoners by handling events of type {@link EventTypeEnum#Summoner}.
+     * Request 4.
      */
-    @Scheduled(cron = "${corn.event.summoner}")
+    @Scheduled(cron = "${cron.event.summoner}")
     public void handleSummoners() {
         Result handle = eventService.handle(EventTypeEnum.Summoner, PageUtils.getRowBounds());
         systemService.sendWarnMessage(handle);
@@ -37,10 +38,11 @@ public class EventScheduler {
 
     /**
      * Add matches by handling events of type {@link EventTypeEnum#Match}
+     * Request 2.
      * <p>
      * Meanwhile, add events of type {@link EventTypeEnum#Summoner} if not exist from the participants of matches.
      */
-    @Scheduled(cron = "${corn.event.match}")
+    @Scheduled(cron = "${cron.event.match}")
     public void handleMatches() {
         Result result = eventService.handle(EventTypeEnum.Match, PageUtils.getRowBounds());
         systemService.sendWarnMessage(result);

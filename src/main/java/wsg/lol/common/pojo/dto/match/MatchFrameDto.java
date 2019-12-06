@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 
+import java.sql.Time;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import java.util.Map;
 @Data
 public class MatchFrameDto extends BaseDto {
 
-    private Integer timestamp;
+    private Time timestamp;
     private Map<String, MatchParticipantFrameDto> participantFrames;
     private List<MatchEventDto> events;
 }
