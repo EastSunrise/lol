@@ -32,8 +32,8 @@ public class DatasourceConfig {
     @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource datasource() {
         DataSourceBuilder<?> builder = DataSourceBuilder.create();
-        builder.type(DynamicDatasource.class);
-        return builder.build();
+        DataSourceBuilder<DynamicDatasource> sourceBuilder = builder.type(DynamicDatasource.class);
+        return sourceBuilder.build();
     }
 
     /**

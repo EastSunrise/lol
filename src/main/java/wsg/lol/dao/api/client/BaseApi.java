@@ -54,8 +54,11 @@ public class BaseApi {
      * @param pathParams  params filled in the url
      * @param queryParams query params after the '?', joined with '&'.
      * @param clazz       the type of object parsed from the return.
+     *
+     * @throws AppException if occurs {@link IOException}
+     * @throws HTTPException with {@link HTTPException#getStatusCode()}
      */
-    protected <T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams, Class<T> clazz) {
+    protected <T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams, Class<T> clazz) throws AppException, HTTPException {
         String jsonStr = getJSONString(apiRef, pathParams, queryParams);
         return JSON.parseObject(jsonStr, clazz, new RecordExtraProcessor(BaseApi.class));
     }
@@ -79,6 +82,8 @@ public class BaseApi {
      * @param pathParams  params filled in the url
      * @param queryParams query params after the '?', joined with '&'.
      * @param clazz       the type of the single object parsed from the return.
+     *
+     * @exception HTTPException
      */
     protected <T extends Serializable> List<T> getArray(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams, Class<T> clazz) {
         String jsonStr = getJSONString(apiRef, pathParams, queryParams);
@@ -89,7 +94,7 @@ public class BaseApi {
         return getArray(apiRef, pathParams, new HashMap<>(), clazz);
     }
 
-    private String getJSONString(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams) {
+    private String getJSONString(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams) throws HTTPException, AppException {
         if (MapUtils.isNotEmpty(pathParams)) {
             for (Map.Entry<String, Object> entry : pathParams.entrySet()) {
                 apiRef = apiRef.replace("{" + entry.getKey() + "}", HttpHelper.encode(entry.getValue()));
@@ -109,6 +114,7 @@ public class BaseApi {
             return FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);
         } catch (IOException e) {
             logger.info("Can't read from {}.", filepath);
+            e.printStackTrace();
         }
 
         String jsonStr = doHttpGet(HTTPS + urlStr);
@@ -116,12 +122,13 @@ public class BaseApi {
             logger.info("Write to {}.", filepath);
             FileUtils.writeStringToFile(new File(filepath), jsonStr, StandardCharsets.UTF_8);
         } catch (IOException e) {
+            logger.error("Failed to write to {}.", filepath);
             e.printStackTrace();
         }
         return jsonStr;
     }
 
-    private String doHttpGet(String urlStr) {
+    private String doHttpGet(String urlStr) throws AppException, HTTPException {
         logger.info("Getting from " + urlStr);
         int retryCount = 0;
         while (true) {

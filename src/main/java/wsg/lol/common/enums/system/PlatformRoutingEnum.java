@@ -12,16 +12,16 @@ import wsg.lol.dao.common.serialize.JSONSerializable;
 public enum PlatformRoutingEnum implements JSONSerializable<String>, EqualsToSerializable<String> {
     LOL("api.riotgames.com", "LOL"),
     BR("br1.api.riotgames.com", "BR1", "巴西"),
-    EUN("eun1.api.riotgames.com", "EUN1", "北欧及东欧"),
+    EUNE("eun1.api.riotgames.com", "EUN1", "北欧及东欧"),
     EUW("euw1.api.riotgames.com", "EUW1", "西欧"),
     JP("jp1.api.riotgames.com", "JP1", "日本"),
     KR("kr.api.riotgames.com", "KR", "韩国"),
     LAN("la1.api.riotgames.com", "LA1", "北拉丁美洲"),
     LAS("la2.api.riotgames.com", "LA2", "南拉丁美洲"),
     NA("na1.api.riotgames.com", "NA1", "北美"),
-    OC("oc1.api.riotgames.com", "OC1", "大洋洲"),
-    TR("tr1.api.riotgames.com", "TR1", "土耳其"),
+    OCE("oc1.api.riotgames.com", "OC1", "大洋洲"),
     RU("ru.api.riotgames.com", "RU", "俄罗斯"),
+    TR("tr1.api.riotgames.com", "TR1", "土耳其"),
     NULL("", ""),
     ;
 
