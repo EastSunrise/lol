@@ -54,8 +54,7 @@ public class BaseApi {
      * @param pathParams  params filled in the url
      * @param queryParams query params after the '?', joined with '&'.
      * @param clazz       the type of object parsed from the return.
-     *
-     * @throws AppException if occurs {@link IOException}
+     * @throws AppException  if occurs {@link IOException}
      * @throws HTTPException with {@link HTTPException#getStatusCode()}
      */
     protected <T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams, Class<T> clazz) throws AppException, HTTPException {
@@ -82,8 +81,6 @@ public class BaseApi {
      * @param pathParams  params filled in the url
      * @param queryParams query params after the '?', joined with '&'.
      * @param clazz       the type of the single object parsed from the return.
-     *
-     * @exception HTTPException
      */
     protected <T extends Serializable> List<T> getArray(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams, Class<T> clazz) {
         String jsonStr = getJSONString(apiRef, pathParams, queryParams);
@@ -114,7 +111,6 @@ public class BaseApi {
             return FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);
         } catch (IOException e) {
             logger.info("Can't read from {}.", filepath);
-            e.printStackTrace();
         }
 
         String jsonStr = doHttpGet(HTTPS + urlStr);
@@ -158,15 +154,10 @@ public class BaseApi {
                 if (ResponseCodeEnum.BadRequest.getCode() == responseCode
                         || ResponseCodeEnum.Forbidden.getCode() == responseCode
                         || ResponseCodeEnum.NotFound.getCode() == responseCode
-                        || ResponseCodeEnum.UnsupportedMediaType.getCode() == responseCode) {
+                        || ResponseCodeEnum.UnsupportedMediaType.getCode() == responseCode
+                        || ResponseCodeEnum.Unauthorized.getCode() == responseCode) {
                     ResponseCodeEnum responseCodeEnum = EnumUtils.parseFromObject(responseCode, ResponseCodeEnum.class);
                     logger.info("{}: {}.", responseCodeEnum.getMessage(), urlStr);
-                    throw new HTTPException(responseCode);
-                }
-                if (ResponseCodeEnum.Unauthorized.getCode() == responseCode) {
-                    if (apiClient.regenerateToken()) {
-                        continue;
-                    }
                     throw new HTTPException(responseCode);
                 }
                 if (ResponseCodeEnum.RateLimitExceeded.getCode() == responseCode) {
