@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.annotation.Platform;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.dao.mybatis.config.DatabaseIdentifier;
 
 /**
@@ -26,10 +26,10 @@ public class DatasourceAspect {
     @Around(value = "datasource() && @annotation(source)")
     public Object doAroundAdvice(ProceedingJoinPoint joinPoint, Platform source) {
         Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
-        PlatformRoutingEnum platform = source.platform();
-        PlatformRoutingEnum from = DatabaseIdentifier.getPlatform();
-        logger.info("Switching the datasource from {} to {}...", from, platform);
-        DatabaseIdentifier.setPlatform(platform);
+        RegionEnum region = source.platform();
+        RegionEnum from = DatabaseIdentifier.getRegion();
+        logger.info("Switching the datasource from {} to {}...", from, region);
+        DatabaseIdentifier.setPlatform(region);
         Object result = null;
         try {
             result = joinPoint.proceed();

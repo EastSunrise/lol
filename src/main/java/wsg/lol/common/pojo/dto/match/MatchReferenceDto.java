@@ -7,7 +7,7 @@ import wsg.lol.common.enums.match.MatchLaneEnum;
 import wsg.lol.common.enums.match.MatchQueueEnum;
 import wsg.lol.common.enums.match.MatchRoleEnum;
 import wsg.lol.common.enums.share.SeasonEnum;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 
 import java.util.Date;
 
@@ -26,7 +26,7 @@ public class MatchReferenceDto extends BaseDto {
 
     private Integer champion;
 
-    private PlatformRoutingEnum platformId;
+    private RegionEnum platformId;
 
     private SeasonEnum season;
 

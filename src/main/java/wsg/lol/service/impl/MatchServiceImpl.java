@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.system.EventTypeEnum;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.common.pojo.dto.match.MatchListDto;
 import wsg.lol.common.pojo.dto.match.MatchReferenceDto;
 import wsg.lol.common.pojo.query.QueryMatchListDto;
@@ -40,7 +40,7 @@ public class MatchServiceImpl implements MatchService {
     @Performance
     public Result updateMatches(String accountId, Date beginTime) {
         logger.info("Adding events of matches of the account {}...", accountId);
-        Map<PlatformRoutingEnum, Map<String, String>> map = new HashMap<>();
+        Map<RegionEnum, Map<String, String>> map = new HashMap<>();
         QueryMatchListDto queryMatchListDto = new QueryMatchListDto();
         queryMatchListDto.setBeginTime(beginTime.getTime());
         long beginIndex = 0L, total;
@@ -50,18 +50,18 @@ public class MatchServiceImpl implements MatchService {
             lastMatch = new Date();
             MatchListDto matchListDto = matchV4.getMatchListByAccount(accountId, queryMatchListDto);
             for (MatchReferenceDto match : matchListDto.getMatches()) {
-                PlatformRoutingEnum platform = match.getPlatformId();
-                if (!map.containsKey(platform)) {
-                    map.put(platform, new HashMap<>());
+                RegionEnum region = match.getPlatformId();
+                if (!map.containsKey(region)) {
+                    map.put(region, new HashMap<>());
                 }
-                map.get(platform).put(match.getGameId().toString(), accountId);
+                map.get(region).put(match.getGameId().toString(), accountId);
             }
             total = matchListDto.getTotalGames();
             beginIndex = matchListDto.getEndIndex();
         } while (beginIndex < total);
 
         // TODO: Switch the database
-        for (Map.Entry<PlatformRoutingEnum, Map<String, String>> entry : map.entrySet()) {
+        for (Map.Entry<RegionEnum, Map<String, String>> entry : map.entrySet()) {
             DatabaseIdentifier.setPlatform(entry.getKey());
             Result result = eventService.insertEvents(EventTypeEnum.Match, entry.getValue());
             ResultUtils.assertSuccess(result);

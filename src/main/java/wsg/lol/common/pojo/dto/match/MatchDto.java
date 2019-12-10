@@ -9,7 +9,7 @@ import wsg.lol.common.enums.match.GameTypeEnum;
 import wsg.lol.common.enums.match.MatchQueueEnum;
 import wsg.lol.common.enums.share.MapEnum;
 import wsg.lol.common.enums.share.SeasonEnum;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.dao.common.serialize.SecondDurationDeserializer;
 
 import java.time.Duration;
@@ -26,7 +26,7 @@ public class MatchDto extends BaseDto {
 
     private Long gameId;
 
-    private PlatformRoutingEnum platformId;
+    private RegionEnum platformId;
 
     private Date gameCreation;
 

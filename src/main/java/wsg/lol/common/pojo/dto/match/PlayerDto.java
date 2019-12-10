@@ -3,7 +3,7 @@ package wsg.lol.common.pojo.dto.match;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 
 /**
  * DTO for information of players.
@@ -14,7 +14,7 @@ import wsg.lol.common.enums.system.PlatformRoutingEnum;
 @Data
 class PlayerDto extends BaseDto {
 
-    private PlatformRoutingEnum platformId;
+    private RegionEnum platformId;
 
     private String accountId;
 
@@ -22,7 +22,7 @@ class PlayerDto extends BaseDto {
 
     private String summonerId;
 
-    private PlatformRoutingEnum currentPlatformId;
+    private RegionEnum currentPlatformId;
 
     private String currentAccountId;
 

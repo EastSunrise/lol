@@ -11,7 +11,7 @@ import wsg.lol.common.enums.summoner.DivisionEnum;
 import wsg.lol.common.enums.summoner.TierEnum;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.common.util.EnumUtils;
 
 import java.sql.CallableStatement;
@@ -28,7 +28,7 @@ import java.sql.SQLException;
         ChampionTipEnum.class, SpellNumEnum.class,
         ImageGroupEnum.class,
         MapEnum.class, GameModeEnum.class, RecommendedTypeEnum.class, BlockTypeEnum.class,
-        PlatformRoutingEnum.class,
+        RegionEnum.class,
         RankQueueEnum.class, TierEnum.class, DivisionEnum.class,
         EventTypeEnum.class, EventStatusEnum.class,
         MatchEventTypeEnum.class,

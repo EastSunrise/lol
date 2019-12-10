@@ -8,7 +8,7 @@ import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.match.MatchLaneEnum;
 import wsg.lol.common.enums.match.MatchRoleEnum;
 import wsg.lol.common.enums.match.TeamIdEnum;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -34,7 +34,7 @@ public class ParticipantDo extends BaseDo {
     private Integer participantId;
 
     @Column
-    private PlatformRoutingEnum platformId;
+    private RegionEnum platformId;
 
     @Column
     private String summonerId;
@@ -43,7 +43,7 @@ public class ParticipantDo extends BaseDo {
     private String accountId;
 
     @Column
-    private PlatformRoutingEnum currentPlatformId;
+    private RegionEnum currentPlatformId;
 
     @Column
     private String currentAccountId;

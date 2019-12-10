@@ -2,7 +2,7 @@ package wsg.lol.dao.mybatis.config;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.tomcat.jdbc.pool.DataSource;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +30,7 @@ class DatasourceHolder {
         }, 10000L, DateUtils.MILLIS_PER_MINUTE);
     }
 
-    private Map<PlatformRoutingEnum, DatasourceTimer> platformTimerMap = new HashMap<>();
+    private Map<RegionEnum, DatasourceTimer> regionTimerMap = new HashMap<>();
 
     private DatasourceHolder() {
 
@@ -46,17 +46,17 @@ class DatasourceHolder {
     /**
      * Add dynamic datasource.
      */
-    synchronized void addDatasource(PlatformRoutingEnum platform, DataSource datasource) {
+    synchronized void addDatasource(RegionEnum region, DataSource datasource) {
         DatasourceTimer datasourceTimer = new DatasourceTimer(datasource);
-        platformTimerMap.put(platform, datasourceTimer);
+        regionTimerMap.put(region, datasourceTimer);
     }
 
     /**
      * Get dynamic datasource.
      */
-    synchronized DataSource getDatasource(PlatformRoutingEnum platform) {
-        if (platformTimerMap.containsKey(platform)) {
-            DatasourceTimer datasourceTimer = platformTimerMap.get(platform);
+    synchronized DataSource getDatasource(RegionEnum region) {
+        if (regionTimerMap.containsKey(region)) {
+            DatasourceTimer datasourceTimer = regionTimerMap.get(region);
             datasourceTimer.refreshTime();
             return datasourceTimer.getDatasource();
         }
@@ -67,7 +67,7 @@ class DatasourceHolder {
      * Clear idle datasource.
      */
     private synchronized void clearIdleDatasource() {
-        platformTimerMap.entrySet().removeIf(entry -> entry.getValue().checkAndClose());
+        regionTimerMap.entrySet().removeIf(entry -> entry.getValue().checkAndClose());
     }
 
     /**

@@ -11,7 +11,7 @@ import wsg.lol.common.enums.summoner.DivisionEnum;
 import wsg.lol.common.enums.summoner.TierEnum;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.common.enums.system.RegionalRoutingEnum;
 
 /**
@@ -57,7 +57,7 @@ public class JSONConfig {
                     TierEnum.class,
                     EventStatusEnum.class,
                     EventTypeEnum.class,
-                    PlatformRoutingEnum.class,
+                    RegionEnum.class,
                     RegionalRoutingEnum.class
             };
             ParserConfig instance = ParserConfig.getGlobalInstance();

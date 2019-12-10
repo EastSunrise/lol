@@ -2,7 +2,7 @@ package wsg.lol.dao.mybatis.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.config.GlobalConfig;
 
 /**
@@ -15,15 +15,15 @@ public class DatabaseIdentifier {
 
     private static GlobalConfig globalConfig;
 
-    private static ThreadLocal<PlatformRoutingEnum> threadLocal = new ThreadLocal<>();
+    private static ThreadLocal<RegionEnum> threadLocal = new ThreadLocal<>();
 
-    public static PlatformRoutingEnum getPlatform() {
-        PlatformRoutingEnum platform = threadLocal.get();
-        return platform == null ? globalConfig.getRegion() : platform;
+    public static RegionEnum getRegion() {
+        RegionEnum region = threadLocal.get();
+        return region == null ? globalConfig.getRegion() : region;
     }
 
-    public static void setPlatform(PlatformRoutingEnum platform) {
-        threadLocal.set(platform == null ? globalConfig.getRegion() : platform);
+    public static void setPlatform(RegionEnum region) {
+        threadLocal.set(region == null ? globalConfig.getRegion() : region);
     }
 
     @Autowired

@@ -2,7 +2,7 @@ package wsg.lol.dao.mybatis.mapper.lol.system;
 
 import org.springframework.stereotype.Repository;
 import wsg.lol.common.annotation.Platform;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 
 /**
  * Mapper interface for configurations.
@@ -13,7 +13,7 @@ import wsg.lol.common.enums.system.PlatformRoutingEnum;
 @Repository
 public interface ConfigMapper {
 
-    String getConfigValue(String name, PlatformRoutingEnum region);
+    String getConfigValue(String name, RegionEnum region);
 
-    int updateConfigValue(PlatformRoutingEnum region, String name, String value);
+    int updateConfigValue(RegionEnum region, String name, String value);
 }

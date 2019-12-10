@@ -3,7 +3,7 @@ package wsg.lol.config;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 
 /**
  * Global configuration.
@@ -15,9 +15,9 @@ import wsg.lol.common.enums.system.PlatformRoutingEnum;
 public class GlobalConfig {
 
     @Setter
-    private PlatformRoutingEnum region;
+    private RegionEnum region;
 
-    public PlatformRoutingEnum getRegion() {
+    public RegionEnum getRegion() {
         return region;
     }
 }

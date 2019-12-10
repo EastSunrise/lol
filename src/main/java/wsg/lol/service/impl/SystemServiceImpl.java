@@ -9,7 +9,7 @@ import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ConfigConst;
 import wsg.lol.common.constant.ErrorCodeConst;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.common.result.system.VersionResult;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.config.GlobalConfig;
@@ -53,14 +53,14 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public VersionResult getVersion() {
         VersionResult versionResult = new VersionResult();
-        versionResult.setCurrentVersion(configMapper.getConfigValue(ConfigConst.CURRENT_VERSION, PlatformRoutingEnum.LOL));
+        versionResult.setCurrentVersion(configMapper.getConfigValue(ConfigConst.CURRENT_VERSION, RegionEnum.LOL));
         versionResult.setLatestVersion(generalDao.getLatestVersion());
         return versionResult;
     }
 
     @Override
     public Result updateVersion(String version) {
-        int count = configMapper.updateConfigValue(PlatformRoutingEnum.LOL, ConfigConst.CURRENT_VERSION, version);
+        int count = configMapper.updateConfigValue(RegionEnum.LOL, ConfigConst.CURRENT_VERSION, version);
         if (1 != count) {
             logger.error("Failed to update the version config.");
             throw new AppException(ErrorCodeConst.DATABASE_ERROR);

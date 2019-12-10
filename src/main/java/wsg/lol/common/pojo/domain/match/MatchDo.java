@@ -7,7 +7,7 @@ import wsg.lol.common.enums.match.GameModeEnum;
 import wsg.lol.common.enums.match.GameTypeEnum;
 import wsg.lol.common.enums.share.MapEnum;
 import wsg.lol.common.enums.share.SeasonEnum;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -29,7 +29,7 @@ public class MatchDo extends BaseDo {
     private Long gameId;
 
     @Column
-    private PlatformRoutingEnum platformId;
+    private RegionEnum platformId;
 
     @Column
     private Date gameCreation;

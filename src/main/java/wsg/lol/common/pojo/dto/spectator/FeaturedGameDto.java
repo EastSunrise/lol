@@ -7,7 +7,7 @@ import wsg.lol.common.enums.match.GameModeEnum;
 import wsg.lol.common.enums.match.GameTypeEnum;
 import wsg.lol.common.enums.match.MatchQueueEnum;
 import wsg.lol.common.enums.share.MapEnum;
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 
 import java.util.Date;
 import java.util.List;
@@ -34,7 +34,7 @@ public class FeaturedGameDto extends BaseDto {
     /**
      * The ID of the platform on which the game is being played
      */
-    private PlatformRoutingEnum platformId;
+    private RegionEnum platformId;
 
     /**
      * The game mode (Legal values: CLASSIC, ODIN, ARAM, TUTORIAL, ONEFORALL, ASCENSION, FIRSTBLOOD, KINGPORO)
