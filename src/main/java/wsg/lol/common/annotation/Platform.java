@@ -1,6 +1,6 @@
 package wsg.lol.common.annotation;
 
-import wsg.lol.common.enums.system.PlatformRoutingEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -16,5 +16,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Platform {
 
-    PlatformRoutingEnum platform() default PlatformRoutingEnum.LOL;
+    RegionEnum platform() default RegionEnum.LOL;
 }
