@@ -12,7 +12,7 @@ import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.system.PlatformRoutingEnum;
 import wsg.lol.common.result.system.VersionResult;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.dao.GlobalConfig;
+import wsg.lol.config.GlobalConfig;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.dragon.intf.GeneralDao;
 import wsg.lol.dao.mybatis.mapper.lol.system.ConfigMapper;

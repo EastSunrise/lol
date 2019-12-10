@@ -22,6 +22,7 @@ public class DynamicDatasource extends DataSource {
     @Override
     public Connection getConnection() {
         PlatformRoutingEnum platform = DatabaseIdentifier.getPlatform();
+        logger.info("Connecting to the database {}.", platform);
         DataSource datasource = DatasourceHolder.getInstance().getDatasource(platform);
         if (datasource == null) {
             try {

@@ -4,6 +4,7 @@ create table t_event_summoner
 (
     id          varchar(63) not null comment '召唤师ID',
     status      tinyint     not null comment '状态',
+    source      varchar(64) not null comment '来源',
     create_time timestamp   not null comment '创建时间',
     update_time timestamp   null comment '更新时间',
     primary key (id),
@@ -16,6 +17,7 @@ create table t_event_match
 (
     id          varchar(16) not null comment '对局主键',
     status      tinyint     not null comment '状态',
+    source      varchar(64) not null comment '来源',
     create_time timestamp   not null comment '创建时间',
     update_time timestamp   null comment '更新时间',
     primary key (id),

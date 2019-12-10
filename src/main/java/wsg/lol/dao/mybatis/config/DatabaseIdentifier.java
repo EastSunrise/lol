@@ -3,7 +3,7 @@ package wsg.lol.dao.mybatis.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import wsg.lol.common.enums.system.PlatformRoutingEnum;
-import wsg.lol.dao.GlobalConfig;
+import wsg.lol.config.GlobalConfig;
 
 /**
  * Identifier for different databases.

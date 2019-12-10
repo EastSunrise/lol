@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.system.EventTypeEnum;
@@ -19,7 +18,9 @@ import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.MatchService;
 import wsg.lol.service.intf.SummonerService;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Kingen
@@ -36,11 +37,10 @@ public class MatchServiceImpl implements MatchService {
     private SummonerService summonerService;
 
     @Override
-    @Transactional
     @Performance
     public Result updateMatches(String accountId, Date beginTime) {
         logger.info("Adding events of matches of the account {}...", accountId);
-        Map<PlatformRoutingEnum, Set<String>> map = new HashMap<>();
+        Map<PlatformRoutingEnum, Map<String, String>> map = new HashMap<>();
         QueryMatchListDto queryMatchListDto = new QueryMatchListDto();
         queryMatchListDto.setBeginTime(beginTime.getTime());
         long beginIndex = 0L, total;
@@ -52,15 +52,16 @@ public class MatchServiceImpl implements MatchService {
             for (MatchReferenceDto match : matchListDto.getMatches()) {
                 PlatformRoutingEnum platform = match.getPlatformId();
                 if (!map.containsKey(platform)) {
-                    map.put(platform, new HashSet<>());
+                    map.put(platform, new HashMap<>());
                 }
-                map.get(platform).add(match.getGameId().toString());
+                map.get(platform).put(match.getGameId().toString(), accountId);
             }
             total = matchListDto.getTotalGames();
             beginIndex = matchListDto.getEndIndex();
         } while (beginIndex < total);
 
-        for (Map.Entry<PlatformRoutingEnum, Set<String>> entry : map.entrySet()) {
+        // TODO: Switch the database
+        for (Map.Entry<PlatformRoutingEnum, Map<String, String>> entry : map.entrySet()) {
             DatabaseIdentifier.setPlatform(entry.getKey());
             Result result = eventService.insertEvents(EventTypeEnum.Match, entry.getValue());
             ResultUtils.assertSuccess(result);

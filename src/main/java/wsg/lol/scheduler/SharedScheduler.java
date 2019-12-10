@@ -47,7 +47,7 @@ public class SharedScheduler {
      * Update the shard status and the rotation of champions.
      * Request 2.
      */
-    @Scheduled(cron = "${cron.share.shared}")
+    @Scheduled(cron = "${cron.share.shard}")
     public void updateSharedData() {
         logger.info("Schedule to update the shared data.");
         Result result = sharedService.updateSharedStatus();

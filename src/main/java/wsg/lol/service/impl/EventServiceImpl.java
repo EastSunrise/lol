@@ -1,6 +1,7 @@
 package wsg.lol.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ import wsg.lol.service.intf.EventService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * @author Kingen
@@ -57,18 +58,21 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Performance
-    public GenericResult<Integer> insertEvents(EventTypeEnum eventType, Set<?> contexts) {
+    public GenericResult<Integer> insertEvents(EventTypeEnum eventType, Map<String, String> events) {
         GenericResult<Integer> result = new GenericResult<>();
-        if (CollectionUtils.isEmpty(contexts)) {
-            logger.info("Contexts are empty.");
+        if (MapUtils.isEmpty(events)) {
+            logger.info("Events are empty.");
             result.setObject(0);
             return result;
         }
 
-        List<String> values = new ArrayList<>();
-        for (Object context : contexts) {
-            if (context != null) {
-                values.add(context.toString());
+        List<EventDo> values = new ArrayList<>();
+        for (Map.Entry<String, String> entry : events.entrySet()) {
+            if (entry.getKey() != null) {
+                EventDo eventDo = new EventDo();
+                eventDo.setId(entry.getKey());
+                eventDo.setSource(entry.getValue());
+                values.add(eventDo);
             }
         }
 

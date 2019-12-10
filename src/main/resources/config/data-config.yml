@@ -1,0 +1,15 @@
+global:
+  region: JP
+# dragon config
+dragon:
+  language: zh_CN
+  url:
+    cdn: http://ddragon.leagueoflegends.com/cdn
+    realm: https://ddragon.leagueoflegends.com/realms/{0}.json
+    version: https://ddragon.leagueoflegends.com/api/versions.json
+  directory: D:/lol
+# api config
+api:
+  timeout: 30000
+  rate: 0.83333
+  tokens:

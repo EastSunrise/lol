@@ -1,5 +1,6 @@
 package wsg.lol.service.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.pojo.domain.summoner.LeagueEntryDo;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.task.AbstractBatchTask;
-import wsg.lol.common.task.MinTaskStrategy;
+import wsg.lol.common.task.MapTaskStrategy;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.LeagueV4;
 import wsg.lol.dao.common.transfer.ObjectTransfer;
@@ -24,9 +25,9 @@ import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.LeagueService;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ForkJoinPool;
 
 /**
@@ -48,7 +49,7 @@ public class LeagueServiceImpl implements LeagueService {
     public Result initializeByLeagues() {
         logger.info("Initializing the database by leagues.");
 
-        List<String> ids = new ArrayList<>();
+        Map<String, String> map = new HashMap<>();
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         int count = 0;
 
@@ -60,36 +61,41 @@ public class LeagueServiceImpl implements LeagueService {
                         if (leagueEntryDtoList == null || leagueEntryDtoList.isEmpty())
                             break;
                         for (LeagueEntryDto leagueEntryDto : leagueEntryDtoList) {
-                            ids.add(leagueEntryDto.getSummonerId());
+                            map.put(leagueEntryDto.getSummonerId(), StringUtils.joinWith(".", queue, tier, division, page));
                         }
-                        if (ids.size() > AbstractBatchTask.MAX_SIZE) {
-                            count += batchInsertEvents(forkJoinPool, ids);
-                            ids = new ArrayList<>();
+                        if (map.size() > AbstractBatchTask.MAX_SIZE) {
+                            count += batchInsertEvents(forkJoinPool, map);
+                            map = new HashMap<>();
                         }
                     }
                 }
             }
         }
 
-        count += batchInsertEvents(forkJoinPool, ids);
+        count += batchInsertEvents(forkJoinPool, map);
         logger.info("{} events of summoners inserted totally.", count);
         return ResultUtils.success();
     }
 
-    private int batchInsertEvents(ForkJoinPool forkJoinPool, List<String> ids) {
-        AbstractBatchTask<String, GenericResult<Integer>> task = new AbstractBatchTask<>(ids, new MinTaskStrategy<String, GenericResult<Integer>>() {
+    private int batchInsertEvents(ForkJoinPool forkJoinPool, Map<String, String> map) {
+        AbstractBatchTask<Map<String, String>, GenericResult<Integer>> task = new AbstractBatchTask<>(map, new MapTaskStrategy<String, String, GenericResult<Integer>>() {
             @Override
-            public GenericResult<Integer> doMinTask(List<String> strings) {
-                return eventService.insertEvents(EventTypeEnum.Summoner, new HashSet<>(strings));
+            public GenericResult<Integer> doMinTask(Map<String, String> map) {
+                return eventService.insertEvents(EventTypeEnum.Summoner, map);
             }
 
             @Override
-            public GenericResult<Integer> joinResult(GenericResult<Integer> r1, GenericResult<Integer> r2) {
+            public GenericResult<Integer> joinResult(List<GenericResult<Integer>> results) {
+                int sum = 0;
+                for (GenericResult<Integer> result : results) {
+                    sum += result.getObject();
+                }
                 GenericResult<Integer> result = new GenericResult<>();
-                result.setObject(r1.getObject() + r2.getObject());
+                result.setObject(sum);
                 return result;
             }
         });
+
         forkJoinPool.execute(task);
         return task.join().getObject();
     }

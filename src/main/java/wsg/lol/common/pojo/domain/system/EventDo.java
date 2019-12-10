@@ -15,11 +15,14 @@ import javax.persistence.Id;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public abstract class EventDo extends BaseDo {
+public class EventDo extends BaseDo {
 
     @Id
     private String id;
 
     @Column
     private EventStatusEnum status;
+
+    @Column
+    private String source;
 }

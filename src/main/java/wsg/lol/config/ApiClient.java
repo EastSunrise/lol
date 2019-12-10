@@ -1,14 +1,15 @@
-package wsg.lol.dao.api.client;
+package wsg.lol.config;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.util.concurrent.Uninterruptibles;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.time.DateUtils;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
@@ -17,6 +18,7 @@ import wsg.lol.common.constant.ErrorCodeConst;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.PriorityBlockingQueue;
 
@@ -31,21 +33,20 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  * @author Kingen
  */
 @Configuration
+@ConfigurationProperties(prefix = "api")
 public class ApiClient implements InitializingBean {
 
     private static final Logger logger = LoggerFactory.getLogger(ApiClient.class);
 
-    @Value("${api.rate}")
-    private double permitsPerSecond;
+    @Setter
+    private double rate;
 
-    @Value("${api.timeout}")
+    @Setter
+    @Getter
     private int timeout;
 
-    @Value("${api.token}")
-    private String token;
-
-    @Value("${api.expires}")
-    private String expires;
+    @Setter
+    private List<Token> tokens;
 
     private PriorityBlockingQueue<RGApi> apis = new PriorityBlockingQueue<>();
 
@@ -59,24 +60,22 @@ public class ApiClient implements InitializingBean {
         if (api == null) {
             return null;
         }
-        logger.info("Using token {}.", api.token);
+        logger.info("Using the token of the account {}.", api.username);
         String token = api.acquire();
         apis.add(api);
         return token;
     }
 
-    public int getTimeout() {
-        return timeout;
-    }
-
     @Override
     public void afterPropertiesSet() {
-        this.apis.add(new RGApi(token, expires, permitsPerSecond));
+        for (Token token : tokens) {
+            this.apis.add(new RGApi(token, rate));
+        }
     }
 
-    @Data
     private static class RGApi implements Comparable<RGApi> {
         final Stopwatch stopwatch = Stopwatch.createStarted();
+        private String username;
         private String token;
         private Date expires;
         private double maxPermits;
@@ -86,9 +85,10 @@ public class ApiClient implements InitializingBean {
         @MonotonicNonNull
         private volatile Object mutexDoNotUseDirectly;
 
-        RGApi(String token, String expires, double permitsPerSecond) {
-            this.token = token;
-            this.expires = parseDate(expires);
+        RGApi(Token token, double permitsPerSecond) {
+            this.username = token.username;
+            this.token = token.key;
+            this.expires = parseDate(token.expires);
             synchronized (mutex()) {
                 doSetRate(permitsPerSecond, stopwatch.elapsed(MICROSECONDS));
             }
@@ -171,5 +171,12 @@ public class ApiClient implements InitializingBean {
             }
             return this.expires.compareTo(api.expires);
         }
+    }
+
+    @Setter
+    private static class Token {
+        private String username;
+        private String key;
+        private String expires;
     }
 }

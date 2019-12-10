@@ -17,8 +17,8 @@ import wsg.lol.common.pojo.dto.champion.SpellDto;
 import wsg.lol.common.pojo.dto.share.ImageDto;
 import wsg.lol.common.pojo.dto.share.ItemExtDto;
 import wsg.lol.common.pojo.dto.share.RuneExtDto;
+import wsg.lol.config.DragonConfig;
 import wsg.lol.dao.common.serialize.RecordExtraProcessor;
-import wsg.lol.dao.dragon.config.DragonConfig;
 import wsg.lol.dao.dragon.intf.DragonDao;
 
 import java.io.File;
@@ -41,7 +41,7 @@ public class DragonDaoImpl implements DragonDao {
 
     @Override
     public String getCdnDir(String version) {
-        return StringUtils.joinWith(File.separator, config.getCdnDir(), "dragontail-" + version);
+        return StringUtils.joinWith(File.separator, config.getDirectory(), "dragontail-" + version);
     }
 
     @Override

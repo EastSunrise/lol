@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface EventMapper<T extends EventDo> extends SelectByExampleRowBoundsMapper<T> {
 
-    int insertIgnoreList(List<String> ids, EventStatusEnum status);
+    int insertIgnoreList(List<EventDo> events, EventStatusEnum status);
 
     int updateStatus(String id, EventStatusEnum from, EventStatusEnum to);
 }

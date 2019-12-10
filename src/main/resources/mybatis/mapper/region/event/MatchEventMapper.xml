@@ -4,9 +4,10 @@
     <insert id="insertIgnoreList">
         insert ignore into t_event_match
         values
-        <foreach collection="ids" item="item" separator=",">
-            (#{item},
+        <foreach collection="events" item="item" separator=",">
+            (#{item.id},
             #{status},
+            #{item.source},
             sysdate(),
             null)
         </foreach>

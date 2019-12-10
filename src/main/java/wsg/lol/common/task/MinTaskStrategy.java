@@ -9,9 +9,25 @@ import java.util.List;
  *
  * @author Kingen
  */
-public interface MinTaskStrategy<T, R extends Result> {
+public interface MinTaskStrategy<C, R extends Result> {
 
-    R doMinTask(List<T> tList);
+    /**
+     * Doing the task.
+     */
+    R doMinTask(C c);
 
-    R joinResult(R r1, R r2);
+    /**
+     * Merge the result.
+     */
+    R joinResult(List<R> rs);
+
+    /**
+     * Get the length of the Collection.
+     */
+    int getLength(C c);
+
+    /**
+     * Split the collection.
+     */
+    List<C> split(C c);
 }

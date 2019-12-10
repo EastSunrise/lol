@@ -44,17 +44,14 @@
     <logger name="wsg.lol.controller" level="info">
         <appender-ref ref="controller"/>
         <appender-ref ref="controller_error"/>
-        <appender-ref ref="stdout"/>
     </logger>
     <logger name="wsg.lol.runner" level="info">
         <appender-ref ref="controller"/>
         <appender-ref ref="controller_error"/>
-        <appender-ref ref="stdout"/>
     </logger>
     <logger name="wsg.lol.scheduler" level="info">
         <appender-ref ref="controller"/>
         <appender-ref ref="controller_error"/>
-        <appender-ref ref="stdout"/>
     </logger>
 
     <!--service-->
@@ -91,7 +88,6 @@
     <logger name="wsg.lol.service" level="info">
         <appender-ref ref="service"/>
         <appender-ref ref="service_error"/>
-        <appender-ref ref="stdout"/>
     </logger>
 
     <!--api-->
@@ -233,7 +229,7 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
-    <root level="info">
+    <root level="error">
         <appender-ref ref="root"/>
         <appender-ref ref="root_error"/>
         <appender-ref ref="stdout"/>

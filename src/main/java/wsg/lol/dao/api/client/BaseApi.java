@@ -14,9 +14,10 @@ import wsg.lol.common.base.QueryDto;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.util.EnumUtils;
 import wsg.lol.common.util.HttpHelper;
-import wsg.lol.dao.GlobalConfig;
+import wsg.lol.config.ApiClient;
+import wsg.lol.config.DragonConfig;
+import wsg.lol.config.GlobalConfig;
 import wsg.lol.dao.common.serialize.RecordExtraProcessor;
-import wsg.lol.dao.dragon.config.DragonConfig;
 
 import javax.xml.ws.http.HTTPException;
 import java.io.*;
@@ -105,7 +106,7 @@ public class BaseApi {
         String urlStr = (globalConfig.getRegion().getHost() + apiRef + urlParams).replace("+", "%20");
 
         // todo get from the api directly
-        String filepath = StringUtils.joinWith(File.separator, dragonConfig.getCdnDir(), "api", urlStr.replace("?", File.separator).replace("&", File.separator) + ".json");
+        String filepath = StringUtils.joinWith(File.separator, dragonConfig.getDirectory(), "api", urlStr.replace("?", File.separator).replace("&", File.separator) + ".json");
         try {
             logger.info("Read from {}.", filepath);
             return FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);
@@ -150,14 +151,14 @@ public class BaseApi {
                     in.close();
                     return builder.toString();
                 }
+                String responseMessage = urlConnection.getResponseMessage();
 
                 if (ResponseCodeEnum.BadRequest.getCode() == responseCode
                         || ResponseCodeEnum.Forbidden.getCode() == responseCode
                         || ResponseCodeEnum.NotFound.getCode() == responseCode
                         || ResponseCodeEnum.UnsupportedMediaType.getCode() == responseCode
                         || ResponseCodeEnum.Unauthorized.getCode() == responseCode) {
-                    ResponseCodeEnum responseCodeEnum = EnumUtils.parseFromObject(responseCode, ResponseCodeEnum.class);
-                    logger.info("{}: {}.", responseCodeEnum.getMessage(), urlStr);
+                    logger.error("{}: {}.", responseMessage, urlStr);
                     throw new HTTPException(responseCode);
                 }
                 if (ResponseCodeEnum.RateLimitExceeded.getCode() == responseCode) {
@@ -173,7 +174,7 @@ public class BaseApi {
                     threadSleep(RETRY_INTERVAL);
                     continue;
                 }
-                logger.error(urlConnection.getResponseMessage());
+                logger.error("{}: {}.", responseMessage, urlStr);
                 throw new HTTPException(responseCode);
             } catch (IOException e) {
                 logger.error(e.getMessage());

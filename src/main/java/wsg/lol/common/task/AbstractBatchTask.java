@@ -2,6 +2,7 @@ package wsg.lol.common.task;
 
 import wsg.lol.common.base.Result;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
@@ -11,35 +12,40 @@ import java.util.concurrent.RecursiveTask;
  *
  * @author Kingen
  */
-public class AbstractBatchTask<T, R extends Result> extends RecursiveTask<R> {
+public class AbstractBatchTask<C, R extends Result> extends RecursiveTask<R> {
 
     public static final int MAX_SIZE = 16000;
 
     private static final int MIN_SIZE = 1000;
 
-    private List<T> tList;
+    private C c;
 
-    private MinTaskStrategy<T, R> minTaskStrategy;
+    private MinTaskStrategy<C, R> minTaskStrategy;
 
-    public AbstractBatchTask(List<T> tList, MinTaskStrategy<T, R> minTaskStrategy) {
-        this.tList = tList;
+    public AbstractBatchTask(C c, MinTaskStrategy<C, R> minTaskStrategy) {
+        this.c = c;
         this.minTaskStrategy = minTaskStrategy;
     }
 
     @Override
     protected R compute() {
-        int size = tList.size();
-        if (size <= MIN_SIZE) {
-            return minTaskStrategy.doMinTask(tList);
+        int length = minTaskStrategy.getLength(c);
+        if (length <= MIN_SIZE) {
+            return minTaskStrategy.doMinTask(c);
         } else {
-            int mid = size / 2;
-            List<T> leftList = tList.subList(0, mid);
-            List<T> rightList = tList.subList(mid, size);
-            AbstractBatchTask<T, R> leftTask = new AbstractBatchTask<>(leftList, minTaskStrategy);
-            AbstractBatchTask<T, R> rightTask = new AbstractBatchTask<>(rightList, minTaskStrategy);
-            leftTask.fork();
-            rightTask.fork();
-            return minTaskStrategy.joinResult(leftTask.join(), rightTask.join());
+            List<C> cs = minTaskStrategy.split(c);
+            List<AbstractBatchTask<C, R>> tasks = new ArrayList<>();
+            for (C c1 : cs) {
+                tasks.add(new AbstractBatchTask<>(c1, minTaskStrategy));
+            }
+            for (AbstractBatchTask<C, R> task : tasks) {
+                task.fork();
+            }
+            List<R> rs = new ArrayList<>();
+            for (AbstractBatchTask<C, R> task : tasks) {
+                rs.add(task.join());
+            }
+            return minTaskStrategy.joinResult(rs);
         }
     }
 

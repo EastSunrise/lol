@@ -1,9 +1,9 @@
-package wsg.lol.scheduler;
+package wsg.lol.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -18,19 +18,19 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 @Configuration
 @EnableAsync
-@PropertySource(value = {"classpath:config/task.properties"})
+@ConfigurationProperties(prefix = "task")
 public class TaskConfig {
 
-    static final String CRON = "0 0 0 1/1 * ?";
-    @Value("$(scheduler.fixedDelay")
-    static long fixedDelay;
-    @Value("${task.corePoolSize}")
+    @Setter
     private int corePoolSize;
-    @Value("${task.maxPoolSize}")
+
+    @Setter
     private int maxPoolSize;
-    @Value("${task.queueCapacity}")
+
+    @Setter
     private int queueCapacity;
-    @Value("${task.keepAliveSeconds}")
+
+    @Setter
     private int keepAliveSeconds;
 
     @Bean("schedulerTaskExecutor")
