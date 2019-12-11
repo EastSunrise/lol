@@ -6,10 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import wsg.lol.common.base.Result;
-import wsg.lol.common.pojo.dto.spectator.FeaturedGames;
 import wsg.lol.common.result.system.VersionResult;
-import wsg.lol.service.intf.SharedService;
+import wsg.lol.service.context.SharedContext;
 import wsg.lol.service.intf.SystemService;
 
 /**
@@ -24,14 +22,14 @@ public class SharedScheduler {
 
     private SystemService systemService;
 
-    private SharedService sharedService;
+    private SharedContext sharedContext;
 
     /**
      * Check the version.
      */
     @Scheduled(cron = "${cron.share.version}")
     public void checkVersion() {
-        logger.info("Schedule to check the version...");
+        logger.info("Scheduling to check the version...");
         VersionResult versionResult = systemService.getVersion();
         if (versionResult.isLatestVersion()) {
             logger.info("The version is latest.");
@@ -49,37 +47,28 @@ public class SharedScheduler {
      */
     @Scheduled(cron = "${cron.share.shard}")
     public void updateSharedData() {
-        logger.info("Schedule to update the shared data.");
-        Result result = sharedService.updateSharedStatus();
-        systemService.sendWarnMessage(result);
-
-        result = sharedService.updateChampionRotation();
-        systemService.sendWarnMessage(result);
+        logger.info("Scheduling to update the shared data.");
+        sharedContext.updateShardStatus();
+        sharedContext.updateChampionRotation();
     }
 
     /**
      * Update the featured games.
      * Request 1.
      */
-    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_SECOND)
+    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
     public void updateFeaturedGames() {
-        logger.info("Schedule to update the featured games.");
-        FeaturedGames featuredGames = sharedService.updateFeaturedGames().getObject();
-        Long interval = featuredGames.getClientRefreshInterval();
-        try {
-            Thread.sleep(interval);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        logger.info("Scheduling to update the featured games.");
+        sharedContext.updateFeaturedGames();
+    }
+
+    @Autowired
+    public void setSharedContext(SharedContext sharedContext) {
+        this.sharedContext = sharedContext;
     }
 
     @Autowired
     public void setSystemService(SystemService systemService) {
         this.systemService = systemService;
-    }
-
-    @Autowired
-    public void setSharedService(SharedService sharedService) {
-        this.sharedService = sharedService;
     }
 }

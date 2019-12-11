@@ -193,8 +193,7 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
-    <logger name="wsg.lol.dao.mybatis" level="debug">
-        <appender-ref ref="mybatis_sql"/>
+    <logger name="wsg.lol.dao.mybatis" level="info">
         <appender-ref ref="mybatis_error"/>
     </logger>
 

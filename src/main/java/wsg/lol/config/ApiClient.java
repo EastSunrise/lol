@@ -58,7 +58,8 @@ public class ApiClient implements InitializingBean {
     public synchronized String getToken() {
         RGApi api = apis.poll();
         if (api == null) {
-            return null;
+            logger.error("Unavailable token from the queue.");
+            throw new AppException(ErrorCodeConst.HTTPS_ERROR);
         }
         logger.info("Using the token of the account {}.", api.username);
         String token = api.acquire();

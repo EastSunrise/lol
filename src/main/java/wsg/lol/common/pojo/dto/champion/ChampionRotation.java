@@ -13,7 +13,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ChampionRotationDto extends BaseDto {
+public class ChampionRotation extends BaseDto {
 
     private List<Integer> freeChampionIdsForNewPlayers;
     private List<Integer> freeChampionIds;

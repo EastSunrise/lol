@@ -16,6 +16,18 @@ spring:
     password: 2787
   resources:
     static-locations: classpath:/static/, classpath:/
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6380
+    password: lol
+    timeout: 5000
+    jedis:
+      pool:
+        min-idle: 0
+        max-idle: 8
+        max-active: 8
+        max-wait: -1
 server:
   port: 8090
 logging:

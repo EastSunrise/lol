@@ -23,21 +23,24 @@ public class CustomEnumDeserializer implements ObjectDeserializer {
     @SuppressWarnings("unchecked")
     public <T> T deserialze(DefaultJSONParser parser, Type type, Object fieldName) {
         Object object = parser.parse(fieldName);
+        if (object == null) {
+            return null;
+        }
         if (type instanceof Class<?>) {
             Class<?> clazz = (Class<?>) type;
             if (clazz.isEnum()) {
-                Class<? extends Enum> enumClass = (Class<? extends Enum>) type;
+                Class<? extends Enum<?>> enumClass = (Class<? extends Enum<?>>) type;
                 if (ClassUtils.isAssignable(clazz, JSONSerializable.class)) {
-                    for (Enum enumConstant : enumClass.getEnumConstants()) {
+                    for (Enum<?> enumConstant : enumClass.getEnumConstants()) {
                         JSONSerializable<?> serializable = (JSONSerializable<?>) enumConstant;
-                        if (serializable.serialize().equals(object)) {
+                        if (object.equals(serializable.serialize())) {
                             return (T) enumConstant;
                         }
                     }
                 }
                 if (ClassUtils.isAssignable(clazz, EqualsToSerializable.class)) {
-                    for (Enum enumConstant : enumClass.getEnumConstants()) {
-                        EqualsToSerializable equalsToSerializable = (EqualsToSerializable) enumConstant;
+                    for (Enum<?> enumConstant : enumClass.getEnumConstants()) {
+                        EqualsToSerializable<Object> equalsToSerializable = (EqualsToSerializable<Object>) enumConstant;
                         if (equalsToSerializable.equalsToObject(object)) {
                             return (T) enumConstant;
                         }
