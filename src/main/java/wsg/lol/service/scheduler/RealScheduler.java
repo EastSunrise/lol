@@ -7,11 +7,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
+import wsg.lol.common.pojo.query.QueryMatchListDto;
 import wsg.lol.common.util.PageUtils;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.service.intf.MatchService;
 import wsg.lol.service.intf.SummonerService;
 
+import javax.xml.ws.http.HTTPException;
 import java.util.List;
 
 /**
@@ -68,9 +70,13 @@ public class RealScheduler {
             try {
                 ResultUtils.assertSuccess(matchService.updateMatches(summoner.getAccountId(), summoner.getLastMatch()));
                 success++;
-            } catch (AppException e) {
+            } catch (HTTPException | AppException e) {
+                logger.error("{}: Failed to update matches of the account {}", e.getMessage(), summoner.getAccountId());
+                summonerService.updateSummonerLastMatch(summoner.getAccountId(), QueryMatchListDto.getLastDate());
+            } catch (RuntimeException e) {
                 logger.error("Failed to update matches of the account {}", summoner.getAccountId());
                 e.printStackTrace();
+                summonerService.updateSummonerLastMatch(summoner.getAccountId(), QueryMatchListDto.getLastDate());
             }
         }
         logger.info("Matches updated, {} succeeded, {} failed.", success, summoners.size() - success);

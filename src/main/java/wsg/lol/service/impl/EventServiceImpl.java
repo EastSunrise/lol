@@ -92,7 +92,7 @@ public class EventServiceImpl implements EventService {
         }
         logger.info("Updating the status of the event {} to {}.", context, to);
         EventMapper<? extends EventDo> mapper = applicationContext.getBean(eventType.getMapperClass());
-        int count = mapper.updateStatus(context.toString(), EventStatusEnum.Unfinished, EventStatusEnum.Finished);
+        int count = mapper.updateStatus(context.toString(), from, to);
         if (count != 1) {
             logger.error("Failed to update the status of the event {} to {}.", context, to);
             throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to update the status of the event.");

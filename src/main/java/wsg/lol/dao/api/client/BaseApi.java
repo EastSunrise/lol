@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.QueryDto;
-import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.util.HttpHelper;
 import wsg.lol.config.ApiClient;
 import wsg.lol.config.DragonConfig;
@@ -181,11 +180,7 @@ public class BaseApi {
                 logger.error("{}: {}.", responseMessage, urlStr);
                 throw new HTTPException(responseCode);
             } catch (IOException e) {
-                logger.error(e.getMessage());
-                retryCount++;
-                if (retryCount > 1) {
-                    throw new AppException(ErrorCodeConst.SYSTEM_ERROR, e);
-                }
+                logger.error("Error: {}. Retry {} times.", e.getMessage(), ++retryCount);
                 threadSleep(RETRY_INTERVAL);
             }
         }

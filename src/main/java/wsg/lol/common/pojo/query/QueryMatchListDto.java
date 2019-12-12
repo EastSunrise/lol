@@ -63,10 +63,13 @@ public class QueryMatchListDto extends QueryDto {
     @Optional
     private Long beginIndex;
 
-    public static QueryMatchListDto getInitialCond() {
-        QueryMatchListDto queryMatchListDto = new QueryMatchListDto();
-        queryMatchListDto.setBeginTime(getInitialBegin().getTime());
-        return queryMatchListDto;
+    public static Date getLastDate() {
+        try {
+            return DateUtils.parseDate("2038-01-01 00:00:00", "yyyy-MM-dd HH:mm:ss");
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new AppException(ErrorCodeConst.SYSTEM_ERROR);
+        }
     }
 
     public static Date getInitialBegin() {

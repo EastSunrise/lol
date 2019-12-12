@@ -15,6 +15,7 @@ import wsg.lol.common.util.ResultUtils;
 import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.SummonerService;
 
+import javax.xml.ws.http.HTTPException;
 import java.util.List;
 
 /**
@@ -50,9 +51,13 @@ public class SummonerEventHandler implements EventHandler {
                     success[0]++;
                     return ResultUtils.success();
                 });
-            } catch (AppException e) {
+            } catch (HTTPException | AppException e) {
+                logger.error("{}: Failed to handle the event of the summoner {}", e.getMessage(), summonerId);
+                eventService.updateStatus(EventTypeEnum.Summoner, summonerId, EventStatusEnum.Unfinished, EventStatusEnum.Finishing);
+            } catch (RuntimeException e) {
                 logger.error("Failed to handle the event of the summoner {}", summonerId);
                 e.printStackTrace();
+                eventService.updateStatus(EventTypeEnum.Summoner, summonerId, EventStatusEnum.Unfinished, EventStatusEnum.Finishing);
             }
         }
 

@@ -15,6 +15,7 @@ import wsg.lol.common.util.ResultUtils;
 import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.MatchService;
 
+import javax.xml.ws.http.HTTPException;
 import java.util.List;
 
 /**
@@ -49,9 +50,13 @@ public class MatchEventHandler implements EventHandler {
                     success[0]++;
                     return ResultUtils.success();
                 });
-            } catch (AppException e) {
+            } catch (HTTPException | AppException e) {
+                logger.error("{}: Failed to handle the event of the match {}", e.getMessage(), gameId);
+                eventService.updateStatus(EventTypeEnum.Match, gameId, EventStatusEnum.Unfinished, EventStatusEnum.Finishing);
+            } catch (RuntimeException e) {
                 logger.error("Failed to handle the event of the match {}", gameId);
                 e.printStackTrace();
+                eventService.updateStatus(EventTypeEnum.Match, gameId, EventStatusEnum.Unfinished, EventStatusEnum.Finishing);
             }
         }
 
