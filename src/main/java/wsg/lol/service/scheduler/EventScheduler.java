@@ -1,14 +1,11 @@
-package wsg.lol.scheduler;
+package wsg.lol.service.scheduler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.util.PageUtils;
-import wsg.lol.service.event.EventHandler;
 import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.SystemService;
 
@@ -19,8 +16,6 @@ import wsg.lol.service.intf.SystemService;
  */
 @Component
 public class EventScheduler {
-
-    private static final Logger logger = LoggerFactory.getLogger(EventHandler.class);
 
     private SystemService systemService;
 

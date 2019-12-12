@@ -5,18 +5,18 @@ task:
   keepAliveSeconds: 300
 # cron for scheduler
 cron:
-#  event:
-  #    summoner: 0/1 * * * * ?
-  #    match: 0/3 * * * * ?
-  #  update:
-  #    summoner: 0 0 0 1/1 * ?
-  #    match: 0/3 * * * * ?
+  event:
+    summoner: 0/1 * * * * ?
+    match: 0/3 * * * * ?
+  update:
+    summoner: 0 0 0 1/1 * ?
+    match: 0/3 * * * * ?
   share:
     version: 0 0 0 1/1 * ?
     shard: 0 0 0 1/1 * ?
-  event:
-    summoner: 0 0 0 * * ?
-    match: 0 0 0 * * ?
-  update:
-    summoner: 0 0 0 1/1 * ?
-    match: 0 0 0 * * ?
+#  event:
+#    summoner: 0 0 0 * * ?
+#    match: 0 0 0 * * ?
+#  update:
+#    summoner: 0 0 0 1/1 * ?
+#    match: 0 0 0 * * ?

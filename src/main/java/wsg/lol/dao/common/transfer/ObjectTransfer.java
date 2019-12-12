@@ -3,6 +3,7 @@ package wsg.lol.dao.common.transfer;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import wsg.lol.common.annotation.Flatten;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.BaseDo;
@@ -10,10 +11,7 @@ import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.constant.ErrorCodeConst;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Transfer between DTO and DO by the same name of field.
@@ -22,125 +20,132 @@ import java.util.Map;
  */
 public class ObjectTransfer {
 
-    private static final Class<?>[] SIMPLE_CLASSES = new Class[]{
-
-    };
-
     public static <F extends BaseDto, T extends BaseDo> List<T> transferDtoList(List<F> fs, Class<T> tClass) {
-        return ObjectTransfer.transferDtoList(fs, null, tClass);
-    }
-
-    public static <F extends BaseDto, T extends BaseDo> List<T> transferDtoList(List<F> fs, Class<F> fClass, Class<T> tClass) {
         if (CollectionUtils.isEmpty(fs)) {
             return new ArrayList<>();
         }
 
-        List<T> ts = new ArrayList<>();
-        for (F f : fs) {
-            T t = ObjectTransfer.transferDto(f, fClass, tClass);
-            ts.add(t);
+        List<Field> fFields = FieldUtils.getAllFieldsList(fs.get(0).getClass());
+        try {
+            // map of all fields from the f class.
+            Map<String, List<Object>> fMap = new HashMap<>();
+            for (Field fField : fFields) {
+                fField.setAccessible(true);
+                List<Object> values = new LinkedList<>();
+                for (F f : fs) {
+                    values.add(fField.get(f));
+                }
+                fMap.put(fField.getName(), values);
+            }
+
+            List<T> ts = new LinkedList<>();
+            for (int i = 0; i < fs.size(); i++) {
+                ts.add(tClass.newInstance());
+            }
+            for (Field tField : FieldUtils.getAllFieldsList(tClass)) {
+                tField.setAccessible(true);
+                String name = tField.getName();
+
+                // flatten fields.
+                if (tField.isAnnotationPresent(Flatten.class)) {
+                    String[] parts = StringUtils.splitByCharacterTypeCamelCase(name);
+                    Iterator<T> iterator = ts.iterator();
+                    for (F f : fs) {
+                        Object value = f;
+                        for (String part : parts) {
+                            value = FieldUtils.readField(value, part.toLowerCase(), true);
+                            if (value == null) {
+                                break;
+                            }
+                        }
+                        tField.set(iterator.next(), value);
+                    }
+                    continue;
+                }
+
+                // common fields.
+                List<Object> values = fMap.get(name);
+                if (values == null) {
+                    continue;
+                }
+                Iterator<T> iterator = ts.iterator();
+                for (Object value : values) {
+                    tField.set(iterator.next(), value);
+                }
+            }
+            return ts;
+        } catch (IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
         }
-        return ts;
+
+        return new ArrayList<>();
     }
 
     public static <F extends BaseDto, T extends BaseDo> T transferDto(F f, Class<T> tClass) {
-        return transferDto(f, null, tClass);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <F extends BaseDto, T extends BaseDo> T transferDto(F f, Class<F> fClass, Class<T> tClass) {
         if (f == null) {
             return null;
         }
-        if (fClass == null) {
-            fClass = (Class<F>) f.getClass();
-        }
-        // todo fields of super class.
-        Field[] fFields = fClass.getDeclaredFields();
-        Map<String, Object> fMap = new HashMap<>();
-        T t = null;
+        List<Field> fFields = FieldUtils.getAllFieldsList(f.getClass());
         try {
+            // map of all fields from the f class.
+            Map<String, Object> fMap = new HashMap<>();
             for (Field fField : fFields) {
                 fField.setAccessible(true);
                 fMap.put(fField.getName(), fField.get(f));
             }
 
-            t = tClass.newInstance();
-            for (Field tField : tClass.getDeclaredFields()) {
+            T t = tClass.newInstance();
+            for (Field tField : FieldUtils.getAllFieldsList(tClass)) {
                 tField.setAccessible(true);
                 String name = tField.getName();
+
+                // flatten fields.
                 if (tField.isAnnotationPresent(Flatten.class)) {
                     String[] parts = StringUtils.splitByCharacterTypeCamelCase(name);
-                    Map<String, Object> map = fMap;
-                    Class<? extends BaseDto> innerClass;
-                    for (int i = 0; i < parts.length; i++) {
-                        Object innerObject = map.get(parts[i].toLowerCase());
-                        if (innerObject == null) {
+                    Object value = f;
+                    for (String part : parts) {
+                        value = FieldUtils.readField(value, part.toLowerCase(), true);
+                        if (value == null) {
                             break;
-                        }
-                        if (i == parts.length - 1) {
-                            tField.set(t, innerObject);
-                            break;
-                        }
-                        if (innerObject instanceof BaseDto) {
-                            map = new HashMap<>();
-                            innerClass = ((BaseDto) innerObject).getClass();
-                            Field[] innerFields = innerClass.getDeclaredFields();
-                            for (Field innerField : innerFields) {
-                                innerField.setAccessible(true);
-                                map.put(innerField.getName(), innerField.get(innerObject));
-                            }
-                            continue;
-                        }
-                        if (innerObject instanceof Map) {
-                            map = (Map<String, Object>) innerObject;
                         }
                     }
-
+                    tField.set(t, value);
                     continue;
                 }
+
+                // common fields.
                 tField.set(t, fMap.get(name));
             }
+            return t;
         } catch (IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
-        return t;
+
+        return null;
     }
 
     public static <F extends BaseDo, T extends BaseDto> List<T> transferDoList(List<F> fs, Class<T> tClass) {
-        return transferDoList(fs, null, tClass);
-    }
-
-    public static <F extends BaseDo, T extends BaseDto> List<T> transferDoList(List<F> fs, Class<F> fClass, Class<T> tClass) {
         if (CollectionUtils.isEmpty(fs)) {
             return new ArrayList<>();
         }
 
         List<T> ts = new ArrayList<>();
         for (F f : fs) {
-            T t = ObjectTransfer.transferDo(f, fClass, tClass);
+            T t = ObjectTransfer.transferDo(f, tClass);
             ts.add(t);
         }
         return ts;
     }
 
-    public static <F extends BaseDo, T extends BaseDto> T transferDo(F f, Class<T> tClass) {
-        return transferDo(f, null, tClass);
-    }
-
     @SuppressWarnings("unchecked")
-    public static <F extends BaseDo, T extends BaseDto> T transferDo(F f, Class<F> fClass, Class<T> tClass) {
+    public static <F extends BaseDo, T extends BaseDto> T transferDo(F f, Class<T> tClass) {
         if (f == null) {
             return null;
         }
-        if (fClass == null) {
-            fClass = (Class<F>) f.getClass();
-        }
 
-        Field[] fFields = fClass.getDeclaredFields();
-        Map<String, Object> fMap = new HashMap<>();
-        T t = null;
+        List<Field> fFields = FieldUtils.getAllFieldsList(f.getClass());
         try {
+            Map<String, Object> fMap = new HashMap<>();
             for (Field fField : fFields) {
                 fField.setAccessible(true);
                 String name = fField.getName();
@@ -148,7 +153,7 @@ public class ObjectTransfer {
                 if (fField.isAnnotationPresent(Flatten.class)) {
                     String[] parts = StringUtils.splitByCharacterTypeCamelCase(name);
                     if (parts == null || parts.length != 2) {
-                        throw new AppException(ErrorCodeConst.ILLEGAL_ARGS, "Wrong Flatten annotation on " + fClass + "." + name);
+                        throw new AppException(ErrorCodeConst.ILLEGAL_ARGS, "Wrong Flatten annotation on " + f.getClass() + "." + name);
                     }
                     if (!fMap.containsKey(parts[0])) {
                         fMap.put(parts[0], new HashMap<String, Object>());
@@ -159,8 +164,8 @@ public class ObjectTransfer {
                 fMap.put(name, value);
             }
 
-            t = tClass.newInstance();
-            for (Field tField : tClass.getDeclaredFields()) {
+            T t = tClass.newInstance();
+            for (Field tField : FieldUtils.getAllFieldsList(tClass)) {
                 tField.setAccessible(true);
                 String name = tField.getName();
                 Class<?> pClass = tField.getType();
@@ -177,9 +182,11 @@ public class ObjectTransfer {
                 }
                 tField.set(t, value);
             }
+            return t;
         } catch (IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
-        return t;
+
+        return null;
     }
 }

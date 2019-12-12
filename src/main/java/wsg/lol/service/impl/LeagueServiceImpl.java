@@ -102,10 +102,10 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Override
     @Transactional
-    @Performance
     public Result updateLeagueEntry(String summonerId) {
         logger.info("Updating league entries of {}...", summonerId);
         List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
+        // todo insert if not exist
         ResultUtils.assertSuccess(MapperExecutor.updateList(leagueEntryMapper, ObjectTransfer.transferDtoList(entries, LeagueEntryDo.class)));
         return ResultUtils.success();
     }

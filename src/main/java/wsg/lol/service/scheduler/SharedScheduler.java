@@ -1,4 +1,4 @@
-package wsg.lol.scheduler;
+package wsg.lol.service.scheduler;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.result.system.VersionResult;
-import wsg.lol.service.context.SharedContext;
+import wsg.lol.service.intf.SharedService;
 import wsg.lol.service.intf.SystemService;
 
 /**
@@ -22,7 +22,7 @@ public class SharedScheduler {
 
     private SystemService systemService;
 
-    private SharedContext sharedContext;
+    private SharedService sharedService;
 
     /**
      * Check the version.
@@ -48,8 +48,8 @@ public class SharedScheduler {
     @Scheduled(cron = "${cron.share.shard}")
     public void updateSharedData() {
         logger.info("Scheduling to update the shared data.");
-        sharedContext.updateShardStatus();
-        sharedContext.updateChampionRotation();
+        sharedService.updateShardStatus();
+        sharedService.updateChampionRotation();
     }
 
     /**
@@ -59,12 +59,12 @@ public class SharedScheduler {
     @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
     public void updateFeaturedGames() {
         logger.info("Scheduling to update the featured games.");
-        sharedContext.updateFeaturedGames();
+        sharedService.updateFeaturedGames();
     }
 
     @Autowired
-    public void setSharedContext(SharedContext sharedContext) {
-        this.sharedContext = sharedContext;
+    public void setSharedService(SharedService sharedService) {
+        this.sharedService = sharedService;
     }
 
     @Autowired

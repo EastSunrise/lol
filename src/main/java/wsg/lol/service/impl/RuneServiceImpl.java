@@ -9,7 +9,6 @@ import wsg.lol.common.base.Result;
 import wsg.lol.common.pojo.domain.share.RuneDo;
 import wsg.lol.common.pojo.domain.share.RuneTreeDo;
 import wsg.lol.common.pojo.dto.share.RuneExtDto;
-import wsg.lol.common.pojo.dto.share.RuneTreeDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.common.transfer.ObjectTransfer;
 import wsg.lol.dao.dragon.intf.DragonDao;
@@ -42,7 +41,7 @@ public class RuneServiceImpl implements RuneService {
         List<RuneExtDto> runeExtDtoList = dragonDao.readRunes(version);
 
         logger.info("Updating the rune trees.");
-        List<RuneTreeDo> runeTreeDoList = ObjectTransfer.transferDtoList(new ArrayList<>(runeExtDtoList), RuneTreeDto.class, RuneTreeDo.class);
+        List<RuneTreeDo> runeTreeDoList = ObjectTransfer.transferDtoList(new ArrayList<>(runeExtDtoList), RuneTreeDo.class);
         ResultUtils.assertSuccess(MapperExecutor.updateStatic(runeTreeMapper, runeTreeDoList));
 
         logger.info("Updating the runes.");

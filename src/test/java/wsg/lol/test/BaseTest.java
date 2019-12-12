@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
+import wsg.lol.config.GlobalConfig;
 import wsg.lol.dao.api.impl.SummonerV4;
 import wsg.lol.dao.mybatis.config.DatabaseIdentifier;
 
@@ -22,12 +23,23 @@ import wsg.lol.dao.mybatis.config.DatabaseIdentifier;
 public class BaseTest implements InitializingBean {
 
     protected SummonerDto summoner;
+    private GlobalConfig globalConfig;
     private SummonerV4 summonerV4;
 
     @Override
     public void afterPropertiesSet() {
         DatabaseIdentifier.setPlatform(RegionEnum.NA);
-        summoner = summonerV4.getSummoner("Kingen4395", SummonerV4.CondKeyEnum.NAME);
+        String name = "Kingen439";
+        if (globalConfig.getRegion().equals(RegionEnum.KR)) {
+            name = "Hide on bush";
+        }
+        name += globalConfig.getRegion().ordinal();
+        summoner = summonerV4.getSummoner(name, SummonerV4.CondKeyEnum.NAME);
+    }
+
+    @Autowired
+    public void setGlobalConfig(GlobalConfig globalConfig) {
+        this.globalConfig = globalConfig;
     }
 
     @Autowired

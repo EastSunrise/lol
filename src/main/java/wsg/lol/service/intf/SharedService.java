@@ -1,8 +1,12 @@
 package wsg.lol.service.intf;
 
+import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.share.ImageGroupEnum;
+import wsg.lol.common.pojo.dto.champion.ChampionRotation;
 import wsg.lol.common.pojo.dto.share.ImageDto;
+import wsg.lol.common.pojo.dto.share.ShardStatus;
+import wsg.lol.common.pojo.dto.spectator.FeaturedGames;
 
 import java.util.List;
 
@@ -12,6 +16,36 @@ import java.util.List;
  * @author Kingen
  */
 public interface SharedService {
+
+    /**
+     * Evict the cache.
+     */
+    void updateFeaturedGames();
+
+    /**
+     * Get the featured games, from the cache first.
+     */
+    FeaturedGames getFeaturedGames();
+
+    /**
+     * Evict the cache.
+     */
+    void updateShardStatus();
+
+    /**
+     * Get the shard status, from the cache first.
+     */
+    GenericResult<ShardStatus> getShardStatus();
+
+    /**
+     * Evict the cache.
+     */
+    void updateChampionRotation();
+
+    /**
+     * Get the rotation of champions, from the cache first.
+     */
+    GenericResult<ChampionRotation> getChampionRotation();
 
     /**
      * Update images of specified groups.

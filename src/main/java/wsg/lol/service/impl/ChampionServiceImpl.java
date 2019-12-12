@@ -18,7 +18,6 @@ import wsg.lol.common.pojo.dto.champion.ChampionExtDto;
 import wsg.lol.common.pojo.dto.champion.SpellDto;
 import wsg.lol.common.pojo.dto.share.BlockDto;
 import wsg.lol.common.pojo.dto.share.ImageDto;
-import wsg.lol.common.pojo.dto.share.RecommendedDto;
 import wsg.lol.common.pojo.dto.share.RecommendedExtDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.common.transfer.ObjectTransfer;
@@ -67,7 +66,7 @@ public class ChampionServiceImpl implements ChampionService {
 
         logger.info("Updating the champions.");
         List<ChampionDto> championDtoList = new ArrayList<>(championExtDtoList);
-        List<ChampionDo> championDoList = ObjectTransfer.transferDtoList(championDtoList, ChampionDto.class, ChampionDo.class);
+        List<ChampionDo> championDoList = ObjectTransfer.transferDtoList(championDtoList, ChampionDo.class);
         ResultUtils.assertSuccess(MapperExecutor.updateStatic(championMapper, championDoList));
 
         logger.info("Updating the images of champions.");
@@ -165,7 +164,7 @@ public class ChampionServiceImpl implements ChampionService {
             List<RecommendedExtDto> recommendedExtDtoList = championExtDto.getRecommended();
             for (int i = 0; i < recommendedExtDtoList.size(); i++) {
                 RecommendedExtDto recommendedExtDto = recommendedExtDtoList.get(i);
-                RecommendedDo recommendedDo = ObjectTransfer.transferDto(recommendedExtDto, RecommendedDto.class, RecommendedDo.class);
+                RecommendedDo recommendedDo = ObjectTransfer.transferDto(recommendedExtDto, RecommendedDo.class);
                 Integer generateId = RecommendedDo.generateId(championExtDto.getId(), i);
                 recommendedDo.setId(generateId);
                 recommendedDoList.add(recommendedDo);

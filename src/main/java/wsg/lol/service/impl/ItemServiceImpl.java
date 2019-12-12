@@ -10,7 +10,6 @@ import wsg.lol.common.enums.share.ImageGroupEnum;
 import wsg.lol.common.pojo.domain.share.ItemDo;
 import wsg.lol.common.pojo.domain.share.ItemStatsDo;
 import wsg.lol.common.pojo.dto.share.ImageDto;
-import wsg.lol.common.pojo.dto.share.ItemDto;
 import wsg.lol.common.pojo.dto.share.ItemExtDto;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.common.transfer.ObjectTransfer;
@@ -47,7 +46,7 @@ public class ItemServiceImpl implements ItemService {
         List<ItemExtDto> itemExtDtoList = dragonDao.readItems(version);
 
         logger.info("Updating the items.");
-        List<ItemDo> items = ObjectTransfer.transferDtoList(new ArrayList<>(itemExtDtoList), ItemDto.class, ItemDo.class);
+        List<ItemDo> items = ObjectTransfer.transferDtoList(new ArrayList<>(itemExtDtoList), ItemDo.class);
         ResultUtils.assertSuccess(MapperExecutor.updateStatic(itemMapper, items));
 
         logger.info("Updating the stats of items.");
