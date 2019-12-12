@@ -18,46 +18,34 @@ api:
       key: RGAPI-e2a86cbe-61d9-4751-a0de-853d734619e6
     - username: Kingen4391
       region: BR
-      key: RGAPI-c7ebf183-895c-49cc-824d-3eae504e8689
+      key: RGAPI-05cc1d84-6b95-48c1-bac9-d96bf92e8e0f
     - username: Kingen4392
-      region: EUNE
+      region: ENUE
+      key: RGAPI-4b08d355-5f14-4d8b-b2c5-3fc3b150e3b3
+    - username: Kingen4393
+      region: EUW
+      key: RGAPI-d2d9f46a-b76a-414a-8e90-bc53c78c6738
+    - username: Kingen4394
+      region: JP
       key:
-    - username: Kingen4391
-      region:
-      key:
-    - username: Kingen4391
-      region:
-      key:
-    - username: Kingen4391
-      region:
-      key:
-    - username: Kingen4391
-      region:
-      key:
-    - username: Kingen4391
-      region:
-      key:
-    - username: Kingen4391
-      region:
-      key:
-    - username: Kingen4391
-      region:
-      key:
-    - username: Kingen4391
-      region:
-      key:
-    - username: Kingen4391
-      region:
-      key:
-    - username: Kingen4391
-      region:
-      key:
-    - username: Kingen4391
-      region:
-      key:
-    - username: Kingen4391
-      region:
-      key:
-    - username: Kingen4391
-      region:
-      key:
+    - username: Kingen4395
+      region: NA
+      key: RGAPI-7375596d-ae67-461a-ba54-0900844fcddd
+    - username: Kingen4396
+      region: OCE
+      key: RGAPI-b6e13644-7a09-4405-b44e-993d45e4671e
+    - username: Kingen4397
+      region: NA
+      key: RGAPI-d872cdf5-400b-42b3-b5cd-618ab412aae7
+    - username: Kingen4398
+      region: NA
+      key: RGAPI-ab6f7fd9-1f0f-488b-822c-d55c90bf8286
+    - username: Kingen4399
+      region: OCE
+      key: RGAPI-80eb9a90-91b3-46cc-9d48-3cade6129594
+    - username: Kingen4400
+      region: RU
+      key: RGAPI-4555fcb1-d46a-45c4-8758-eb99815def5f
+    - username: Kingen4401
+      region: TR
+      key: RGAPI-d9b76a13-2e15-4c27-af9e-f9a23124cfc6

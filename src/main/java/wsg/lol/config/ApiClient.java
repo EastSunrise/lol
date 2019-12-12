@@ -57,7 +57,7 @@ public class ApiClient implements InitializingBean {
             logger.error("Unavailable token from the queue.");
             throw new AppException(ErrorCodeConst.HTTPS_ERROR);
         }
-        logger.info("Using the token of the account {}.", api.username);
+        logger.info("Acquiring the token of the account {}.", api.username);
         String token = api.acquire();
         apis.add(api);
         return token;
@@ -116,7 +116,11 @@ public class ApiClient implements InitializingBean {
             if (microsToWait > 0) {
                 Uninterruptibles.sleepUninterruptibly(microsToWait, MICROSECONDS);
             }
-            return !StringUtils.isEmpty(this.token) && valid ? this.token : null;
+            if (StringUtils.isBlank(this.token) || !valid) {
+                logger.error("The token {} is invalid.", this.token);
+                throw new AppException(ErrorCodeConst.SYSTEM_ERROR);
+            }
+            return this.token;
         }
 
         private long reserve() {
@@ -165,7 +169,7 @@ public class ApiClient implements InitializingBean {
 
         @Override
         public int compareTo(@NonNull RGApi api) {
-            int compare = Boolean.compare(this.valid, api.valid);
+            int compare = -Boolean.compare(this.valid, api.valid);
             return compare == 0 ? Long.compare(this.nextFreeTicket, api.nextFreeTicket) : compare;
         }
     }

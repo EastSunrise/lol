@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.QueryDto;
 import wsg.lol.common.constant.ErrorCodeConst;
-import wsg.lol.common.util.EnumUtils;
 import wsg.lol.common.util.HttpHelper;
 import wsg.lol.config.ApiClient;
 import wsg.lol.config.DragonConfig;
@@ -126,16 +125,17 @@ public class BaseApi {
     }
 
     private String doHttpGet(String urlStr) throws AppException, HTTPException {
-        logger.info("Getting from " + urlStr);
+        String format = urlStr + (urlStr.contains("?") ? "&" : "?") + "api_key=%s";
         int retryCount = 0;
         while (true) {
             try {
-                URL url = new URL(urlStr);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 String token = apiClient.getToken();
+                urlStr = String.format(format, token);
+                URL url = new URL(urlStr);
+                logger.info("Getting from " + urlStr);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setConnectTimeout(apiClient.getTimeout());
                 urlConnection.setReadTimeout(apiClient.getTimeout());
-                urlConnection.setRequestProperty("X-Riot-Token", token);
                 urlConnection.setRequestProperty("Origin", "https://developer.riotgames.com");
                 urlConnection.setRequestProperty("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
                 urlConnection.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,zh-TW;q=0.8");
@@ -155,7 +155,7 @@ public class BaseApi {
                 String responseMessage = urlConnection.getResponseMessage();
 
                 if (ResponseCodeEnum.Forbidden.getCode() == responseCode) {
-                    logger.error("The token {} had expired. Try another.", token);
+                    logger.error("The token {} had been forbidden. Try another.", token);
                     apiClient.invalidate(token);
                     continue;
                 }
@@ -174,8 +174,7 @@ public class BaseApi {
                 }
                 if (ResponseCodeEnum.InternalServerError.getCode() == responseCode
                         || ResponseCodeEnum.ServiceUnavailable.getCode() == responseCode) {
-                    ResponseCodeEnum responseCodeEnum = EnumUtils.parseFromObject(responseCode, ResponseCodeEnum.class);
-                    logger.error(responseCodeEnum.getMessage());
+                    logger.error("{}: {}.", responseMessage, urlStr);
                     threadSleep(RETRY_INTERVAL);
                     continue;
                 }

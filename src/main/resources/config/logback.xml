@@ -228,7 +228,7 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
-    <root level="error">
+    <root level="info">
         <appender-ref ref="root"/>
         <appender-ref ref="root_error"/>
         <appender-ref ref="stdout"/>
