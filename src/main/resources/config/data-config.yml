@@ -1,10 +1,10 @@
 global:
-  region: NA
+  region: KR
 # dragon config
 dragon:
   language: zh_CN
   url:
-    cdn: http://ddragon.leagueoflegends.com/cdn
+    cdn: http://ddragon.leagueoflegends.com/cdn/dragontail-{0}.tgz
     realm: https://ddragon.leagueoflegends.com/realms/{0}.json
     version: https://ddragon.leagueoflegends.com/api/versions.json
   directory: D:/lol

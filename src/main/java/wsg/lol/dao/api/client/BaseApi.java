@@ -132,9 +132,10 @@ public class BaseApi {
             try {
                 URL url = new URL(urlStr);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                String token = apiClient.getToken();
                 urlConnection.setConnectTimeout(apiClient.getTimeout());
                 urlConnection.setReadTimeout(apiClient.getTimeout());
-                urlConnection.setRequestProperty("X-Riot-Token", apiClient.getToken());
+                urlConnection.setRequestProperty("X-Riot-Token", token);
                 urlConnection.setRequestProperty("Origin", "https://developer.riotgames.com");
                 urlConnection.setRequestProperty("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
                 urlConnection.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,zh-TW;q=0.8");
@@ -153,8 +154,12 @@ public class BaseApi {
                 }
                 String responseMessage = urlConnection.getResponseMessage();
 
+                if (ResponseCodeEnum.Forbidden.getCode() == responseCode) {
+                    logger.error("The token {} had expired. Try another.", token);
+                    apiClient.invalidate(token);
+                    continue;
+                }
                 if (ResponseCodeEnum.BadRequest.getCode() == responseCode
-                        || ResponseCodeEnum.Forbidden.getCode() == responseCode
                         || ResponseCodeEnum.NotFound.getCode() == responseCode
                         || ResponseCodeEnum.UnsupportedMediaType.getCode() == responseCode
                         || ResponseCodeEnum.Unauthorized.getCode() == responseCode) {

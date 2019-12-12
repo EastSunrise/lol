@@ -4,7 +4,7 @@ import com.google.common.base.Stopwatch;
 import com.google.common.util.concurrent.Uninterruptibles;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,14 +12,10 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
-import org.springframework.util.StringUtils;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ErrorCodeConst;
 
-import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import static java.lang.Math.max;
@@ -70,7 +66,21 @@ public class ApiClient implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         for (Token token : tokens) {
-            this.apis.add(new RGApi(token, rate));
+            if (StringUtils.isNotBlank(token.key)) {
+                this.apis.add(new RGApi(token, rate));
+            }
+        }
+    }
+
+    /**
+     * Update the status of the token to INVALID.
+     */
+    public void invalidate(String token) {
+        for (RGApi api : apis) {
+            if (api.token.equals(token)) {
+                api.valid = false;
+                break;
+            }
         }
     }
 
@@ -78,7 +88,7 @@ public class ApiClient implements InitializingBean {
         final Stopwatch stopwatch = Stopwatch.createStarted();
         private String username;
         private String token;
-        private Date expires;
+        private boolean valid;
         private double maxPermits;
         private double stableIntervalMicros;
         private double storedPermits;
@@ -89,20 +99,9 @@ public class ApiClient implements InitializingBean {
         RGApi(Token token, double permitsPerSecond) {
             this.username = token.username;
             this.token = token.key;
-            this.expires = parseDate(token.expires);
+            this.valid = true;
             synchronized (mutex()) {
                 doSetRate(permitsPerSecond, stopwatch.elapsed(MICROSECONDS));
-            }
-        }
-
-        private static Date parseDate(String str) {
-            String[] parts = str.split(",");
-            parts[1] = parts[1].substring(0, parts[1].length() - 2);
-            try {
-                return DateUtils.parseDate(org.apache.commons.lang3.StringUtils.join(parts, ","), Locale.ENGLISH, "EEE, MMM dd, yyyy @ h:mmaa (Z)");
-            } catch (ParseException e) {
-                e.printStackTrace();
-                throw new AppException(ErrorCodeConst.SYSTEM_ERROR, e);
             }
         }
 
@@ -117,7 +116,7 @@ public class ApiClient implements InitializingBean {
             if (microsToWait > 0) {
                 Uninterruptibles.sleepUninterruptibly(microsToWait, MICROSECONDS);
             }
-            return (StringUtils.isEmpty(this.token) || this.expires.compareTo(new Date()) < 0) ? null : this.token;
+            return !StringUtils.isEmpty(this.token) && valid ? this.token : null;
         }
 
         private long reserve() {
@@ -166,11 +165,8 @@ public class ApiClient implements InitializingBean {
 
         @Override
         public int compareTo(@NonNull RGApi api) {
-            Date now = new Date();
-            if (this.expires.compareTo(now) > 0 && api.expires.compareTo(now) > 0) {
-                return Long.compare(this.nextFreeTicket, api.nextFreeTicket);
-            }
-            return this.expires.compareTo(api.expires);
+            int compare = Boolean.compare(this.valid, api.valid);
+            return compare == 0 ? Long.compare(this.nextFreeTicket, api.nextFreeTicket) : compare;
         }
     }
 
@@ -178,6 +174,5 @@ public class ApiClient implements InitializingBean {
     private static class Token {
         private String username;
         private String key;
-        private String expires;
     }
 }

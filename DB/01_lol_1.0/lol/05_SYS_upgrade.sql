@@ -3,12 +3,6 @@ insert into lol.t_config
 values ('CURRENT_VERSION', 0, '1.0', '当前版本', sysdate(), null);
 
 insert into lol.t_config
-values ('SHARED_STATUS', 0, '{}', '公用数据', sysdate(), null);
-
-insert into lol.t_config
-values ('CHAMPION_ROTATION', 0, '{}', '英雄轮换', sysdate(), null);
-
-insert into lol.t_config
 values ('IS_DATABASE_INITIALIZED', 1, 'false', '是否已经初始化', sysdate(), null);
 insert into lol.t_config
 values ('IS_DATABASE_INITIALIZED', 2, 'false', '是否已经初始化', sysdate(), null);
