@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.annotation.Performance;
-import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
@@ -15,7 +14,6 @@ import wsg.lol.common.util.ResultUtils;
 import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.SummonerService;
 
-import javax.xml.ws.http.HTTPException;
 import java.util.List;
 
 /**
@@ -39,25 +37,22 @@ public class SummonerEventHandler implements EventHandler {
     public Result handle(List<? extends EventDo> events) {
         final int[] success = {0};
         for (EventDo event : events) {
-            String summonerId = event.getId();
+            String summonerName = event.getContext();
             try {
                 transactionTemplate.execute(transactionStatus -> {
-                    Result result = summonerService.addSummoner(summonerId);
+                    Result result = summonerService.addSummoner(summonerName);
                     ResultUtils.assertSuccess(result);
 
-                    result = eventService.updateStatus(EventTypeEnum.Summoner, summonerId, EventStatusEnum.Unfinished, EventStatusEnum.Finished);
+                    result = eventService.updateStatus(EventTypeEnum.Summoner, summonerName, EventStatusEnum.Unfinished, EventStatusEnum.Finished);
                     ResultUtils.assertSuccess(result);
-                    logger.info("Succeed in handling the event of {}.", summonerId);
+                    logger.info("Succeed in handling the event of {}.", summonerName);
                     success[0]++;
                     return ResultUtils.success();
                 });
-            } catch (HTTPException | AppException e) {
-                logger.error("{}: Failed to handle the event of the summoner {}", e.getMessage(), summonerId);
-                eventService.updateStatus(EventTypeEnum.Summoner, summonerId, EventStatusEnum.Unfinished, EventStatusEnum.Finishing);
             } catch (RuntimeException e) {
-                logger.error("Failed to handle the event of the summoner {}", summonerId);
-                e.printStackTrace();
-                eventService.updateStatus(EventTypeEnum.Summoner, summonerId, EventStatusEnum.Unfinished, EventStatusEnum.Finishing);
+                logger.error("Failed to handle the event of the summoner {}.", summonerName);
+                logger.error("", e);
+                eventService.updateStatus(EventTypeEnum.Summoner, summonerName, EventStatusEnum.Unfinished, EventStatusEnum.Finishing);
             }
         }
 

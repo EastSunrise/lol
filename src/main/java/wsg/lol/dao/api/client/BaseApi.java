@@ -17,6 +17,7 @@ import wsg.lol.config.DragonConfig;
 import wsg.lol.config.GlobalConfig;
 import wsg.lol.dao.common.serialize.RecordExtraProcessor;
 
+import javax.validation.constraints.NotNull;
 import javax.xml.ws.http.HTTPException;
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -53,8 +54,7 @@ public class BaseApi {
      * @param pathParams  params filled in the url
      * @param queryParams query params after the '?', joined with '&'.
      * @param clazz       the type of object parsed from the return.
-     * @throws AppException  if occurs {@link IOException}
-     * @throws HTTPException with {@link HTTPException#getStatusCode()}
+     * @see <a href='{@link #doHttpGet}'></a>
      */
     protected <T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams, Class<T> clazz) throws AppException, HTTPException {
         String jsonStr = getJSONString(apiRef, pathParams, queryParams);
@@ -80,6 +80,7 @@ public class BaseApi {
      * @param pathParams  params filled in the url
      * @param queryParams query params after the '?', joined with '&'.
      * @param clazz       the type of the single object parsed from the return.
+     * @see <a href='{@link #doHttpGet}'></a>
      */
     protected <T extends Serializable> List<T> getArray(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams, Class<T> clazz) {
         String jsonStr = getJSONString(apiRef, pathParams, queryParams);
@@ -123,13 +124,17 @@ public class BaseApi {
         return jsonStr;
     }
 
-    private String doHttpGet(String urlStr) throws AppException, HTTPException {
-        String format = urlStr + (urlStr.contains("?") ? "&" : "?") + "api_key=%s";
+    /**
+     * @throws HTTPException BadRequest, NotFound, UnsupportedMediaType, Unauthorized.
+     *                       Other response whose code {@link ResponseCodeEnum} doesn't include.
+     */
+    private String doHttpGet(@NotNull String urlStr) throws HTTPException {
+        String format = urlStr + (urlStr.contains("?") ? "&" : "?") + "api_key=";
         int retryCount = 0;
         while (true) {
             try {
                 String token = apiClient.getToken();
-                urlStr = String.format(format, token);
+                urlStr = format + token;
                 URL url = new URL(urlStr);
                 logger.info("Getting from " + urlStr);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -151,36 +156,40 @@ public class BaseApi {
                     in.close();
                     return builder.toString();
                 }
-                String responseMessage = urlConnection.getResponseMessage();
 
+                String responseMessage = urlConnection.getResponseMessage();
                 if (ResponseCodeEnum.Forbidden.getCode() == responseCode) {
-                    logger.error("The token {} had been forbidden. Try another.", token);
+                    logger.warn("The token {} had been forbidden. Try another.", token);
                     apiClient.invalidate(token);
                     continue;
                 }
-                if (ResponseCodeEnum.BadRequest.getCode() == responseCode
-                        || ResponseCodeEnum.NotFound.getCode() == responseCode
-                        || ResponseCodeEnum.UnsupportedMediaType.getCode() == responseCode
-                        || ResponseCodeEnum.Unauthorized.getCode() == responseCode) {
-                    logger.error("{}: {}.", responseMessage, urlStr);
-                    throw new HTTPException(responseCode);
-                }
                 if (ResponseCodeEnum.RateLimitExceeded.getCode() == responseCode) {
                     long retryAfter = Long.parseLong(urlConnection.getHeaderField("Retry-After"));
-                    logger.error("Rate limit exceeded. Wait for {} s.", retryAfter);
+                    logger.warn("Rate limit exceeded. Wait for {} s.", retryAfter);
                     threadSleep(retryAfter * DateUtils.MILLIS_PER_SECOND);
                     continue;
                 }
                 if (ResponseCodeEnum.InternalServerError.getCode() == responseCode
                         || ResponseCodeEnum.ServiceUnavailable.getCode() == responseCode) {
-                    logger.error("{}: {}.", responseMessage, urlStr);
+                    logger.warn("{}. Retry {} times.", responseMessage, ++retryCount);
                     threadSleep(RETRY_INTERVAL);
                     continue;
+                }
+
+                if (ResponseCodeEnum.NotFound.getCode() == responseCode) {
+                    logger.warn("{}: {}", responseMessage, urlStr);
+                    throw new HTTPException(responseCode);
+                }
+                if (ResponseCodeEnum.BadRequest.getCode() == responseCode
+                        || ResponseCodeEnum.UnsupportedMediaType.getCode() == responseCode
+                        || ResponseCodeEnum.Unauthorized.getCode() == responseCode) {
+                    logger.error("{}: {}", responseMessage, urlStr);
+                    throw new HTTPException(responseCode);
                 }
                 logger.error("{}: {}.", responseMessage, urlStr);
                 throw new HTTPException(responseCode);
             } catch (IOException e) {
-                logger.error("Error: {}. Retry {} times.", e.getMessage(), ++retryCount);
+                logger.warn("Error: {}. Retry {} times.", e.getMessage(), ++retryCount);
                 threadSleep(RETRY_INTERVAL);
             }
         }

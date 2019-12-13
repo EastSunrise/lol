@@ -19,4 +19,6 @@ import java.util.Date;
 public interface SummonerMapper extends SelectByPrimaryKeyMapper<SummonerDo>, InsertMapper<SummonerDo>,
         SelectByExampleRowBoundsMapper<SummonerDo>, UpdateByPrimaryKeySelectiveMapper<SummonerDo>, SelectOneMapper<SummonerDo> {
     int updateLastMatch(String accountId, Date lastMatch);
+
+    int updateLastUpdate(String summonerId, Date lastUpdate);
 }

@@ -17,12 +17,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class PerformanceAspect {
 
+    private static final Logger logger = LoggerFactory.getLogger(PerformanceAspect.class);
+
     @Pointcut("@annotation(wsg.lol.common.annotation.Performance)")
     private void performance() {}
 
     @Around("performance()")
     public Object doAroundAdvice(ProceedingJoinPoint joinPoint) {
-        Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
         long start = System.currentTimeMillis();
         Object result = null;
         try {

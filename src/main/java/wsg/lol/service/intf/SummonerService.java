@@ -17,17 +17,22 @@ public interface SummonerService {
     /**
      * Add a summoner by the id, including the masteries of champions and the entry of league.
      */
-    Result addSummoner(String summonerId);
+    Result addSummoner(String summonerName);
 
     /**
      * Update the information of the specified summoner, including the masteries of champions and the entry of league.
      */
-    Result updateSummoner(String summonerId);
+    Result updateSummoner(String summonerId, String encryptUsername);
 
     /**
      * Update the last time updating the matches of the summoner specified by accountId.
      */
     Result updateSummonerLastMatch(String accountId, Date lastMatch);
+
+    /**
+     * Update the last time updating the summoner specified by summonerId.
+     */
+    Result updateSummonerLastUpdate(String summonerId, Date lastUpdate);
 
     /**
      * Get summoners that need to be updated.

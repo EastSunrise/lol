@@ -38,4 +38,6 @@ public class SummonerDto extends BaseDto {
     private Date lastUpdate;
 
     private Date lastMatch;
+
+    private String encryptUsername;
 }

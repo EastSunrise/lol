@@ -4,12 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.time.DateUtils;
 import wsg.lol.common.annotation.Optional;
-import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.QueryDto;
-import wsg.lol.common.constant.ErrorCodeConst;
 
-import java.text.ParseException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,24 +58,6 @@ public class QueryMatchListDto extends QueryDto {
     private Long endIndex;
     @Optional
     private Long beginIndex;
-
-    public static Date getLastDate() {
-        try {
-            return DateUtils.parseDate("2038-01-01 00:00:00", "yyyy-MM-dd HH:mm:ss");
-        } catch (ParseException e) {
-            e.printStackTrace();
-            throw new AppException(ErrorCodeConst.SYSTEM_ERROR);
-        }
-    }
-
-    public static Date getInitialBegin() {
-        try {
-            return DateUtils.parseDate("2019-11-21 00:00:00", "yyyy-MM-dd HH:mm:ss");
-        } catch (ParseException e) {
-            e.printStackTrace();
-            throw new AppException(ErrorCodeConst.SYSTEM_ERROR);
-        }
-    }
 
     public boolean isValid() {
         return (beginIndex == null || endIndex == null || (beginIndex < endIndex && beginIndex + MAX_INDEX_RANGE >= endIndex))

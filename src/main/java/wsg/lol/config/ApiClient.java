@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,9 @@ import org.springframework.lang.NonNull;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ErrorCodeConst;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
 
@@ -30,7 +34,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  */
 @Configuration
 @ConfigurationProperties(prefix = "api")
-public class ApiClient implements InitializingBean {
+public class ApiClient implements InitializingBean, DisposableBean {
 
     private static final Logger logger = LoggerFactory.getLogger(ApiClient.class);
 
@@ -46,23 +50,55 @@ public class ApiClient implements InitializingBean {
 
     private PriorityBlockingQueue<RGApi> apis = new PriorityBlockingQueue<>();
 
+    private LocalDate runtime;
+
+    private long requestCount;
+
     /**
-     * Get available api token.
+     * Get available and valid api token, specified by the username in the {@link ApiIdentifier} or used the earliest.
      *
      * @return null if there isn't a valid token.
      */
     public synchronized String getToken() {
-        RGApi api = apis.poll();
+        RGApi api = null;
+        String username = ApiIdentifier.getApi();
+        if (username != null) {
+            for (RGApi rgApi : apis) {
+                if (username.equals(rgApi.username)) {
+                    api = rgApi;
+                    break;
+                }
+            }
+        } else {
+            api = apis.poll();
+        }
+
         if (api == null) {
-            logger.error("Unavailable token from the queue.");
+            logger.error("There aren't valid tokens from the queue.");
             throw new AppException(ErrorCodeConst.HTTPS_ERROR);
         }
         logger.info("Acquiring the token of the account {}.", api.username);
         String token = api.acquire();
         apis.add(api);
+        requestCount++;
         return token;
     }
 
+    /**
+     * Poll an valid api.
+     */
+    public RGApi peekApi() {
+        RGApi api = apis.peek();
+        if (api == null) {
+            logger.error("There aren't valid tokens from the queue.");
+            throw new AppException(ErrorCodeConst.HTTPS_ERROR);
+        }
+        return api;
+    }
+
+    /**
+     * Initial the apis.
+     */
     @Override
     public void afterPropertiesSet() {
         for (Token token : tokens) {
@@ -70,6 +106,8 @@ public class ApiClient implements InitializingBean {
                 this.apis.add(new RGApi(token, rate));
             }
         }
+        requestCount = 0;
+        runtime = LocalDate.now();
     }
 
     /**
@@ -84,8 +122,16 @@ public class ApiClient implements InitializingBean {
         }
     }
 
-    private static class RGApi implements Comparable<RGApi> {
+    @Override
+    public void destroy() {
+        LocalDate now = LocalDate.now();
+        logger.info("The application run {} {}. Request {} times totally.", Period.between(runtime, LocalDate.now()), Duration.between(runtime, now), requestCount);
+    }
+
+    public static class RGApi implements Comparable<RGApi> {
         final Stopwatch stopwatch = Stopwatch.createStarted();
+
+        @Getter
         private String username;
         private String token;
         private boolean valid;
@@ -111,7 +157,7 @@ public class ApiClient implements InitializingBean {
             resync(nowMicros);
         }
 
-        String acquire() {
+        private String acquire() {
             long microsToWait = reserve();
             if (microsToWait > 0) {
                 Uninterruptibles.sleepUninterruptibly(microsToWait, MICROSECONDS);

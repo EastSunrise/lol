@@ -18,14 +18,14 @@ public class PriorityUtils {
 
     public static Example updateSummoners() {
         Example example = new Example(SummonerDo.class);
-        example.setOrderByClause("TIMESTAMPDIFF( SECOND, SYSDATE( ), last_update ) * " + LAST_UPDATE_WEIGHT + "+ TIMESTAMPDIFF( SECOND, SYSDATE( ), revision_date ) * " + REVISION_WEIGHT);
+        example.setOrderByClause("TIMESTAMPDIFF( SECOND, last_update, SYSDATE( ) ) * " + LAST_UPDATE_WEIGHT + "+ TIMESTAMPDIFF( SECOND, SYSDATE( ), revision_date ) * " + REVISION_WEIGHT);
         return example;
     }
 
     // todo: tier
     public static Example updateMatches() {
         Example example = new Example(SummonerDo.class);
-        example.setOrderByClause("TIMESTAMPDIFF( SECOND, SYSDATE( ), last_match ) * " + LAST_MATCH_WEIGHT + "+ TIMESTAMPDIFF( SECOND, SYSDATE( ), revision_date ) * " + REVISION_WEIGHT);
+        example.setOrderByClause("TIMESTAMPDIFF( SECOND, last_match, SYSDATE( ) ) * " + LAST_MATCH_WEIGHT + "+ TIMESTAMPDIFF( SECOND, SYSDATE( ), revision_date ) * " + REVISION_WEIGHT);
         return example;
     }
 }

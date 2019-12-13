@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.annotation.Performance;
-import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
@@ -15,7 +14,6 @@ import wsg.lol.common.util.ResultUtils;
 import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.MatchService;
 
-import javax.xml.ws.http.HTTPException;
 import java.util.List;
 
 /**
@@ -39,7 +37,7 @@ public class MatchEventHandler implements EventHandler {
     public Result handle(List<? extends EventDo> events) {
         final int[] success = {0};
         for (EventDo event : events) {
-            long gameId = Long.parseLong(event.getId());
+            long gameId = Long.parseLong(event.getContext());
             try {
                 transactionTemplate.execute(transactionStatus -> {
                     ResultUtils.assertSuccess(matchService.addMatch(gameId));
@@ -50,12 +48,9 @@ public class MatchEventHandler implements EventHandler {
                     success[0]++;
                     return ResultUtils.success();
                 });
-            } catch (HTTPException | AppException e) {
-                logger.error("{}: Failed to handle the event of the match {}", e.getMessage(), gameId);
-                eventService.updateStatus(EventTypeEnum.Match, gameId, EventStatusEnum.Unfinished, EventStatusEnum.Finishing);
             } catch (RuntimeException e) {
-                logger.error("Failed to handle the event of the match {}", gameId);
-                e.printStackTrace();
+                logger.error("Failed to handle the event of the match {}.", gameId);
+                logger.error("", e);
                 eventService.updateStatus(EventTypeEnum.Match, gameId, EventStatusEnum.Unfinished, EventStatusEnum.Finishing);
             }
         }

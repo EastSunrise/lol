@@ -18,7 +18,7 @@ import javax.persistence.Id;
 public class EventDo extends BaseDo {
 
     @Id
-    private String id;
+    private String context;
 
     @Column
     private EventStatusEnum status;

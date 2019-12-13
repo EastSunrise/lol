@@ -61,7 +61,7 @@ public class LeagueServiceImpl implements LeagueService {
                         if (leagueEntryDtoList == null || leagueEntryDtoList.isEmpty())
                             break;
                         for (LeagueEntryDto leagueEntryDto : leagueEntryDtoList) {
-                            map.put(leagueEntryDto.getSummonerId(), StringUtils.joinWith(".", queue, tier, division, page));
+                            map.put(StringUtils.deleteWhitespace(leagueEntryDto.getSummonerName()), StringUtils.joinWith(".", queue, tier, division, page));
                         }
                         if (map.size() > AbstractBatchTask.MAX_SIZE) {
                             count += batchInsertEvents(forkJoinPool, map);

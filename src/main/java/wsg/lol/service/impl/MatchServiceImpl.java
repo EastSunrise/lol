@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wsg.lol.common.annotation.AssignApi;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
@@ -53,7 +54,8 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     @Transactional
-    public Result updateMatches(String accountId, Date beginTime) {
+    @AssignApi(encryptUsername = "#encryptUsername")
+    public Result updateMatches(String accountId, Date beginTime, String encryptUsername) {
         logger.info("Adding events of matches of the account {}...", accountId);
         Map<RegionEnum, Map<String, String>> map = new HashMap<>();
         QueryMatchListDto queryMatchListDto = new QueryMatchListDto();
@@ -69,7 +71,7 @@ public class MatchServiceImpl implements MatchService {
                 if (!map.containsKey(region)) {
                     map.put(region, new HashMap<>());
                 }
-                map.get(region).put(match.getGameId().toString(), accountId);
+                map.get(region).put(match.getGameId().toString(), region + "#" + accountId);
             }
             total = matchListDto.getTotalGames();
             beginIndex = matchListDto.getEndIndex();

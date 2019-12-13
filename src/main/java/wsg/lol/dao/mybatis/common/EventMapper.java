@@ -15,5 +15,5 @@ public interface EventMapper<T extends EventDo> extends SelectByExampleRowBounds
 
     int insertIgnoreList(List<EventDo> events, EventStatusEnum status);
 
-    int updateStatus(String id, EventStatusEnum from, EventStatusEnum to);
+    int updateStatus(String context, EventStatusEnum from, EventStatusEnum to);
 }

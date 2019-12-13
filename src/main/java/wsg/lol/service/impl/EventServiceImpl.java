@@ -70,7 +70,7 @@ public class EventServiceImpl implements EventService {
         for (Map.Entry<String, String> entry : events.entrySet()) {
             if (entry.getKey() != null) {
                 EventDo eventDo = new EventDo();
-                eventDo.setId(entry.getKey());
+                eventDo.setContext(entry.getKey());
                 eventDo.setSource(entry.getValue());
                 values.add(eventDo);
             }

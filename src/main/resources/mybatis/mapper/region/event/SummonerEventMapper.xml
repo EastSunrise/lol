@@ -5,7 +5,7 @@
         insert ignore into t_event_summoner
         values
         <foreach collection="events" item="item" separator=",">
-            (#{item.id},
+            (#{item.context},
             #{status},
             #{item.source},
             sysdate(),
@@ -17,7 +17,7 @@
         update t_event_summoner
         set status      = #{to},
             update_time = sysdate()
-        where id = #{id}
+        where context = #{context}
           and status = #{from}
     </update>
 </mapper>

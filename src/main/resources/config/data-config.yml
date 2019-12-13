@@ -1,5 +1,5 @@
 global:
-  region: KR
+  region: JP
 # dragon config
 dragon:
   language: zh_CN

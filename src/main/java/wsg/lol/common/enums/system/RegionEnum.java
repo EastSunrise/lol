@@ -1,6 +1,6 @@
 package wsg.lol.common.enums.system;
 
-import wsg.lol.dao.common.serialize.JSONSerializable;
+import wsg.lol.dao.common.serialize.EqualsToSerializable;
 
 import java.util.Locale;
 
@@ -10,7 +10,7 @@ import java.util.Locale;
  * @author Kingen
  * @see <a href="https://developer.riotgames.com/docs/lol#_routing-values">Routing Values</a>
  */
-public enum RegionEnum implements JSONSerializable<String> {
+public enum RegionEnum implements EqualsToSerializable<String> {
     LOL,
     BR("br1.api.riotgames.com", "BR1", AvailableLocale.BRAZIL_PORTUGUESE),
     EUNE("eun1.api.riotgames.com", "EUN1",
@@ -45,13 +45,21 @@ public enum RegionEnum implements JSONSerializable<String> {
         this.locales = locales;
     }
 
-    @Override
-    public String serialize() {
-        return platformId;
-    }
-
     public String getHost() {
         return host;
+    }
+
+    @Override
+    public boolean equalsToObject(String s) {
+        if (LOL.equals(this)) {
+            return false;
+        }
+
+        return this.platformId.equalsIgnoreCase(s) || this.name().equalsIgnoreCase(s);
+    }
+
+    public Locale[] getLocales() {
+        return locales;
     }
 
     private static class AvailableLocale {

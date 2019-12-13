@@ -5,6 +5,11 @@
 
     <!--console-->
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
         <layout>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
         </layout>
@@ -30,6 +35,8 @@
     <appender name="controller_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/controller_error.log</FileNamePattern>
@@ -41,17 +48,20 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
-    <logger name="wsg.lol.controller" level="info">
-        <appender-ref ref="controller"/>
+    <logger name="wsg.lol.controller" level="info" addtivity="false">
         <appender-ref ref="controller_error"/>
+        <appender-ref ref="controller"/>
+        <appender-ref ref="stdout"/>
     </logger>
-    <logger name="wsg.lol.runner" level="info">
+    <logger name="wsg.lol.runner" level="info" addtivity="false">
         <appender-ref ref="controller"/>
         <appender-ref ref="controller_error"/>
+        <appender-ref ref="stdout"/>
     </logger>
-    <logger name="wsg.lol.scheduler" level="info">
+    <logger name="wsg.lol.scheduler" level="info" addtivity="false">
         <appender-ref ref="controller"/>
         <appender-ref ref="controller_error"/>
+        <appender-ref ref="stdout"/>
     </logger>
 
     <!--service-->
@@ -74,6 +84,8 @@
     <appender name="service_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/service_error.log</FileNamePattern>
@@ -85,9 +97,10 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
-    <logger name="wsg.lol.service" level="info">
+    <logger name="wsg.lol.service" level="info" addtivity="false">
         <appender-ref ref="service"/>
         <appender-ref ref="service_error"/>
+        <appender-ref ref="stdout"/>
     </logger>
 
     <!--api-->
@@ -110,6 +123,8 @@
     <appender name="api_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/api_error.log</FileNamePattern>
@@ -121,9 +136,10 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
-    <logger name="wsg.lol.dao.api" level="info">
+    <logger name="wsg.lol.dao.api" level="info" addtivity="false">
         <appender-ref ref="api"/>
         <appender-ref ref="api_error"/>
+        <appender-ref ref="stdout"/>
     </logger>
 
     <!--dragon-->
@@ -146,6 +162,8 @@
     <appender name="dragon_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/dragon_error.log</FileNamePattern>
@@ -157,15 +175,16 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
-    <logger name="wsg.lol.dao.dragon" level="info">
+    <logger name="wsg.lol.dao.dragon" level="info" addtivity="false">
         <appender-ref ref="dragon"/>
         <appender-ref ref="dragon_error"/>
+        <appender-ref ref="stdout"/>
     </logger>
 
     <!--mybatis-->
     <appender name="mybatis_sql" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
+            <level>INFO</level>
             <onMatch>DENY</onMatch>
             <onMismatch>ACCEPT</onMismatch>
         </filter>
@@ -179,9 +198,27 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
+    <appender name="mybatis" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/mybatis.log</FileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %t %p: %m%n</pattern>
+        </encoder>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
     <appender name="mybatis_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/mybatis_error.log</FileNamePattern>
@@ -193,8 +230,11 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
-    <logger name="wsg.lol.dao.mybatis" level="info">
+    <logger name="wsg.lol.dao.mybatis" level="debug" addtivity="false">
+        <appender-ref ref="mybatis_sql"/>
+        <appender-ref ref="mybatis"/>
         <appender-ref ref="mybatis_error"/>
+        <appender-ref ref="stdout"/>
     </logger>
 
     <!--root-->
@@ -217,6 +257,8 @@
     <appender name="root_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/root_error.log</FileNamePattern>

@@ -6,4 +6,10 @@
         set last_match = #{lastMatch}
         where account_id = #{accountId}
     </update>
+
+    <update id="updateLastUpdate">
+        update s_summoner
+        set last_update = #{lastUpdate}
+        where id = #{summonerId}
+    </update>
 </mapper>

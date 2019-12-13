@@ -20,12 +20,13 @@ import wsg.lol.dao.mybatis.config.DatabaseIdentifier;
 @Component
 public class DatasourceAspect {
 
+    private static final Logger logger = LoggerFactory.getLogger(DatasourceAspect.class);
+
     @Pointcut("@annotation(wsg.lol.common.annotation.Platform)")
     private void datasource() {}
 
     @Around(value = "datasource() && @annotation(source)")
     public Object doAroundAdvice(ProceedingJoinPoint joinPoint, Platform source) {
-        Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
         RegionEnum region = source.platform();
         RegionEnum from = DatabaseIdentifier.getRegion();
         logger.info("Switching the datasource from {} to {}...", from, region);
@@ -36,7 +37,8 @@ public class DatasourceAspect {
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
-        DatabaseIdentifier.setPlatform(null);
+        DatabaseIdentifier.setPlatform(from);
+        logger.info("Switch the datasource back from {} to {}.", region, from);
         return result;
     }
 }

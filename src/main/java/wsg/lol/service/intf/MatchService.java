@@ -14,7 +14,7 @@ public interface MatchService {
     /**
      * Add events of the matches of the specified summoner.
      */
-    Result updateMatches(String accountId, Date beginTime);
+    Result updateMatches(String accountId, Date beginTime, String encryptUsername);
 
     /**
      * Add the specified match.
