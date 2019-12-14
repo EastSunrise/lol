@@ -1,5 +1,7 @@
 package wsg.lol.common.base;
 
+import org.slf4j.Logger;
+
 /**
  * Common result of service.
  *
@@ -82,5 +84,11 @@ public class Result {
 
     public void setArgs(String[] args) {
         this.args = args;
+    }
+
+    public void error(Logger logger) {
+        if (!this.isSuccess()) {
+            logger.error(this.getMessage());
+        }
     }
 }

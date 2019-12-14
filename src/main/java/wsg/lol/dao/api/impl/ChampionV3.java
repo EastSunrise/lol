@@ -1,6 +1,7 @@
 package wsg.lol.dao.api.impl;
 
 import org.springframework.stereotype.Component;
+import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.pojo.dto.champion.ChampionRotation;
 import wsg.lol.dao.api.client.BaseApi;
 
@@ -9,6 +10,7 @@ import wsg.lol.dao.api.client.BaseApi;
  * @see <a href="https://developer.riotgames.com/apis#champion-v3">CHAMPION-V3</a>
  */
 @Component
+@Performance
 public class ChampionV3 extends BaseApi {
 
     /**

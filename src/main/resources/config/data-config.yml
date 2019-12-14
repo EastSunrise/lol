@@ -1,5 +1,6 @@
 global:
-  region: JP
+  region: KR
+  timeout: 30000
 # dragon config
 dragon:
   language: zh_CN
@@ -10,42 +11,41 @@ dragon:
   directory: D:/lol
 # api config
 api:
-  timeout: 30000
   rate: 0.83333
   tokens:
-    - username: knightmare2094
-      region: NA
-      key: RGAPI-e2a86cbe-61d9-4751-a0de-853d734619e6
     - username: Kingen4391
       region: BR
-      key: RGAPI-05cc1d84-6b95-48c1-bac9-d96bf92e8e0f
+      key: RGAPI-2dc78e8f-e963-4e9e-a4e4-6d98ca1d558e
     - username: Kingen4392
       region: ENUE
-      key: RGAPI-4b08d355-5f14-4d8b-b2c5-3fc3b150e3b3
+      key: RGAPI-62a4025f-22ca-409a-b0f8-3c27533d0183
     - username: Kingen4393
       region: EUW
-      key: RGAPI-d2d9f46a-b76a-414a-8e90-bc53c78c6738
+      key: RGAPI-dff9ed90-06da-4eab-914f-3bf471d5f1b5
     - username: Kingen4394
       region: JP
       key:
     - username: Kingen4395
       region: NA
-      key: RGAPI-7375596d-ae67-461a-ba54-0900844fcddd
+      key: RGAPI-c20908c3-7bdd-4cf3-9508-79e254996e6f
     - username: Kingen4396
       region: OCE
-      key: RGAPI-b6e13644-7a09-4405-b44e-993d45e4671e
+      key: RGAPI-d6e2eaf1-134f-4fa7-abff-6b5e84a5e8a5
     - username: Kingen4397
       region: NA
-      key: RGAPI-d872cdf5-400b-42b3-b5cd-618ab412aae7
+      key: RGAPI-0244f774-348d-4a29-bd36-290d102bd00f
     - username: Kingen4398
       region: NA
-      key: RGAPI-ab6f7fd9-1f0f-488b-822c-d55c90bf8286
+      key: RGAPI-e20edb00-a358-43e5-b781-5a9a6f28200c
     - username: Kingen4399
       region: OCE
-      key: RGAPI-80eb9a90-91b3-46cc-9d48-3cade6129594
+      key: RGAPI-c772049e-fcda-4a03-af90-6be0a07b6861
     - username: Kingen4400
       region: RU
-      key: RGAPI-4555fcb1-d46a-45c4-8758-eb99815def5f
+      key: RGAPI-558bbe82-27e7-4b6f-99f6-8c46c101d3d0
     - username: Kingen4401
       region: TR
-      key: RGAPI-d9b76a13-2e15-4c27-af9e-f9a23124cfc6
+      key: RGAPI-2327afe7-2ee5-4725-a312-52f1e5df81f4
+    - username: knightmare2094
+      region: NA
+      key: RGAPI-3439eca4-48a1-42aa-917a-7fff00b8cd9a

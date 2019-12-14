@@ -1,6 +1,7 @@
 package wsg.lol.dao.api.impl;
 
 import org.springframework.stereotype.Component;
+import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.pojo.dto.share.ShardStatus;
 import wsg.lol.dao.api.client.BaseApi;
 
@@ -9,6 +10,7 @@ import wsg.lol.dao.api.client.BaseApi;
  * <a href="https://developer.riotgames.com/apis#lol-status-v3">LOL-STATUS-V3</a>
  */
 @Component
+@Performance
 public class LOLStatusV3 extends BaseApi {
 
     /**

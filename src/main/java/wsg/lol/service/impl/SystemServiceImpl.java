@@ -69,19 +69,6 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public void sendMessage(String message) {
-        // todo send a message.
-        ResultUtils.success();
-    }
-
-    @Override
-    public void sendWarnMessage(Result result) {
-        if (!result.isSuccess()) {
-            sendMessage(result.getMessage());
-        }
-    }
-
-    @Override
     public GenericResult<Boolean> initialized() {
         String value = configMapper.getConfigValue(ConfigConst.IS_DATABASE_INITIALIZED, globalConfig.getRegion());
         GenericResult<Boolean> result = new GenericResult<>();

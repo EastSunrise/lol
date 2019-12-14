@@ -4,6 +4,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.share.RankQueueEnum;
@@ -22,6 +23,7 @@ import java.util.Map;
  * @see <a href="https://developer.riotgames.com/apis#league-v4">LEAGUE-V4</a>
  */
 @Component
+@Performance
 public class LeagueV4 extends BaseApi {
 
     private static final Logger logger = LoggerFactory.getLogger(LeagueV4.class);

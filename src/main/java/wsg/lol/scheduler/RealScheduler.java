@@ -1,4 +1,4 @@
-package wsg.lol.service.scheduler;
+package wsg.lol.scheduler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

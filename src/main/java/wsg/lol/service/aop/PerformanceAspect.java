@@ -19,7 +19,7 @@ public class PerformanceAspect {
 
     private static final Logger logger = LoggerFactory.getLogger(PerformanceAspect.class);
 
-    @Pointcut("@annotation(wsg.lol.common.annotation.Performance)")
+    @Pointcut("@annotation(wsg.lol.common.annotation.Performance) || @within(wsg.lol.common.annotation.Performance)")
     private void performance() {}
 
     @Around("performance()")
@@ -32,7 +32,7 @@ public class PerformanceAspect {
             throwable.printStackTrace();
         }
         long time = System.currentTimeMillis() - start;
-        logger.info("{}.{} cost {} ms.", joinPoint.getTarget().getClass(), joinPoint.getSignature().getName(), time);
+        logger.info("{}.{} cost {} ms.", joinPoint.getTarget().getClass().getName(), joinPoint.getSignature().getName(), time);
         return result;
     }
 }

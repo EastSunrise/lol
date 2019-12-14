@@ -10,7 +10,9 @@ import java.lang.annotation.Target;
  *
  * @author Kingen
  */
-@Target(ElementType.METHOD)
+@Target({
+        ElementType.METHOD, ElementType.TYPE
+})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Performance {
 }

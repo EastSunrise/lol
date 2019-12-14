@@ -19,8 +19,8 @@ import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.config.ApiClient;
 import wsg.lol.config.ApiIdentifier;
+import wsg.lol.dao.api.client.ApiClient;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
 import wsg.lol.dao.api.impl.SummonerV4;
@@ -66,7 +66,7 @@ public class SummonerServiceImpl implements SummonerService {
         logger.info("Adding the summoner {}...", summonerName);
 
         // assign the api.
-        String username = apiClient.peekApi().getUsername();
+        String username = apiClient.peekApi();
         ApiIdentifier.setApi(username);
 
         SummonerDto summonerDto = summonerV4.getSummoner(summonerName, SummonerV4.CondKeyEnum.NAME);

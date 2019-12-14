@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 import wsg.lol.common.annotation.Performance;
+import wsg.lol.common.base.ApiHTTPException;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
@@ -53,7 +54,27 @@ public class EventServiceImpl implements EventService {
         logger.info("Got {} events of {}. Handling...", events.size(), eventType);
 
         EventHandler eventHandler = applicationContext.getBean(eventType.getHandlerClass());
-        return eventHandler.handle(events);
+        int success = 0;
+        for (EventDo event : events) {
+            String context = event.getContext();
+            try {
+                ResultUtils.assertSuccess(eventHandler.handle(event));
+                ResultUtils.assertSuccess(updateStatus(eventType, context, EventStatusEnum.Unfinished, EventStatusEnum.Finished));
+                logger.info("Succeed in handling {} event of {}.", eventType, context);
+                success++;
+            } catch (ApiHTTPException e) {
+                logger.error("Failed to handle {} event of {}.", eventType, context);
+                logger.error("{}: {}", e.getResponseCode().getMessage(), e.getUrl());
+                updateStatus(eventType, context, EventStatusEnum.Unfinished, EventStatusEnum.Finishing);
+            } catch (Exception e) {
+                logger.error("Failed to handle {} event of {}.", eventType, context);
+                logger.error(e.getMessage(), e);
+                updateStatus(eventType, context, EventStatusEnum.Unfinished, EventStatusEnum.Finishing);
+            }
+        }
+
+        logger.info("Events of summoners done, {} succeeded, {} failed.", success, events.size() - success);
+        return ResultUtils.success();
     }
 
     @Override

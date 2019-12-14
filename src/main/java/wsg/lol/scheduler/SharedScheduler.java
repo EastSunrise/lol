@@ -1,4 +1,4 @@
-package wsg.lol.service.scheduler;
+package wsg.lol.scheduler;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -36,9 +36,7 @@ public class SharedScheduler {
             return;
         }
 
-        String message = "The latest version is " + versionResult.getLatestVersion() + ". Please update the version.";
-        logger.info(message);
-        systemService.sendMessage(message);
+        logger.info("The latest version is {}. Please update the version.", versionResult.getLatestVersion());
     }
 
     /**

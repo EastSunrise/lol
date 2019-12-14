@@ -52,7 +52,7 @@ public class VersionRunner implements ApplicationRunner {
         String version = versionResult.getLatestVersion();
         GenericResult<Boolean> result = systemService.checkCdn(version);
         if (!result.getObject()) {
-            systemService.sendMessage("Can't find cdn for " + version + ". Please update the data dragon manually.");
+            logger.error("Can't find cdn for " + version + ". Please update the data dragon manually.");
             return;
         }
 
@@ -69,8 +69,7 @@ public class VersionRunner implements ApplicationRunner {
                 return ResultUtils.success();
             });
         } catch (AppException e) {
-            logger.error(e.getMessage());
-            systemService.sendWarnMessage(ResultUtils.fail(e));
+            logger.error(e.getMessage(), e);
             return;
         }
 

@@ -1,4 +1,4 @@
-package wsg.lol.config;
+package wsg.lol.dao.api.client;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.util.concurrent.Uninterruptibles;
@@ -8,17 +8,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ErrorCodeConst;
+import wsg.lol.config.ApiIdentifier;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
 
@@ -34,7 +31,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  */
 @Configuration
 @ConfigurationProperties(prefix = "api")
-public class ApiClient implements InitializingBean, DisposableBean {
+public class ApiClient implements InitializingBean {
 
     private static final Logger logger = LoggerFactory.getLogger(ApiClient.class);
 
@@ -42,17 +39,9 @@ public class ApiClient implements InitializingBean, DisposableBean {
     private double rate;
 
     @Setter
-    @Getter
-    private int timeout;
-
-    @Setter
     private List<Token> tokens;
 
     private PriorityBlockingQueue<RGApi> apis = new PriorityBlockingQueue<>();
-
-    private LocalDate runtime;
-
-    private long requestCount;
 
     /**
      * Get available and valid api token, specified by the username in the {@link ApiIdentifier} or used the earliest.
@@ -60,40 +49,42 @@ public class ApiClient implements InitializingBean, DisposableBean {
      * @return null if there isn't a valid token.
      */
     public synchronized String getToken() {
-        RGApi api = null;
         String username = ApiIdentifier.getApi();
         if (username != null) {
-            for (RGApi rgApi : apis) {
-                if (username.equals(rgApi.username)) {
-                    api = rgApi;
-                    break;
+            for (RGApi api : apis) {
+                if (username.equals(api.username)) {
+                    logger.info("Acquiring the token of the account {}.", username);
+                    String token = api.acquire();
+                    apis.removeIf(rgApi -> username.equals(rgApi.username));
+                    apis.offer(api);
+                    return token;
                 }
             }
-        } else {
-            api = apis.poll();
+            logger.error("There isn't valid api under the account {}.", username);
+            throw new AppException(ErrorCodeConst.HTTPS_ERROR);
         }
 
+        RGApi api = apis.poll();
         if (api == null) {
-            logger.error("There aren't valid tokens from the queue.");
+            logger.error("There aren't valid apis from the queue.");
             throw new AppException(ErrorCodeConst.HTTPS_ERROR);
         }
         logger.info("Acquiring the token of the account {}.", api.username);
         String token = api.acquire();
-        apis.add(api);
-        requestCount++;
+        apis.offer(api);
         return token;
     }
 
     /**
-     * Poll an valid api.
+     * Poll the username of a valid api.
      */
-    public RGApi peekApi() {
+    public String peekApi() {
         RGApi api = apis.peek();
         if (api == null) {
             logger.error("There aren't valid tokens from the queue.");
             throw new AppException(ErrorCodeConst.HTTPS_ERROR);
         }
-        return api;
+        return api.username;
     }
 
     /**
@@ -106,26 +97,16 @@ public class ApiClient implements InitializingBean, DisposableBean {
                 this.apis.add(new RGApi(token, rate));
             }
         }
-        requestCount = 0;
-        runtime = LocalDate.now();
     }
 
     /**
-     * Update the status of the token to INVALID.
+     * Remove the invalid api.
      */
-    public void invalidate(String token) {
-        for (RGApi api : apis) {
-            if (api.token.equals(token)) {
-                api.valid = false;
-                break;
-            }
+    public void removeApi(String token) {
+        if (token == null) {
+            return;
         }
-    }
-
-    @Override
-    public void destroy() {
-        LocalDate now = LocalDate.now();
-        logger.info("The application run {} {}. Request {} times totally.", Period.between(runtime, LocalDate.now()), Duration.between(runtime, now), requestCount);
+        apis.removeIf(rgApi -> token.equals(rgApi.token));
     }
 
     public static class RGApi implements Comparable<RGApi> {

@@ -3,8 +3,6 @@ package wsg.lol.service.event;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.pojo.domain.system.EventDo;
 
-import java.util.List;
-
 /**
  * Handler for events.
  *
@@ -13,7 +11,7 @@ import java.util.List;
 public interface EventHandler {
 
     /**
-     * Handle events.
+     * Handle an event.
      */
-    Result handle(List<? extends EventDo> events);
+    Result handle(EventDo event);
 }

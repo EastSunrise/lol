@@ -9,10 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import wsg.lol.common.base.ApiHTTPException;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.QueryDto;
 import wsg.lol.common.util.HttpHelper;
-import wsg.lol.config.ApiClient;
 import wsg.lol.config.DragonConfig;
 import wsg.lol.config.GlobalConfig;
 import wsg.lol.dao.common.serialize.RecordExtraProcessor;
@@ -125,10 +125,10 @@ public class BaseApi {
     }
 
     /**
-     * @throws HTTPException BadRequest, NotFound, UnsupportedMediaType, Unauthorized.
-     *                       Other response whose code {@link ResponseCodeEnum} doesn't include.
+     * @throws ApiHTTPException BadRequest, NotFound, UnsupportedMediaType, Unauthorized.
+     * @throws HTTPException    Other unknown response whose code isn't included in {@link ResponseCodeEnum}.
      */
-    private String doHttpGet(@NotNull String urlStr) throws HTTPException {
+    private String doHttpGet(@NotNull String urlStr) throws ApiHTTPException, HTTPException {
         String format = urlStr + (urlStr.contains("?") ? "&" : "?") + "api_key=";
         int retryCount = 0;
         while (true) {
@@ -138,8 +138,8 @@ public class BaseApi {
                 URL url = new URL(urlStr);
                 logger.info("Getting from " + urlStr);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setConnectTimeout(apiClient.getTimeout());
-                urlConnection.setReadTimeout(apiClient.getTimeout());
+                urlConnection.setConnectTimeout(globalConfig.getTimeout());
+                urlConnection.setReadTimeout(globalConfig.getTimeout());
                 urlConnection.setRequestProperty("Origin", "https://developer.riotgames.com");
                 urlConnection.setRequestProperty("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
                 urlConnection.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,zh-TW;q=0.8");
@@ -160,7 +160,7 @@ public class BaseApi {
                 String responseMessage = urlConnection.getResponseMessage();
                 if (ResponseCodeEnum.Forbidden.getCode() == responseCode) {
                     logger.warn("The token {} had been forbidden. Try another.", token);
-                    apiClient.invalidate(token);
+                    apiClient.removeApi(token);
                     continue;
                 }
                 if (ResponseCodeEnum.RateLimitExceeded.getCode() == responseCode) {
@@ -176,15 +176,11 @@ public class BaseApi {
                     continue;
                 }
 
-                if (ResponseCodeEnum.NotFound.getCode() == responseCode) {
-                    logger.warn("{}: {}", responseMessage, urlStr);
-                    throw new HTTPException(responseCode);
-                }
                 if (ResponseCodeEnum.BadRequest.getCode() == responseCode
+                        || ResponseCodeEnum.NotFound.getCode() == responseCode
                         || ResponseCodeEnum.UnsupportedMediaType.getCode() == responseCode
                         || ResponseCodeEnum.Unauthorized.getCode() == responseCode) {
-                    logger.error("{}: {}", responseMessage, urlStr);
-                    throw new HTTPException(responseCode);
+                    throw new ApiHTTPException(urlStr, responseCode);
                 }
                 logger.error("{}: {}.", responseMessage, urlStr);
                 throw new HTTPException(responseCode);

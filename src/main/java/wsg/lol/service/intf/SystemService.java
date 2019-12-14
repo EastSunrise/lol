@@ -27,16 +27,6 @@ public interface SystemService {
     Result updateVersion(String version);
 
     /**
-     * Send a message.
-     */
-    void sendMessage(String message);
-
-    /**
-     * Send messages of warning.
-     */
-    void sendWarnMessage(Result result);
-
-    /**
      * Check if the database has been initialize.
      */
     GenericResult<Boolean> initialized();
