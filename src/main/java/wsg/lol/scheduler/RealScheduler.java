@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import wsg.lol.common.base.ApiHTTPException;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ConfigConst;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
@@ -45,10 +46,14 @@ public class RealScheduler {
             try {
                 ResultUtils.assertSuccess(summonerService.updateSummoner(summonerId, summoner.getEncryptUsername()));
                 success++;
-            } catch (RuntimeException e) {
-                logger.error("Failed to update summoner {}", summonerId);
-                logger.error("", e);
-                summonerService.updateSummonerLastUpdate(summonerId, ConfigConst.LAST_UPDATE_ERROR_DATE);
+            } catch (ApiHTTPException e) {
+                logger.error("Failed to update summoner {}.", summonerId);
+                logger.error("{}: {}", e.getResponseCode().getMessage(), e.getUrl());
+                summonerService.updateSummonerLastUpdate(summonerId, ConfigConst.LAST_UPDATE_ERROR_DATE).error(logger);
+            } catch (Exception e) {
+                logger.error("Failed to update summoner {}.", summonerId);
+                logger.error(e.getMessage(), e);
+                summonerService.updateSummonerLastUpdate(summonerId, ConfigConst.LAST_UPDATE_ERROR_DATE).error(logger);
             }
         }
 
@@ -67,13 +72,18 @@ public class RealScheduler {
 
         int success = 0;
         for (SummonerDto summoner : summoners) {
+            String accountId = summoner.getAccountId();
             try {
-                ResultUtils.assertSuccess(matchService.updateMatches(summoner.getAccountId(), summoner.getLastMatch(), summoner.getEncryptUsername()));
+                ResultUtils.assertSuccess(matchService.updateMatches(accountId, summoner.getLastMatch(), summoner.getEncryptUsername()));
                 success++;
-            } catch (RuntimeException e) {
-                logger.error("Failed to update matches of the account {}", summoner.getAccountId());
-                logger.error("", e);
-                summonerService.updateSummonerLastMatch(summoner.getAccountId(), ConfigConst.LAST_MATCH_ERROR_DATE);
+            } catch (ApiHTTPException e) {
+                logger.error("Failed to update matches of the account {}.", accountId);
+                logger.error("{}: {}", e.getResponseCode().getMessage(), e.getUrl());
+                summonerService.updateSummonerLastMatch(accountId, ConfigConst.LAST_MATCH_ERROR_DATE).error(logger);
+            } catch (Exception e) {
+                logger.error("Failed to update matches of the account {}.", accountId);
+                logger.error(e.getMessage(), e);
+                summonerService.updateSummonerLastMatch(accountId, ConfigConst.LAST_MATCH_ERROR_DATE).error(logger);
             }
         }
         logger.info("Matches updated, {} succeeded, {} failed.", success, summoners.size() - success);

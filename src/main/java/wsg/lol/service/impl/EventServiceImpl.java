@@ -65,11 +65,11 @@ public class EventServiceImpl implements EventService {
             } catch (ApiHTTPException e) {
                 logger.error("Failed to handle {} event of {}.", eventType, context);
                 logger.error("{}: {}", e.getResponseCode().getMessage(), e.getUrl());
-                updateStatus(eventType, context, EventStatusEnum.Unfinished, EventStatusEnum.Finishing);
+                updateStatus(eventType, context, EventStatusEnum.Unfinished, EventStatusEnum.Finishing).error(logger);
             } catch (Exception e) {
                 logger.error("Failed to handle {} event of {}.", eventType, context);
                 logger.error(e.getMessage(), e);
-                updateStatus(eventType, context, EventStatusEnum.Unfinished, EventStatusEnum.Finishing);
+                updateStatus(eventType, context, EventStatusEnum.Unfinished, EventStatusEnum.Finishing).error(logger);
             }
         }
 

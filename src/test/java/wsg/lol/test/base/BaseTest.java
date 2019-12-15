@@ -1,4 +1,4 @@
-package wsg.lol.test;
+package wsg.lol.test.base;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.runner.RunWith;
@@ -25,6 +25,8 @@ public class BaseTest implements InitializingBean {
     protected SummonerDto summoner;
     private GlobalConfig globalConfig;
     private SummonerV4 summonerV4;
+
+    protected final String version = "9.24.1";
 
     @Override
     public void afterPropertiesSet() {
