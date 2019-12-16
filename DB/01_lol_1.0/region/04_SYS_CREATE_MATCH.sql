@@ -19,30 +19,30 @@ create table m_match
 drop table if exists m_match_frame;
 create table m_match_frame
 (
-    id                        bigint auto_increment not null comment '主键',
-    game_id                   bigint                not null comment '对局ID',
-    timeline                  time                  not null comment '时间线',
-    timing                    time                  not null comment '时间点',
-    type                      tinyint               not null comment '对局事件类型',
-    participant_id            int                   null comment '玩家序号',
-    skill_slot                int                   null comment '？？？',
-    level_up_type             tinyint               null comment '升级类型',
-    item_id                   int                   null comment '物品ID',
-    after_id                  int                   null comment '？？？',
-    before_id                 int                   null comment '？？？',
-    ward_type                 tinyint               null comment '视野类型',
-    creator_id                int                   null comment '？？？',
-    position_x                int                   null comment '坐标X',
-    position_y                int                   null comment '坐标Y',
-    killer_id                 int                   null comment '击杀者ID',
-    victim_id                 int                   null comment '被杀者ID',
-    assisting_participant_ids varchar(32)           null comment '助攻者ID',
-    monster_type              tinyint               null comment '野怪类型',
-    monster_sub_type          tinyint               null comment '野怪子类型',
-    team_id                   tinyint               null comment '队伍ID',
-    building_type             tinyint               null comment '重生类型',
-    lane_type                 tinyint               null comment '分类类型',
-    tower_type                tinyint               null comment '建筑物类型',
+    id                         bigint auto_increment not null comment '主键',
+    game_id                    bigint                not null comment '对局ID',
+    timeline                   time                  not null comment '时间线',
+    timing                     time                  not null comment '时间点',
+    type                       tinyint               not null comment '对局事件类型',
+    participant_num            int                   null comment '玩家序号',
+    skill_slot                 int                   null comment '？？？',
+    level_up_type              tinyint               null comment '升级类型',
+    item_id                    int                   null comment '物品ID',
+    after_id                   int                   null comment '？？？',
+    before_id                  int                   null comment '？？？',
+    ward_type                  tinyint               null comment '视野类型',
+    creator_num                int                   null comment '？？？',
+    position_x                 int                   null comment '坐标X',
+    position_y                 int                   null comment '坐标Y',
+    killer_num                 int                   null comment '击杀者ID',
+    victim_num                 int                   null comment '被杀者ID',
+    assisting_participant_nums varchar(32)           null comment '助攻者ID',
+    monster_type               tinyint               null comment '野怪类型',
+    monster_sub_type           tinyint               null comment '野怪子类型',
+    team_id                    tinyint               null comment '队伍ID',
+    building_type              tinyint               null comment '重生类型',
+    lane_type                  tinyint               null comment '分类类型',
+    tower_type                 tinyint               null comment '建筑物类型',
     primary key (id)
 ) comment ='对局时间帧表';
 
@@ -76,8 +76,9 @@ create table m_participant
 (
     id                  bigint      not null comment '主键',
     game_id             bigint      not null comment '对局ID',
-    participant_id      int         not null comment '玩家序号',
+    participant_num     int         not null comment '玩家序号',
     platform_id         tinyint     not null comment '服务器',
+    summoner_name       varchar(32) not null comment '召唤师名',
     summoner_id         varchar(63) null comment '召唤师ID',
     account_id          varchar(56) not null comment '账户ID',
     current_platform_id tinyint     not null comment '当前服务器',
@@ -97,7 +98,7 @@ create table m_participant
 drop table if exists m_participant_stats;
 create table m_participant_stats
 (
-    id                                  bigint  not null comment '主键',
+    participant_id                      bigint  not null comment '主键',
     win                                 tinyint null comment '是否胜利',
     item0                               int     null comment '装备0',
     item1                               int     null comment '装备1',
@@ -201,7 +202,7 @@ create table m_participant_stats
     stat_perk0                          int     null comment '？？？',
     stat_perk1                          int     null comment '？？？',
     stat_perk2                          int     null comment '？？？',
-    primary key (id)
+    primary key (participant_id)
 ) comment ='对局玩家数据表';
 
 -- 对局玩家时间帧表
@@ -209,7 +210,7 @@ drop table if exists m_participant_frame;
 create table m_participant_frame
 (
     id                    bigint auto_increment not null comment '主键',
-    related_id            bigint                not null comment '关联玩家的对局内ID',
+    participant_id        bigint                not null comment '玩家ID',
     timeline              time                  not null comment '时间线',
     position_x            int                   null comment '坐标X',
     position_y            int                   null comment '坐标Y',

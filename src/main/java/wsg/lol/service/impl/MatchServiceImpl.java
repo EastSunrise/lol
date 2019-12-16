@@ -127,21 +127,21 @@ public class MatchServiceImpl implements MatchService {
         logger.info("Adding participants of the match {}...", gameId);
         List<ParticipantDo> participants = new ArrayList<>();
         List<ParticipantDto> participantDtoList = matchExtDto.getParticipants();
-        Map<Integer, ParticipantDto> map = new HashMap<>();
+        Map<Integer, ParticipantDto> num2Participant = new HashMap<>();
         for (ParticipantDto participantDto : participantDtoList) {
-            map.put(participantDto.getParticipantId(), participantDto);
+            num2Participant.put(participantDto.getParticipantNum(), participantDto);
         }
         List<ParticipantIdentityDto> participantIdentities = matchExtDto.getParticipantIdentities();
-        Map<Integer, ParticipantStatsDo> statsMap = new HashMap<>();
+        Map<Integer, ParticipantStatsDo> num2Stats = new HashMap<>();
         for (ParticipantIdentityDto participantIdentity : participantIdentities) {
             ParticipantDo participantDo = ObjectTransfer.transferDto(participantIdentity.getPlayer(), ParticipantDo.class);
-            int participantId = participantIdentity.getParticipantId();
-            ParticipantDto participantDto = map.get(participantId);
+            int num = participantIdentity.getParticipantNum();
+            ParticipantDto participantDto = num2Participant.get(num);
             ParticipantTimelineDto participantTimelineDto = participantDto.getTimeline();
-            statsMap.put(participantId, ObjectTransfer.transferDto(participantDto.getStats(), ParticipantStatsDo.class));
+            num2Stats.put(num, ObjectTransfer.transferDto(participantDto.getStats(), ParticipantStatsDo.class));
 
             participantDo.setGameId(gameId);
-            participantDo.setParticipantId(participantId);
+            participantDo.setParticipantNum(num);
             participantDo.generateId();
 
             participantDo.setTeamId(participantDto.getTeamId());
@@ -156,23 +156,23 @@ public class MatchServiceImpl implements MatchService {
         ResultUtils.assertSuccess(MapperExecutor.insertList(participantMapper, participants));
 
         logger.info("Adding stats of participants in the match {}...", gameId);
-        Map<Integer, Long> idMap = new HashMap<>();
+        Map<Integer, Long> num2Id = new HashMap<>();
         for (ParticipantDo participant : participants) {
-            idMap.put(participant.getParticipantId(), participant.getId());
+            num2Id.put(participant.getParticipantNum(), participant.getId());
         }
-        for (Map.Entry<Integer, ParticipantStatsDo> entry : statsMap.entrySet()) {
-            entry.getValue().setId(idMap.get(entry.getKey()));
+        for (Map.Entry<Integer, ParticipantStatsDo> entry : num2Stats.entrySet()) {
+            entry.getValue().setParticipantId(num2Id.get(entry.getKey()));
         }
-        ResultUtils.assertSuccess(MapperExecutor.insertList(participantStatsMapper, new ArrayList<>(statsMap.values())));
+        ResultUtils.assertSuccess(MapperExecutor.insertList(participantStatsMapper, new ArrayList<>(num2Stats.values())));
 
         logger.info("Adding frames of participants in the match {}...", gameId);
         List<ParticipantFrameDo> participantFrames = new ArrayList<>();
         for (MatchFrameDto frame : frames) {
             for (Map.Entry<String, MatchParticipantFrameDto> entry : frame.getParticipantFrames().entrySet()) {
                 ParticipantFrameDo participantFrameDo = ObjectTransfer.transferDto(entry.getValue(), ParticipantFrameDo.class);
-                Integer participantId = Integer.parseInt(entry.getKey());
+                Integer num = Integer.parseInt(entry.getKey());
 
-                participantFrameDo.setRelatedId(idMap.get(participantId));
+                participantFrameDo.setParticipantId(num2Id.get(num));
                 participantFrameDo.setTimeline(frame.getTimestamp());
 
                 participantFrames.add(participantFrameDo);

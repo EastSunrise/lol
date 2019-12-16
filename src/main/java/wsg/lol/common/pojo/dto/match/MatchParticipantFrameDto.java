@@ -1,5 +1,6 @@
 package wsg.lol.common.pojo.dto.match;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
@@ -13,7 +14,8 @@ import wsg.lol.common.base.BaseDto;
 @Data
 public class MatchParticipantFrameDto extends BaseDto {
 
-    private Integer participantId;
+    @JSONField(name = "participantId")
+    private Integer participantNum;
     private MatchPositionDto position;
 
     private Integer currentGold;

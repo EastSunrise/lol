@@ -31,10 +31,13 @@ public class ParticipantDo extends BaseDo {
     private Long gameId;
 
     @Column
-    private Integer participantId;
+    private Integer participantNum;
 
     @Column
     private RegionEnum platformId;
+
+    @Column
+    private String summonerName;
 
     @Column
     private String summonerId;
@@ -73,12 +76,12 @@ public class ParticipantDo extends BaseDo {
     private MatchLaneEnum lane;
 
     /**
-     * Generate the id by <expression>{@link #gameId} * 100 + {@link #participantId}</expression>
+     * Generate the id by <expression>{@link #gameId} * 100 + {@link #participantNum}</expression>
      */
     public void generateId() {
-        if (participantId == null || gameId == null) {
+        if (participantNum == null || gameId == null) {
             throw new AppException(ErrorCodeConst.ILLEGAL_ARGS, "Not exist does the participantId or the gameId.");
         }
-        this.setId(gameId * 100 + participantId);
+        this.setId(gameId * 100 + participantNum);
     }
 }

@@ -19,7 +19,7 @@ import javax.persistence.Table;
 public class ParticipantStatsDo extends BaseDo {
 
     @Id
-    private Long id;
+    private Long participantId;
 
     @Column
     private Boolean win;

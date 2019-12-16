@@ -1,5 +1,6 @@
 package wsg.lol.common.pojo.dto.match;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
@@ -17,7 +18,8 @@ import java.util.Map;
 @Data
 public class ParticipantTimelineDto extends BaseDto {
 
-    private Integer participantId;
+    @JSONField(name = "participantId")
+    private Integer participantNum;
 
     /**
      * Creeps for a specified period.

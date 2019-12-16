@@ -26,7 +26,7 @@ public class ParticipantFrameDo extends BaseDo {
     private Long id;
 
     @Column
-    private Long relatedId;
+    private Long participantId;
 
     @Column
     private Time timeline;

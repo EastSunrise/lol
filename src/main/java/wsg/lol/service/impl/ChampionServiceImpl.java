@@ -27,7 +27,7 @@ import wsg.lol.dao.mybatis.mapper.lol.item.BlockMapper;
 import wsg.lol.dao.mybatis.mapper.lol.item.RecommendedMapper;
 import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.ChampionService;
-import wsg.lol.service.intf.SharedService;
+import wsg.lol.service.intf.CollectionService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ public class ChampionServiceImpl implements ChampionService {
 
     private SpellMapper spellMapper;
 
-    private SharedService sharedService;
+    private CollectionService collectionService;
 
     @Override
     @Transactional
@@ -76,7 +76,7 @@ public class ChampionServiceImpl implements ChampionService {
             image.setRelatedId(championExtDto.getId());
             imageDtoList.add(image);
         }
-        ResultUtils.assertSuccess(sharedService.updateImages(imageDtoList, ImageGroupEnum.Champion));
+        ResultUtils.assertSuccess(collectionService.updateImages(imageDtoList, ImageGroupEnum.Champion));
 
         logger.info("Updating the skins.");
         List<SkinDo> skinDoList = new ArrayList<>();
@@ -155,7 +155,7 @@ public class ChampionServiceImpl implements ChampionService {
         }
         ResultUtils.assertSuccess(this.updateSpells(spellDoList, SpellNumEnum.P, SpellNumEnum.Q, SpellNumEnum.W, SpellNumEnum.E, SpellNumEnum.R));
         logger.info("Updating the images of champion spells.");
-        ResultUtils.assertSuccess(sharedService.updateImages(imageDtoList, ImageGroupEnum.Spell, ImageGroupEnum.Passive));
+        ResultUtils.assertSuccess(collectionService.updateImages(imageDtoList, ImageGroupEnum.Spell, ImageGroupEnum.Passive));
 
         logger.info("Updating the recommended items of champions.");
         List<RecommendedDo> recommendedDoList = new ArrayList<>();
@@ -202,7 +202,7 @@ public class ChampionServiceImpl implements ChampionService {
         }
         ResultUtils.assertSuccess(this.updateSpells(spellDoList, SpellNumEnum.S));
         logger.info("Updating the images of summoner spells.");
-        ResultUtils.assertSuccess(sharedService.updateImages(images, ImageGroupEnum.SummonerSpell));
+        ResultUtils.assertSuccess(collectionService.updateImages(images, ImageGroupEnum.SummonerSpell));
 
         logger.info("Succeed in updating the data of summoner spells.");
         return ResultUtils.success();
@@ -265,7 +265,7 @@ public class ChampionServiceImpl implements ChampionService {
     }
 
     @Autowired
-    public void setSharedService(SharedService sharedService) {
-        this.sharedService = sharedService;
+    public void setCollectionService(CollectionService collectionService) {
+        this.collectionService = collectionService;
     }
 }

@@ -1,5 +1,6 @@
 package wsg.lol.common.pojo.dto.match;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
@@ -19,7 +20,9 @@ public class MatchEventDto extends BaseDto {
 
     private MatchEventTypeEnum type;
     private Time timestamp;
-    private Integer participantId;
+
+    @JSONField(name = "participantId")
+    private Integer participantNum;
 
     private Integer skillSlot;
 
@@ -31,13 +34,17 @@ public class MatchEventDto extends BaseDto {
 
     private WardTypeEnum wardType;
 
-    private Integer creatorId;
+    @JSONField(name = "creatorId")
+    private Integer creatorNum;
 
     private MatchPositionDto position;
 
-    private Integer killerId;
-    private Integer victimId;
-    private List<Integer> assistingParticipantIds;
+    @JSONField(name = "killerId")
+    private Integer killerNum;
+    @JSONField(name = "victimId")
+    private Integer victimNum;
+    @JSONField(name = "assistingParticipantIds")
+    private List<Integer> assistingParticipantNums;
 
     private MonsterTypeEnum monsterType;
     private MonsterSubTypeEnum monsterSubType;

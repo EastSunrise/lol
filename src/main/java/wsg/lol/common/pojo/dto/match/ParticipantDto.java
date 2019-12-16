@@ -1,5 +1,6 @@
 package wsg.lol.common.pojo.dto.match;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
@@ -14,7 +15,8 @@ import wsg.lol.common.enums.match.TeamIdEnum;
 @Data
 public class ParticipantDto extends BaseDto {
 
-    private Integer participantId;
+    @JSONField(name = "participantId")
+    private Integer participantNum;
 
     /**
      * 100 for blue side. 200 for red side.

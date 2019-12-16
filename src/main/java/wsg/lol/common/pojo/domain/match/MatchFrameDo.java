@@ -61,7 +61,7 @@ public class MatchFrameDo extends BaseDo {
     private WardTypeEnum wardType;
 
     @Column
-    private Integer creatorId;
+    private Integer creatorNum;
 
     @Column
     @Flatten
@@ -72,13 +72,13 @@ public class MatchFrameDo extends BaseDo {
     private Integer positionY;
 
     @Column
-    private Integer killerId;
+    private Integer killerNum;
 
     @Column
-    private Integer victimId;
+    private Integer victimNum;
 
     @Column
-    private List<Integer> assistingParticipantIds;
+    private List<Integer> assistingParticipantNums;
 
     @Column
     private MonsterTypeEnum monsterType;
