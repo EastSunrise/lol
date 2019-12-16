@@ -17,5 +17,5 @@ public @interface AssignApi {
     /**
      * The username of the api used to encrypt the data.
      */
-    String encryptUsername();
+    String encryptUsername() default "";
 }

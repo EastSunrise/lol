@@ -1,6 +1,7 @@
 package wsg.lol.service.intf;
 
 import org.apache.ibatis.session.RowBounds;
+import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.ListResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
@@ -47,5 +48,5 @@ public interface SummonerService {
     /**
      * Get base info for the summoner of the specified name.
      */
-    SummonerDto getSummonersByName(String summonerName);
+    GenericResult<SummonerDto> getSummonersByName(String summonerName);
 }

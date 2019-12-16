@@ -1,6 +1,6 @@
 package wsg.lol.common.enums.share;
 
-import wsg.lol.dao.common.serialize.JSONSerializable;
+import wsg.lol.common.pojo.serialize.JSONSerializable;
 
 /**
  * Enums for types of blocks in recommendations of items.

@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
 import wsg.lol.common.enums.match.GameModeEnum;
-import wsg.lol.common.pojo.dto.share.ImageDto;
+import wsg.lol.common.pojo.dto.item.ImageDto;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package wsg.lol.common.enums.match;
 
-import wsg.lol.dao.common.serialize.JSONSerializable;
+import wsg.lol.common.pojo.serialize.JSONSerializable;
 
 /**
  * Enum for sub types of the monster.

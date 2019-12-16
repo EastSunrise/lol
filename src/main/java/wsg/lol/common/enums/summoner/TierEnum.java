@@ -1,6 +1,6 @@
 package wsg.lol.common.enums.summoner;
 
-import wsg.lol.dao.common.serialize.JSONSerializable;
+import wsg.lol.common.pojo.serialize.JSONSerializable;
 
 /**
  * Enum for tiers.

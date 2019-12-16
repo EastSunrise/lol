@@ -1,6 +1,6 @@
 package wsg.lol.common.enums.system;
 
-import wsg.lol.dao.common.serialize.EqualsToSerializable;
+import wsg.lol.common.pojo.serialize.EqualsToSerializable;
 
 import java.util.Locale;
 

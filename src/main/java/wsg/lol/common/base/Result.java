@@ -2,12 +2,14 @@ package wsg.lol.common.base;
 
 import org.slf4j.Logger;
 
+import java.io.Serializable;
+
 /**
  * Common result of service.
  *
  * @author Kingen
  */
-public class Result {
+public class Result implements Serializable {
 
     protected boolean success = true;
 

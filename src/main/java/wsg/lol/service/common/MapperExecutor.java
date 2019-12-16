@@ -4,14 +4,14 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tk.mybatis.mapper.additional.insert.InsertListMapper;
-import tk.mybatis.mapper.common.base.update.UpdateByPrimaryKeySelectiveMapper;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.BaseDo;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.dao.mybatis.common.ClearMapper;
-import wsg.lol.dao.mybatis.common.StaticMapper;
+import wsg.lol.dao.mybatis.common.mapper.ClearMapper;
+import wsg.lol.dao.mybatis.common.mapper.ReplaceListMapper;
+import wsg.lol.dao.mybatis.common.mapper.StaticMapper;
 
 import java.util.List;
 
@@ -60,14 +60,17 @@ public class MapperExecutor {
         return ResultUtils.success();
     }
 
-    public static <T extends BaseDo> Result updateList(UpdateByPrimaryKeySelectiveMapper<T> mapper, List<T> data) {
-        for (T t : data) {
-            int count = mapper.updateByPrimaryKeySelective(t);
-            if (count != 1) {
-                logger.error("Failed to update {}", t);
-                throw new AppException(ErrorCodeConst.DATABASE_ERROR);
-            }
+    public static <T extends BaseDo> Result replaceList(ReplaceListMapper<T> mapper, List<T> data) {
+        if (CollectionUtils.isEmpty(data)) {
+            logger.info("Collection is empty. Nothing replaced.");
+            return ResultUtils.success();
         }
+        int count = mapper.replaceList(data);
+        if (count != data.size()) {
+            logger.error("Failed to replace the data");
+            throw new AppException(ErrorCodeConst.DATABASE_ERROR);
+        }
+        logger.info("{} replaced.", count);
         return ResultUtils.success();
     }
 }

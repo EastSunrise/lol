@@ -78,7 +78,7 @@ public class ApiClient implements InitializingBean {
     /**
      * Poll the username of a valid api.
      */
-    public String peekApi() {
+    public String peekUsername() {
         RGApi api = apis.peek();
         if (api == null) {
             logger.error("There aren't valid tokens from the queue.");

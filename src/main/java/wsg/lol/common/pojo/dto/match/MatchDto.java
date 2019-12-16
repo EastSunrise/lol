@@ -10,7 +10,7 @@ import wsg.lol.common.enums.match.MatchQueueEnum;
 import wsg.lol.common.enums.share.MapEnum;
 import wsg.lol.common.enums.share.SeasonEnum;
 import wsg.lol.common.enums.system.RegionEnum;
-import wsg.lol.dao.common.serialize.SecondDurationDeserializer;
+import wsg.lol.common.pojo.serialize.SecondDurationDeserializer;
 
 import java.time.Duration;
 import java.util.Date;

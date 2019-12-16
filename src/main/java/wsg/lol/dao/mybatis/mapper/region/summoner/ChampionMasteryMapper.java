@@ -2,8 +2,8 @@ package wsg.lol.dao.mybatis.mapper.region.summoner;
 
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.additional.insert.InsertListMapper;
-import tk.mybatis.mapper.common.base.update.UpdateByPrimaryKeySelectiveMapper;
 import wsg.lol.common.pojo.domain.summoner.ChampionMasteryDo;
+import wsg.lol.dao.mybatis.common.mapper.ReplaceListMapper;
 
 /**
  * Mapper for champion masteries.
@@ -11,5 +11,5 @@ import wsg.lol.common.pojo.domain.summoner.ChampionMasteryDo;
  * @author Kingen
  */
 @Repository
-public interface ChampionMasteryMapper extends InsertListMapper<ChampionMasteryDo>, UpdateByPrimaryKeySelectiveMapper<ChampionMasteryDo> {
+public interface ChampionMasteryMapper extends InsertListMapper<ChampionMasteryDo>, ReplaceListMapper<ChampionMasteryDo> {
 }

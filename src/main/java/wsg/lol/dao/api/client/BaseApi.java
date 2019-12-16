@@ -1,6 +1,5 @@
 package wsg.lol.dao.api.client;
 
-import com.alibaba.fastjson.JSON;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -12,10 +11,11 @@ import org.springframework.stereotype.Component;
 import wsg.lol.common.base.ApiHTTPException;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.QueryDto;
+import wsg.lol.common.pojo.serialize.RecordExtraProcessor;
 import wsg.lol.common.util.HttpHelper;
+import wsg.lol.config.CustomParser;
 import wsg.lol.config.DragonConfig;
 import wsg.lol.config.GlobalConfig;
-import wsg.lol.dao.common.serialize.RecordExtraProcessor;
 
 import javax.validation.constraints.NotNull;
 import javax.xml.ws.http.HTTPException;
@@ -57,8 +57,7 @@ public class BaseApi {
      * @see <a href='{@link #doHttpGet}'></a>
      */
     protected <T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams, Class<T> clazz) throws AppException, HTTPException {
-        String jsonStr = getJSONString(apiRef, pathParams, queryParams);
-        return JSON.parseObject(jsonStr, clazz, new RecordExtraProcessor(BaseApi.class));
+        return CustomParser.parseObject(getJSONString(apiRef, pathParams, queryParams), clazz, new RecordExtraProcessor(BaseApi.class));
     }
 
     protected <Q extends QueryDto, T extends Serializable> T getObject(String apiRef, Map<String, Object> pathParams, Q queryDto, Class<T> clazz) {
@@ -83,8 +82,7 @@ public class BaseApi {
      * @see <a href='{@link #doHttpGet}'></a>
      */
     protected <T extends Serializable> List<T> getArray(String apiRef, Map<String, Object> pathParams, Map<String, Object> queryParams, Class<T> clazz) {
-        String jsonStr = getJSONString(apiRef, pathParams, queryParams);
-        return JSON.parseArray(jsonStr, clazz);
+        return CustomParser.parseArray(getJSONString(apiRef, pathParams, queryParams), clazz);
     }
 
     protected <T extends Serializable> List<T> getArray(String apiRef, Map<String, Object> pathParams, Class<T> clazz) {
@@ -113,15 +111,15 @@ public class BaseApi {
             logger.info("Can't read from {}.", filepath);
         }
 
-        String jsonStr = doHttpGet(HTTPS + urlStr);
+        String text = doHttpGet(HTTPS + urlStr);
         try {
             logger.info("Write to {}.", filepath);
-            FileUtils.writeStringToFile(new File(filepath), jsonStr, StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(filepath), text, StandardCharsets.UTF_8);
         } catch (IOException e) {
             logger.error("Failed to write to {}.", filepath);
             e.printStackTrace();
         }
-        return jsonStr;
+        return text;
     }
 
     /**

@@ -3,10 +3,10 @@ package wsg.lol.service.intf;
 import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.share.ImageGroupEnum;
-import wsg.lol.common.pojo.dto.champion.ChampionRotation;
-import wsg.lol.common.pojo.dto.share.ImageDto;
+import wsg.lol.common.pojo.dto.item.ImageDto;
+import wsg.lol.common.pojo.dto.share.ChampionRotation;
+import wsg.lol.common.pojo.dto.share.FeaturedGames;
 import wsg.lol.common.pojo.dto.share.ShardStatus;
-import wsg.lol.common.pojo.dto.spectator.FeaturedGames;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public interface SharedService {
     /**
      * Get the featured games, from the cache first.
      */
-    FeaturedGames getFeaturedGames();
+    GenericResult<FeaturedGames> getFeaturedGames();
 
     /**
      * Evict the cache.

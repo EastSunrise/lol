@@ -1,9 +1,9 @@
 package wsg.lol.dao.dragon.impl;
 
-import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.util.HttpHelper;
+import wsg.lol.config.CustomParser;
 import wsg.lol.config.DragonConfig;
 import wsg.lol.dao.dragon.intf.GeneralDao;
 
@@ -19,7 +19,7 @@ public class GeneralDaoImpl implements GeneralDao {
 
     @Override
     public List<String> getVersions() {
-        return JSON.parseArray(HttpHelper.getString(dragonConfig.getUrl().getVersion()), String.class);
+        return CustomParser.parseArrayDefault(HttpHelper.getString(dragonConfig.getUrl().getVersion()), String.class);
     }
 
     @Override

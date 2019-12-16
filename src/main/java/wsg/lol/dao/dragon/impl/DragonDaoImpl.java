@@ -1,8 +1,6 @@
 package wsg.lol.dao.dragon.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.alibaba.fastjson.parser.ParserConfig;
 import lombok.Data;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,11 +12,12 @@ import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.pojo.dto.champion.ChampionExtDto;
 import wsg.lol.common.pojo.dto.champion.SpellDto;
-import wsg.lol.common.pojo.dto.share.ImageDto;
-import wsg.lol.common.pojo.dto.share.ItemExtDto;
-import wsg.lol.common.pojo.dto.share.RuneExtDto;
+import wsg.lol.common.pojo.dto.item.ImageDto;
+import wsg.lol.common.pojo.dto.item.ItemExtDto;
+import wsg.lol.common.pojo.dto.item.RuneExtDto;
+import wsg.lol.common.pojo.serialize.RecordExtraProcessor;
+import wsg.lol.config.CustomParser;
 import wsg.lol.config.DragonConfig;
-import wsg.lol.dao.common.serialize.RecordExtraProcessor;
 import wsg.lol.dao.dragon.intf.DragonDao;
 
 import java.io.File;
@@ -73,7 +72,7 @@ public class DragonDaoImpl implements DragonDao {
 
     @Override
     public List<RuneExtDto> readRunes(String version) {
-        return JSON.parseArray(getJsonStr(version, JsonTypeEnum.Rune), RuneExtDto.class);
+        return CustomParser.parseArray(getJSONString(version, JsonTypeEnum.Rune), RuneExtDto.class);
     }
 
     @Override
@@ -116,7 +115,7 @@ public class DragonDaoImpl implements DragonDao {
 
     @SuppressWarnings("unchecked")
     private <T> Map<String, T> getMap(String version, JsonTypeEnum key, TypeReference<FileDto<T>> typeReference) {
-        return ((FileDto<T>) JSON.parseObject(getJsonStr(version, key), typeReference.getType(), ParserConfig.getGlobalInstance(), new RecordExtraProcessor(DragonDao.class), JSON.DEFAULT_PARSER_FEATURE)).getData();
+        return ((FileDto<T>) CustomParser.parseObject(getJSONString(version, key), typeReference.getType(), new RecordExtraProcessor(DragonDao.class))).getData();
     }
 
     @Autowired
@@ -127,7 +126,7 @@ public class DragonDaoImpl implements DragonDao {
     /**
      * Get the json string from the file.
      */
-    private String getJsonStr(String version, JsonTypeEnum key) {
+    private String getJSONString(String version, JsonTypeEnum key) {
         String path = StringUtils.joinWith(File.separator, getCdnDir(version), version, "data", config.getLanguage(), key.getFilename());
         try {
             logger.info("Reading file " + path);

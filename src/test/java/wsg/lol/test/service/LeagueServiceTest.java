@@ -1,16 +1,22 @@
 package wsg.lol.test.service;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import wsg.lol.service.intf.LeagueService;
 import wsg.lol.test.base.BaseTest;
 
 /**
- * todo
+ * Test for league service.
  *
  * @author Kingen
  */
 public class LeagueServiceTest extends BaseTest {
+
+    @Autowired
+    private LeagueService leagueService;
 
     @Before
     public void setUp() {
@@ -22,9 +28,6 @@ public class LeagueServiceTest extends BaseTest {
 
     @Test
     public void initializeByLeagues() {
-    }
-
-    @Test
-    public void updateLeagueEntry() {
+        Assert.assertTrue(leagueService.initializeByLeagues().isSuccess());
     }
 }

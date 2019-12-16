@@ -1,6 +1,5 @@
 package wsg.lol.scheduler;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +53,7 @@ public class SharedScheduler {
      * Update the featured games.
      * Request 1.
      */
-    @Scheduled(fixedDelay = DateUtils.MILLIS_PER_MINUTE)
+    @Scheduled(cron = "${cron.share.featured}")
     public void updateFeaturedGames() {
         logger.info("Scheduling to update the featured games.");
         sharedService.updateFeaturedGames();

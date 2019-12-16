@@ -2,7 +2,7 @@ package wsg.lol.dao.api.impl;
 
 import org.springframework.stereotype.Component;
 import wsg.lol.common.annotation.Performance;
-import wsg.lol.common.pojo.dto.champion.ChampionRotation;
+import wsg.lol.common.pojo.dto.share.ChampionRotation;
 import wsg.lol.dao.api.client.BaseApi;
 
 /**

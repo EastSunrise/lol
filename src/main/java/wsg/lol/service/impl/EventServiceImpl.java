@@ -19,7 +19,7 @@ import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.pojo.domain.system.EventDo;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.dao.mybatis.common.EventMapper;
+import wsg.lol.dao.mybatis.common.mapper.EventMapper;
 import wsg.lol.service.event.EventHandler;
 import wsg.lol.service.intf.EventService;
 
@@ -80,11 +80,9 @@ public class EventServiceImpl implements EventService {
     @Override
     @Performance
     public GenericResult<Integer> insertEvents(EventTypeEnum eventType, Map<String, String> events) {
-        GenericResult<Integer> result = new GenericResult<>();
         if (MapUtils.isEmpty(events)) {
             logger.info("Events are empty.");
-            result.setObject(0);
-            return result;
+            return GenericResult.create(0);
         }
 
         List<EventDo> values = new ArrayList<>();
@@ -100,8 +98,7 @@ public class EventServiceImpl implements EventService {
         EventMapper<? extends EventDo> mapper = applicationContext.getBean(eventType.getMapperClass());
         int count = mapper.insertIgnoreList(values, EventStatusEnum.Unfinished);
         logger.info("{} events inserted.", count);
-        result.setObject(count);
-        return result;
+        return GenericResult.create(count);
     }
 
     @Override

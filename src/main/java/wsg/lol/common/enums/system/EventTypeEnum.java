@@ -3,7 +3,7 @@ package wsg.lol.common.enums.system;
 import wsg.lol.common.pojo.domain.system.EventDo;
 import wsg.lol.common.pojo.domain.system.MatchEventDo;
 import wsg.lol.common.pojo.domain.system.SummonerEventDo;
-import wsg.lol.dao.mybatis.common.EventMapper;
+import wsg.lol.dao.mybatis.common.mapper.EventMapper;
 import wsg.lol.dao.mybatis.mapper.region.event.MatchEventMapper;
 import wsg.lol.dao.mybatis.mapper.region.event.SummonerEventMapper;
 import wsg.lol.service.event.EventHandler;

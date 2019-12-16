@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
@@ -13,15 +12,11 @@ import wsg.lol.common.enums.share.RankQueueEnum;
 import wsg.lol.common.enums.summoner.DivisionEnum;
 import wsg.lol.common.enums.summoner.TierEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
-import wsg.lol.common.pojo.domain.summoner.LeagueEntryDo;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.task.AbstractBatchTask;
 import wsg.lol.common.task.MapTaskStrategy;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.LeagueV4;
-import wsg.lol.dao.common.transfer.ObjectTransfer;
-import wsg.lol.dao.mybatis.mapper.region.summoner.LeagueEntryMapper;
-import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.LeagueService;
 
@@ -39,8 +34,6 @@ public class LeagueServiceImpl implements LeagueService {
     private static final Logger logger = LoggerFactory.getLogger(LeagueService.class);
 
     private LeagueV4 leagueV4;
-
-    private LeagueEntryMapper leagueEntryMapper;
 
     private EventService eventService;
 
@@ -90,9 +83,7 @@ public class LeagueServiceImpl implements LeagueService {
                 for (GenericResult<Integer> result : results) {
                     sum += result.getObject();
                 }
-                GenericResult<Integer> result = new GenericResult<>();
-                result.setObject(sum);
-                return result;
+                return GenericResult.create(sum);
             }
         });
 
@@ -100,24 +91,9 @@ public class LeagueServiceImpl implements LeagueService {
         return task.join().getObject();
     }
 
-    @Override
-    @Transactional
-    public Result updateLeagueEntry(String summonerId) {
-        logger.info("Updating league entries of {}...", summonerId);
-        List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
-        // todo insert if not exist
-        ResultUtils.assertSuccess(MapperExecutor.updateList(leagueEntryMapper, ObjectTransfer.transferDtoList(entries, LeagueEntryDo.class)));
-        return ResultUtils.success();
-    }
-
     @Autowired
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
-    }
-
-    @Autowired
-    public void setLeagueEntryMapper(LeagueEntryMapper leagueEntryMapper) {
-        this.leagueEntryMapper = leagueEntryMapper;
     }
 
     @Autowired

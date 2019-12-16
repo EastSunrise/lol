@@ -19,8 +19,7 @@ public class MatchEventHandler implements EventHandler {
 
     @Override
     public Result handle(EventDo event) {
-        long gameId = Long.parseLong(event.getContext());
-        return matchService.addMatch(gameId);
+        return matchService.addMatch(Long.parseLong(event.getContext()));
     }
 
     @Autowired

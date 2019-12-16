@@ -1,7 +1,7 @@
 package wsg.lol.common.enums.share;
 
-import wsg.lol.dao.common.serialize.EqualsToSerializable;
-import wsg.lol.dao.common.serialize.JSONSerializable;
+import wsg.lol.common.pojo.serialize.EqualsToSerializable;
+import wsg.lol.common.pojo.serialize.JSONSerializable;
 
 /**
  * Enums for maps.

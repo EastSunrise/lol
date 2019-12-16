@@ -1,6 +1,6 @@
 package wsg.lol.dao.api.client;
 
-import wsg.lol.dao.common.serialize.JSONSerializable;
+import wsg.lol.common.pojo.serialize.JSONSerializable;
 
 /**
  * Table of response codes of the api.

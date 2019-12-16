@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
+import wsg.lol.config.CustomParser;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -49,6 +50,6 @@ public class JSONTypeHandler<T> extends BaseTypeHandler<T> {
     }
 
     private T getObject(String string) {
-        return JSON.parseObject(string, clazz);
+        return CustomParser.parseObjectDefault(string, clazz);
     }
 }

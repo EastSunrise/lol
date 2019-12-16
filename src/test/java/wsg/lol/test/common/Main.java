@@ -1,7 +1,13 @@
 package wsg.lol.test.common;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.apache.commons.io.FileUtils;
+import wsg.lol.common.pojo.dto.share.FeaturedGames;
+import wsg.lol.common.pojo.serialize.FastJsonRedisSerializer;
+import wsg.lol.config.CustomParser;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Main.
@@ -10,13 +16,19 @@ import java.util.regex.Pattern;
  */
 public class Main {
 
-    public static void main(String[] args) {
-        String log = "2019-12-14 14:36:44 Delay-Scheduler-5 ERROR: Failed to handle Summoner event of 125176TnT.";
-        String regex = "^([\\d-]{10})\\s([\\d:]{8})\\s([\\S]*)\\s([\\S]*):\\s\\S*$";
-        String re = "^\\sERROR:\\s$";
-        Pattern compile = Pattern.compile(re);
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(log);
-        System.out.println(matcher.find());
+    private static String path = "D:\\lol\\api\\jp1.api.riotgames.com\\lol\\spectator\\v4\\featured-games.json";
+
+    private static FastJsonRedisSerializer<Object> serializer = new FastJsonRedisSerializer<>(Object.class);
+
+    static {
+        new CustomParser();
+    }
+
+    public static void main(String[] args) throws IOException {
+        String text = FileUtils.readFileToString(new File(path), StandardCharsets.UTF_8);
+        FeaturedGames featuredGames = CustomParser.parseObject(text, FeaturedGames.class);
+        byte[] bytes = serializer.serialize(featuredGames);
+        Object object = serializer.deserialize(bytes);
+        System.out.println(object);
     }
 }

@@ -9,6 +9,7 @@ import wsg.lol.common.enums.share.MessageSeverityEnum;
 import wsg.lol.common.enums.share.ServiceEnum;
 import wsg.lol.common.enums.share.ServiceStatusEnum;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -30,7 +31,7 @@ public class ShardStatus extends BaseDto {
     private List<Locale> locales;
 
     @Data
-    private static class Service {
+    private static class Service implements Serializable {
 
         private ServiceEnum name;
 
@@ -41,7 +42,7 @@ public class ShardStatus extends BaseDto {
         private String slug;
 
         @Data
-        private static class Incident {
+        private static class Incident implements Serializable {
 
             private Boolean active;
             private Long id;
@@ -51,7 +52,7 @@ public class ShardStatus extends BaseDto {
             private Date createdAt;
 
             @Data
-            private static class Message {
+            private static class Message implements Serializable {
 
                 private String id;
                 private String author;
@@ -69,7 +70,7 @@ public class ShardStatus extends BaseDto {
                 private Date updatedAt;
 
                 @Data
-                private static class Translation {
+                private static class Translation implements Serializable {
 
                     private Locale locale;
                     private String content;

@@ -38,16 +38,13 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public GenericResult<Boolean> checkCdn(String version) {
-        GenericResult<Boolean> result = new GenericResult<>();
         String cdnDir = dragonDao.getCdnDir(version);
         boolean exists = new File(cdnDir).exists();
         if (!exists) {
             logger.info("Can't find cdn in {}. Please update the data dragon manually.", cdnDir);
-            result.setObject(false);
-            return result;
+            return GenericResult.create(false);
         }
-        result.setObject(true);
-        return result;
+        return GenericResult.create(true);
     }
 
     @Override
@@ -69,11 +66,9 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public GenericResult<Boolean> initialized() {
+    public GenericResult<Boolean> isInitialized() {
         String value = configMapper.getConfigValue(ConfigConst.IS_DATABASE_INITIALIZED, globalConfig.getRegion());
-        GenericResult<Boolean> result = new GenericResult<>();
-        result.setObject(Boolean.parseBoolean(value));
-        return result;
+        return GenericResult.create(Boolean.parseBoolean(value));
     }
 
     @Override

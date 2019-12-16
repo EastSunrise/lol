@@ -51,17 +51,17 @@
     <logger name="wsg.lol.controller" level="info" addtivity="false">
         <appender-ref ref="controller_error"/>
         <appender-ref ref="controller"/>
-        <appender-ref ref="stdout"/>
+<!--        <appender-ref ref="stdout"/>-->
     </logger>
     <logger name="wsg.lol.runner" level="info" addtivity="false">
         <appender-ref ref="controller"/>
         <appender-ref ref="controller_error"/>
-        <appender-ref ref="stdout"/>
+        <!--        <appender-ref ref="stdout"/>-->
     </logger>
     <logger name="wsg.lol.scheduler" level="info" addtivity="false">
         <appender-ref ref="controller"/>
         <appender-ref ref="controller_error"/>
-        <appender-ref ref="stdout"/>
+        <!--        <appender-ref ref="stdout"/>-->
     </logger>
 
     <!--service-->
@@ -100,7 +100,7 @@
     <logger name="wsg.lol.service" level="info" addtivity="false">
         <appender-ref ref="service"/>
         <appender-ref ref="service_error"/>
-        <appender-ref ref="stdout"/>
+        <!--        <appender-ref ref="stdout"/>-->
     </logger>
 
     <!--api-->
@@ -139,7 +139,7 @@
     <logger name="wsg.lol.dao.api" level="info" addtivity="false">
         <appender-ref ref="api"/>
         <appender-ref ref="api_error"/>
-        <appender-ref ref="stdout"/>
+        <!--        <appender-ref ref="stdout"/>-->
     </logger>
 
     <!--dragon-->
@@ -178,7 +178,7 @@
     <logger name="wsg.lol.dao.dragon" level="info" addtivity="false">
         <appender-ref ref="dragon"/>
         <appender-ref ref="dragon_error"/>
-        <appender-ref ref="stdout"/>
+        <!--        <appender-ref ref="stdout"/>-->
     </logger>
 
     <!--mybatis-->
@@ -234,7 +234,7 @@
         <appender-ref ref="mybatis_sql"/>
         <appender-ref ref="mybatis"/>
         <appender-ref ref="mybatis_error"/>
-        <appender-ref ref="stdout"/>
+        <!--        <appender-ref ref="stdout"/>-->
     </logger>
 
     <!--root-->

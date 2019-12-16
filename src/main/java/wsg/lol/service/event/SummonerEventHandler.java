@@ -19,8 +19,7 @@ public class SummonerEventHandler implements EventHandler {
 
     @Override
     public Result handle(EventDo event) {
-        String summonerName = event.getContext();
-        return summonerService.addSummoner(summonerName);
+        return summonerService.addSummoner(event.getContext());
     }
 
     @Autowired

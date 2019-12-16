@@ -29,7 +29,7 @@ public interface SystemService {
     /**
      * Check if the database has been initialize.
      */
-    GenericResult<Boolean> initialized();
+    GenericResult<Boolean> isInitialized();
 
     /**
      * Update the initialization config.

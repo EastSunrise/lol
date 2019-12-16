@@ -1,5 +1,5 @@
 global:
-  region: KR
+  region: JP
   timeout: 30000
 # dragon config
 dragon:

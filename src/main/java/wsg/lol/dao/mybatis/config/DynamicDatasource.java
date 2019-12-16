@@ -54,7 +54,7 @@ public class DynamicDatasource extends DataSource {
             try {
                 field.set(property, value);
             } catch (Exception e) {
-                logger.info("Set value fail. attr name:" + field.getName());
+                logger.info("Failed to set value of attribute {}.", field.getName());
             }
         }
         datasource.setPoolProperties(property);

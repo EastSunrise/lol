@@ -33,9 +33,9 @@ public class BuildRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         logger.info("Initializing the database...");
-        GenericResult<Boolean> result = systemService.initialized();
+        GenericResult<Boolean> result = systemService.isInitialized();
         if (result.getObject()) {
-            logger.info("The database has been initialized.");
+            logger.info("The database has been isInitialized.");
             return;
         }
 

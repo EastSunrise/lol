@@ -1,7 +1,7 @@
 package wsg.lol.common.enums.summoner;
 
 import org.apache.commons.lang3.ArrayUtils;
-import wsg.lol.dao.common.serialize.JSONSerializable;
+import wsg.lol.common.pojo.serialize.JSONSerializable;
 
 /**
  * Enum for divisions.

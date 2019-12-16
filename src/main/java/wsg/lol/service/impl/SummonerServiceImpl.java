@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wsg.lol.common.annotation.AssignApi;
 import wsg.lol.common.base.AppException;
+import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.ListResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ConfigConst;
@@ -18,19 +19,17 @@ import wsg.lol.common.pojo.domain.summoner.SummonerDo;
 import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
+import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.config.ApiIdentifier;
-import wsg.lol.dao.api.client.ApiClient;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
 import wsg.lol.dao.api.impl.SummonerV4;
-import wsg.lol.dao.common.transfer.ObjectTransfer;
 import wsg.lol.dao.mybatis.mapper.region.summoner.ChampionMasteryMapper;
 import wsg.lol.dao.mybatis.mapper.region.summoner.LeagueEntryMapper;
 import wsg.lol.dao.mybatis.mapper.region.summoner.SummonerMapper;
 import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.common.PriorityUtils;
-import wsg.lol.service.intf.LeagueService;
 import wsg.lol.service.intf.SummonerService;
 
 import java.util.Date;
@@ -44,8 +43,6 @@ public class SummonerServiceImpl implements SummonerService {
 
     private static final Logger logger = LoggerFactory.getLogger(SummonerService.class);
 
-    private ApiClient apiClient;
-
     private SummonerV4 summonerV4;
 
     private LeagueV4 leagueV4;
@@ -58,16 +55,17 @@ public class SummonerServiceImpl implements SummonerService {
 
     private LeagueEntryMapper leagueEntryMapper;
 
-    private LeagueService leagueService;
-
     @Override
     @Transactional
+    @AssignApi
     public Result addSummoner(String summonerName) {
         logger.info("Adding the summoner {}...", summonerName);
 
-        // assign the api.
-        String username = apiClient.peekApi();
-        ApiIdentifier.setApi(username);
+        GenericResult<SummonerDto> summonersByName = getSummonersByName(summonerName);
+        if (summonersByName.isSuccess() && summonersByName.getObject() != null) {
+            logger.info("Summoner {} exists already.", summonerName);
+            return ResultUtils.success();
+        }
 
         SummonerDto summonerDto = summonerV4.getSummoner(summonerName, SummonerV4.CondKeyEnum.NAME);
         String summonerId = summonerDto.getId();
@@ -77,7 +75,7 @@ public class SummonerServiceImpl implements SummonerService {
         summonerDo.setScore(score);
         summonerDo.setLastUpdate(new Date());
         summonerDo.setLastMatch(ConfigConst.MATCH_BEGIN_DATE);
-        summonerDo.setEncryptUsername(username);
+        summonerDo.setEncryptUsername(ApiIdentifier.getApi());
         int count = summonerMapper.insert(summonerDo);
         if (count != 1) {
             logger.error("Failed to inert the summoner {}.", summonerName);
@@ -94,7 +92,6 @@ public class SummonerServiceImpl implements SummonerService {
         result = MapperExecutor.insertList(leagueEntryMapper, ObjectTransfer.transferDtoList(entries, LeagueEntryDo.class));
         ResultUtils.assertSuccess(result);
 
-        ApiIdentifier.setApi(null);
         logger.info("Added the summoner {}.", summonerName);
         return ResultUtils.success();
     }
@@ -107,10 +104,11 @@ public class SummonerServiceImpl implements SummonerService {
 
         logger.info("Updating champion masteries of {}...", summonerId);
         List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
-        // todo insert if not exist
-        ResultUtils.assertSuccess(MapperExecutor.updateList(championMasteryMapper, ObjectTransfer.transferDtoList(championMasteries, ChampionMasteryDo.class)));
+        ResultUtils.assertSuccess(MapperExecutor.replaceList(championMasteryMapper, ObjectTransfer.transferDtoList(championMasteries, ChampionMasteryDo.class)));
 
-        ResultUtils.assertSuccess(leagueService.updateLeagueEntry(summonerId));
+        logger.info("Updating league entries of {}...", summonerId);
+        List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
+        ResultUtils.assertSuccess(MapperExecutor.replaceList(leagueEntryMapper, ObjectTransfer.transferDtoList(entries, LeagueEntryDo.class)));
 
         SummonerDto summoner = summonerV4.getSummonerById(summonerId);
         SummonerDo summonerDo = ObjectTransfer.transferDto(summoner, SummonerDo.class);
@@ -153,36 +151,23 @@ public class SummonerServiceImpl implements SummonerService {
     public ListResult<SummonerDto> getSummonersForUpdate(RowBounds rowBounds) {
         List<SummonerDo> summoners = summonerMapper.selectByExampleAndRowBounds(PriorityUtils.updateSummoners(), rowBounds);
         List<SummonerDto> summonerDtoList = ObjectTransfer.transferDoList(summoners, SummonerDto.class);
-        ListResult<SummonerDto> result = new ListResult<>();
-        result.setList(summonerDtoList);
-        return result;
+        return ListResult.create(summonerDtoList);
     }
 
     @Override
     public ListResult<SummonerDto> getSummonersForMatch(RowBounds rowBounds) {
         List<SummonerDo> summoners = summonerMapper.selectByExampleAndRowBounds(PriorityUtils.updateMatches(), rowBounds);
         List<SummonerDto> summonerDtoList = ObjectTransfer.transferDoList(summoners, SummonerDto.class);
-        ListResult<SummonerDto> result = new ListResult<>();
-        result.setList(summonerDtoList);
-        return result;
+        return ListResult.create(summonerDtoList);
     }
 
     @Override
-    public SummonerDto getSummonersByName(String summonerName) {
+    public GenericResult<SummonerDto> getSummonersByName(String summonerName) {
         SummonerDo cond = new SummonerDo();
         cond.setName(summonerName);
         SummonerDo summonerDo = summonerMapper.selectOne(cond);
-        return ObjectTransfer.transferDo(summonerDo, SummonerDto.class);
-    }
-
-    @Autowired
-    public void setApiClient(ApiClient apiClient) {
-        this.apiClient = apiClient;
-    }
-
-    @Autowired
-    public void setLeagueService(LeagueService leagueService) {
-        this.leagueService = leagueService;
+        SummonerDto summonerDto = ObjectTransfer.transferDo(summonerDo, SummonerDto.class);
+        return GenericResult.create(summonerDto);
     }
 
     @Autowired

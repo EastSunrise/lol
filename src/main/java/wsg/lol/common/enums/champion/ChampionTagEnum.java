@@ -1,6 +1,6 @@
 package wsg.lol.common.enums.champion;
 
-import wsg.lol.dao.common.serialize.JSONSerializable;
+import wsg.lol.common.pojo.serialize.JSONSerializable;
 
 /**
  * Enums for tags of the champion.

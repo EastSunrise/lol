@@ -11,16 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.share.ImageGroupEnum;
-import wsg.lol.common.pojo.domain.share.ImageDo;
-import wsg.lol.common.pojo.dto.champion.ChampionRotation;
-import wsg.lol.common.pojo.dto.share.ImageDto;
+import wsg.lol.common.pojo.domain.item.ImageDo;
+import wsg.lol.common.pojo.dto.item.ImageDto;
+import wsg.lol.common.pojo.dto.share.ChampionRotation;
+import wsg.lol.common.pojo.dto.share.FeaturedGames;
 import wsg.lol.common.pojo.dto.share.ShardStatus;
-import wsg.lol.common.pojo.dto.spectator.FeaturedGames;
+import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionV3;
 import wsg.lol.dao.api.impl.LOLStatusV3;
 import wsg.lol.dao.api.impl.SpectatorV4;
-import wsg.lol.dao.common.transfer.ObjectTransfer;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.mybatis.mapper.lol.system.ImageMapper;
 import wsg.lol.service.common.MapperExecutor;
@@ -54,8 +54,8 @@ public class SharedServiceImpl implements SharedService {
     }
 
     @Cacheable(cacheNames = "shared", key = "'featuredGames'")
-    public FeaturedGames getFeaturedGames() {
-        return spectatorV4.getFeaturedGames();
+    public GenericResult<FeaturedGames> getFeaturedGames() {
+        return GenericResult.create(spectatorV4.getFeaturedGames());
     }
 
     @CacheEvict(cacheNames = "shared", key = "'shardStatus'")
@@ -65,9 +65,7 @@ public class SharedServiceImpl implements SharedService {
 
     @Cacheable(cacheNames = "shared", key = "'shardStatus'")
     public GenericResult<ShardStatus> getShardStatus() {
-        GenericResult<ShardStatus> result = new GenericResult<>();
-        result.setObject(lolStatusV3.getSharedData());
-        return result;
+        return GenericResult.create(lolStatusV3.getSharedData());
     }
 
     @CacheEvict(cacheNames = "shared", key = "'championRotation'")
@@ -77,9 +75,7 @@ public class SharedServiceImpl implements SharedService {
 
     @Cacheable(cacheNames = "shared", key = "'championRotation'")
     public GenericResult<ChampionRotation> getChampionRotation() {
-        GenericResult<ChampionRotation> result = new GenericResult<>();
-        result.setObject(championV3.getChampionRotation());
-        return result;
+        return GenericResult.create(championV3.getChampionRotation());
     }
 
     @Override

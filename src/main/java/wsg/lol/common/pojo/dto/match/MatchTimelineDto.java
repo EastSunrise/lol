@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import wsg.lol.common.base.BaseDto;
-import wsg.lol.dao.common.serialize.DurationDeserializer;
+import wsg.lol.common.pojo.serialize.DurationDeserializer;
 
 import java.time.Duration;
 import java.util.List;

@@ -1,6 +1,6 @@
 package wsg.lol.common.enums.match;
 
-import wsg.lol.dao.common.serialize.JSONSerializable;
+import wsg.lol.common.pojo.serialize.JSONSerializable;
 
 /**
  * Enums for the mode of the game.
