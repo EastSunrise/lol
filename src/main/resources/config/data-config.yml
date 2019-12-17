@@ -12,6 +12,10 @@ dragon:
 # api config
 api:
   rate: 0.83333
+  single:
+    username: knightmare2094
+    region: NA
+    key: RGAPI-ad040b05-d73b-4bde-8408-934b5f3b747c
   tokens:
     - username: Kingen4391
       region: BR
@@ -46,6 +50,3 @@ api:
     - username: Kingen4401
       region: TR
       key: RGAPI-4c3c019f-e84f-4bd1-9d81-1f766938333c
-    - username: knightmare2094
-      region: NA
-      key: RGAPI-ad040b05-d73b-4bde-8408-934b5f3b747c

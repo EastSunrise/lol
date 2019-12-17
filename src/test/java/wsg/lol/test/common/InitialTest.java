@@ -12,18 +12,15 @@ import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.config.ApiIdentifier;
 import wsg.lol.config.DragonConfig;
-import wsg.lol.config.GlobalConfig;
 import wsg.lol.dao.api.client.ApiClient;
 import wsg.lol.dao.api.impl.LeagueV4;
+import wsg.lol.dao.mybatis.config.DatabaseIdentifier;
 import wsg.lol.test.base.BaseTest;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Test to initialize the data.
@@ -41,9 +38,6 @@ public class InitialTest extends BaseTest {
     private ApiClient apiClient;
 
     @Autowired
-    private GlobalConfig globalConfig;
-
-    @Autowired
     private DragonConfig dragonConfig;
 
     @Before
@@ -58,33 +52,44 @@ public class InitialTest extends BaseTest {
                 2, 4, 5, 10, 10, 20, 30, 30, 30, 30, 50, 40, 50, 50, 100, 40, 50, 40, 50, 40, 30, 30, 20, 20, 10, 5, 4
         });
 
+        for (RegionEnum region : RegionEnum.values()) {
+            if (RegionEnum.LOL.equals(region)) {
+                continue;
+            }
+            Integer[] integers = new Integer[27];
+            Arrays.fill(integers, 1);
+            map.put(region, integers);
+        }
     }
 
     @Test
     public void initialize() {
-        List<String> summoners = new LinkedList<>();
-        Integer[] pages = map.get(globalConfig.getRegion());
-        int index = 0;
-        for (TierEnum tier : TierEnum.RANKED_TIERS) {
-            for (DivisionEnum division : DivisionEnum.validDivisions(tier)) {
-                int max = pages[index++];
-                for (int page = 1; page < max; page++) {
-                    String username = apiClient.peekUsername();
-                    ApiIdentifier.setApi(username);
-                    List<LeagueEntryDto> leagueEntryDtoList = leagueV4.getLeagueEntriesExp(RankQueueEnum.RANKED_SOLO_5x5, tier, division, page);
-                    if (leagueEntryDtoList == null || leagueEntryDtoList.isEmpty())
-                        break;
-                    for (LeagueEntryDto leagueEntryDto : leagueEntryDtoList) {
-                        summoners.add(leagueEntryDto.getSummonerId() + "," + username + "," + leagueEntryDto.getSummonerName());
+        for (Map.Entry<RegionEnum, Integer[]> entry : map.entrySet()) {
+            DatabaseIdentifier.setPlatform(entry.getKey());
+            List<String> summoners = new LinkedList<>();
+            Integer[] pages = entry.getValue();
+            int index = 0;
+            for (TierEnum tier : TierEnum.RANKED_TIERS) {
+                for (DivisionEnum division : DivisionEnum.validDivisions(tier)) {
+                    int max = pages[index++];
+                    for (int page = 1; page <= max; page++) {
+                        String username = apiClient.getUsername();
+                        ApiIdentifier.setApi(username);
+                        List<LeagueEntryDto> leagueEntryDtoList = leagueV4.getLeagueEntriesExp(RankQueueEnum.RANKED_SOLO_5x5, tier, division, page);
+                        if (leagueEntryDtoList == null || leagueEntryDtoList.isEmpty())
+                            break;
+                        for (LeagueEntryDto leagueEntryDto : leagueEntryDtoList) {
+                            summoners.add(leagueEntryDto.getSummonerId() + "," + username + "," + leagueEntryDto.getSummonerName());
+                        }
                     }
                 }
             }
-        }
-        try {
-            FileUtils.writeLines(new File(getPath(globalConfig.getRegion())), summoners);
-            csv2Sql(globalConfig.getRegion());
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                FileUtils.writeLines(new File(getPath(entry.getKey())), summoners);
+                csv2Sql(entry.getKey());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -107,10 +112,10 @@ public class InitialTest extends BaseTest {
     }
 
     private String toPath(RegionEnum region) {
-        return StringUtils.joinWith("DB", "01_lol_1.0", "lol", "SYS_INIT" + region + ".sql");
+        return StringUtils.joinWith(File.separator, "DB", "01_lol_1.0", "lol", "SYS_INIT_" + region + ".sql");
     }
 
     private String getPath(RegionEnum region) {
-        return StringUtils.joinWith(File.separator, dragonConfig.getDirectory(), "lib", region + ".csv");
+        return StringUtils.joinWith(File.separator, dragonConfig.getDirectory(), "lib", apiClient.getPath(), region + ".csv");
     }
 }

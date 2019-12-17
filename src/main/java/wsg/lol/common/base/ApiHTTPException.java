@@ -1,7 +1,7 @@
 package wsg.lol.common.base;
 
+import wsg.lol.common.enums.system.ResponseCodeEnum;
 import wsg.lol.common.util.EnumUtils;
-import wsg.lol.dao.api.client.ResponseCodeEnum;
 
 import javax.xml.ws.http.HTTPException;
 

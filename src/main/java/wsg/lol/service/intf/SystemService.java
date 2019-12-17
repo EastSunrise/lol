@@ -25,14 +25,4 @@ public interface SystemService {
      * Update config of current version.
      */
     Result updateVersion(String version);
-
-    /**
-     * Check if the database has been initialize.
-     */
-    GenericResult<Boolean> isInitialized();
-
-    /**
-     * Update the initialization config.
-     */
-    Result initialize();
 }

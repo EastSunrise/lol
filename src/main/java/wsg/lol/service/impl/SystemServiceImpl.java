@@ -12,7 +12,6 @@ import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.common.result.system.VersionResult;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.config.GlobalConfig;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.dragon.intf.GeneralDao;
 import wsg.lol.dao.mybatis.mapper.lol.system.ConfigMapper;
@@ -33,8 +32,6 @@ public class SystemServiceImpl implements SystemService {
     private GeneralDao generalDao;
 
     private DragonDao dragonDao;
-
-    private GlobalConfig globalConfig;
 
     @Override
     public GenericResult<Boolean> checkCdn(String version) {
@@ -63,27 +60,6 @@ public class SystemServiceImpl implements SystemService {
             throw new AppException(ErrorCodeConst.DATABASE_ERROR);
         }
         return ResultUtils.success();
-    }
-
-    @Override
-    public GenericResult<Boolean> isInitialized() {
-        String value = configMapper.getConfigValue(ConfigConst.IS_DATABASE_INITIALIZED, globalConfig.getRegion());
-        return GenericResult.create(Boolean.parseBoolean(value));
-    }
-
-    @Override
-    public Result initialize() {
-        int count = configMapper.updateConfigValue(globalConfig.getRegion(), ConfigConst.IS_DATABASE_INITIALIZED, String.valueOf(true));
-        if (1 != count) {
-            logger.error("Failed to update the initialization config.");
-            throw new AppException(ErrorCodeConst.DATABASE_ERROR);
-        }
-        return ResultUtils.success();
-    }
-
-    @Autowired
-    public void setGlobalConfig(GlobalConfig globalConfig) {
-        this.globalConfig = globalConfig;
     }
 
     @Autowired

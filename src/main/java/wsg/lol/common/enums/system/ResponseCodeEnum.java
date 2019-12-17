@@ -1,4 +1,4 @@
-package wsg.lol.dao.api.client;
+package wsg.lol.common.enums.system;
 
 import wsg.lol.common.pojo.serialize.JSONSerializable;
 

@@ -3,21 +3,9 @@ package wsg.lol.dao.api.client;
 import com.google.common.base.Stopwatch;
 import com.google.common.util.concurrent.Uninterruptibles;
 import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.lang.NonNull;
-import wsg.lol.common.base.AppException;
-import wsg.lol.common.constant.ErrorCodeConst;
-import wsg.lol.config.ApiIdentifier;
-
-import java.util.List;
-import java.util.concurrent.PriorityBlockingQueue;
+import wsg.lol.config.ApiConfig;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -29,103 +17,46 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  *
  * @author Kingen
  */
-@Configuration
-@ConfigurationProperties(prefix = "api")
-public class ApiClient implements InitializingBean {
+public abstract class ApiClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApiClient.class);
-
-    @Setter
-    private double rate;
-
-    @Setter
-    private List<Token> tokens;
-
-    private PriorityBlockingQueue<RGApi> apis = new PriorityBlockingQueue<>();
 
     /**
-     * Get available and valid api token, specified by the username in the {@link ApiIdentifier} or used the earliest.
-     *
-     * @return null if there isn't a valid token.
+     * Get the token of api.
      */
-    public synchronized String getToken() {
-        String username = ApiIdentifier.getApi();
-        if (username != null) {
-            for (RGApi api : apis) {
-                if (username.equals(api.username)) {
-                    logger.info("Acquiring the token of the account {}.", username);
-                    String token = api.acquire();
-                    apis.removeIf(rgApi -> username.equals(rgApi.username));
-                    apis.offer(api);
-                    return token;
-                }
-            }
-            logger.error("There isn't valid api under the account {}.", username);
-            throw new AppException(ErrorCodeConst.HTTPS_ERROR);
-        }
-
-        RGApi api = apis.poll();
-        if (api == null) {
-            logger.error("There aren't valid apis from the queue.");
-            throw new AppException(ErrorCodeConst.HTTPS_ERROR);
-        }
-        logger.info("Acquiring the token of the account {}.", api.username);
-        String token = api.acquire();
-        apis.offer(api);
-        return token;
-    }
+    abstract String getToken();
 
     /**
-     * Poll the username of a valid api.
+     * When occurred that the token was forbidden.
      */
-    public String peekUsername() {
-        RGApi api = apis.peek();
-        if (api == null) {
-            logger.error("There aren't valid tokens from the queue.");
-            throw new AppException(ErrorCodeConst.HTTPS_ERROR);
-        }
-        return api.username;
-    }
+    abstract void occurForbidden(String token);
 
     /**
-     * Initial the apis.
+     * Get a valid username.
      */
-    @Override
-    public void afterPropertiesSet() {
-        for (Token token : tokens) {
-            if (StringUtils.isNotBlank(token.key)) {
-                this.apis.add(new RGApi(token, rate));
-            }
-        }
-    }
+    public abstract String getUsername();
 
     /**
-     * Remove the invalid api.
+     * Get the relative path of the lib.
      */
-    public void removeApi(String token) {
-        if (token == null) {
-            return;
-        }
-        apis.removeIf(rgApi -> token.equals(rgApi.token));
-    }
+    public abstract String getPath();
 
-    public static class RGApi implements Comparable<RGApi> {
+    protected static class RGApi {
         final Stopwatch stopwatch = Stopwatch.createStarted();
 
         @Getter
-        private String username;
-        private String token;
-        private boolean valid;
+        String username;
+        boolean valid;
+        long nextFreeTicket;
+        String token;
         private double maxPermits;
         private double stableIntervalMicros;
         private double storedPermits;
-        private long nextFreeTicket;
         @MonotonicNonNull
         private volatile Object mutexDoNotUseDirectly;
 
-        RGApi(Token token, double permitsPerSecond) {
-            this.username = token.username;
-            this.token = token.key;
+        protected RGApi(ApiConfig.Token token, double permitsPerSecond) {
+            this.username = token.getUsername();
+            this.token = token.getKey();
             this.valid = true;
             synchronized (mutex()) {
                 doSetRate(permitsPerSecond, stopwatch.elapsed(MICROSECONDS));
@@ -138,14 +69,13 @@ public class ApiClient implements InitializingBean {
             resync(nowMicros);
         }
 
-        private String acquire() {
+        protected String acquire() {
             long microsToWait = reserve();
             if (microsToWait > 0) {
                 Uninterruptibles.sleepUninterruptibly(microsToWait, MICROSECONDS);
             }
             if (StringUtils.isBlank(this.token) || !valid) {
-                logger.error("The token {} is invalid.", this.token);
-                throw new AppException(ErrorCodeConst.SYSTEM_ERROR);
+                return null;
             }
             return this.token;
         }
@@ -193,17 +123,5 @@ public class ApiClient implements InitializingBean {
             }
             return mutex;
         }
-
-        @Override
-        public int compareTo(@NonNull RGApi api) {
-            int compare = -Boolean.compare(this.valid, api.valid);
-            return compare == 0 ? Long.compare(this.nextFreeTicket, api.nextFreeTicket) : compare;
-        }
-    }
-
-    @Setter
-    private static class Token {
-        private String username;
-        private String key;
     }
 }

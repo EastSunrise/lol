@@ -56,12 +56,12 @@ public class AssignApiAspect {
     /**
      * Get the username by parsing spring expression language.
      *
-     * @return choose from {@link ApiClient#peekUsername()} if not specified.
+     * @return choose from {@link ApiClient#getUsername()} ()} if not specified.
      */
     private String getUsername(ProceedingJoinPoint joinPoint, AssignApi source) {
         String username = source.encryptUsername();
         if (StringUtils.isBlank(username)) {
-            return apiClient.peekUsername();
+            return apiClient.getUsername();
         }
 
         Object[] args = joinPoint.getArgs();

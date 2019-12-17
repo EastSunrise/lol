@@ -143,7 +143,11 @@ public class MatchServiceImpl implements MatchService {
             participantDo.setMatchHistoryUri(playerDto.getMatchHistoryUri());
             participantDo.setProfileIcon(playerDto.getProfileIcon());
 
-            // todo related summoner
+            participantDo.setSummonerName(playerDto.getSummonerName());
+            participantDo.setSummonerId(playerDto.getSummonerId());
+            participantDo.setAccountId(playerDto.getAccountId());
+            participantDo.setCurrentAccountId(playerDto.getCurrentAccountId());
+            participantDo.setCurrentPlatformId(playerDto.getCurrentPlatformId());
 
             participantDo.setRole(participantDto.getTimeline().getRole());
             participantDo.setLane(participantDto.getTimeline().getLane());

@@ -48,11 +48,6 @@ public class SystemServiceTest extends BaseTest {
     }
 
     @Test
-    public void initialized() {
-        Assert.assertEquals(systemService.isInitialized().getObject(), false);
-    }
-
-    @Test
     public void initialize() {
     }
 }

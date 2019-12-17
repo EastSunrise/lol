@@ -11,11 +11,13 @@ import org.springframework.stereotype.Component;
 import wsg.lol.common.base.ApiHTTPException;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.QueryDto;
+import wsg.lol.common.enums.system.ResponseCodeEnum;
 import wsg.lol.common.pojo.serialize.RecordExtraProcessor;
 import wsg.lol.common.util.HttpHelper;
 import wsg.lol.config.CustomParser;
 import wsg.lol.config.DragonConfig;
 import wsg.lol.config.GlobalConfig;
+import wsg.lol.dao.mybatis.config.DatabaseIdentifier;
 
 import javax.validation.constraints.NotNull;
 import javax.xml.ws.http.HTTPException;
@@ -100,7 +102,7 @@ public class BaseApi {
         if (StringUtils.isNotEmpty(urlParams)) {
             urlParams = "?" + urlParams;
         }
-        String urlStr = (globalConfig.getRegion().getHost() + apiRef + urlParams).replace("+", "%20");
+        String urlStr = (DatabaseIdentifier.getRegion().getHost() + apiRef + urlParams).replace("+", "%20");
 
         // todo get from the api directly
         String filepath = StringUtils.joinWith(File.separator, dragonConfig.getDirectory(), "api", urlStr.replace("?", File.separator).replace("&", File.separator) + ".json");
@@ -157,8 +159,7 @@ public class BaseApi {
 
                 String responseMessage = urlConnection.getResponseMessage();
                 if (ResponseCodeEnum.Forbidden.getCode() == responseCode) {
-                    logger.warn("The token {} had been forbidden. Try another.", token);
-                    apiClient.removeApi(token);
+                    apiClient.occurForbidden(token);
                     continue;
                 }
                 if (ResponseCodeEnum.RateLimitExceeded.getCode() == responseCode) {
