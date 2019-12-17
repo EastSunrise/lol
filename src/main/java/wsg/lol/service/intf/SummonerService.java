@@ -18,7 +18,7 @@ public interface SummonerService {
     /**
      * Add a summoner by the id, including the masteries of champions and the entry of league.
      */
-    Result addSummoner(String summonerName);
+    Result addSummoner(String summonerName, String encryptUsername);
 
     /**
      * Update the information of the specified summoner, including the masteries of champions and the entry of league.

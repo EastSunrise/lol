@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.GenericResult;
@@ -21,8 +19,8 @@ import wsg.lol.service.intf.SystemService;
  *
  * @author Kingen
  */
-@Service
-@Order(value = 1)
+//@Service
+//@Order(value = 1)
 public class VersionRunner implements ApplicationRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(VersionRunner.class);

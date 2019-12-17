@@ -12,7 +12,7 @@ import wsg.lol.common.enums.system.RegionEnum;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-class PlayerDto extends BaseDto {
+public class PlayerDto extends BaseDto {
 
     private RegionEnum platformId;
 

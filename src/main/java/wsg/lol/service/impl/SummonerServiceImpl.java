@@ -57,8 +57,8 @@ public class SummonerServiceImpl implements SummonerService {
 
     @Override
     @Transactional
-    @AssignApi
-    public Result addSummoner(String summonerName) {
+    @AssignApi(encryptUsername = "#encryptUsername")
+    public Result addSummoner(String summonerName, String encryptUsername) {
         logger.info("Adding the summoner {}...", summonerName);
 
         GenericResult<SummonerDto> summonersByName = getSummonersByName(summonerName);

@@ -2,7 +2,7 @@
 drop table if exists t_event_summoner;
 create table t_event_summoner
 (
-    context     varchar(32) not null comment '召唤师ID',
+    context     varchar(63) not null comment '召唤师ID',
     status      tinyint     not null comment '状态',
     source      varchar(64) not null comment '来源',
     create_time timestamp   not null comment '创建时间',

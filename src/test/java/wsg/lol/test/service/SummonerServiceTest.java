@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ConfigConst;
 import wsg.lol.common.util.PageUtils;
 import wsg.lol.service.intf.SummonerService;
@@ -34,8 +33,6 @@ public class SummonerServiceTest extends BaseTest {
 
     @Test
     public void addSummoner() {
-        Result result = summonerService.addSummoner(summonerName);
-        Assert.assertTrue(result.isSuccess());
     }
 
     @Test

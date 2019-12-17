@@ -126,32 +126,31 @@ public class MatchServiceImpl implements MatchService {
 
         logger.info("Adding participants of the match {}...", gameId);
         List<ParticipantDo> participants = new ArrayList<>();
-        List<ParticipantDto> participantDtoList = matchExtDto.getParticipants();
-        Map<Integer, ParticipantDto> num2Participant = new HashMap<>();
-        for (ParticipantDto participantDto : participantDtoList) {
-            num2Participant.put(participantDto.getParticipantNum(), participantDto);
-        }
-        List<ParticipantIdentityDto> participantIdentities = matchExtDto.getParticipantIdentities();
         Map<Integer, ParticipantStatsDo> num2Stats = new HashMap<>();
-        for (ParticipantIdentityDto participantIdentity : participantIdentities) {
-            ParticipantDo participantDo = ObjectTransfer.transferDto(participantIdentity.getPlayer(), ParticipantDo.class);
-            int num = participantIdentity.getParticipantNum();
-            ParticipantDto participantDto = num2Participant.get(num);
-            ParticipantTimelineDto participantTimelineDto = participantDto.getTimeline();
-            num2Stats.put(num, ObjectTransfer.transferDto(participantDto.getStats(), ParticipantStatsDo.class));
+        Map<Integer, PlayerDto> num2Player = new HashMap<>();
+        for (ParticipantIdentityDto identityDto : matchExtDto.getParticipantIdentities()) {
+            num2Player.put(identityDto.getParticipantNum(), identityDto.getPlayer());
+        }
+        for (ParticipantDto participantDto : matchExtDto.getParticipants()) {
+            ParticipantDo participantDo = ObjectTransfer.transferDto(participantDto, ParticipantDo.class);
+            int num = participantDo.getParticipantNum();
+            PlayerDto playerDto = num2Player.get(num);
 
             participantDo.setGameId(gameId);
-            participantDo.setParticipantNum(num);
             participantDo.generateId();
 
-            participantDo.setTeamId(participantDto.getTeamId());
-            participantDo.setChampionId(participantDto.getChampionId());
-            participantDo.setSpell1Id(participantDto.getSpell1Id());
-            participantDo.setSpell2Id(participantDto.getSpell2Id());
-            participantDo.setRole(participantTimelineDto.getRole());
-            participantDo.setLane(participantTimelineDto.getLane());
+            participantDo.setPlatformId(playerDto.getPlatformId());
+            participantDo.setMatchHistoryUri(playerDto.getMatchHistoryUri());
+            participantDo.setProfileIcon(playerDto.getProfileIcon());
+
+            // todo related summoner
+
+            participantDo.setRole(participantDto.getTimeline().getRole());
+            participantDo.setLane(participantDto.getTimeline().getLane());
 
             participants.add(participantDo);
+
+            num2Stats.put(num, ObjectTransfer.transferDto(participantDto.getStats(), ParticipantStatsDo.class));
         }
         ResultUtils.assertSuccess(MapperExecutor.insertList(participantMapper, participants));
 
