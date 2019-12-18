@@ -55,9 +55,4 @@ public class ResultUtils {
         return result;
     }
 
-    public static void assertSuccess(Result result) {
-        if (!result.isSuccess()) {
-            throw new AppException(result);
-        }
-    }
 }

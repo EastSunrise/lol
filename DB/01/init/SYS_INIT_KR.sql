@@ -1,5 +1,6 @@
-;
-insert into KR.t_event_summoner
+delete
+from kr.t_event_summoner;
+insert into kr.t_event_summoner
 values ('1MT_hG5Q4OTlh1Hsjy137h5yYUqnPBZy0ioXdD5tB9IYruI', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('tnDTl_qFev39Kobty720u6-Qq-eNzd8QkDE0gWM0tnHusL8', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('LZ9Syot4uYt9VlylC_bAVHt-BZ368-0sHXvnPWt80agwhaU', 0, 'knightmare2094', '2019-11-21 00:00:00', null),

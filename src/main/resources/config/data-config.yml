@@ -1,5 +1,5 @@
 global:
-  region: JP
+  region: KR
   timeout: 30000
 # dragon config
 dragon:
@@ -15,7 +15,7 @@ api:
   single:
     username: knightmare2094
     region: NA
-    key: RGAPI-ad040b05-d73b-4bde-8408-934b5f3b747c
+    key: RGAPI-1339e966-5f63-4ec8-ae44-adbcc798318b
   tokens:
     - username: Kingen4391
       region: BR

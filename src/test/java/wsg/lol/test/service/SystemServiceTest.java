@@ -46,8 +46,4 @@ public class SystemServiceTest extends BaseTest {
     public void updateVersion() {
         Assert.assertTrue(systemService.updateVersion("8.23.1").isSuccess());
     }
-
-    @Test
-    public void initialize() {
-    }
 }

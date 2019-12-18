@@ -30,7 +30,7 @@ public class MapperExecutor {
             return ResultUtils.success();
         }
 
-        ResultUtils.assertSuccess(clear(mapper));
+        clear(mapper);
         int count = mapper.insertList(data);
         if (count != data.size()) {
             logger.error("Failed to insert the data");
@@ -40,10 +40,9 @@ public class MapperExecutor {
         return ResultUtils.success();
     }
 
-    private static Result clear(ClearMapper<? extends BaseDo> strategy) {
+    private static void clear(ClearMapper<? extends BaseDo> strategy) {
         int count = strategy.clear();
         logger.info(count + " Cleared.");
-        return ResultUtils.success();
     }
 
     public static <T extends BaseDo> Result insertList(InsertListMapper<T> mapper, List<T> data) {

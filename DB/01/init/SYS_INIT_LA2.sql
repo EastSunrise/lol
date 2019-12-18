@@ -1,5 +1,6 @@
-;
-insert into LA2.t_event_summoner
+delete
+from la2.t_event_summoner;
+insert into la2.t_event_summoner
 values ('VBPJtSbsJ14ih0KdZIG2RKSB9bqwFEycSmvw9DAChpr3DBs', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('dGtz9euN2T5LpMmvpGTnPV6I-Gxo8nKcEMdou8SU03Ob', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('XIHJH4vP4GvyPCEOLv8_dvr9iXI2W6MGRwwDhR1c4cBiSQ', 0, 'knightmare2094', '2019-11-21 00:00:00', null),

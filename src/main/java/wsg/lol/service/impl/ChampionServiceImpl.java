@@ -67,7 +67,7 @@ public class ChampionServiceImpl implements ChampionService {
         logger.info("Updating the champions.");
         List<ChampionDto> championDtoList = new ArrayList<>(championExtDtoList);
         List<ChampionDo> championDoList = ObjectTransfer.transferDtoList(championDtoList, ChampionDo.class);
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championMapper, championDoList));
+        MapperExecutor.updateStatic(championMapper, championDoList).assertSuccess();
 
         logger.info("Updating the images of champions.");
         List<ImageDto> imageDtoList = new ArrayList<>();
@@ -76,7 +76,7 @@ public class ChampionServiceImpl implements ChampionService {
             image.setRelatedId(championExtDto.getId());
             imageDtoList.add(image);
         }
-        ResultUtils.assertSuccess(collectionService.updateImages(imageDtoList, ImageGroupEnum.Champion));
+        collectionService.updateImages(imageDtoList, ImageGroupEnum.Champion).assertSuccess();
 
         logger.info("Updating the skins.");
         List<SkinDo> skinDoList = new ArrayList<>();
@@ -88,7 +88,7 @@ public class ChampionServiceImpl implements ChampionService {
             }
             skinDoList.addAll(skins);
         }
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(skinMapper, skinDoList));
+        MapperExecutor.updateStatic(skinMapper, skinDoList).assertSuccess();
 
         logger.info("Updating the tips of champions.");
         List<ChampionTipDo> championTipDoList = new ArrayList<>();
@@ -109,7 +109,7 @@ public class ChampionServiceImpl implements ChampionService {
                 championTipDoList.add(championTipDo);
             }
         }
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championTipMapper, championTipDoList));
+        MapperExecutor.updateStatic(championTipMapper, championTipDoList).assertSuccess();
 
         logger.info("Updating the stats of champions.");
         List<ChampionStatsDo> statsDoList = new ArrayList<>();
@@ -118,7 +118,7 @@ public class ChampionServiceImpl implements ChampionService {
             stats.setChampionId(championExtDto.getId());
             statsDoList.add(stats);
         }
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(championStatsMapper, statsDoList));
+        MapperExecutor.updateStatic(championStatsMapper, statsDoList).assertSuccess();
 
         logger.info("Updating the spells of champions.");
         List<SpellDo> spellDoList = new ArrayList<>();
@@ -153,9 +153,9 @@ public class ChampionServiceImpl implements ChampionService {
             image.setRelatedId(passive.getId());
             imageDtoList.add(image);
         }
-        ResultUtils.assertSuccess(this.updateSpells(spellDoList, SpellNumEnum.P, SpellNumEnum.Q, SpellNumEnum.W, SpellNumEnum.E, SpellNumEnum.R));
+        this.updateSpells(spellDoList, SpellNumEnum.P, SpellNumEnum.Q, SpellNumEnum.W, SpellNumEnum.E, SpellNumEnum.R).assertSuccess();
         logger.info("Updating the images of champion spells.");
-        ResultUtils.assertSuccess(collectionService.updateImages(imageDtoList, ImageGroupEnum.Spell, ImageGroupEnum.Passive));
+        collectionService.updateImages(imageDtoList, ImageGroupEnum.Spell, ImageGroupEnum.Passive).assertSuccess();
 
         logger.info("Updating the recommended items of champions.");
         List<RecommendedDo> recommendedDoList = new ArrayList<>();
@@ -176,8 +176,8 @@ public class ChampionServiceImpl implements ChampionService {
                 }
             }
         }
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(recommendedMapper, recommendedDoList));
-        ResultUtils.assertSuccess(MapperExecutor.updateStatic(blockMapper, blockDoList));
+        MapperExecutor.updateStatic(recommendedMapper, recommendedDoList).assertSuccess();
+        MapperExecutor.updateStatic(blockMapper, blockDoList).assertSuccess();
 
         logger.info("Succeed in updating the data of champions.");
         return ResultUtils.success();
@@ -200,9 +200,9 @@ public class ChampionServiceImpl implements ChampionService {
             image.setGroup(ImageGroupEnum.SummonerSpell);
             images.add(image);
         }
-        ResultUtils.assertSuccess(this.updateSpells(spellDoList, SpellNumEnum.S));
+        this.updateSpells(spellDoList, SpellNumEnum.S).assertSuccess();
         logger.info("Updating the images of summoner spells.");
-        ResultUtils.assertSuccess(collectionService.updateImages(images, ImageGroupEnum.SummonerSpell));
+        collectionService.updateImages(images, ImageGroupEnum.SummonerSpell).assertSuccess();
 
         logger.info("Succeed in updating the data of summoner spells.");
         return ResultUtils.success();
@@ -220,8 +220,7 @@ public class ChampionServiceImpl implements ChampionService {
             logger.info("Deleted " + count + " spells of " + num);
         }
 
-        ResultUtils.assertSuccess(MapperExecutor.insertList(spellMapper, spells));
-        return ResultUtils.success();
+        return MapperExecutor.insertList(spellMapper, spells);
     }
 
     @Autowired

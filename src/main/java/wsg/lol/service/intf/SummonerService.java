@@ -16,24 +16,14 @@ import java.util.Date;
 public interface SummonerService {
 
     /**
-     * Add a summoner by the id, including the masteries of champions and the entry of league.
-     */
-    Result addSummoner(String summonerName, String encryptUsername);
-
-    /**
      * Update the information of the specified summoner, including the masteries of champions and the entry of league.
      */
     Result updateSummoner(String summonerId, String encryptUsername);
 
     /**
-     * Update the last time updating the matches of the summoner specified by accountId.
+     * Add events of the matches of the specified summoner.
      */
-    Result updateSummonerLastMatch(String accountId, Date lastMatch);
-
-    /**
-     * Update the last time updating the summoner specified by summonerId.
-     */
-    Result updateSummonerLastUpdate(String summonerId, Date lastUpdate);
+    Result updateMatches(String accountId, Date beginTime, String encryptUsername);
 
     /**
      * Get summoners that need to be updated.
@@ -49,4 +39,9 @@ public interface SummonerService {
      * Get base info for the summoner of the specified name.
      */
     GenericResult<SummonerDto> getSummonersByName(String summonerName);
+
+    /**
+     * Get base info for the summoner of the specified name.
+     */
+    GenericResult<SummonerDto> getSummonersById(String summonerId);
 }

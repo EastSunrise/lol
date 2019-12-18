@@ -5,35 +5,41 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.annotation.AssignApi;
-import wsg.lol.common.base.AppException;
-import wsg.lol.common.base.GenericResult;
-import wsg.lol.common.base.ListResult;
-import wsg.lol.common.base.Result;
+import wsg.lol.common.base.*;
 import wsg.lol.common.constant.ConfigConst;
 import wsg.lol.common.constant.ErrorCodeConst;
+import wsg.lol.common.enums.system.EventTypeEnum;
+import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.common.pojo.domain.summoner.ChampionMasteryDo;
 import wsg.lol.common.pojo.domain.summoner.LeagueEntryDo;
 import wsg.lol.common.pojo.domain.summoner.SummonerDo;
+import wsg.lol.common.pojo.dto.match.MatchListDto;
+import wsg.lol.common.pojo.dto.match.MatchReferenceDto;
 import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
+import wsg.lol.common.pojo.query.QueryMatchListDto;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.config.ApiIdentifier;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
+import wsg.lol.dao.api.impl.MatchV4;
 import wsg.lol.dao.api.impl.SummonerV4;
+import wsg.lol.dao.mybatis.config.DatabaseIdentifier;
 import wsg.lol.dao.mybatis.mapper.region.summoner.ChampionMasteryMapper;
 import wsg.lol.dao.mybatis.mapper.region.summoner.LeagueEntryMapper;
 import wsg.lol.dao.mybatis.mapper.region.summoner.SummonerMapper;
 import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.common.PriorityUtils;
+import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.SummonerService;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kingen
@@ -49,102 +55,109 @@ public class SummonerServiceImpl implements SummonerService {
 
     private ChampionMasteryV4 championMasteryV4;
 
+    private MatchV4 matchV4;
+
     private SummonerMapper summonerMapper;
 
     private ChampionMasteryMapper championMasteryMapper;
 
     private LeagueEntryMapper leagueEntryMapper;
 
-    @Override
-    @Transactional
-    @AssignApi(encryptUsername = "#encryptUsername")
-    public Result addSummoner(String summonerName, String encryptUsername) {
-        logger.info("Adding the summoner {}...", summonerName);
+    private TransactionTemplate transactionTemplate;
 
-        GenericResult<SummonerDto> summonersByName = getSummonersByName(summonerName);
-        if (summonersByName.isSuccess() && summonersByName.getObject() != null) {
-            logger.info("Summoner {} exists already.", summonerName);
-            return ResultUtils.success();
-        }
-
-        SummonerDto summonerDto = summonerV4.getSummoner(summonerName, SummonerV4.CondKeyEnum.NAME);
-        String summonerId = summonerDto.getId();
-
-        SummonerDo summonerDo = ObjectTransfer.transferDto(summonerDto, SummonerDo.class);
-        int score = championMasteryV4.getScoreBySummonerId(summonerId);
-        summonerDo.setScore(score);
-        summonerDo.setLastUpdate(new Date());
-        summonerDo.setLastMatch(ConfigConst.MATCH_BEGIN_DATE);
-        summonerDo.setEncryptUsername(ApiIdentifier.getApi());
-        int count = summonerMapper.insert(summonerDo);
-        if (count != 1) {
-            logger.error("Failed to inert the summoner {}.", summonerName);
-            throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to inert the summoner " + summonerName);
-        }
-
-        logger.info("Adding champion masteries of {}...", summonerName);
-        List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
-        Result result = MapperExecutor.insertList(championMasteryMapper, ObjectTransfer.transferDtoList(championMasteries, ChampionMasteryDo.class));
-        ResultUtils.assertSuccess(result);
-
-        logger.info("Adding league entries of {}...", summonerName);
-        List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
-        result = MapperExecutor.insertList(leagueEntryMapper, ObjectTransfer.transferDtoList(entries, LeagueEntryDo.class));
-        ResultUtils.assertSuccess(result);
-
-        logger.info("Added the summoner {}.", summonerName);
-        return ResultUtils.success();
-    }
+    private EventService eventService;
 
     @Override
-    @Transactional
     @AssignApi(encryptUsername = "#encryptUsername")
     public Result updateSummoner(String summonerId, String encryptUsername) {
-        logger.info("Updating the summoner {}...", summonerId);
+        try {
+            return transactionTemplate.execute(transactionStatus -> {
+                logger.info("Updating the summoner {}...", summonerId);
 
-        logger.info("Updating champion masteries of {}...", summonerId);
-        List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
-        ResultUtils.assertSuccess(MapperExecutor.replaceList(championMasteryMapper, ObjectTransfer.transferDtoList(championMasteries, ChampionMasteryDo.class)));
+                logger.info("Updating champion masteries of {}...", summonerId);
+                List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
+                MapperExecutor.replaceList(championMasteryMapper, ObjectTransfer.transferDtoList(championMasteries, ChampionMasteryDo.class)).assertSuccess();
 
-        logger.info("Updating league entries of {}...", summonerId);
-        List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
-        ResultUtils.assertSuccess(MapperExecutor.replaceList(leagueEntryMapper, ObjectTransfer.transferDtoList(entries, LeagueEntryDo.class)));
+                logger.info("Updating league entries of {}...", summonerId);
+                List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
+                MapperExecutor.replaceList(leagueEntryMapper, ObjectTransfer.transferDtoList(entries, LeagueEntryDo.class)).assertSuccess();
 
-        SummonerDto summoner = summonerV4.getSummonerById(summonerId);
-        SummonerDo summonerDo = ObjectTransfer.transferDto(summoner, SummonerDo.class);
-        int score = championMasteryV4.getScoreBySummonerId(summonerId);
-        summonerDo.setScore(score);
-        summonerDo.setLastUpdate(new Date());
-        int count = summonerMapper.updateByPrimaryKeySelective(summonerDo);
-        if (count != 1) {
-            logger.error("Failed to update the summoner {}.", summonerId);
-            throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to update the summoner " + summonerId);
+                SummonerDto summoner = summonerV4.getSummonerById(summonerId);
+                SummonerDo summonerDo = ObjectTransfer.transferDto(summoner, SummonerDo.class);
+                int score = championMasteryV4.getScoreBySummonerId(summonerId);
+                summonerDo.setScore(score);
+                summonerDo.setLastUpdate(new Date());
+                int count = summonerMapper.updateByPrimaryKeySelective(summonerDo);
+                if (count != 1) {
+                    throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to update the summoner " + summonerId).error(logger);
+                }
+
+                logger.info("Updated the summoner {}", summonerId);
+                return ResultUtils.success();
+            });
+        } catch (ApiHTTPException e) {
+            logger.error("Failed to update summoner {}.", summonerId);
+            logger.error("{}: {}", e.getResponseCode().getMessage(), e.getUrl());
+        } catch (Exception e) {
+            logger.error("Failed to update summoner {}.", summonerId);
+            logger.error(e.getMessage(), e);
         }
 
-        logger.info("Updated the summoner {}", summonerId);
-        return ResultUtils.success();
-    }
-
-    @Override
-    public Result updateSummonerLastMatch(String accountId, Date lastMatch) {
-        logger.info("Updating the last match of the account {}.", accountId);
-        int count = summonerMapper.updateLastMatch(accountId, lastMatch);
-        if (count != 1) {
-            logger.error("Failed to update the last match of the account {}.", accountId);
-            return ResultUtils.fail(ErrorCodeConst.DATABASE_ERROR, "Failed to update the last match of the account " + accountId);
-        }
-        return ResultUtils.success();
-    }
-
-    @Override
-    public Result updateSummonerLastUpdate(String summonerId, Date lastUpdate) {
         logger.info("Updating the last time updating the summoner {}.", summonerId);
-        int count = summonerMapper.updateLastUpdate(summonerId, lastUpdate);
+        int count = summonerMapper.updateLastUpdate(summonerId, ConfigConst.LAST_UPDATE_ERROR_DATE);
         if (count != 1) {
-            logger.error("Failed to update the last time updating the summoner {}.", summonerId);
-            return ResultUtils.fail(ErrorCodeConst.DATABASE_ERROR, "Failed to update the last time updating the summoner " + summonerId);
+            return ResultUtils.fail(ErrorCodeConst.DATABASE_ERROR, "Failed to update the last time updating the summoner " + summonerId).error(logger);
         }
         return ResultUtils.success();
+    }
+
+    @Override
+    @AssignApi(encryptUsername = "#encryptUsername")
+    public Result updateMatches(String accountId, Date beginTime, String encryptUsername) {
+        try {
+            return transactionTemplate.execute(transactionStatus -> {
+                logger.info("Adding events of matches of the account {}...", accountId);
+                Map<RegionEnum, Map<String, String>> map = new HashMap<>();
+                QueryMatchListDto queryMatchListDto = new QueryMatchListDto();
+                queryMatchListDto.setBeginTime(beginTime.getTime());
+                long beginIndex = 0L, total;
+                Date lastMatch;
+                do {
+                    queryMatchListDto.setBeginIndex(beginIndex);
+                    lastMatch = new Date();
+                    MatchListDto matchListDto = matchV4.getMatchListByAccount(accountId, queryMatchListDto);
+                    for (MatchReferenceDto match : matchListDto.getMatches()) {
+                        RegionEnum region = match.getPlatformId();
+                        if (!map.containsKey(region)) {
+                            map.put(region, new HashMap<>());
+                        }
+                        map.get(region).put(match.getGameId().toString(), region + "#" + accountId);
+                    }
+                    total = matchListDto.getTotalGames();
+                    beginIndex = matchListDto.getEndIndex();
+                } while (beginIndex < total);
+
+                // TODO: Switch the database
+                for (Map.Entry<RegionEnum, Map<String, String>> entry : map.entrySet()) {
+                    DatabaseIdentifier.setPlatform(entry.getKey());
+                    eventService.insertEvents(EventTypeEnum.Match, entry.getValue()).assertSuccess();
+                }
+
+                DatabaseIdentifier.setPlatform(null);
+                updateSummonerLastMatch(accountId, lastMatch).assertSuccess();
+
+                logger.info("Succeed in adding events of matches of the account {}.", accountId);
+                return ResultUtils.success();
+            });
+        } catch (ApiHTTPException e) {
+            logger.error("Failed to update matches of the account {}.", accountId);
+            logger.error("{}: {}", e.getResponseCode().getMessage(), e.getUrl());
+        } catch (Exception e) {
+            logger.error("Failed to update matches of the account {}.", accountId);
+            logger.error(e.getMessage(), e);
+        }
+
+        return updateSummonerLastMatch(accountId, ConfigConst.LAST_MATCH_ERROR_DATE).error(logger);
     }
 
     @Override
@@ -168,6 +181,40 @@ public class SummonerServiceImpl implements SummonerService {
         SummonerDo summonerDo = summonerMapper.selectOne(cond);
         SummonerDto summonerDto = ObjectTransfer.transferDo(summonerDo, SummonerDto.class);
         return GenericResult.create(summonerDto);
+    }
+
+    @Override
+    public GenericResult<SummonerDto> getSummonersById(String summonerId) {
+        SummonerDo cond = new SummonerDo();
+        cond.setId(summonerId);
+        SummonerDo summonerDo = summonerMapper.selectOne(cond);
+        SummonerDto summonerDto = ObjectTransfer.transferDo(summonerDo, SummonerDto.class);
+        return GenericResult.create(summonerDto);
+    }
+
+    private Result updateSummonerLastMatch(String accountId, Date lastMatch) {
+        logger.info("Updating the last match of the account {}.", accountId);
+        int count = summonerMapper.updateLastMatch(accountId, lastMatch);
+        if (count != 1) {
+            logger.error("Failed to update the last match of the account {}.", accountId);
+            return ResultUtils.fail(ErrorCodeConst.DATABASE_ERROR, "Failed to update the last match of the account " + accountId);
+        }
+        return ResultUtils.success();
+    }
+
+    @Autowired
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
+    }
+
+    @Autowired
+    public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+        this.transactionTemplate = transactionTemplate;
+    }
+
+    @Autowired
+    public void setMatchV4(MatchV4 matchV4) {
+        this.matchV4 = matchV4;
     }
 
     @Autowired

@@ -18,18 +18,18 @@ public interface EventService {
     /**
      * Handle events of the specified type by page.
      */
-    Result handle(EventTypeEnum eventType, RowBounds rowBounds);
+    GenericResult<Integer> handle(EventTypeEnum eventType, RowBounds rowBounds);
 
     /**
      * Insert events of specified type. Contexts are distinct.
      *
-     * @param events id-source map
+     * @param events context-source map
      * @return successful count
      */
     GenericResult<Integer> insertEvents(EventTypeEnum eventType, Map<String, String> events);
 
     /**
-     * Update the status of events.
+     * Update the status of the event.
      */
     Result updateStatus(EventTypeEnum eventType, Object context, EventStatusEnum from, EventStatusEnum to);
 }

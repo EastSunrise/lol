@@ -28,37 +28,36 @@ public class SharedServiceTest extends BaseTest {
 
     @Test
     public void getFeaturedGames() {
-        System.out.println("Get first.");
-        Assert.assertNotNull(sharedService.getFeaturedGames());
-        System.out.println("Get second.");
-        Assert.assertNotNull(sharedService.getFeaturedGames());
-        System.out.println("Update.");
-        sharedService.updateFeaturedGames();
-        System.out.println("Get third.");
-        Assert.assertNotNull(sharedService.getFeaturedGames());
+        testShared(v -> sharedService.getFeaturedGames(), v -> {
+            sharedService.updateFeaturedGames();
+            return null;
+        });
     }
 
     @Test
     public void getShardStatus() {
-        System.out.println("Get first.");
-        Assert.assertNotNull(sharedService.getShardStatus());
-        System.out.println("Get second.");
-        Assert.assertNotNull(sharedService.getShardStatus());
-        System.out.println("Update.");
-        sharedService.updateShardStatus();
-        System.out.println("Get third.");
-        Assert.assertNotNull(sharedService.getShardStatus());
+        testShared(v -> sharedService.getShardStatus(), v -> {
+            sharedService.updateShardStatus();
+            return null;
+        });
     }
 
     @Test
     public void getChampionRotation() {
+        testShared(aVoid -> sharedService.getChampionRotation(), aVoid -> {
+            sharedService.updateChampionRotation();
+            return null;
+        });
+    }
+
+    protected void testShared(Task<Void> getTask, Task<Void> updateTask) {
         System.out.println("Get first.");
-        Assert.assertNotNull(sharedService.getChampionRotation());
+        Assert.assertNotNull(getTask.run(null));
         System.out.println("Get second.");
-        Assert.assertNotNull(sharedService.getChampionRotation());
+        Assert.assertNotNull(getTask.run(null));
         System.out.println("Update.");
-        sharedService.updateChampionRotation();
+        updateTask.run(null);
         System.out.println("Get third.");
-        Assert.assertNotNull(sharedService.getChampionRotation());
+        Assert.assertNotNull(getTask.run(null));
     }
 }

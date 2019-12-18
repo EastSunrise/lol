@@ -88,9 +88,16 @@ public class Result implements Serializable {
         this.args = args;
     }
 
-    public void error(Logger logger) {
+    public Result error(Logger logger) {
         if (!this.isSuccess()) {
             logger.error(this.getMessage());
+        }
+        return this;
+    }
+
+    public void assertSuccess() {
+        if (!this.isSuccess()) {
+            throw new AppException(this);
         }
     }
 }

@@ -1,5 +1,6 @@
-;
-insert into RU.t_event_summoner
+delete
+from ru.t_event_summoner;
+insert into ru.t_event_summoner
 values ('EDq38_efiVTMgUaXX7RR1sBSQBWgkEvy4bhX_0dLZyjy', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('QH8BykuUhcGwIPp_ytp7FIPWfK8tqZiizh_ixq50HJSQcw', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('5ZsgSX5yd9pMudI4Z0Nj3ig62JZsvmsfAJh0l8Hy0OzFxpA', 0, 'knightmare2094', '2019-11-21 00:00:00', null),

@@ -27,7 +27,7 @@ class SingleClient extends ApiClient implements InitializingBean {
 
     @Override
     public String getToken() {
-        logger.info("Acquiring the token.");
+        logger.info("Acquiring the token under the account {}.", api.username);
         String token = api.acquire();
         if (token == null) {
             logger.error("The api has expired.");

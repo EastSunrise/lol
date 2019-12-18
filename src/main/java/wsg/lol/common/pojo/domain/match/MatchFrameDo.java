@@ -40,7 +40,7 @@ public class MatchFrameDo extends BaseDo {
     private MatchEventTypeEnum type;
 
     @Column
-    private Integer participantId;
+    private Integer participantNum;
 
     @Column
     private Integer skillSlot;

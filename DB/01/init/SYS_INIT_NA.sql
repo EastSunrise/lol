@@ -1,5 +1,6 @@
-;
-insert into NA.t_event_summoner
+delete
+from na.t_event_summoner;
+insert into na.t_event_summoner
 values ('ExGE4ev8cabNJVQgquz1z-XvKeGzO-qucKczll_u6cWKzXY', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('3vTJIfs9oO4r8xGRqWPfLvD5ij8_9uvbyaGw7BTo6eigyIs', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('p4g5rTB2tmA_g2HyUKOvH1T7cB4m4Aru13m6P4iSyB28U84', 0, 'knightmare2094', '2019-11-21 00:00:00', null),

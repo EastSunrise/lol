@@ -1,5 +1,7 @@
 package wsg.lol.common.base;
 
+import org.slf4j.Logger;
+
 /**
  * Specified {@link RuntimeException} for the application.
  *
@@ -69,6 +71,11 @@ public class AppException extends RuntimeException {
      * {@inheritDoc}
      */
     public Throwable fillInStackTrace() {
+        return this;
+    }
+
+    public AppException error(Logger logger) {
+        logger.error(this.getMessage());
         return this;
     }
 }

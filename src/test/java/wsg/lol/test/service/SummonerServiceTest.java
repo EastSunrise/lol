@@ -1,16 +1,14 @@
 package wsg.lol.test.service;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import wsg.lol.common.constant.ConfigConst;
+import wsg.lol.common.base.ListResult;
+import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 import wsg.lol.common.util.PageUtils;
 import wsg.lol.service.intf.SummonerService;
 import wsg.lol.test.base.BaseTest;
-
-import java.util.Calendar;
 
 /**
  * Test for summoner service.
@@ -26,42 +24,19 @@ public class SummonerServiceTest extends BaseTest {
     public void setUp() {
     }
 
-    @After
-    public void tearDown() {
-        summonerService.updateSummonerLastMatch(summonerDto.getAccountId(), ConfigConst.MATCH_BEGIN_DATE);
-    }
-
-    @Test
-    public void addSummoner() {
-    }
-
     @Test
     public void updateSummoner() {
-        Assert.assertTrue(summonerService.updateSummoner(summonerDto.getId(), "Kingen4399").isSuccess());
+        ListResult<SummonerDto> summonersForUpdate = summonerService.getSummonersForUpdate(PageUtils.SINGLE);
+        for (SummonerDto summoner : summonersForUpdate.getList()) {
+            Assert.assertTrue(summonerService.updateSummoner(summoner.getId(), summoner.getEncryptUsername()).isSuccess());
+        }
     }
 
     @Test
-    public void updateSummonerLastMatch() {
-        Assert.assertTrue(summonerService.updateSummonerLastMatch(summonerDto.getAccountId(), Calendar.getInstance().getTime()).isSuccess());
-    }
-
-    @Test
-    public void updateSummonerLastUpdate() {
-        Assert.assertTrue(summonerService.updateSummonerLastUpdate(summonerDto.getId(), Calendar.getInstance().getTime()).isSuccess());
-    }
-
-    @Test
-    public void getSummonersForUpdate() {
-        Assert.assertTrue(summonerService.getSummonersForUpdate(PageUtils.getRowBounds()).isSuccess());
-    }
-
-    @Test
-    public void getSummonersForMatch() {
-        Assert.assertTrue(summonerService.getSummonersForMatch(PageUtils.getRowBounds()).isSuccess());
-    }
-
-    @Test
-    public void getSummonersByName() {
-        Assert.assertTrue(summonerService.getSummonersByName(summonerName).isSuccess());
+    public void updateMatches() {
+        ListResult<SummonerDto> summonersForMatch = summonerService.getSummonersForMatch(PageUtils.SINGLE);
+        for (SummonerDto summoner : summonersForMatch.getList()) {
+            Assert.assertTrue(summonerService.updateMatches(summoner.getAccountId(), summoner.getLastMatch(), summoner.getEncryptUsername()).isSuccess());
+        }
     }
 }

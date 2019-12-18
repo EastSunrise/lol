@@ -1,5 +1,6 @@
-;
-insert into JP.t_event_summoner
+delete
+from jp.t_event_summoner;
+insert into jp.t_event_summoner
 values ('2PfO6uqqvzX6WpyFkGoIYyCQTxcbObyulr_AiCdn1FRFVA', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('a6Yg24ouWU4rRullRWwE3ff5Blo4r2_MHLBkw262FMpq8Dk', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('0z6tNUBVuoORqNCsIrow4fhalp0TqaKQkaA_Z-VGG0ofIg', 0, 'knightmare2094', '2019-11-21 00:00:00', null),

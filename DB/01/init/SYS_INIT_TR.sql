@@ -1,5 +1,6 @@
-;
-insert into TR.t_event_summoner
+delete
+from tr.t_event_summoner;
+insert into tr.t_event_summoner
 values ('MXuGd5EAQ0nL1L48Ub5pqo8uHuuuEfBYZq18xvEERreTMxA', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('kW16ooMAd5H7w-hTO7ulaAoLHEEdIBMR78LN_mhUQu-xNQ', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('ESbjaiz7CQIIZV6w6bhfXGyDK1RZA1slWk9nIkLXvuzaOg', 0, 'knightmare2094', '2019-11-21 00:00:00', null),

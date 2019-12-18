@@ -1,5 +1,6 @@
-;
-insert into OC1.t_event_summoner
+delete
+from oc1.t_event_summoner;
+insert into oc1.t_event_summoner
 values ('nP9v92bHA_4A8TLjnnIOUNQhDPHggbYsfFPoPI-xETX0', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('KVrZ8PFOVsKnFzqXb7aI18ZdWXxqFc4_R1z-mqbCKb5o', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('pFMZ47EgXX6kgVEKhKgBDVc22Yxv7Yevt8AdDLJWAxxoW_s', 0, 'knightmare2094', '2019-11-21 00:00:00', null),

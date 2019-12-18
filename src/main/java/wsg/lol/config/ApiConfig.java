@@ -12,14 +12,17 @@ import java.util.List;
  *
  * @author Kingen
  */
-@Setter
 @Getter
 @Configuration
 @ConfigurationProperties(prefix = "api")
 public class ApiConfig {
 
-    protected List<Token> tokens;
-    private double rate;
+    @Setter
+    private List<Token> tokens;
+
+    private double rate = 5D / 6D;
+
+    @Setter
     private Token single;
 
     @Setter

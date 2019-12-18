@@ -96,7 +96,9 @@ public class InitialTest extends BaseTest {
     private void csv2Sql(RegionEnum region) throws IOException {
         List<String> lines = FileUtils.readLines(new File(getPath(region)), StandardCharsets.UTF_8);
         StringBuilder sql = new StringBuilder();
-        String insertTable = "insert into " + region + "." + TABLE_NAME;
+        String table_name = region.name().toLowerCase() + "." + TABLE_NAME;
+        sql.append("delete from ").append(table_name);
+        String insertTable = "insert into " + table_name;
         int count = 0;
         for (String line : lines) {
             if (count++ % 1000 == 0) {
@@ -112,7 +114,7 @@ public class InitialTest extends BaseTest {
     }
 
     private String toPath(RegionEnum region) {
-        return StringUtils.joinWith(File.separator, "DB", "01_lol_1.0", "lol", "SYS_INIT_" + region + ".sql");
+        return StringUtils.joinWith(File.separator, "DB", "01", "init", "SYS_INIT_" + region + ".sql");
     }
 
     private String getPath(RegionEnum region) {

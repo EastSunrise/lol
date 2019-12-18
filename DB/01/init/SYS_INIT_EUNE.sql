@@ -1,5 +1,6 @@
-;
-insert into EUNE.t_event_summoner
+delete
+from eune.t_event_summoner;
+insert into eune.t_event_summoner
 values ('W1PhBn1jbxu4YPC9lBnN-7Ofi2-Ey009Gl0-0c4t1hdVRek', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('_2wNQwQpKHRNhohwjRHxKFBwP7ufuCl9xFiXx-3j-PwgfsE', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('RhwzRElR8up8RSsRJ7iHb4ZaqE21vKcJxGYLEoHv0yGWY4Q', 0, 'knightmare2094', '2019-11-21 00:00:00', null),

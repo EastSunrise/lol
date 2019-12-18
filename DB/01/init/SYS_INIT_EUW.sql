@@ -1,5 +1,6 @@
-;
-insert into EUW.t_event_summoner
+delete
+from euw.t_event_summoner;
+insert into euw.t_event_summoner
 values ('Ub3zEGm7UOsxBdewHHks7bMyUMNOWbwEGhj73pHvqVOg6jY', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('jD0xw8VW9JOH3ZV9oKZWL-VpTiNIeY50ma5vp0juiT8hkQgg', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('wH0dTbnUNhFZ3au6NCUhIKzcBpAE1wjsFNxzq-D08UKlxo8', 0, 'knightmare2094', '2019-11-21 00:00:00', null),

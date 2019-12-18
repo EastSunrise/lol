@@ -1,5 +1,6 @@
-;
-insert into BR.t_event_summoner
+delete
+from br.t_event_summoner;
+insert into br.t_event_summoner
 values ('k4Qdv8b1jZ4zrCJQOmgoa6NoWDCQh7AkhPQaVIfmiNqIug', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('SwDcweS1MiJiYATor6a_uVMGOaGdK1O-kQc8q-PQpUjRJg', 0, 'knightmare2094', '2019-11-21 00:00:00', null),
        ('Zu3sH04mbcw0Y3IfkFNAbiI52XAaLZqZjriUBxm12xgohIw', 0, 'knightmare2094', '2019-11-21 00:00:00', null),

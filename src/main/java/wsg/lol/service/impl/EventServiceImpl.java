@@ -39,7 +39,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Performance
-    public Result handle(EventTypeEnum eventType, RowBounds rowBounds) {
+    public GenericResult<Integer> handle(EventTypeEnum eventType, RowBounds rowBounds) {
         logger.info("Getting events of {}...", eventType);
         Example example = new Example(eventType.getDoClass());
         Example.Criteria criteria = example.createCriteria();
@@ -49,7 +49,7 @@ public class EventServiceImpl implements EventService {
         List<? extends EventDo> events = mapper.selectByExampleAndRowBounds(example, rowBounds);
         if (CollectionUtils.isEmpty(events)) {
             logger.info("No events got.");
-            return ResultUtils.success();
+            return GenericResult.create(0);
         }
         logger.info("Got {} events of {}. Handling...", events.size(), eventType);
 
@@ -58,9 +58,7 @@ public class EventServiceImpl implements EventService {
         for (EventDo event : events) {
             String context = event.getContext();
             try {
-                ResultUtils.assertSuccess(eventHandler.handle(event));
-                ResultUtils.assertSuccess(updateStatus(eventType, context, EventStatusEnum.Unfinished, EventStatusEnum.Finished));
-                logger.info("Succeed in handling {} event of {}.", eventType, context);
+                eventHandler.handle(event).assertSuccess();
                 success++;
             } catch (ApiHTTPException e) {
                 logger.error("Failed to handle {} event of {}.", eventType, context);
@@ -73,8 +71,8 @@ public class EventServiceImpl implements EventService {
             }
         }
 
-        logger.info("Events of summoners done, {} succeeded, {} failed.", success, events.size() - success);
-        return ResultUtils.success();
+        logger.info("Events of {} done, {} succeeded, {} failed.", eventType, success, events.size() - success);
+        return GenericResult.create(success);
     }
 
     @Override
