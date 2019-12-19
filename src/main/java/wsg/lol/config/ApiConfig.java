@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import wsg.lol.common.enums.system.RegionEnum;
 
 import java.util.List;
 
@@ -16,6 +17,9 @@ import java.util.List;
 @Configuration
 @ConfigurationProperties(prefix = "api")
 public class ApiConfig {
+
+    @Setter
+    private RegionEnum region;
 
     @Setter
     private List<Token> tokens;

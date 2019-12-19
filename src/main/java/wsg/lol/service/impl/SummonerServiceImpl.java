@@ -23,11 +23,11 @@ import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 import wsg.lol.common.pojo.query.QueryMatchListDto;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
+import wsg.lol.config.RegionIdentifier;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
 import wsg.lol.dao.api.impl.MatchV4;
 import wsg.lol.dao.api.impl.SummonerV4;
-import wsg.lol.dao.mybatis.config.DatabaseIdentifier;
 import wsg.lol.dao.mybatis.mapper.region.summoner.ChampionMasteryMapper;
 import wsg.lol.dao.mybatis.mapper.region.summoner.LeagueEntryMapper;
 import wsg.lol.dao.mybatis.mapper.region.summoner.SummonerMapper;
@@ -117,33 +117,27 @@ public class SummonerServiceImpl implements SummonerService {
         try {
             return transactionTemplate.execute(transactionStatus -> {
                 logger.info("Adding events of matches of the account {}...", accountId);
-                Map<RegionEnum, Map<String, String>> map = new HashMap<>();
+                Map<String, String> map = new HashMap<>();
                 QueryMatchListDto queryMatchListDto = new QueryMatchListDto();
                 queryMatchListDto.setBeginTime(beginTime.getTime());
                 long beginIndex = 0L, total;
                 Date lastMatch;
+                RegionEnum region = RegionIdentifier.getRegion();
+
                 do {
                     queryMatchListDto.setBeginIndex(beginIndex);
                     lastMatch = new Date();
                     MatchListDto matchListDto = matchV4.getMatchListByAccount(accountId, queryMatchListDto);
                     for (MatchReferenceDto match : matchListDto.getMatches()) {
-                        RegionEnum region = match.getPlatformId();
-                        if (!map.containsKey(region)) {
-                            map.put(region, new HashMap<>());
+                        if (region.equals(match.getPlatformId())) {
+                            map.put(match.getGameId().toString(), accountId);
                         }
-                        map.get(region).put(match.getGameId().toString(), region + "#" + accountId);
                     }
                     total = matchListDto.getTotalGames();
                     beginIndex = matchListDto.getEndIndex();
                 } while (beginIndex < total);
 
-                // TODO: Switch the database
-                for (Map.Entry<RegionEnum, Map<String, String>> entry : map.entrySet()) {
-                    DatabaseIdentifier.setPlatform(entry.getKey());
-                    eventService.insertEvents(EventTypeEnum.Match, entry.getValue()).assertSuccess();
-                }
-
-                DatabaseIdentifier.setPlatform(null);
+                eventService.insertEvents(EventTypeEnum.Match, map).assertSuccess();
                 updateSummonerLastMatch(accountId, lastMatch).assertSuccess();
 
                 logger.info("Succeed in adding events of matches of the account {}.", accountId);

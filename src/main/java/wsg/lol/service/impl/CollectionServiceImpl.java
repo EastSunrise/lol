@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wsg.lol.common.annotation.Platform;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.share.ImageGroupEnum;
 import wsg.lol.common.pojo.domain.item.*;
@@ -48,6 +49,7 @@ public class CollectionServiceImpl implements CollectionService {
     private ImageMapper imageMapper;
 
     @Override
+    @Platform
     @Transactional
     public Result updateItems(String version) {
         logger.info("Updating the data of items.");
@@ -80,6 +82,7 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
+    @Platform
     @Transactional
     public Result updateRunes(String version) {
         logger.info("Updating the data of runes.");
@@ -101,6 +104,7 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
+    @Platform
     @Transactional
     public Result updateMaps(String version) {
         logger.info("Updating the images of maps.");
@@ -117,6 +121,7 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
+    @Platform
     @Transactional
     public Result updateProfileIcons(String version) {
         logger.info("Updating the images of profile icons.");
@@ -134,6 +139,7 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
+    @Platform
     @Transactional
     public Result updateImages(List<ImageDto> images, ImageGroupEnum... groups) {
         if (CollectionUtils.isEmpty(images)) {

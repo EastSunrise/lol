@@ -5,6 +5,7 @@ import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wsg.lol.common.enums.system.RegionEnum;
+import wsg.lol.config.RegionIdentifier;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
@@ -21,7 +22,7 @@ public class DynamicDatasource extends DataSource {
 
     @Override
     public Connection getConnection() {
-        RegionEnum platform = DatabaseIdentifier.getRegion();
+        RegionEnum platform = RegionIdentifier.getRegion();
         logger.info("Connecting to the database {}.", platform);
         DataSource datasource = DatasourceHolder.getInstance().getDatasource(platform);
         if (datasource == null) {

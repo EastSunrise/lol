@@ -12,9 +12,9 @@ import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.config.ApiIdentifier;
 import wsg.lol.config.DragonConfig;
+import wsg.lol.config.RegionIdentifier;
 import wsg.lol.dao.api.client.ApiClient;
 import wsg.lol.dao.api.impl.LeagueV4;
-import wsg.lol.dao.mybatis.config.DatabaseIdentifier;
 import wsg.lol.test.base.BaseTest;
 
 import java.io.File;
@@ -65,7 +65,7 @@ public class InitialTest extends BaseTest {
     @Test
     public void initialize() {
         for (Map.Entry<RegionEnum, Integer[]> entry : map.entrySet()) {
-            DatabaseIdentifier.setPlatform(entry.getKey());
+            RegionIdentifier.setPlatform(entry.getKey());
             List<String> summoners = new LinkedList<>();
             Integer[] pages = entry.getValue();
             int index = 0;

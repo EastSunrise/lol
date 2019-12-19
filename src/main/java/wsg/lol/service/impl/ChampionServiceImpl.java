@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wsg.lol.common.annotation.Platform;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.champion.ChampionTipEnum;
 import wsg.lol.common.enums.champion.SpellNumEnum;
@@ -59,6 +60,7 @@ public class ChampionServiceImpl implements ChampionService {
     private CollectionService collectionService;
 
     @Override
+    @Platform
     @Transactional
     public Result updateChampions(String version) {
         logger.info("Updating the data of champions.");
@@ -184,6 +186,7 @@ public class ChampionServiceImpl implements ChampionService {
     }
 
     @Override
+    @Platform
     @Transactional
     public Result updateSummonerSpells(String version) {
         logger.info("Updating the summoner spells.");

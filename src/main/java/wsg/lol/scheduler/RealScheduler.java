@@ -53,7 +53,7 @@ public class RealScheduler {
      * Add events of the matches after the last time updating the matches.
      * Request 1.
      */
-    @Scheduled(cron = "${cron.update.match}")
+    @Scheduled(fixedDelay = 1)
     public void updateMatches() throws AppException {
         logger.info("Getting summoners for match...");
         List<SummonerDto> summoners = summonerService.getSummonersForMatch(PageUtils.DEFAULT_PAGE).getList();

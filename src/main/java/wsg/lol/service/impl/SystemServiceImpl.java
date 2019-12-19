@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import wsg.lol.common.annotation.Platform;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.base.Result;
@@ -45,6 +46,7 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
+    @Platform
     public VersionResult getVersion() {
         VersionResult versionResult = new VersionResult();
         versionResult.setCurrentVersion(configMapper.getConfigValue(ConfigConst.CURRENT_VERSION, RegionEnum.LOL));
@@ -53,6 +55,7 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
+    @Platform
     public Result updateVersion(String version) {
         int count = configMapper.updateConfigValue(RegionEnum.LOL, ConfigConst.CURRENT_VERSION, version);
         if (1 != count) {

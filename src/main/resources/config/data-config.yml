@@ -1,6 +1,3 @@
-global:
-  region: KR
-  timeout: 30000
 # dragon config
 dragon:
   language: zh_CN
@@ -11,11 +8,11 @@ dragon:
   directory: D:/lol
 # api config
 api:
-  rate: 0.83333
+  region: JP
   single:
     username: knightmare2094
     region: NA
-    key: RGAPI-1339e966-5f63-4ec8-ae44-adbcc798318b
+    key: RGAPI-36f43295-1925-4af9-9ca0-f7c88007d521
   tokens:
     - username: Kingen4391
       region: BR

@@ -4,6 +4,14 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +24,13 @@ import wsg.lol.common.pojo.serialize.RecordExtraProcessor;
 import wsg.lol.common.util.HttpHelper;
 import wsg.lol.config.CustomParser;
 import wsg.lol.config.DragonConfig;
-import wsg.lol.config.GlobalConfig;
-import wsg.lol.dao.mybatis.config.DatabaseIdentifier;
+import wsg.lol.config.RegionIdentifier;
 
 import javax.validation.constraints.NotNull;
 import javax.xml.ws.http.HTTPException;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
@@ -37,17 +44,21 @@ import java.util.Map;
 @Component
 public class BaseApi {
 
+    private static final Logger logger = LoggerFactory.getLogger(BaseApi.class);
+
     private static final String HTTPS = "https://";
 
     private static final long RETRY_INTERVAL = 10000L;
 
-    private static final Logger logger = LoggerFactory.getLogger(BaseApi.class);
+    private static final int TIME_OUT = 30000;
+
+    private static final CloseableHttpClient HTTP_CLIENT = HttpClients.createDefault();
+
+    private static final RequestConfig REQUEST_CONFIG = RequestConfig.custom().setConnectTimeout(TIME_OUT).setSocketTimeout(TIME_OUT).build();
 
     private ApiClient apiClient;
 
     private DragonConfig dragonConfig;
-
-    private GlobalConfig globalConfig;
 
     /**
      * Get single object.
@@ -102,7 +113,7 @@ public class BaseApi {
         if (StringUtils.isNotEmpty(urlParams)) {
             urlParams = "?" + urlParams;
         }
-        String urlStr = (DatabaseIdentifier.getRegion().getHost() + apiRef + urlParams).replace("+", "%20");
+        String urlStr = (RegionIdentifier.getRegion().getHost() + apiRef + urlParams).replace("+", "%20");
 
         // todo get from the api directly
         String filepath = StringUtils.joinWith(File.separator, dragonConfig.getDirectory(), "api", urlStr.replace("?", File.separator).replace("&", File.separator) + ".json");
@@ -132,45 +143,38 @@ public class BaseApi {
         String format = urlStr + (urlStr.contains("?") ? "&" : "?") + "api_key=";
         int retryCount = 0;
         while (true) {
+            CloseableHttpResponse response = null;
             try {
                 String token = apiClient.getToken();
                 urlStr = format + token;
-                URL url = new URL(urlStr);
-                logger.info("Getting from " + urlStr);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setConnectTimeout(globalConfig.getTimeout());
-                urlConnection.setReadTimeout(globalConfig.getTimeout());
-                urlConnection.setRequestProperty("Origin", "https://developer.riotgames.com");
-                urlConnection.setRequestProperty("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
-                urlConnection.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,zh-TW;q=0.8");
-                urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36");
+                HttpGet httpGet = setRequest(new HttpGet(urlStr));
+                httpGet.addHeader(HttpHeaders.HOST, RegionIdentifier.getRegion().getHost());
 
-                int responseCode = urlConnection.getResponseCode();
+                logger.info("Getting from " + urlStr);
+                response = HTTP_CLIENT.execute(httpGet);
+
+                int responseCode = response.getStatusLine().getStatusCode();
                 if (ResponseCodeEnum.Success.getCode() == responseCode) {
-                    StringBuilder builder = new StringBuilder();
-                    BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    String inputLine;
-                    while ((inputLine = in.readLine()) != null) {
-                        builder.append(inputLine);
-                    }
-                    in.close();
-                    return builder.toString();
+                    HttpEntity entity = response.getEntity();
+                    String text = EntityUtils.toString(entity);
+                    EntityUtils.consume(entity);
+                    return text;
                 }
 
-                String responseMessage = urlConnection.getResponseMessage();
+                String reason = response.getStatusLine().getReasonPhrase();
                 if (ResponseCodeEnum.Forbidden.getCode() == responseCode) {
                     apiClient.occurForbidden(token);
                     continue;
                 }
                 if (ResponseCodeEnum.RateLimitExceeded.getCode() == responseCode) {
-                    long retryAfter = Long.parseLong(urlConnection.getHeaderField("Retry-After"));
+                    long retryAfter = Long.parseLong(response.getFirstHeader("Retry-After").getValue());
                     logger.warn("Rate limit exceeded. Wait for {} s.", retryAfter);
                     threadSleep(retryAfter * DateUtils.MILLIS_PER_SECOND);
                     continue;
                 }
                 if (ResponseCodeEnum.InternalServerError.getCode() == responseCode
                         || ResponseCodeEnum.ServiceUnavailable.getCode() == responseCode) {
-                    logger.warn("{}. Retry {} times.", responseMessage, ++retryCount);
+                    logger.warn("{}. Retry the {} time.", reason, getOrdinalNumber(++retryCount));
                     threadSleep(RETRY_INTERVAL);
                     continue;
                 }
@@ -181,13 +185,32 @@ public class BaseApi {
                         || ResponseCodeEnum.Unauthorized.getCode() == responseCode) {
                     throw new ApiHTTPException(urlStr, responseCode);
                 }
-                logger.error("{}: {}.", responseMessage, urlStr);
+                logger.error("{}: {}.", reason, urlStr);
                 throw new HTTPException(responseCode);
             } catch (IOException e) {
-                logger.warn("Error: {}. Retry {} times.", e.getMessage(), ++retryCount);
+                logger.warn("{}. Retry the {} time.", e.getMessage(), getOrdinalNumber(++retryCount));
                 threadSleep(RETRY_INTERVAL);
+            } finally {
+                if (response != null) {
+                    try {
+                        response.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
+    }
+
+    private HttpGet setRequest(HttpGet httpGet) {
+        httpGet.addHeader(HttpHeaders.ACCEPT, "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3");
+        httpGet.addHeader(HttpHeaders.ACCEPT_ENCODING, "gzip, deflate, br");
+        httpGet.addHeader(HttpHeaders.ACCEPT_LANGUAGE, "zh-CN,zh;q=0.9,zh-TW;q=0.8");
+        httpGet.addHeader(HttpHeaders.CACHE_CONTROL, "max-age=0");
+        httpGet.addHeader(HttpHeaders.CONNECTION, "keep-alive");
+        httpGet.addHeader(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36");
+        httpGet.setConfig(REQUEST_CONFIG);
+        return httpGet;
     }
 
     private void threadSleep(long millis) {
@@ -199,9 +222,20 @@ public class BaseApi {
         }
     }
 
-    @Autowired
-    public void setGlobalConfig(GlobalConfig globalConfig) {
-        this.globalConfig = globalConfig;
+    private String getOrdinalNumber(int num) {
+        int i = num % 10;
+        switch (i) {
+            case 0:
+                return "";
+            case 1:
+                return num + "st";
+            case 2:
+                return num + "nd";
+            case 3:
+                return num + "rd";
+            default:
+                return num + "th";
+        }
     }
 
     @Autowired

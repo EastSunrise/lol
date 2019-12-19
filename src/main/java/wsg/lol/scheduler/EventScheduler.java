@@ -25,7 +25,7 @@ public class EventScheduler {
      * Add summoners by handling events of type {@link EventTypeEnum#Summoner}.
      * Request 4.
      */
-    @Scheduled(cron = "${cron.event.summoner}")
+    @Scheduled(fixedDelay = 1)
     public void handleSummoners() {
         eventService.handle(EventTypeEnum.Summoner, PageUtils.DEFAULT_PAGE).error(logger);
     }
@@ -36,7 +36,7 @@ public class EventScheduler {
      * <p>
      * Meanwhile, add events of type {@link EventTypeEnum#Summoner} if not exist from the participants of matches.
      */
-    @Scheduled(cron = "${cron.event.match}")
+    @Scheduled(fixedDelay = 1)
     public void handleMatches() {
         eventService.handle(EventTypeEnum.Match, PageUtils.DEFAULT_PAGE).error(logger);
     }

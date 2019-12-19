@@ -1,7 +1,6 @@
 package wsg.lol.dao.mybatis.mapper.lol.system;
 
 import org.springframework.stereotype.Repository;
-import wsg.lol.common.annotation.Platform;
 import wsg.lol.common.enums.system.RegionEnum;
 
 /**
@@ -9,7 +8,6 @@ import wsg.lol.common.enums.system.RegionEnum;
  *
  * @author Kingen
  */
-@Platform
 @Repository
 public interface ConfigMapper {
 
