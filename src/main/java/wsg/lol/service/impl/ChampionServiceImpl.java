@@ -26,7 +26,7 @@ import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.mybatis.mapper.lol.champion.*;
 import wsg.lol.dao.mybatis.mapper.lol.item.BlockMapper;
 import wsg.lol.dao.mybatis.mapper.lol.item.RecommendedMapper;
-import wsg.lol.service.common.MapperExecutor;
+import wsg.lol.service.common.ServiceExecutor;
 import wsg.lol.service.intf.ChampionService;
 import wsg.lol.service.intf.CollectionService;
 
@@ -69,7 +69,7 @@ public class ChampionServiceImpl implements ChampionService {
         logger.info("Updating the champions.");
         List<ChampionDto> championDtoList = new ArrayList<>(championExtDtoList);
         List<ChampionDo> championDoList = ObjectTransfer.transferDtoList(championDtoList, ChampionDo.class);
-        MapperExecutor.updateStatic(championMapper, championDoList).assertSuccess();
+        ServiceExecutor.updateStatic(championMapper, championDoList).assertSuccess();
 
         logger.info("Updating the images of champions.");
         List<ImageDto> imageDtoList = new ArrayList<>();
@@ -90,7 +90,7 @@ public class ChampionServiceImpl implements ChampionService {
             }
             skinDoList.addAll(skins);
         }
-        MapperExecutor.updateStatic(skinMapper, skinDoList).assertSuccess();
+        ServiceExecutor.updateStatic(skinMapper, skinDoList).assertSuccess();
 
         logger.info("Updating the tips of champions.");
         List<ChampionTipDo> championTipDoList = new ArrayList<>();
@@ -111,7 +111,7 @@ public class ChampionServiceImpl implements ChampionService {
                 championTipDoList.add(championTipDo);
             }
         }
-        MapperExecutor.updateStatic(championTipMapper, championTipDoList).assertSuccess();
+        ServiceExecutor.updateStatic(championTipMapper, championTipDoList).assertSuccess();
 
         logger.info("Updating the stats of champions.");
         List<ChampionStatsDo> statsDoList = new ArrayList<>();
@@ -120,7 +120,7 @@ public class ChampionServiceImpl implements ChampionService {
             stats.setChampionId(championExtDto.getId());
             statsDoList.add(stats);
         }
-        MapperExecutor.updateStatic(championStatsMapper, statsDoList).assertSuccess();
+        ServiceExecutor.updateStatic(championStatsMapper, statsDoList).assertSuccess();
 
         logger.info("Updating the spells of champions.");
         List<SpellDo> spellDoList = new ArrayList<>();
@@ -178,8 +178,8 @@ public class ChampionServiceImpl implements ChampionService {
                 }
             }
         }
-        MapperExecutor.updateStatic(recommendedMapper, recommendedDoList).assertSuccess();
-        MapperExecutor.updateStatic(blockMapper, blockDoList).assertSuccess();
+        ServiceExecutor.updateStatic(recommendedMapper, recommendedDoList).assertSuccess();
+        ServiceExecutor.updateStatic(blockMapper, blockDoList).assertSuccess();
 
         logger.info("Succeed in updating the data of champions.");
         return ResultUtils.success();
@@ -223,7 +223,7 @@ public class ChampionServiceImpl implements ChampionService {
             logger.info("Deleted " + count + " spells of " + num);
         }
 
-        return MapperExecutor.insertList(spellMapper, spells);
+        return ServiceExecutor.insertList(spellMapper, spells);
     }
 
     @Autowired

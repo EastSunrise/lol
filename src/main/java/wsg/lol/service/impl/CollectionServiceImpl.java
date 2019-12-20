@@ -21,7 +21,7 @@ import wsg.lol.dao.mybatis.mapper.lol.item.ItemStatsMapper;
 import wsg.lol.dao.mybatis.mapper.lol.rune.RuneMapper;
 import wsg.lol.dao.mybatis.mapper.lol.rune.RuneTreeMapper;
 import wsg.lol.dao.mybatis.mapper.lol.system.ImageMapper;
-import wsg.lol.service.common.MapperExecutor;
+import wsg.lol.service.common.ServiceExecutor;
 import wsg.lol.service.intf.CollectionService;
 
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class CollectionServiceImpl implements CollectionService {
 
         logger.info("Updating the items.");
         List<ItemDo> items = ObjectTransfer.transferDtoList(new ArrayList<>(itemExtDtoList), ItemDo.class);
-        MapperExecutor.updateStatic(itemMapper, items).assertSuccess();
+        ServiceExecutor.updateStatic(itemMapper, items).assertSuccess();
 
         logger.info("Updating the stats of items.");
         List<ItemStatsDo> itemStatsDoList = new ArrayList<>();
@@ -66,7 +66,7 @@ public class CollectionServiceImpl implements CollectionService {
             statsDo.setItemId(itemExtDto.getId());
             itemStatsDoList.add(statsDo);
         }
-        MapperExecutor.updateStatic(itemStatsMapper, itemStatsDoList).assertSuccess();
+        ServiceExecutor.updateStatic(itemStatsMapper, itemStatsDoList).assertSuccess();
 
         logger.info("Updating the images of items.");
         List<ImageDto> imageDtoList = new ArrayList<>();
@@ -90,14 +90,14 @@ public class CollectionServiceImpl implements CollectionService {
 
         logger.info("Updating the rune trees.");
         List<RuneTreeDo> runeTreeDoList = ObjectTransfer.transferDtoList(new ArrayList<>(runeExtDtoList), RuneTreeDo.class);
-        MapperExecutor.updateStatic(runeTreeMapper, runeTreeDoList).assertSuccess();
+        ServiceExecutor.updateStatic(runeTreeMapper, runeTreeDoList).assertSuccess();
 
         logger.info("Updating the runes.");
         List<RuneDo> runeDoList = new ArrayList<>();
         for (RuneExtDto runeExtDto : runeExtDtoList) {
             runeDoList.addAll(runeExtDto.getRunes());
         }
-        MapperExecutor.updateStatic(runeMapper, runeDoList).assertSuccess();
+        ServiceExecutor.updateStatic(runeMapper, runeDoList).assertSuccess();
 
         logger.info("Succeed in updating the data of runes.");
         return ResultUtils.success();
@@ -153,7 +153,7 @@ public class CollectionServiceImpl implements CollectionService {
             logger.info("Deleted " + count + " images of " + group);
         }
 
-        MapperExecutor.insertList(imageMapper, ObjectTransfer.transferDtoList(images, ImageDo.class)).assertSuccess();
+        ServiceExecutor.insertList(imageMapper, ObjectTransfer.transferDtoList(images, ImageDo.class)).assertSuccess();
         return ResultUtils.success();
     }
 

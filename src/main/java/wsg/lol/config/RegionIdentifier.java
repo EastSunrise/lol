@@ -1,6 +1,7 @@
 package wsg.lol.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import wsg.lol.common.enums.system.RegionEnum;
 
@@ -25,7 +26,7 @@ public class RegionIdentifier {
     }
 
     @Autowired
-    public void setApiConfig(ApiConfig apiConfig) {
-        DEFAULT_REGION = apiConfig.getRegion();
+    public void setDefaultRegion(@Value("${api.region}") RegionEnum region) {
+        DEFAULT_REGION = region;
     }
 }

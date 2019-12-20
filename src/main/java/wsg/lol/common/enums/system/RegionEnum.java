@@ -75,4 +75,6 @@ public enum RegionEnum implements EqualsToSerializable<String> {
         private static final Locale RUSSIA = new Locale("ru", "RU");
         private static final Locale TURKEY = new Locale("tr", "TR");
     }
+
+
 }

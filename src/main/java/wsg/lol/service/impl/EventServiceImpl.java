@@ -1,6 +1,5 @@
 package wsg.lol.service.impl;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
@@ -18,8 +17,11 @@ import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.pojo.domain.system.EventDo;
+import wsg.lol.common.util.PageUtils;
 import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.mybatis.common.mapper.EventMapper;
+import wsg.lol.service.common.ServiceExecutor;
+import wsg.lol.service.common.ServiceTask;
 import wsg.lol.service.event.EventHandler;
 import wsg.lol.service.intf.EventService;
 
@@ -46,11 +48,7 @@ public class EventServiceImpl implements EventService {
         criteria.andEqualTo("status", EventStatusEnum.Unfinished);
 
         EventMapper<? extends EventDo> mapper = applicationContext.getBean(eventType.getMapperClass());
-        List<? extends EventDo> events = mapper.selectByExampleAndRowBounds(example, rowBounds);
-        if (CollectionUtils.isEmpty(events)) {
-            logger.info("No events got.");
-            return GenericResult.create(0);
-        }
+        List<? extends EventDo> events = ServiceExecutor.retryUntilNotEmpty((ServiceTask<EventDo>) () -> mapper.selectByExampleAndRowBounds(example, PageUtils.DEFAULT_PAGE)).getList();
         logger.info("Got {} events of {}. Handling...", events.size(), eventType);
 
         EventHandler eventHandler = applicationContext.getBean(eventType.getHandlerClass());

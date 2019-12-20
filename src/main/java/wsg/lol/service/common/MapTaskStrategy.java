@@ -1,4 +1,4 @@
-package wsg.lol.common.task;
+package wsg.lol.service.common;
 
 import wsg.lol.common.base.Result;
 

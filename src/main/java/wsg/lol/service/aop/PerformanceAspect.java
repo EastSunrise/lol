@@ -23,14 +23,9 @@ public class PerformanceAspect {
     private void performance() {}
 
     @Around("performance()")
-    public Object doAroundAdvice(ProceedingJoinPoint joinPoint) {
+    public Object doAroundAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
-        Object result = null;
-        try {
-            result = joinPoint.proceed();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
+        Object result = joinPoint.proceed();
         long time = System.currentTimeMillis() - start;
         logger.info("{}.{} cost {} ms.", joinPoint.getTarget().getClass().getName(), joinPoint.getSignature().getName(), time);
         return result;

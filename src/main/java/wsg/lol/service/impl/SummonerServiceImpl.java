@@ -31,8 +31,8 @@ import wsg.lol.dao.api.impl.SummonerV4;
 import wsg.lol.dao.mybatis.mapper.region.summoner.ChampionMasteryMapper;
 import wsg.lol.dao.mybatis.mapper.region.summoner.LeagueEntryMapper;
 import wsg.lol.dao.mybatis.mapper.region.summoner.SummonerMapper;
-import wsg.lol.service.common.MapperExecutor;
 import wsg.lol.service.common.PriorityUtils;
+import wsg.lol.service.common.ServiceExecutor;
 import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.SummonerService;
 
@@ -76,11 +76,11 @@ public class SummonerServiceImpl implements SummonerService {
 
                 logger.info("Updating champion masteries of {}...", summonerId);
                 List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
-                MapperExecutor.replaceList(championMasteryMapper, ObjectTransfer.transferDtoList(championMasteries, ChampionMasteryDo.class)).assertSuccess();
+                ServiceExecutor.replaceList(championMasteryMapper, ObjectTransfer.transferDtoList(championMasteries, ChampionMasteryDo.class)).assertSuccess();
 
                 logger.info("Updating league entries of {}...", summonerId);
                 List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
-                MapperExecutor.replaceList(leagueEntryMapper, ObjectTransfer.transferDtoList(entries, LeagueEntryDo.class)).assertSuccess();
+                ServiceExecutor.replaceList(leagueEntryMapper, ObjectTransfer.transferDtoList(entries, LeagueEntryDo.class)).assertSuccess();
 
                 SummonerDto summoner = summonerV4.getSummonerById(summonerId);
                 SummonerDo summonerDo = ObjectTransfer.transferDto(summoner, SummonerDo.class);

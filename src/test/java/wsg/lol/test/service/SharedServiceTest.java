@@ -28,36 +28,27 @@ public class SharedServiceTest extends BaseTest {
 
     @Test
     public void getFeaturedGames() {
-        testShared(v -> sharedService.getFeaturedGames(), v -> {
-            sharedService.updateFeaturedGames();
-            return null;
-        });
+        testShared(() -> sharedService.getFeaturedGames(), () -> sharedService.updateFeaturedGames());
     }
 
     @Test
     public void getShardStatus() {
-        testShared(v -> sharedService.getShardStatus(), v -> {
-            sharedService.updateShardStatus();
-            return null;
-        });
+        testShared(() -> sharedService.getShardStatus(), () -> sharedService.updateShardStatus());
     }
 
     @Test
     public void getChampionRotation() {
-        testShared(aVoid -> sharedService.getChampionRotation(), aVoid -> {
-            sharedService.updateChampionRotation();
-            return null;
-        });
+        testShared(() -> sharedService.getChampionRotation(), () -> sharedService.updateChampionRotation());
     }
 
-    protected void testShared(Task<Void> getTask, Task<Void> updateTask) {
+    protected void testShared(NoneTask getTask, VoidTask updateTask) {
         System.out.println("Get first.");
-        Assert.assertNotNull(getTask.run(null));
+        Assert.assertNotNull(getTask.run());
         System.out.println("Get second.");
-        Assert.assertNotNull(getTask.run(null));
+        Assert.assertNotNull(getTask.run());
         System.out.println("Update.");
-        updateTask.run(null);
+        updateTask.run();
         System.out.println("Get third.");
-        Assert.assertNotNull(getTask.run(null));
+        Assert.assertNotNull(getTask.run());
     }
 }

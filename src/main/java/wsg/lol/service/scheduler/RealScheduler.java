@@ -1,4 +1,4 @@
-package wsg.lol.scheduler;
+package wsg.lol.service.scheduler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 import wsg.lol.common.util.PageUtils;
+import wsg.lol.service.common.ServiceExecutor;
 import wsg.lol.service.intf.SummonerService;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class RealScheduler {
     @Scheduled(cron = "${cron.update.summoner}")
     public void updateSummoners() {
         logger.info("Getting summoners for update...");
-        List<SummonerDto> summoners = summonerService.getSummonersForUpdate(PageUtils.DEFAULT_PAGE).getList();
+        List<? extends SummonerDto> summoners = ServiceExecutor.retryUntilNotEmpty(() -> summonerService.getSummonersForUpdate(PageUtils.DEFAULT_PAGE).getList()).getList();
         logger.info("Got {} summoners for update. Handling...", summoners.size());
 
         int success = 0;
@@ -56,7 +57,7 @@ public class RealScheduler {
     @Scheduled(fixedDelay = 1)
     public void updateMatches() throws AppException {
         logger.info("Getting summoners for match...");
-        List<SummonerDto> summoners = summonerService.getSummonersForMatch(PageUtils.DEFAULT_PAGE).getList();
+        List<? extends SummonerDto> summoners = ServiceExecutor.retryUntilNotEmpty(() -> summonerService.getSummonersForMatch(PageUtils.DEFAULT_PAGE).getList()).getList();
         logger.info("Got {} summoners for match. Handling...", summoners.size());
 
         int success = 0;

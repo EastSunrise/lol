@@ -1,6 +1,5 @@
 package wsg.lol.service.aop;
 
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -15,7 +14,6 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 import wsg.lol.common.annotation.AssignApi;
-import wsg.lol.config.ApiIdentifier;
 import wsg.lol.dao.api.client.ApiClient;
 
 import java.lang.reflect.Method;
@@ -37,32 +35,19 @@ public class AssignApiAspect {
     public void assignApi() { }
 
     @Around(value = "assignApi() && @annotation(source)")
-    public Object doAroundAdvice(ProceedingJoinPoint joinPoint, AssignApi source) {
+    public Object doAroundAdvice(ProceedingJoinPoint joinPoint, AssignApi source) throws Throwable {
         String username = getUsername(joinPoint, source);
-        String from = ApiIdentifier.getApi();
-        logger.info("Using the api under {} instead of {}...", username, from);
-        ApiIdentifier.setApi(username);
-        Object result = null;
-        try {
-            result = joinPoint.proceed();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
-        ApiIdentifier.setApi(from);
-        logger.info("Reuse the api under {} back from {}.", from, username);
-        return result;
+        apiClient.checkEncrypt(username);
+        return joinPoint.proceed();
     }
 
     /**
      * Get the username by parsing spring expression language.
      *
-     * @return choose from {@link ApiClient#getUsername()} ()} if not specified.
+     * @return null if not specified.
      */
     private String getUsername(ProceedingJoinPoint joinPoint, AssignApi source) {
         String username = source.encryptUsername();
-        if (StringUtils.isBlank(username)) {
-            return apiClient.getUsername();
-        }
 
         Object[] args = joinPoint.getArgs();
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();

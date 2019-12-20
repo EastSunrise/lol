@@ -12,33 +12,28 @@ import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.config.RegionIdentifier;
 
 /**
- * Aspect to change the datasource.
+ * Aspect to change the region.
  *
  * @author Kingen
  */
 @Aspect
 @Component
-public class DatasourceAspect {
+public class RegionAspect {
 
-    private static final Logger logger = LoggerFactory.getLogger(DatasourceAspect.class);
+    private static final Logger logger = LoggerFactory.getLogger(RegionAspect.class);
 
     @Pointcut("@annotation(wsg.lol.common.annotation.Platform)")
-    private void datasource() {}
+    private void region() {}
 
-    @Around(value = "datasource() && @annotation(source)")
-    public Object doAroundAdvice(ProceedingJoinPoint joinPoint, Platform source) {
+    @Around(value = "region() && @annotation(source)")
+    public Object doAroundAdvice(ProceedingJoinPoint joinPoint, Platform source) throws Throwable {
         RegionEnum region = source.platform();
         RegionEnum from = RegionIdentifier.getRegion();
-        logger.info("Switching the datasource from {} to {}...", from, region);
+        logger.info("Switching the region from {} to {}...", from, region);
         RegionIdentifier.setPlatform(region);
-        Object result = null;
-        try {
-            result = joinPoint.proceed();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
+        Object result = joinPoint.proceed();
         RegionIdentifier.setPlatform(from);
-        logger.info("Switch the datasource back from {} to {}.", region, from);
+        logger.info("Switch the region back from {} to {}.", region, from);
         return result;
     }
 }

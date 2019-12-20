@@ -145,8 +145,8 @@ public class BaseApi {
         while (true) {
             CloseableHttpResponse response = null;
             try {
-                String token = apiClient.getToken();
-                urlStr = format + token;
+                ApiClient.Token token = apiClient.getToken();
+                urlStr = format + token.getKey();
                 HttpGet httpGet = setRequest(new HttpGet(urlStr));
                 httpGet.addHeader(HttpHeaders.HOST, RegionIdentifier.getRegion().getHost());
 

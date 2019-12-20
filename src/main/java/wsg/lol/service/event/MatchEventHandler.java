@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wsg.lol.common.annotation.AssignApi;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
@@ -16,10 +15,10 @@ import wsg.lol.common.pojo.domain.system.EventDo;
 import wsg.lol.common.pojo.dto.match.*;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
 import wsg.lol.common.util.ResultUtils;
-import wsg.lol.config.ApiIdentifier;
+import wsg.lol.dao.api.client.ApiClient;
 import wsg.lol.dao.api.impl.MatchV4;
 import wsg.lol.dao.mybatis.mapper.region.match.*;
-import wsg.lol.service.common.MapperExecutor;
+import wsg.lol.service.common.ServiceExecutor;
 import wsg.lol.service.intf.EventService;
 
 import java.util.ArrayList;
@@ -53,9 +52,10 @@ public class MatchEventHandler implements EventHandler {
 
     private EventService eventService;
 
+    private ApiClient apiClient;
+
     @Override
     @Transactional
-    @AssignApi
     public Result handle(EventDo event) {
         long gameId = Long.parseLong(event.getContext());
         logger.info("Adding the match {}.", gameId);
@@ -74,7 +74,7 @@ public class MatchEventHandler implements EventHandler {
                 frameDoList.add(frameDo);
             }
         }
-        MapperExecutor.insertList(matchFrameMapper, frameDoList).assertSuccess();
+        ServiceExecutor.insertList(matchFrameMapper, frameDoList).assertSuccess();
 
         logger.info("Adding stats of teams in the match {}...", gameId);
         List<TeamStatsDo> teams = new ArrayList<>();
@@ -84,7 +84,7 @@ public class MatchEventHandler implements EventHandler {
             teamStatsDo.setGameId(gameId);
             teams.add(teamStatsDo);
         }
-        MapperExecutor.insertList(teamStatsMapper, teams).assertSuccess();
+        ServiceExecutor.insertList(teamStatsMapper, teams).assertSuccess();
 
         logger.info("Adding participants of the match {}...", gameId);
         List<ParticipantDo> participants = new ArrayList<>();
@@ -119,10 +119,10 @@ public class MatchEventHandler implements EventHandler {
 
             num2Stats.put(num, ObjectTransfer.transferDto(participantDto.getStats(), ParticipantStatsDo.class));
 
-            events.put(participantDo.getSummonerId(), ApiIdentifier.getApi());
+            events.put(participantDo.getSummonerId(), apiClient.getUsername());
         }
         eventService.insertEvents(EventTypeEnum.Summoner, events).assertSuccess();
-        MapperExecutor.insertList(participantMapper, participants).assertSuccess();
+        ServiceExecutor.insertList(participantMapper, participants).assertSuccess();
 
         logger.info("Adding stats of participants in the match {}...", gameId);
         Map<Integer, Long> num2Id = new HashMap<>();
@@ -132,7 +132,7 @@ public class MatchEventHandler implements EventHandler {
         for (Map.Entry<Integer, ParticipantStatsDo> entry : num2Stats.entrySet()) {
             entry.getValue().setParticipantId(num2Id.get(entry.getKey()));
         }
-        MapperExecutor.insertList(participantStatsMapper, new ArrayList<>(num2Stats.values())).assertSuccess();
+        ServiceExecutor.insertList(participantStatsMapper, new ArrayList<>(num2Stats.values())).assertSuccess();
 
         logger.info("Adding frames of participants in the match {}...", gameId);
         List<ParticipantFrameDo> participantFrames = new ArrayList<>();
@@ -147,7 +147,7 @@ public class MatchEventHandler implements EventHandler {
                 participantFrames.add(participantFrameDo);
             }
         }
-        MapperExecutor.insertList(participantFrameMapper, participantFrames).assertSuccess();
+        ServiceExecutor.insertList(participantFrameMapper, participantFrames).assertSuccess();
 
         MatchDo matchDo = ObjectTransfer.transferDto(matchExtDto, MatchDo.class);
         matchDo.setFrameInterval(timelineDto.getFrameInterval());
@@ -161,6 +161,11 @@ public class MatchEventHandler implements EventHandler {
 
         logger.info("Added the match {}.", gameId);
         return ResultUtils.success();
+    }
+
+    @Autowired
+    public void setApiClient(ApiClient apiClient) {
+        this.apiClient = apiClient;
     }
 
     @Autowired

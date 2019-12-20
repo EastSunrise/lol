@@ -40,4 +40,12 @@ public class BaseTest implements InitializingBean {
     protected interface Task<T> {
         Result run(T t);
     }
+
+    protected interface NoneTask {
+        Result run();
+    }
+
+    protected interface VoidTask {
+        void run();
+    }
 }

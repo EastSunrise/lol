@@ -10,7 +10,6 @@ import wsg.lol.common.enums.summoner.DivisionEnum;
 import wsg.lol.common.enums.summoner.TierEnum;
 import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
-import wsg.lol.config.ApiIdentifier;
 import wsg.lol.config.DragonConfig;
 import wsg.lol.config.RegionIdentifier;
 import wsg.lol.dao.api.client.ApiClient;
@@ -73,13 +72,11 @@ public class InitialTest extends BaseTest {
                 for (DivisionEnum division : DivisionEnum.validDivisions(tier)) {
                     int max = pages[index++];
                     for (int page = 1; page <= max; page++) {
-                        String username = apiClient.getUsername();
-                        ApiIdentifier.setApi(username);
                         List<LeagueEntryDto> leagueEntryDtoList = leagueV4.getLeagueEntriesExp(RankQueueEnum.RANKED_SOLO_5x5, tier, division, page);
                         if (leagueEntryDtoList == null || leagueEntryDtoList.isEmpty())
                             break;
                         for (LeagueEntryDto leagueEntryDto : leagueEntryDtoList) {
-                            summoners.add(leagueEntryDto.getSummonerId() + "," + username + "," + leagueEntryDto.getSummonerName());
+                            summoners.add(leagueEntryDto.getSummonerId() + "," + apiClient.getUsername() + "," + leagueEntryDto.getSummonerName());
                         }
                     }
                 }

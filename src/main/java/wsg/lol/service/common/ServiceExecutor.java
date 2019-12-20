@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import tk.mybatis.mapper.additional.insert.InsertListMapper;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.BaseDo;
+import wsg.lol.common.base.ListResult;
 import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.util.ResultUtils;
@@ -20,9 +21,9 @@ import java.util.List;
  *
  * @author Kingen
  */
-public class MapperExecutor {
+public class ServiceExecutor {
 
-    private static final Logger logger = LoggerFactory.getLogger(MapperExecutor.class);
+    private static final Logger logger = LoggerFactory.getLogger(ServiceExecutor.class);
 
     public static <T extends BaseDo> Result updateStatic(StaticMapper<T> mapper, List<T> data) {
         if (CollectionUtils.isEmpty(data)) {
@@ -71,5 +72,19 @@ public class MapperExecutor {
         }
         logger.info("{} replaced.", count);
         return ResultUtils.success();
+    }
+
+    public static <T> ListResult<? extends T> retryUntilNotEmpty(ServiceTask<T> task) {
+        for (long millis = 1000; ; millis *= 2) {
+            List<? extends T> ts = task.run();
+            if (CollectionUtils.isNotEmpty(ts)) {
+                return ListResult.create(ts);
+            }
+            try {
+                Thread.sleep(millis);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

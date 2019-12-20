@@ -8,42 +8,55 @@ dragon:
   directory: D:/lol
 # api config
 api:
+  rate: 0.833333
   region: JP
-  single:
-    username: knightmare2094
-    region: NA
-    key: RGAPI-36f43295-1925-4af9-9ca0-f7c88007d521
+  regions:
+    LOL: knightmare2094
+    BR: Kingen4391
+    EUNE: Kingen4392
+    EUW: Kingen4393
+    JP: knightmare2094
+    KR: Kingen4395
+    LA1: Kingen4396
+    LA2: Kingen4397
+    NA: Kingen4398
+    OC1: Kingen4399
+    RU: Kingen4400
+    TR: Kingen4401
   tokens:
-    - username: Kingen4391
+    knightmare2094:
+      region: NA
+      key: RGAPI-002184bb-1d14-401a-a0d2-c13cbbde81a7
+    Kingen4391:
       region: BR
       key: RGAPI-febd42d7-7bd2-4994-8ed6-ea7dfa1471e6
-    - username: Kingen4392
-      region: ENUE
+    Kingen4392:
+      region: EUNE
       key: RGAPI-bfde40bc-31cd-4f28-a37d-79a95a647ee7
-    - username: Kingen4393
+    Kingen4393:
       region: EUW
       key: RGAPI-50af8b8b-22f2-4913-95b6-c6401cda1c6e
-    - username: Kingen4394
+    Kingen4394:
       region: JP
       key:
-    - username: Kingen4395
+    Kingen4395:
       region: NA
       key: RGAPI-7e783741-a209-469e-a144-38f26ab9bf9b
-    - username: Kingen4396
-      region: OCE
+    Kingen4396:
+      region: OC1
       key: RGAPI-1300ad3d-32bc-4fec-a4a6-3df292582c2b
-    - username: Kingen4397
+    Kingen4397:
       region: NA
       key: RGAPI-63563884-5c6a-494e-ab68-f9c939798213
-    - username: Kingen4398
+    Kingen4398:
       region: NA
       key: RGAPI-48fa2c75-f74a-4675-9267-d722d6328f09
-    - username: Kingen4399
-      region: OCE
+    Kingen4399:
+      region: OC1
       key: RGAPI-601b4bf0-6884-4bb6-8e6c-ac6c7cd9dd12
-    - username: Kingen4400
+    Kingen4400:
       region: RU
       key: RGAPI-f8744b89-6f8f-4ae3-9d01-5eb31cfd6a02
-    - username: Kingen4401
+    Kingen4401:
       region: TR
       key: RGAPI-4c3c019f-e84f-4bd1-9d81-1f766938333c
