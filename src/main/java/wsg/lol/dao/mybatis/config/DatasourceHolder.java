@@ -1,6 +1,5 @@
 package wsg.lol.dao.mybatis.config;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import wsg.lol.common.enums.system.RegionEnum;
 
@@ -27,13 +26,12 @@ class DatasourceHolder {
             public void run() {
                 DatasourceHolder.getInstance().clearIdleDatasource();
             }
-        }, 10000L, DateUtils.MILLIS_PER_MINUTE);
+        }, 10000L, 60000L);
     }
 
     private Map<RegionEnum, DatasourceTimer> regionTimerMap = new HashMap<>();
 
     private DatasourceHolder() {
-
     }
 
     /*

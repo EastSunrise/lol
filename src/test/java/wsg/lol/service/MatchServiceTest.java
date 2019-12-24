@@ -1,8 +1,8 @@
-package wsg.lol.test.service;
+package wsg.lol.service;
 
 import org.junit.After;
 import org.junit.Before;
-import wsg.lol.test.base.BaseTest;
+import wsg.lol.base.BaseTest;
 
 /**
  * Test for match service.

@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "i_item")
+@Table(name = "i_item")
 public class ItemDo extends BaseDo {
 
     @Id

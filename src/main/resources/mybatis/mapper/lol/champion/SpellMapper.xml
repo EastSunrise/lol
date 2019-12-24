@@ -3,7 +3,7 @@
 <mapper namespace="wsg.lol.dao.mybatis.mapper.lol.champion.SpellMapper">
     <delete id="deleteByNum">
         delete
-        from lol.c_spell
+        from c_spell
         where num = #{num}
     </delete>
 </mapper>

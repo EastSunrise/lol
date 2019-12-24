@@ -1,27 +1,23 @@
 package wsg.lol.service.impl;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wsg.lol.common.annotation.Platform;
-import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.share.ImageGroupEnum;
 import wsg.lol.common.pojo.domain.item.*;
 import wsg.lol.common.pojo.dto.item.ImageDto;
 import wsg.lol.common.pojo.dto.item.ItemExtDto;
 import wsg.lol.common.pojo.dto.item.RuneExtDto;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
-import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.mybatis.mapper.lol.item.ItemMapper;
 import wsg.lol.dao.mybatis.mapper.lol.item.ItemStatsMapper;
 import wsg.lol.dao.mybatis.mapper.lol.rune.RuneMapper;
 import wsg.lol.dao.mybatis.mapper.lol.rune.RuneTreeMapper;
 import wsg.lol.dao.mybatis.mapper.lol.system.ImageMapper;
-import wsg.lol.service.common.ServiceExecutor;
+import wsg.lol.service.base.BaseService;
 import wsg.lol.service.intf.CollectionService;
 
 import java.util.ArrayList;
@@ -32,7 +28,7 @@ import java.util.Map;
  * @author Kingen
  */
 @Service
-public class CollectionServiceImpl implements CollectionService {
+public class CollectionServiceImpl extends BaseService implements CollectionService {
 
     private static final Logger logger = LoggerFactory.getLogger(CollectionService.class);
 
@@ -49,15 +45,15 @@ public class CollectionServiceImpl implements CollectionService {
     private ImageMapper imageMapper;
 
     @Override
-    @Platform
     @Transactional
-    public Result updateItems(String version) {
+    public void updateItems(String version) {
         logger.info("Updating the data of items.");
         List<ItemExtDto> itemExtDtoList = dragonDao.readItems(version);
 
         logger.info("Updating the items.");
         List<ItemDo> items = ObjectTransfer.transferDtoList(new ArrayList<>(itemExtDtoList), ItemDo.class);
-        ServiceExecutor.updateStatic(itemMapper, items).assertSuccess();
+        clear(itemMapper);
+        insertList(itemMapper, items);
 
         logger.info("Updating the stats of items.");
         List<ItemStatsDo> itemStatsDoList = new ArrayList<>();
@@ -66,7 +62,8 @@ public class CollectionServiceImpl implements CollectionService {
             statsDo.setItemId(itemExtDto.getId());
             itemStatsDoList.add(statsDo);
         }
-        ServiceExecutor.updateStatic(itemStatsMapper, itemStatsDoList).assertSuccess();
+        clear(itemStatsMapper);
+        insertList(itemStatsMapper, itemStatsDoList);
 
         logger.info("Updating the images of items.");
         List<ImageDto> imageDtoList = new ArrayList<>();
@@ -75,38 +72,36 @@ public class CollectionServiceImpl implements CollectionService {
             image.setRelatedId(itemExtDto.getId());
             imageDtoList.add(image);
         }
-        updateImages(imageDtoList, ImageGroupEnum.Item).assertSuccess();
+        updateImages(imageDtoList, ImageGroupEnum.Item);
 
         logger.info("Succeed in updating the data of items.");
-        return ResultUtils.success();
     }
 
     @Override
-    @Platform
     @Transactional
-    public Result updateRunes(String version) {
+    public void updateRunes(String version) {
         logger.info("Updating the data of runes.");
         List<RuneExtDto> runeExtDtoList = dragonDao.readRunes(version);
 
         logger.info("Updating the rune trees.");
         List<RuneTreeDo> runeTreeDoList = ObjectTransfer.transferDtoList(new ArrayList<>(runeExtDtoList), RuneTreeDo.class);
-        ServiceExecutor.updateStatic(runeTreeMapper, runeTreeDoList).assertSuccess();
+        clear(runeTreeMapper);
+        insertList(runeTreeMapper, runeTreeDoList);
 
         logger.info("Updating the runes.");
         List<RuneDo> runeDoList = new ArrayList<>();
         for (RuneExtDto runeExtDto : runeExtDtoList) {
             runeDoList.addAll(runeExtDto.getRunes());
         }
-        ServiceExecutor.updateStatic(runeMapper, runeDoList).assertSuccess();
+        clear(runeMapper);
+        insertList(runeMapper, runeDoList);
 
         logger.info("Succeed in updating the data of runes.");
-        return ResultUtils.success();
     }
 
     @Override
-    @Platform
     @Transactional
-    public Result updateMaps(String version) {
+    public void updateMaps(String version) {
         logger.info("Updating the images of maps.");
         Map<Integer, ImageDto> map = dragonDao.readMaps(version);
         List<ImageDto> images = new ArrayList<>();
@@ -115,15 +110,13 @@ public class CollectionServiceImpl implements CollectionService {
             image.setRelatedId(entry.getKey());
             images.add(image);
         }
-        updateImages(images, ImageGroupEnum.Map).assertSuccess();
+        updateImages(images, ImageGroupEnum.Map);
         logger.info("Succeed in updating the data of maps.");
-        return ResultUtils.success();
     }
 
     @Override
-    @Platform
     @Transactional
-    public Result updateProfileIcons(String version) {
+    public void updateProfileIcons(String version) {
         logger.info("Updating the images of profile icons.");
         Map<Integer, ImageDto> map = dragonDao.readProfileIcons(version);
         List<ImageDto> images = new ArrayList<>();
@@ -132,29 +125,21 @@ public class CollectionServiceImpl implements CollectionService {
             image.setRelatedId(entry.getKey());
             images.add(image);
         }
-        updateImages(images, ImageGroupEnum.ProfileIcon).assertSuccess();
+        updateImages(images, ImageGroupEnum.ProfileIcon);
 
         logger.info("Succeed in updating the data of profile icons.");
-        return ResultUtils.success();
     }
 
     @Override
-    @Platform
     @Transactional
-    public Result updateImages(List<ImageDto> images, ImageGroupEnum... groups) {
-        if (CollectionUtils.isEmpty(images)) {
-            logger.info("Images is empty. Nothing updated.");
-            return ResultUtils.success();
-        }
-
+    public void updateImages(List<ImageDto> images, ImageGroupEnum... groups) {
         int count;
         for (ImageGroupEnum group : groups) {
             count = imageMapper.deleteByGroup(group);
             logger.info("Deleted " + count + " images of " + group);
         }
 
-        ServiceExecutor.insertList(imageMapper, ObjectTransfer.transferDtoList(images, ImageDo.class)).assertSuccess();
-        return ResultUtils.success();
+        insertList(imageMapper, ObjectTransfer.transferDtoList(images, ImageDo.class));
     }
 
     @Autowired

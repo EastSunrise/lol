@@ -20,7 +20,7 @@ public class SummonerController {
     @GetMapping
     @ResponseBody
     public SummonerDto getScore(String name) {
-        return summonerService.getSummonersByName(name).getObject();
+        return summonerService.getSummonersByName(name);
     }
 
     @Autowired

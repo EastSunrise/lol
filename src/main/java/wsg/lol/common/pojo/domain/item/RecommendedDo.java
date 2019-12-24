@@ -18,7 +18,7 @@ import javax.persistence.Table;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "ct_recommended")
+@Table(name = "ct_recommended")
 public class RecommendedDo extends BaseDo {
 
     @Id

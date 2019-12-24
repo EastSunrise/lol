@@ -48,7 +48,4 @@ public class SummonerDo extends BaseDo {
 
     @Column
     private Date lastMatch;
-
-    @Column
-    private String encryptUsername;
 }

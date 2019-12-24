@@ -17,7 +17,7 @@ import javax.persistence.Table;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "t_image")
+@Table(name = "t_image")
 public class ImageDo extends BaseDo {
 
     @Id

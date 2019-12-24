@@ -5,20 +5,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wsg.lol.common.base.AppException;
-import wsg.lol.common.base.Result;
-import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.pojo.domain.match.*;
 import wsg.lol.common.pojo.domain.system.EventDo;
 import wsg.lol.common.pojo.dto.match.*;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
-import wsg.lol.common.util.ResultUtils;
-import wsg.lol.dao.api.client.ApiClient;
 import wsg.lol.dao.api.impl.MatchV4;
 import wsg.lol.dao.mybatis.mapper.region.match.*;
-import wsg.lol.service.common.ServiceExecutor;
+import wsg.lol.service.base.BaseService;
 import wsg.lol.service.intf.EventService;
 
 import java.util.ArrayList;
@@ -32,7 +27,7 @@ import java.util.Map;
  * @author Kingen
  */
 @Service("MatchEventHandler")
-public class MatchEventHandler implements EventHandler {
+public class MatchEventHandler extends BaseService implements EventHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(MatchEventHandler.class);
 
@@ -52,11 +47,9 @@ public class MatchEventHandler implements EventHandler {
 
     private EventService eventService;
 
-    private ApiClient apiClient;
-
     @Override
     @Transactional
-    public Result handle(EventDo event) {
+    public void handle(EventDo event) {
         long gameId = Long.parseLong(event.getContext());
         logger.info("Adding the match {}.", gameId);
         MatchExtDto matchExtDto = matchV4.getMatchById(gameId);
@@ -74,7 +67,7 @@ public class MatchEventHandler implements EventHandler {
                 frameDoList.add(frameDo);
             }
         }
-        ServiceExecutor.insertList(matchFrameMapper, frameDoList).assertSuccess();
+        insertList(matchFrameMapper, frameDoList);
 
         logger.info("Adding stats of teams in the match {}...", gameId);
         List<TeamStatsDo> teams = new ArrayList<>();
@@ -84,7 +77,7 @@ public class MatchEventHandler implements EventHandler {
             teamStatsDo.setGameId(gameId);
             teams.add(teamStatsDo);
         }
-        ServiceExecutor.insertList(teamStatsMapper, teams).assertSuccess();
+        insertList(teamStatsMapper, teams);
 
         logger.info("Adding participants of the match {}...", gameId);
         List<ParticipantDo> participants = new ArrayList<>();
@@ -119,10 +112,10 @@ public class MatchEventHandler implements EventHandler {
 
             num2Stats.put(num, ObjectTransfer.transferDto(participantDto.getStats(), ParticipantStatsDo.class));
 
-            events.put(participantDo.getSummonerId(), apiClient.getUsername());
+            events.put(participantDo.getSummonerId(), String.valueOf(gameId));
         }
-        eventService.insertEvents(EventTypeEnum.Summoner, events).assertSuccess();
-        ServiceExecutor.insertList(participantMapper, participants).assertSuccess();
+        eventService.insertEvents(EventTypeEnum.Summoner, events);
+        insertList(participantMapper, participants);
 
         logger.info("Adding stats of participants in the match {}...", gameId);
         Map<Integer, Long> num2Id = new HashMap<>();
@@ -132,7 +125,7 @@ public class MatchEventHandler implements EventHandler {
         for (Map.Entry<Integer, ParticipantStatsDo> entry : num2Stats.entrySet()) {
             entry.getValue().setParticipantId(num2Id.get(entry.getKey()));
         }
-        ServiceExecutor.insertList(participantStatsMapper, new ArrayList<>(num2Stats.values())).assertSuccess();
+        insertList(participantStatsMapper, new ArrayList<>(num2Stats.values()));
 
         logger.info("Adding frames of participants in the match {}...", gameId);
         List<ParticipantFrameDo> participantFrames = new ArrayList<>();
@@ -147,25 +140,15 @@ public class MatchEventHandler implements EventHandler {
                 participantFrames.add(participantFrameDo);
             }
         }
-        ServiceExecutor.insertList(participantFrameMapper, participantFrames).assertSuccess();
+        insertList(participantFrameMapper, participantFrames);
 
         MatchDo matchDo = ObjectTransfer.transferDto(matchExtDto, MatchDo.class);
         matchDo.setFrameInterval(timelineDto.getFrameInterval());
-        int count = matchMapper.insert(matchDo);
-        if (count != 1) {
-            logger.error("Failed to insert match {}.", matchDo);
-            throw new AppException(ErrorCodeConst.DATABASE_ERROR);
-        }
+        insert(matchMapper, matchDo);
 
-        eventService.updateStatus(EventTypeEnum.Match, gameId, EventStatusEnum.Unfinished, EventStatusEnum.Finished).assertSuccess();
+        eventService.updateStatus(EventTypeEnum.Match, gameId, EventStatusEnum.Unfinished, EventStatusEnum.Finished);
 
         logger.info("Added the match {}.", gameId);
-        return ResultUtils.success();
-    }
-
-    @Autowired
-    public void setApiClient(ApiClient apiClient) {
-        this.apiClient = apiClient;
     }
 
     @Autowired

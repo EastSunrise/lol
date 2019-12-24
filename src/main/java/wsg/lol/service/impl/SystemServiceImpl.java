@@ -4,18 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wsg.lol.common.annotation.Platform;
 import wsg.lol.common.base.AppException;
-import wsg.lol.common.base.GenericResult;
-import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ConfigConst;
 import wsg.lol.common.constant.ErrorCodeConst;
-import wsg.lol.common.enums.system.RegionEnum;
-import wsg.lol.common.result.system.VersionResult;
-import wsg.lol.common.util.ResultUtils;
+import wsg.lol.common.pojo.dto.system.VersionDto;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.dragon.intf.GeneralDao;
 import wsg.lol.dao.mybatis.mapper.lol.system.ConfigMapper;
+import wsg.lol.service.base.BaseService;
 import wsg.lol.service.intf.SystemService;
 
 import java.io.File;
@@ -24,7 +20,7 @@ import java.io.File;
  * @author Kingen
  */
 @Service
-public class SystemServiceImpl implements SystemService {
+public class SystemServiceImpl extends BaseService implements SystemService {
 
     private static final Logger logger = LoggerFactory.getLogger(SystemService.class);
 
@@ -35,34 +31,31 @@ public class SystemServiceImpl implements SystemService {
     private DragonDao dragonDao;
 
     @Override
-    public GenericResult<Boolean> checkCdn(String version) {
+    public boolean checkCdn(String version) {
         String cdnDir = dragonDao.getCdnDir(version);
         boolean exists = new File(cdnDir).exists();
         if (!exists) {
             logger.info("Can't find cdn in {}. Please update the data dragon manually.", cdnDir);
-            return GenericResult.create(false);
+            return false;
         }
-        return GenericResult.create(true);
+        return true;
     }
 
     @Override
-    @Platform
-    public VersionResult getVersion() {
-        VersionResult versionResult = new VersionResult();
-        versionResult.setCurrentVersion(configMapper.getConfigValue(ConfigConst.CURRENT_VERSION, RegionEnum.LOL));
-        versionResult.setLatestVersion(generalDao.getLatestVersion());
-        return versionResult;
+    public VersionDto getVersion() {
+        VersionDto versionDto = new VersionDto();
+        versionDto.setCurrentVersion(configMapper.getConfigValue(ConfigConst.CURRENT_VERSION));
+        versionDto.setLatestVersion(generalDao.getLatestVersion());
+        return versionDto;
     }
 
     @Override
-    @Platform
-    public Result updateVersion(String version) {
-        int count = configMapper.updateConfigValue(RegionEnum.LOL, ConfigConst.CURRENT_VERSION, version);
+    public void updateVersion(String version) {
+        int count = configMapper.updateConfigValue(ConfigConst.CURRENT_VERSION, version);
         if (1 != count) {
             logger.error("Failed to update the version config.");
             throw new AppException(ErrorCodeConst.DATABASE_ERROR);
         }
-        return ResultUtils.success();
     }
 
     @Autowired

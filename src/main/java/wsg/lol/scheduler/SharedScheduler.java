@@ -1,4 +1,4 @@
-package wsg.lol.service.scheduler;
+package wsg.lol.scheduler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,9 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 import wsg.lol.common.base.AppException;
-import wsg.lol.common.base.GenericResult;
-import wsg.lol.common.result.system.VersionResult;
-import wsg.lol.common.util.ResultUtils;
+import wsg.lol.common.pojo.dto.system.VersionDto;
 import wsg.lol.service.intf.ChampionService;
 import wsg.lol.service.intf.CollectionService;
 import wsg.lol.service.intf.SharedService;
@@ -41,37 +39,36 @@ public class SharedScheduler {
     @Scheduled(cron = "${cron.share.version}")
     public void checkVersion() {
         logger.info("Checking the version...");
-        VersionResult versionResult = systemService.getVersion();
-        if (versionResult.isLatestVersion()) {
+        VersionDto versionDto = systemService.getVersion();
+        if (versionDto.isLatestVersion()) {
             logger.info("The version is latest.");
             return;
         }
 
-        String version = versionResult.getLatestVersion();
-        GenericResult<Boolean> result = systemService.checkCdn(version);
-        if (!result.getObject()) {
+        String version = versionDto.getLatestVersion();
+        if (!systemService.checkCdn(version)) {
             logger.error("Can't find cdn for " + version + ". Please update the data dragon manually.");
             return;
         }
 
         try {
             transactionTemplate.execute(transactionStatus -> {
-                logger.info("Updating the version from {} to {}...", versionResult.getCurrentVersion(), version);
-                championService.updateChampions(version).assertSuccess();
-                collectionService.updateItems(version).assertSuccess();
-                collectionService.updateMaps(version).assertSuccess();
-                collectionService.updateRunes(version).assertSuccess();
-                collectionService.updateProfileIcons(version).assertSuccess();
-                championService.updateSummonerSpells(version).assertSuccess();
-                systemService.updateVersion(version).assertSuccess();
-                return ResultUtils.success();
+                logger.info("Updating the version from {} to {}...", versionDto.getCurrentVersion(), version);
+                championService.updateChampions(version);
+                collectionService.updateItems(version);
+                collectionService.updateMaps(version);
+                collectionService.updateRunes(version);
+                collectionService.updateProfileIcons(version);
+                championService.updateSummonerSpells(version);
+                systemService.updateVersion(version);
+                return null;
             });
         } catch (AppException e) {
             logger.error(e.getMessage(), e);
             return;
         }
 
-        logger.info("Succeed in updating the version from " + versionResult.getCurrentVersion() + " to " + version);
+        logger.info("Succeed in updating the version from " + versionDto.getCurrentVersion() + " to " + version);
     }
 
     /**

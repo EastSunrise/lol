@@ -1,13 +1,10 @@
 package wsg.lol.service.impl;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wsg.lol.common.annotation.Platform;
-import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.champion.ChampionTipEnum;
 import wsg.lol.common.enums.champion.SpellNumEnum;
 import wsg.lol.common.enums.share.ImageGroupEnum;
@@ -21,12 +18,11 @@ import wsg.lol.common.pojo.dto.item.BlockDto;
 import wsg.lol.common.pojo.dto.item.ImageDto;
 import wsg.lol.common.pojo.dto.item.RecommendedExtDto;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
-import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.dragon.intf.DragonDao;
 import wsg.lol.dao.mybatis.mapper.lol.champion.*;
 import wsg.lol.dao.mybatis.mapper.lol.item.BlockMapper;
 import wsg.lol.dao.mybatis.mapper.lol.item.RecommendedMapper;
-import wsg.lol.service.common.ServiceExecutor;
+import wsg.lol.service.base.BaseService;
 import wsg.lol.service.intf.ChampionService;
 import wsg.lol.service.intf.CollectionService;
 
@@ -37,7 +33,7 @@ import java.util.List;
  * @author Kingen
  */
 @Service
-public class ChampionServiceImpl implements ChampionService {
+public class ChampionServiceImpl extends BaseService implements ChampionService {
 
     private static final Logger logger = LoggerFactory.getLogger(ChampionService.class);
 
@@ -60,16 +56,16 @@ public class ChampionServiceImpl implements ChampionService {
     private CollectionService collectionService;
 
     @Override
-    @Platform
     @Transactional
-    public Result updateChampions(String version) {
+    public void updateChampions(String version) {
         logger.info("Updating the data of champions.");
         List<ChampionExtDto> championExtDtoList = dragonDao.readChampions(version);
 
         logger.info("Updating the champions.");
         List<ChampionDto> championDtoList = new ArrayList<>(championExtDtoList);
         List<ChampionDo> championDoList = ObjectTransfer.transferDtoList(championDtoList, ChampionDo.class);
-        ServiceExecutor.updateStatic(championMapper, championDoList).assertSuccess();
+        clear(championMapper);
+        insertList(championMapper, championDoList);
 
         logger.info("Updating the images of champions.");
         List<ImageDto> imageDtoList = new ArrayList<>();
@@ -78,7 +74,7 @@ public class ChampionServiceImpl implements ChampionService {
             image.setRelatedId(championExtDto.getId());
             imageDtoList.add(image);
         }
-        collectionService.updateImages(imageDtoList, ImageGroupEnum.Champion).assertSuccess();
+        collectionService.updateImages(imageDtoList, ImageGroupEnum.Champion);
 
         logger.info("Updating the skins.");
         List<SkinDo> skinDoList = new ArrayList<>();
@@ -90,7 +86,8 @@ public class ChampionServiceImpl implements ChampionService {
             }
             skinDoList.addAll(skins);
         }
-        ServiceExecutor.updateStatic(skinMapper, skinDoList).assertSuccess();
+        clear(skinMapper);
+        insertList(skinMapper, skinDoList);
 
         logger.info("Updating the tips of champions.");
         List<ChampionTipDo> championTipDoList = new ArrayList<>();
@@ -111,7 +108,8 @@ public class ChampionServiceImpl implements ChampionService {
                 championTipDoList.add(championTipDo);
             }
         }
-        ServiceExecutor.updateStatic(championTipMapper, championTipDoList).assertSuccess();
+        clear(championTipMapper);
+        insertList(championTipMapper, championTipDoList);
 
         logger.info("Updating the stats of champions.");
         List<ChampionStatsDo> statsDoList = new ArrayList<>();
@@ -120,7 +118,8 @@ public class ChampionServiceImpl implements ChampionService {
             stats.setChampionId(championExtDto.getId());
             statsDoList.add(stats);
         }
-        ServiceExecutor.updateStatic(championStatsMapper, statsDoList).assertSuccess();
+        clear(championStatsMapper);
+        insertList(championStatsMapper, statsDoList);
 
         logger.info("Updating the spells of champions.");
         List<SpellDo> spellDoList = new ArrayList<>();
@@ -155,9 +154,9 @@ public class ChampionServiceImpl implements ChampionService {
             image.setRelatedId(passive.getId());
             imageDtoList.add(image);
         }
-        this.updateSpells(spellDoList, SpellNumEnum.P, SpellNumEnum.Q, SpellNumEnum.W, SpellNumEnum.E, SpellNumEnum.R).assertSuccess();
+        updateSpells(spellDoList, SpellNumEnum.P, SpellNumEnum.Q, SpellNumEnum.W, SpellNumEnum.E, SpellNumEnum.R);
         logger.info("Updating the images of champion spells.");
-        collectionService.updateImages(imageDtoList, ImageGroupEnum.Spell, ImageGroupEnum.Passive).assertSuccess();
+        collectionService.updateImages(imageDtoList, ImageGroupEnum.Spell, ImageGroupEnum.Passive);
 
         logger.info("Updating the recommended items of champions.");
         List<RecommendedDo> recommendedDoList = new ArrayList<>();
@@ -178,17 +177,17 @@ public class ChampionServiceImpl implements ChampionService {
                 }
             }
         }
-        ServiceExecutor.updateStatic(recommendedMapper, recommendedDoList).assertSuccess();
-        ServiceExecutor.updateStatic(blockMapper, blockDoList).assertSuccess();
+        clear(recommendedMapper);
+        insertList(recommendedMapper, recommendedDoList);
+        clear(blockMapper);
+        insertList(blockMapper, blockDoList);
 
         logger.info("Succeed in updating the data of champions.");
-        return ResultUtils.success();
     }
 
     @Override
-    @Platform
     @Transactional
-    public Result updateSummonerSpells(String version) {
+    public void updateSummonerSpells(String version) {
         logger.info("Updating the summoner spells.");
         List<SpellDto> spellDtoList = dragonDao.readSummonerSpells(version);
         List<ImageDto> images = new ArrayList<>();
@@ -203,27 +202,21 @@ public class ChampionServiceImpl implements ChampionService {
             image.setGroup(ImageGroupEnum.SummonerSpell);
             images.add(image);
         }
-        this.updateSpells(spellDoList, SpellNumEnum.S).assertSuccess();
+        this.updateSpells(spellDoList, SpellNumEnum.S);
         logger.info("Updating the images of summoner spells.");
-        collectionService.updateImages(images, ImageGroupEnum.SummonerSpell).assertSuccess();
+        collectionService.updateImages(images, ImageGroupEnum.SummonerSpell);
 
         logger.info("Succeed in updating the data of summoner spells.");
-        return ResultUtils.success();
     }
 
-    private Result updateSpells(List<SpellDo> spells, SpellNumEnum... nums) {
-        if (CollectionUtils.isEmpty(spells)) {
-            logger.info("Spells is empty. Nothing updated.");
-            return ResultUtils.success();
-        }
-
+    private void updateSpells(List<SpellDo> spells, SpellNumEnum... nums) {
         int count;
         for (SpellNumEnum num : nums) {
             count = spellMapper.deleteByNum(num);
             logger.info("Deleted " + count + " spells of " + num);
         }
 
-        return ServiceExecutor.insertList(spellMapper, spells);
+        insertList(spellMapper, spells);
     }
 
     @Autowired

@@ -1,4 +1,4 @@
-package wsg.lol.service.scheduler;
+package wsg.lol.scheduler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 import wsg.lol.common.util.PageUtils;
-import wsg.lol.service.common.ServiceExecutor;
 import wsg.lol.service.intf.SummonerService;
 
 import java.util.List;
@@ -32,14 +31,14 @@ public class RealScheduler {
     @Scheduled(cron = "${cron.update.summoner}")
     public void updateSummoners() {
         logger.info("Getting summoners for update...");
-        List<? extends SummonerDto> summoners = ServiceExecutor.retryUntilNotEmpty(() -> summonerService.getSummonersForUpdate(PageUtils.DEFAULT_PAGE).getList()).getList();
+        List<? extends SummonerDto> summoners = summonerService.getSummonersForUpdate(PageUtils.DEFAULT_PAGE);
         logger.info("Got {} summoners for update. Handling...", summoners.size());
 
         int success = 0;
         for (SummonerDto summoner : summoners) {
             String summonerId = summoner.getId();
             try {
-                summonerService.updateSummoner(summonerId, summoner.getEncryptUsername()).assertSuccess();
+                summonerService.updateSummoner(summonerId);
                 success++;
             } catch (Exception e) {
                 logger.error("Failed to update the summoner {}.", summonerId);
@@ -57,14 +56,14 @@ public class RealScheduler {
     @Scheduled(fixedDelay = 1)
     public void updateMatches() throws AppException {
         logger.info("Getting summoners for match...");
-        List<? extends SummonerDto> summoners = ServiceExecutor.retryUntilNotEmpty(() -> summonerService.getSummonersForMatch(PageUtils.DEFAULT_PAGE).getList()).getList();
+        List<? extends SummonerDto> summoners = summonerService.getSummonersForMatch(PageUtils.DEFAULT_PAGE);
         logger.info("Got {} summoners for match. Handling...", summoners.size());
 
         int success = 0;
         for (SummonerDto summoner : summoners) {
             String accountId = summoner.getAccountId();
             try {
-                summonerService.updateMatches(accountId, summoner.getLastMatch(), summoner.getEncryptUsername()).assertSuccess();
+                summonerService.updateMatches(accountId, summoner.getLastMatch());
                 success++;
             } catch (Exception e) {
                 logger.error("Failed to update matches of the account {}.", accountId);

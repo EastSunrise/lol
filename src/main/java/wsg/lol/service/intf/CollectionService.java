@@ -1,6 +1,5 @@
 package wsg.lol.service.intf;
 
-import wsg.lol.common.base.Result;
 import wsg.lol.common.enums.share.ImageGroupEnum;
 import wsg.lol.common.pojo.dto.item.ImageDto;
 
@@ -16,25 +15,25 @@ public interface CollectionService {
     /**
      * Update the data of items once the version changes.
      */
-    Result updateItems(String version);
+    void updateItems(String version);
 
     /**
      * Update the data of reforged runes once the version changes.
      */
-    Result updateRunes(String version);
+    void updateRunes(String version);
 
     /**
      * Update the data of maps once the version changes.
      */
-    Result updateMaps(String version);
+    void updateMaps(String version);
 
     /**
      * Update the data of profile icons once the version changes.
      */
-    Result updateProfileIcons(String version);
+    void updateProfileIcons(String version);
 
     /**
      * Update images of specified groups.
      */
-    Result updateImages(List<ImageDto> images, ImageGroupEnum... groups);
+    void updateImages(List<ImageDto> images, ImageGroupEnum... groups);
 }

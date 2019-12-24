@@ -1,13 +1,13 @@
-package wsg.lol.common.result.system;
+package wsg.lol.common.pojo.dto.system;
 
-import wsg.lol.common.base.Result;
+import wsg.lol.common.base.BaseDto;
 
 /**
  * Result of querying the version.
  *
  * @author Kingen
  */
-public class VersionResult extends Result {
+public class VersionDto extends BaseDto {
 
     private String currentVersion;
 

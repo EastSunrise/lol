@@ -3,7 +3,7 @@
 <mapper namespace="wsg.lol.dao.mybatis.mapper.lol.system.ImageMapper">
     <delete id="deleteByGroup" parameterType="wsg.lol.common.enums.share.ImageGroupEnum">
         delete
-        from lol.t_image t
+        from t_image t
         where t.`group` = #{group}
     </delete>
 </mapper>

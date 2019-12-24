@@ -6,20 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.pojo.dto.share.ChampionRotation;
 import wsg.lol.common.pojo.dto.share.FeaturedGames;
 import wsg.lol.common.pojo.dto.share.ShardStatus;
 import wsg.lol.dao.api.impl.ChampionV3;
 import wsg.lol.dao.api.impl.LOLStatusV3;
 import wsg.lol.dao.api.impl.SpectatorV4;
+import wsg.lol.service.base.BaseService;
 import wsg.lol.service.intf.SharedService;
 
 /**
  * @author Kingen
  */
 @Service
-public class SharedServiceImpl implements SharedService {
+public class SharedServiceImpl extends BaseService implements SharedService {
 
     private static final Logger logger = LoggerFactory.getLogger(SharedService.class);
 
@@ -35,8 +35,8 @@ public class SharedServiceImpl implements SharedService {
     }
 
     @Cacheable(cacheNames = "shared", key = "'featuredGames'")
-    public GenericResult<FeaturedGames> getFeaturedGames() {
-        return GenericResult.create(spectatorV4.getFeaturedGames());
+    public FeaturedGames getFeaturedGames() {
+        return spectatorV4.getFeaturedGames();
     }
 
     @CacheEvict(cacheNames = "shared", key = "'shardStatus'")
@@ -45,8 +45,8 @@ public class SharedServiceImpl implements SharedService {
     }
 
     @Cacheable(cacheNames = "shared", key = "'shardStatus'")
-    public GenericResult<ShardStatus> getShardStatus() {
-        return GenericResult.create(lolStatusV3.getSharedData());
+    public ShardStatus getShardStatus() {
+        return lolStatusV3.getSharedData();
     }
 
     @CacheEvict(cacheNames = "shared", key = "'championRotation'")
@@ -55,8 +55,8 @@ public class SharedServiceImpl implements SharedService {
     }
 
     @Cacheable(cacheNames = "shared", key = "'championRotation'")
-    public GenericResult<ChampionRotation> getChampionRotation() {
-        return GenericResult.create(championV3.getChampionRotation());
+    public ChampionRotation getChampionRotation() {
+        return championV3.getChampionRotation();
     }
 
     @Autowired

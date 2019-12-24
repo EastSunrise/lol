@@ -1,11 +1,11 @@
-package wsg.lol.test.service;
+package wsg.lol.service;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import wsg.lol.base.BaseTest;
 import wsg.lol.service.intf.CollectionService;
-import wsg.lol.test.base.BaseTest;
 
 /**
  * Test for collection.

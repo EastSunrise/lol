@@ -1,20 +1,20 @@
 package wsg.lol.service.aop;
 
+import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
-import wsg.lol.common.annotation.AssignApi;
-import wsg.lol.dao.api.client.ApiClient;
+import wsg.lol.common.annotation.AssignRegion;
+import wsg.lol.common.enums.system.RegionEnum;
+import wsg.lol.config.RegionIdentifier;
 
 import java.lang.reflect.Method;
 
@@ -25,19 +25,14 @@ import java.lang.reflect.Method;
  */
 @Aspect
 @Component
-public class AssignApiAspect {
+public class AssignRegionAspect {
 
-    private static final Logger logger = LoggerFactory.getLogger(AssignApiAspect.class);
+    @Pointcut(value = "@annotation(wsg.lol.common.annotation.AssignRegion)")
+    public void assignRegion() { }
 
-    private ApiClient apiClient;
-
-    @Pointcut(value = "@annotation(wsg.lol.common.annotation.AssignApi)")
-    public void assignApi() { }
-
-    @Around(value = "assignApi() && @annotation(source)")
-    public Object doAroundAdvice(ProceedingJoinPoint joinPoint, AssignApi source) throws Throwable {
-        String username = getUsername(joinPoint, source);
-        apiClient.checkEncrypt(username);
+    @Around(value = "assignRegion() && @annotation(source)")
+    public Object doAroundAdvice(ProceedingJoinPoint joinPoint, AssignRegion source) throws Throwable {
+        RegionIdentifier.setPlatform(getRegion(joinPoint, source));
         return joinPoint.proceed();
     }
 
@@ -46,8 +41,12 @@ public class AssignApiAspect {
      *
      * @return null if not specified.
      */
-    private String getUsername(ProceedingJoinPoint joinPoint, AssignApi source) {
-        String username = source.encryptUsername();
+    private RegionEnum getRegion(ProceedingJoinPoint joinPoint, AssignRegion source) {
+        RegionEnum region = source.region();
+        String expression = source.regionString();
+        if (!region.equals(RegionEnum.LOL) || StringUtils.isBlank(expression)) {
+            return region;
+        }
 
         Object[] args = joinPoint.getArgs();
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
@@ -60,11 +59,6 @@ public class AssignApiAspect {
         for (int i = 0; i < args.length; i++) {
             context.setVariable(parameterNames[i], args[i]);
         }
-        return parser.parseExpression(username).getValue(context, String.class);
-    }
-
-    @Autowired
-    public void setApiClient(ApiClient apiClient) {
-        this.apiClient = apiClient;
+        return EnumUtils.getEnum(RegionEnum.class, parser.parseExpression(expression).getValue(context, String.class));
     }
 }

@@ -5,12 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wsg.lol.common.annotation.AssignApi;
-import wsg.lol.common.base.AppException;
-import wsg.lol.common.base.GenericResult;
-import wsg.lol.common.base.Result;
 import wsg.lol.common.constant.ConfigConst;
-import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.enums.system.EventTypeEnum;
 import wsg.lol.common.pojo.domain.summoner.ChampionMasteryDo;
@@ -21,14 +16,13 @@ import wsg.lol.common.pojo.dto.summoner.ChampionMasteryDto;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 import wsg.lol.common.pojo.transfer.ObjectTransfer;
-import wsg.lol.common.util.ResultUtils;
 import wsg.lol.dao.api.impl.ChampionMasteryV4;
 import wsg.lol.dao.api.impl.LeagueV4;
 import wsg.lol.dao.api.impl.SummonerV4;
 import wsg.lol.dao.mybatis.mapper.region.summoner.ChampionMasteryMapper;
 import wsg.lol.dao.mybatis.mapper.region.summoner.LeagueEntryMapper;
 import wsg.lol.dao.mybatis.mapper.region.summoner.SummonerMapper;
-import wsg.lol.service.common.ServiceExecutor;
+import wsg.lol.service.base.BaseService;
 import wsg.lol.service.intf.EventService;
 import wsg.lol.service.intf.SummonerService;
 
@@ -41,7 +35,7 @@ import java.util.List;
  * @author Kingen
  */
 @Service(value = "SummonerEventHandler")
-public class SummonerEventHandler implements EventHandler {
+public class SummonerEventHandler extends BaseService implements EventHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(SummonerEventHandler.class);
 
@@ -63,15 +57,14 @@ public class SummonerEventHandler implements EventHandler {
 
     @Override
     @Transactional
-    @AssignApi(encryptUsername = "#event.source")
-    public Result handle(EventDo event) {
+    public void handle(EventDo event) {
         String summonerId = event.getContext();
         logger.info("Adding the summoner {}...", summonerId);
 
-        GenericResult<SummonerDto> summonerById = summonerService.getSummonersById(summonerId);
-        if (summonerById.isSuccess() && summonerById.getObject() != null) {
+        SummonerDto summonerById = summonerService.getSummonersById(summonerId);
+        if (summonerById != null) {
             logger.info("Summoner {} exists already.", summonerId);
-            return ResultUtils.success();
+            return;
         }
 
         SummonerDto summonerDto = summonerV4.getSummonerById(summonerId);
@@ -81,25 +74,19 @@ public class SummonerEventHandler implements EventHandler {
         summonerDo.setScore(score);
         summonerDo.setLastUpdate(new Date());
         summonerDo.setLastMatch(ConfigConst.MATCH_BEGIN_DATE);
-        summonerDo.setEncryptUsername(event.getSource());
-        int count = summonerMapper.insert(summonerDo);
-        if (count != 1) {
-            logger.error("Failed to inert the summoner {}.", summonerId);
-            throw new AppException(ErrorCodeConst.DATABASE_ERROR, "Failed to inert the summoner " + summonerId);
-        }
+        insert(summonerMapper, summonerDo);
 
         logger.info("Adding champion masteries of {}...", summonerId);
         List<ChampionMasteryDto> championMasteries = championMasteryV4.getChampionMasteryBySummonerId(summonerId);
-        ServiceExecutor.insertList(championMasteryMapper, ObjectTransfer.transferDtoList(championMasteries, ChampionMasteryDo.class)).assertSuccess();
+        insertList(championMasteryMapper, ObjectTransfer.transferDtoList(championMasteries, ChampionMasteryDo.class));
 
         logger.info("Adding league entries of {}...", summonerId);
         List<LeagueEntryDto> entries = leagueV4.getLeagueEntriesBySummonerId(summonerId);
-        ServiceExecutor.insertList(leagueEntryMapper, ObjectTransfer.transferDtoList(entries, LeagueEntryDo.class)).assertSuccess();
+        insertList(leagueEntryMapper, ObjectTransfer.transferDtoList(entries, LeagueEntryDo.class));
 
-        eventService.updateStatus(EventTypeEnum.Summoner, summonerId, EventStatusEnum.Unfinished, EventStatusEnum.Finished).assertSuccess();
+        eventService.updateStatus(EventTypeEnum.Summoner, summonerId, EventStatusEnum.Unfinished, EventStatusEnum.Finished);
 
         logger.info("Added the summoner {}.", summonerId);
-        return ResultUtils.success();
     }
 
     @Autowired

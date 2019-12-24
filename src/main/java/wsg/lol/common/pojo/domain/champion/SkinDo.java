@@ -15,7 +15,7 @@ import javax.persistence.Table;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "c_skin")
+@Table(name = "c_skin")
 public class SkinDo extends BaseDo {
 
     @Id

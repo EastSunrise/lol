@@ -1,9 +1,10 @@
-package wsg.lol.test.service;
+package wsg.lol.service;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import tk.mybatis.mapper.entity.Example;
+import wsg.lol.base.BaseTest;
 import wsg.lol.common.enums.system.EventStatusEnum;
 import wsg.lol.common.pojo.domain.system.MatchEventDo;
 import wsg.lol.common.pojo.domain.system.SummonerEventDo;
@@ -11,7 +12,6 @@ import wsg.lol.common.util.PageUtils;
 import wsg.lol.dao.mybatis.common.mapper.EventMapper;
 import wsg.lol.service.event.EventHandler;
 import wsg.lol.service.intf.EventService;
-import wsg.lol.test.base.BaseTest;
 
 import java.util.List;
 

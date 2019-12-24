@@ -1,7 +1,5 @@
-package wsg.lol.service.scheduler;
+package wsg.lol.scheduler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -17,8 +15,6 @@ import wsg.lol.service.intf.EventService;
 @Component
 public class EventScheduler {
 
-    private static final Logger logger = LoggerFactory.getLogger(EventScheduler.class);
-
     private EventService eventService;
 
     /**
@@ -27,7 +23,7 @@ public class EventScheduler {
      */
     @Scheduled(fixedDelay = 1)
     public void handleSummoners() {
-        eventService.handle(EventTypeEnum.Summoner, PageUtils.DEFAULT_PAGE).error(logger);
+        eventService.handle(EventTypeEnum.Summoner, PageUtils.DEFAULT_PAGE);
     }
 
     /**
@@ -38,7 +34,7 @@ public class EventScheduler {
      */
     @Scheduled(fixedDelay = 1)
     public void handleMatches() {
-        eventService.handle(EventTypeEnum.Match, PageUtils.DEFAULT_PAGE).error(logger);
+        eventService.handle(EventTypeEnum.Match, PageUtils.DEFAULT_PAGE);
     }
 
     @Autowired

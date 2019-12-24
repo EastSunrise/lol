@@ -1,7 +1,5 @@
 package wsg.lol.service.common;
 
-import wsg.lol.common.base.Result;
-
 import java.util.List;
 
 /**
@@ -9,7 +7,7 @@ import java.util.List;
  *
  * @author Kingen
  */
-public interface MinTaskStrategy<C, R extends Result> {
+public interface MinTaskStrategy<C, R> {
 
     /**
      * Doing the task.

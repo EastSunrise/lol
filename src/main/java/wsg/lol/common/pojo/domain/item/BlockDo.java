@@ -19,7 +19,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "ct_block")
+@Table(name = "ct_block")
 public class BlockDo extends BaseDo {
 
     @Id

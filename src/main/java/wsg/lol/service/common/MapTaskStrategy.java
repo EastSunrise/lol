@@ -1,7 +1,5 @@
 package wsg.lol.service.common;
 
-import wsg.lol.common.base.Result;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +10,7 @@ import java.util.Map;
  *
  * @author Kingen
  */
-public abstract class MapTaskStrategy<K, V, R extends Result> implements MinTaskStrategy<Map<K, V>, R> {
+public abstract class MapTaskStrategy<K, V, R> implements MinTaskStrategy<Map<K, V>, R> {
 
     @Override
     public int getLength(Map<K, V> map) {

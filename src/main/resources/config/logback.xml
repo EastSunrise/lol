@@ -58,7 +58,7 @@
         <appender-ref ref="controller_error"/>
         <!--        <appender-ref ref="stdout"/>-->
     </logger>
-    <logger name="wsg.lol.service.scheduler" level="info" addtivity="false">
+    <logger name="wsg.lol.scheduler" level="info" addtivity="false">
         <appender-ref ref="controller"/>
         <appender-ref ref="controller_error"/>
         <!--        <appender-ref ref="stdout"/>-->

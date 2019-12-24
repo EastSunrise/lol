@@ -1,10 +1,11 @@
-package wsg.lol.test.common;
+package wsg.lol.common;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import wsg.lol.base.BaseTest;
 import wsg.lol.common.enums.share.RankQueueEnum;
 import wsg.lol.common.enums.summoner.DivisionEnum;
 import wsg.lol.common.enums.summoner.TierEnum;
@@ -12,9 +13,7 @@ import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.config.DragonConfig;
 import wsg.lol.config.RegionIdentifier;
-import wsg.lol.dao.api.client.ApiClient;
 import wsg.lol.dao.api.impl.LeagueV4;
-import wsg.lol.test.base.BaseTest;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,15 +25,12 @@ import java.util.*;
  *
  * @author Kingen
  */
-public class InitialTest extends BaseTest {
+public class Initialization extends BaseTest {
 
     private static final String TABLE_NAME = "t_event_summoner";
     private static Map<RegionEnum, Integer[]> map = new HashMap<>();
     @Autowired
     private LeagueV4 leagueV4;
-
-    @Autowired
-    private ApiClient apiClient;
 
     @Autowired
     private DragonConfig dragonConfig;
@@ -76,7 +72,7 @@ public class InitialTest extends BaseTest {
                         if (leagueEntryDtoList == null || leagueEntryDtoList.isEmpty())
                             break;
                         for (LeagueEntryDto leagueEntryDto : leagueEntryDtoList) {
-                            summoners.add(leagueEntryDto.getSummonerId() + "," + apiClient.getUsername() + "," + leagueEntryDto.getSummonerName());
+                            summoners.add(leagueEntryDto.getSummonerId() + ",initialization," + leagueEntryDto.getSummonerName());
                         }
                     }
                 }
@@ -111,10 +107,10 @@ public class InitialTest extends BaseTest {
     }
 
     private String toPath(RegionEnum region) {
-        return StringUtils.joinWith(File.separator, "DB", "01", "init", "SYS_INIT_" + region + ".sql");
+        return StringUtils.joinWith(File.separator, "DB", "01", "region", "04_SYS_INIT_" + region + ".sql");
     }
 
     private String getPath(RegionEnum region) {
-        return StringUtils.joinWith(File.separator, dragonConfig.getDirectory(), "lib", apiClient.getPath(), region + ".csv");
+        return StringUtils.joinWith(File.separator, dragonConfig.getDirectory(), "lib", region + ".csv");
     }
 }

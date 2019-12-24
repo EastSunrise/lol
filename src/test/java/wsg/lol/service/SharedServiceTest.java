@@ -1,10 +1,10 @@
-package wsg.lol.test.service;
+package wsg.lol.service;
 
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import wsg.lol.base.BaseTest;
 import wsg.lol.service.intf.SharedService;
-import wsg.lol.test.base.BaseTest;
 
 /**
  * Test for shared service.
@@ -41,7 +41,7 @@ public class SharedServiceTest extends BaseTest {
         testShared(() -> sharedService.getChampionRotation(), () -> sharedService.updateChampionRotation());
     }
 
-    protected void testShared(NoneTask getTask, VoidTask updateTask) {
+    protected void testShared(NoneArgsTask getTask, NoneTask updateTask) {
         System.out.println("Get first.");
         Assert.assertNotNull(getTask.run());
         System.out.println("Get second.");

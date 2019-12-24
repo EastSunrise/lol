@@ -21,7 +21,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "c_spell")
+@Table(name = "c_spell")
 public class SpellDo extends BaseDo {
 
     @Id

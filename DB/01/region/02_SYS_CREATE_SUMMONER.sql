@@ -12,7 +12,6 @@ create table s_summoner
     score            int         null comment '总成就点数',
     last_update      timestamp   not null comment '最近更新时间',
     last_match       timestamp   not null comment '最后对局更新时间',
-    encrypt_username varchar(32) not null comment '加密密钥账户名',
     primary key (id),
     unique (account_id),
     unique (puuid),

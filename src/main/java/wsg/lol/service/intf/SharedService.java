@@ -1,6 +1,5 @@
 package wsg.lol.service.intf;
 
-import wsg.lol.common.base.GenericResult;
 import wsg.lol.common.pojo.dto.share.ChampionRotation;
 import wsg.lol.common.pojo.dto.share.FeaturedGames;
 import wsg.lol.common.pojo.dto.share.ShardStatus;
@@ -20,7 +19,7 @@ public interface SharedService {
     /**
      * Get the featured games, from the cache first.
      */
-    GenericResult<FeaturedGames> getFeaturedGames();
+    FeaturedGames getFeaturedGames();
 
     /**
      * Evict the cache.
@@ -30,7 +29,7 @@ public interface SharedService {
     /**
      * Get the shard status, from the cache first.
      */
-    GenericResult<ShardStatus> getShardStatus();
+    ShardStatus getShardStatus();
 
     /**
      * Evict the cache.
@@ -40,5 +39,5 @@ public interface SharedService {
     /**
      * Get the rotation of champions, from the cache first.
      */
-    GenericResult<ChampionRotation> getChampionRotation();
+    ChampionRotation getChampionRotation();
 }

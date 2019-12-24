@@ -1,9 +1,9 @@
-package wsg.lol.test.service;
+package wsg.lol.service;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import wsg.lol.base.BaseTest;
 import wsg.lol.service.intf.ChampionService;
-import wsg.lol.test.base.BaseTest;
 
 /**
  * Test for champion service.

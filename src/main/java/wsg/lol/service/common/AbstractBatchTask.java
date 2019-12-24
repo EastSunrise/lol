@@ -1,7 +1,5 @@
 package wsg.lol.service.common;
 
-import wsg.lol.common.base.Result;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
@@ -12,7 +10,7 @@ import java.util.concurrent.RecursiveTask;
  *
  * @author Kingen
  */
-public class AbstractBatchTask<C, R extends Result> extends RecursiveTask<R> {
+public class AbstractBatchTask<C, R> extends RecursiveTask<R> {
 
     public static final int MAX_SIZE = 16000;
 

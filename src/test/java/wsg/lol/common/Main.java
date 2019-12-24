@@ -1,4 +1,4 @@
-package wsg.lol.test.common;
+package wsg.lol.common;
 
 /**
  * Main.

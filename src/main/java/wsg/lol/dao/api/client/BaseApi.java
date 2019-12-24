@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import wsg.lol.common.base.ApiHTTPException;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.base.QueryDto;
+import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.common.enums.system.ResponseCodeEnum;
 import wsg.lol.common.pojo.serialize.RecordExtraProcessor;
 import wsg.lol.common.util.HttpHelper;
@@ -113,7 +114,8 @@ public class BaseApi {
         if (StringUtils.isNotEmpty(urlParams)) {
             urlParams = "?" + urlParams;
         }
-        String urlStr = (RegionIdentifier.getRegion().getHost() + apiRef + urlParams).replace("+", "%20");
+        RegionEnum region = RegionIdentifier.getRegion();
+        String urlStr = (region.getHost() + apiRef + urlParams).replace("+", "%20");
 
         // todo get from the api directly
         String filepath = StringUtils.joinWith(File.separator, dragonConfig.getDirectory(), "api", urlStr.replace("?", File.separator).replace("&", File.separator) + ".json");
@@ -124,7 +126,7 @@ public class BaseApi {
             logger.info("Can't read from {}.", filepath);
         }
 
-        String text = doHttpGet(HTTPS + urlStr);
+        String text = doHttpGet(urlStr, region);
         try {
             logger.info("Write to {}.", filepath);
             FileUtils.writeStringToFile(new File(filepath), text, StandardCharsets.UTF_8);
@@ -139,16 +141,14 @@ public class BaseApi {
      * @throws ApiHTTPException BadRequest, NotFound, UnsupportedMediaType, Unauthorized.
      * @throws HTTPException    Other unknown response whose code isn't included in {@link ResponseCodeEnum}.
      */
-    private String doHttpGet(@NotNull String urlStr) throws ApiHTTPException, HTTPException {
-        String format = urlStr + (urlStr.contains("?") ? "&" : "?") + "api_key=";
+    private String doHttpGet(@NotNull String urlStr, @NotNull RegionEnum region) throws ApiHTTPException, HTTPException {
+        String format = HTTPS + urlStr + (urlStr.contains("?") ? "&" : "?") + "api_key=";
         int retryCount = 0;
         while (true) {
             CloseableHttpResponse response = null;
             try {
-                ApiClient.Token token = apiClient.getToken();
-                urlStr = format + token.getKey();
+                urlStr = format + apiClient.getToken(region);
                 HttpGet httpGet = setRequest(new HttpGet(urlStr));
-                httpGet.addHeader(HttpHeaders.HOST, RegionIdentifier.getRegion().getHost());
 
                 logger.info("Getting from " + urlStr);
                 response = HTTP_CLIENT.execute(httpGet);
@@ -163,7 +163,7 @@ public class BaseApi {
 
                 String reason = response.getStatusLine().getReasonPhrase();
                 if (ResponseCodeEnum.Forbidden.getCode() == responseCode) {
-                    apiClient.occurForbidden(token);
+                    apiClient.occurForbidden(region);
                     continue;
                 }
                 if (ResponseCodeEnum.RateLimitExceeded.getCode() == responseCode) {

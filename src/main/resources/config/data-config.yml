@@ -9,20 +9,19 @@ dragon:
 # api config
 api:
   rate: 0.833333
-  region: JP
   regions:
     LOL: knightmare2094
-    BR: Kingen4391
-    EUNE: Kingen4392
-    EUW: Kingen4393
+    BR: Kingen4396_BR
+    EUNE: Kingen4396_EUNE
+    EUW: Kingen4396_EUW
     JP: knightmare2094
-    KR: Kingen4395
-    LA1: Kingen4396
-    LA2: Kingen4397
-    NA: Kingen4398
-    OC1: Kingen4399
-    RU: Kingen4400
-    TR: Kingen4401
+    KR: Kingen4396_KR
+    LA1: Kingen4396_LA1
+    LA2: Kingen4396_LA2
+    NA: Kingen4396_NA
+    OC1: Kingen4396_OC1
+    RU: Kingen4396_RU
+    TR: Kingen4396_TR
   tokens:
     knightmare2094:
       region: NA

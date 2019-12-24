@@ -3,12 +3,11 @@ drop table if exists lol.t_config;
 create table lol.t_config
 (
     name        varchar(32)   not null comment '配置名',
-    region      tinyint       not null comment '地区',
     value       varchar(1024) not null comment '配置值',
     description varchar(512)  not null comment '描述',
     create_time timestamp     not null comment '创建时间',
     update_time timestamp     null comment '更新时间',
-    primary key (name, region)
+    primary key (name)
 ) comment ='系统配置表';
 
 -- 图片资源表

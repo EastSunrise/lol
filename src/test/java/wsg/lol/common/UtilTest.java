@@ -1,6 +1,6 @@
-package wsg.lol.test.common;
+package wsg.lol.common;
 
-import wsg.lol.test.base.BaseTest;
+import wsg.lol.base.BaseTest;
 
 /**
  * Test for others.

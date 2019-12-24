@@ -15,7 +15,7 @@ import javax.persistence.Table;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "r_rune")
+@Table(name = "r_rune")
 public class RuneDo extends BaseDo {
 
     @Id

@@ -17,7 +17,7 @@ import javax.persistence.Table;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(schema = "lol", name = "c_champion")
+@Table(name = "c_champion")
 public class ChampionDo extends BaseDo {
 
     @Id
