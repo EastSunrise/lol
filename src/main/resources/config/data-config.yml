@@ -18,7 +18,7 @@ api:
     KR: Kingen4396_KR
     LA1: Kingen4396_LA1
     LA2: Kingen4396_LA2
-    NA: Kingen4396_NA
+    NA: Kingen4396NA
     OC1: Kingen4396_OC1
     RU: Kingen4396_RU
     TR: Kingen4396_TR
@@ -59,3 +59,6 @@ api:
     Kingen4401:
       region: TR
       key: RGAPI-4c3c019f-e84f-4bd1-9d81-1f766938333c
+    Kingen4396NA:
+      region: NA
+      key: RGAPI-ac9bceb6-ad29-4914-8f7a-f8267a3a8839
