@@ -29,6 +29,7 @@ public class Initialization extends BaseTest {
 
     private static final String TABLE_NAME = "t_event_summoner";
     private static Map<RegionEnum, Integer[]> map = new HashMap<>();
+
     @Autowired
     private LeagueV4 leagueV4;
 

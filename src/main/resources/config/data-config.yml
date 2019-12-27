@@ -11,17 +11,7 @@ api:
   rate: 0.833333
   regions:
     LOL: knightmare2094
-    BR: Kingen4396_BR
-    EUNE: Kingen4396_EUNE
-    EUW: Kingen4396_EUW
-    JP: knightmare2094
-    KR: Kingen4396_KR
-    LA1: Kingen4396_LA1
-    LA2: Kingen4396_LA2
     NA: Kingen4396NA
-    OC1: Kingen4396_OC1
-    RU: Kingen4396_RU
-    TR: Kingen4396_TR
   tokens:
     knightmare2094:
       region: NA

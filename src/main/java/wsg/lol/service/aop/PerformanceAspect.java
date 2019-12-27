@@ -19,7 +19,7 @@ public class PerformanceAspect {
 
     private static final Logger logger = LoggerFactory.getLogger(PerformanceAspect.class);
 
-    @Pointcut("@annotation(wsg.lol.common.annotation.Performance) || @within(wsg.lol.common.annotation.Performance)")
+    @Pointcut("@annotation(wsg.lol.service.aop.Performance) || @within(wsg.lol.service.aop.Performance)")
     private void performance() {}
 
     @Around("performance()")

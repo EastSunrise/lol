@@ -79,6 +79,13 @@ public class ApiClient implements InitializingBean {
         throw new AppException(ErrorCodeConst.HTTPS_ERROR);
     }
 
+    /**
+     * Get available regions.
+     */
+    public Set<RegionEnum> getRegions() {
+        return apis.keySet();
+    }
+
     @Override
     public void afterPropertiesSet() {
         for (Map.Entry<String, Token> entry : tokens.entrySet()) {
@@ -99,6 +106,7 @@ public class ApiClient implements InitializingBean {
         }
     }
 
+    @Setter
     private static class Token {
         private String username;
         private String key;

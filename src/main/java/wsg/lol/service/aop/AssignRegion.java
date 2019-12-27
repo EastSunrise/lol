@@ -1,4 +1,4 @@
-package wsg.lol.common.annotation;
+package wsg.lol.service.aop;
 
 import org.springframework.expression.Expression;
 import wsg.lol.common.enums.system.RegionEnum;

@@ -4,7 +4,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ErrorCodeConst;
 import wsg.lol.common.enums.share.RankQueueEnum;
@@ -13,6 +12,7 @@ import wsg.lol.common.enums.summoner.TierEnum;
 import wsg.lol.common.pojo.dto.league.LeagueListDto;
 import wsg.lol.common.pojo.dto.summoner.LeagueEntryDto;
 import wsg.lol.dao.api.client.BaseApi;
+import wsg.lol.service.aop.Performance;
 
 import java.util.HashMap;
 import java.util.List;

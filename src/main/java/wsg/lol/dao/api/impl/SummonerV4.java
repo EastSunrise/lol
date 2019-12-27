@@ -1,9 +1,9 @@
 package wsg.lol.dao.api.impl;
 
 import org.springframework.stereotype.Component;
-import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.pojo.dto.summoner.SummonerDto;
 import wsg.lol.dao.api.client.BaseApi;
+import wsg.lol.service.aop.Performance;
 
 import java.util.HashMap;
 import java.util.Map;

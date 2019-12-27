@@ -1,4 +1,4 @@
-package wsg.lol.common.annotation;
+package wsg.lol.service.aop;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

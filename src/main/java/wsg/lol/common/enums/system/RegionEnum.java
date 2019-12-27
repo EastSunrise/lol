@@ -29,10 +29,12 @@ public enum RegionEnum implements EqualsToSerializable<String> {
     TR("tr1.api.riotgames.com", "TR1", AvailableLocale.TURKEY),
     ;
 
+    public static final RegionEnum[] REGIONS = new RegionEnum[]{
+            BR, EUNE, EUW, JP, KR, LA1, LA2, NA, OC1, RU, TR
+    };
+
     private String host;
-
     private String platformId;
-
     // the first is the default.
     private Locale[] locales;
 
@@ -75,6 +77,4 @@ public enum RegionEnum implements EqualsToSerializable<String> {
         private static final Locale RUSSIA = new Locale("ru", "RU");
         private static final Locale TURKEY = new Locale("tr", "TR");
     }
-
-
 }
