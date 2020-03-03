@@ -1,7 +1,6 @@
 package wsg.lol.dao.api.impl;
 
 import org.springframework.stereotype.Component;
-import wsg.lol.common.annotation.Performance;
 import wsg.lol.common.base.ApiHTTPException;
 import wsg.lol.common.base.AppException;
 import wsg.lol.common.constant.ErrorCodeConst;
@@ -12,6 +11,7 @@ import wsg.lol.common.pojo.dto.match.MatchListDto;
 import wsg.lol.common.pojo.dto.match.MatchTimelineDto;
 import wsg.lol.common.pojo.query.QueryMatchListDto;
 import wsg.lol.dao.api.client.BaseApi;
+import wsg.lol.service.aop.Performance;
 
 import java.util.ArrayList;
 import java.util.HashMap;

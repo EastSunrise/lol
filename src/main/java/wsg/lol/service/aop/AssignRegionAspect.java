@@ -1,6 +1,5 @@
 package wsg.lol.service.aop;
 
-import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -12,7 +11,6 @@ import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
-import wsg.lol.common.annotation.AssignRegion;
 import wsg.lol.common.enums.system.RegionEnum;
 import wsg.lol.config.RegionIdentifier;
 
@@ -27,7 +25,7 @@ import java.lang.reflect.Method;
 @Component
 public class AssignRegionAspect {
 
-    @Pointcut(value = "@annotation(wsg.lol.common.annotation.AssignRegion)")
+    @Pointcut(value = "@annotation(wsg.lol.service.aop.AssignRegion)")
     public void assignRegion() { }
 
     @Around(value = "assignRegion() && @annotation(source)")
@@ -59,6 +57,6 @@ public class AssignRegionAspect {
         for (int i = 0; i < args.length; i++) {
             context.setVariable(parameterNames[i], args[i]);
         }
-        return EnumUtils.getEnum(RegionEnum.class, parser.parseExpression(expression).getValue(context, String.class));
+        return parser.parseExpression(expression).getValue(context, RegionEnum.class);
     }
 }

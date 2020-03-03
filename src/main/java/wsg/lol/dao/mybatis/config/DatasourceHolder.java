@@ -13,7 +13,7 @@ import java.util.TimerTask;
  *
  * @author Kingen
  */
-class DatasourceHolder {
+public class DatasourceHolder {
 
     /**
      * Clear unused database by timer.
@@ -37,7 +37,7 @@ class DatasourceHolder {
     /*
      * Get an instance.
      */
-    static DatasourceHolder getInstance() {
+    public static DatasourceHolder getInstance() {
         return DatasourceHolderBuilder.instance;
     }
 
@@ -52,7 +52,7 @@ class DatasourceHolder {
     /**
      * Get dynamic datasource.
      */
-    synchronized DataSource getDatasource(RegionEnum region) {
+    public synchronized DataSource getDatasource(RegionEnum region) {
         if (regionTimerMap.containsKey(region)) {
             DatasourceTimer datasourceTimer = regionTimerMap.get(region);
             datasourceTimer.refreshTime();
